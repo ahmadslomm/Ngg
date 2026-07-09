@@ -1,0 +1,340 @@
+// voxa production schema — original design informed by DATABASE_DESIGN.md.
+// Balances are append-only-ledger backed; money mutations happen only inside
+// serializable transactions that also write a ledger row.
+
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+
+// ---------- Identity ----------
+model User {
+  id           BigInt   @id @default(autoincrement())
+  publicId     String   @unique @default(uuid())
+  account      String   @unique @db.VarChar(64)
+  passwordHash String?
+  phone        String?  @db.VarChar(32)
+  email        String?  @db.VarChar(128)
+  status       Int      @default(0) // 0 active, 1 banned, 2 deleted
+  riskScore    Int      @default(0)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+
+  profile      Profile?
+  wallet       Wallet?
+  identities   UserIdentity[]
+  vipHistory   VipHistory[]
+  orders       Order[]
+  ledger       WalletLedger[]
+  sentGifts    GiftTransaction[] @relation("sender")
+  ownedRooms   Room[]           @relation("owner")
+
+  @@index([phone])
+  @@index([status])
+}
+
+model UserIdentity {
+  id          BigInt @id @default(autoincrement())
+  userId      BigInt
+  provider    String @db.VarChar(16) // google|facebook|apple|phone
+  providerUid String @db.VarChar(128)
+  user        User   @relation(fields: [userId], references: [id])
+  @@unique([provider, providerUid])
+  @@index([userId])
+}
+
+model Profile {
+  userId        BigInt  @id
+  nick          String  @db.VarChar(64)
+  avatarUrl     String?
+  avatarFrameUrl String?
+  gender        Int     @default(0)
+  birthday      DateTime?
+  signature     String? @db.VarChar(255)
+  countryCode   String? @db.VarChar(8)
+  language      String? @db.VarChar(8)
+  charmLevel    Int     @default(0)
+  charmExp      BigInt  @default(0)
+  wealthLevel   Int     @default(0)
+  wealthExp     BigInt  @default(0)
+  fansCount     Int     @default(0)
+  followingCount Int    @default(0)
+  vipLevel      Int     @default(0) // denormalized current tier (cache)
+  updatedAt     DateTime @updatedAt
+  user          User    @relation(fields: [userId], references: [id])
+  @@index([countryCode])
+  @@index([charmLevel])
+  @@index([wealthLevel])
+}
+
+model UserRelation {
+  id        BigInt @id @default(autoincrement())
+  userId    BigInt
+  targetId  BigInt
+  type      Int    // 1 follow, 2 block
+  createdAt DateTime @default(now())
+  @@unique([userId, targetId, type])
+  @@index([targetId, type])
+}
+
+// ---------- Rooms ----------
+model Room {
+  id           BigInt  @id @default(autoincrement())
+  publicId     String  @unique @default(uuid())
+  ownerId      BigInt
+  name         String  @db.VarChar(64)
+  coverUrl     String?
+  type         Int     @default(0)
+  mode         Int     @default(0)
+  countryCode  String? @db.VarChar(8)
+  tags         Json?
+  status       Int     @default(0) // 0 closed, 1 live
+  isLocked     Boolean @default(false)
+  passwordHash String?
+  seatCount    Int     @default(8)
+  onlineCount  Int     @default(0)
+  agoraChannel String? @db.VarChar(64)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  owner        User        @relation("owner", fields: [ownerId], references: [id])
+  members      RoomMember[]
+  seats        Seat[]
+
+  @@index([status, countryCode])
+  @@index([ownerId])
+  @@index([mode])
+}
+
+model RoomMember {
+  roomId   BigInt
+  userId   BigInt
+  role     Int      @default(0) // 0 guest, 1 admin, 2 owner
+  joinedAt DateTime @default(now())
+  room     Room     @relation(fields: [roomId], references: [id])
+  @@id([roomId, userId])
+  @@index([userId])
+}
+
+model Seat {
+  roomId          BigInt
+  position        Int
+  userId          BigInt?
+  state           Int     @default(0) // 0 empty, 1 occupied, 2 locked
+  micMuted        Boolean @default(false)
+  micMutedByAdmin Boolean @default(false)
+  charmCounter    BigInt  @default(0)
+  updatedAt       DateTime @updatedAt
+  room            Room    @relation(fields: [roomId], references: [id])
+  @@id([roomId, position])
+}
+
+// ---------- Economy ----------
+model Gift {
+  id           BigInt  @id @default(autoincrement())
+  name         String  @db.VarChar(64)
+  category     Int     @default(0) // 0 normal,1 vip,2 lucky,3 rocket,4 bomb,5 backpack
+  priceCoins   Int
+  level        Int     @default(1)
+  iconUrl      String?
+  animUrl      String? // SVGA/PAG placeholder slot (owner-supplied)
+  animType     Int     @default(0)
+  comboEnabled Boolean @default(false)
+  luckyConfig  Json?
+  subGifts     Json?
+  enabled      Boolean @default(true)
+  sort         Int     @default(0)
+  createdAt    DateTime @default(now())
+  txns         GiftTransaction[]
+  @@index([category, enabled, sort])
+}
+
+model Wallet {
+  userId     BigInt  @id
+  coins      BigInt  @default(0)
+  coinsTotal BigInt  @default(0)
+  vipCoins   BigInt  @default(0)
+  beans      BigInt  @default(0)
+  balance    BigInt  @default(0)
+  version    Int     @default(0) // optimistic lock
+  updatedAt  DateTime @updatedAt
+  user       User    @relation(fields: [userId], references: [id])
+}
+
+model WalletLedger {
+  id           BigInt  @id @default(autoincrement())
+  userId       BigInt
+  currency     Int     // 0 coins,1 beans,2 vipCoins,3 balance
+  delta        BigInt
+  balanceAfter BigInt
+  reason       Int     // recharge, gift_send, gift_recv, exchange, withdraw, admin_adj
+  refType      String? @db.VarChar(32)
+  refId        BigInt?
+  idempotencyKey String? @unique
+  createdAt    DateTime @default(now())
+  user         User    @relation(fields: [userId], references: [id])
+  @@index([userId, createdAt])
+  @@index([refType, refId])
+}
+
+model GiftTransaction {
+  id          BigInt  @id @default(autoincrement())
+  senderId    BigInt
+  roomId      BigInt?
+  giftId      BigInt
+  qty         Int
+  unitPrice   Int
+  totalCoins  BigInt
+  recipients  Json
+  comboId     String?
+  luckyPayout BigInt?
+  createdAt   DateTime @default(now())
+  sender      User    @relation("sender", fields: [senderId], references: [id])
+  gift        Gift    @relation(fields: [giftId], references: [id])
+  @@index([senderId, createdAt])
+  @@index([roomId, createdAt])
+  @@index([giftId])
+}
+
+model Product {
+  id         BigInt @id @default(autoincrement())
+  sku        String @unique @db.VarChar(64)
+  title      String @db.VarChar(64)
+  priceCents Int
+  currency   String @db.VarChar(8)
+  coins      BigInt
+  bonusCoins BigInt @default(0)
+  kind       Int    @default(0)
+  enabled    Boolean @default(true)
+  sort       Int    @default(0)
+  orders     Order[]
+}
+
+model Order {
+  id                   BigInt  @id @default(autoincrement())
+  publicId             String  @unique @default(uuid())
+  userId               BigInt
+  productId            BigInt
+  provider             Int     // 0 google, 1 apple
+  providerPurchaseToken String
+  amountCents          Int
+  currency             String  @db.VarChar(8)
+  coinsGranted         BigInt  @default(0)
+  status               Int     @default(0) // 0 pending,1 verified,2 granted,3 refunded
+  createdAt            DateTime @default(now())
+  verifiedAt          DateTime?
+  user                 User    @relation(fields: [userId], references: [id])
+  product              Product @relation(fields: [productId], references: [id])
+  @@unique([provider, providerPurchaseToken])
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+// ---------- Progression ----------
+model VipLevel {
+  level        Int     @id
+  name         String  @db.VarChar(32)
+  priceCoins   BigInt
+  durationDays Int
+  badgeUrl     String?
+  frameUrl     String?
+  entryEffectUrl String?
+  benefits     Json?
+  sort         Int     @default(0)
+  history      VipHistory[]
+}
+
+model VipHistory {
+  id        BigInt  @id @default(autoincrement())
+  userId    BigInt
+  level     Int
+  startedAt DateTime @default(now())
+  expiresAt DateTime
+  source    Int     @default(0) // purchase, gift, admin
+  orderId   BigInt?
+  user      User    @relation(fields: [userId], references: [id])
+  vip       VipLevel @relation(fields: [level], references: [level])
+  @@index([userId, expiresAt])
+}
+
+// ---------- Social / agency ----------
+model Agency {
+  id         BigInt  @id @default(autoincrement())
+  publicId   String  @unique @default(uuid())
+  name       String  @db.VarChar(64)
+  ownerId    BigInt
+  level      Int     @default(1)
+  tag        String? @db.VarChar(32)
+  tagUrl     String?
+  badgeUrl   String?
+  memberLimit Int    @default(100)
+  createdAt  DateTime @default(now())
+  members    AgencyMember[]
+}
+
+model AgencyMember {
+  agencyId BigInt
+  userId   BigInt
+  role     Int      @default(0) // member, bd, president
+  joinedAt DateTime @default(now())
+  agency   Agency   @relation(fields: [agencyId], references: [id])
+  @@id([agencyId, userId])
+  @@index([userId])
+}
+
+// ---------- Ranking / config / ops ----------
+model Ranking {
+  id        BigInt  @id @default(autoincrement())
+  board     Int     // charm, coinflow, gift, supporter, room_hot, singer, cp
+  period    Int     // day, week, month, total
+  periodKey String  @db.VarChar(16)
+  subjectId BigInt
+  score     BigInt
+  rank      Int
+  updatedAt DateTime @updatedAt
+  @@unique([board, period, periodKey, subjectId])
+  @@index([board, period, periodKey, rank])
+}
+
+model Notification {
+  id        BigInt  @id @default(autoincrement())
+  userId    BigInt
+  kind      String  @db.VarChar(32)
+  title     String
+  body      String
+  payload   Json?
+  read      Boolean @default(false)
+  createdAt DateTime @default(now())
+  @@index([userId, read, createdAt])
+}
+
+model Setting {
+  key       String  @id
+  value     Json
+  scope     String  @default("global")
+  updatedBy String?
+  updatedAt DateTime @updatedAt
+}
+
+model AdminUser {
+  id           BigInt @id @default(autoincrement())
+  username     String @unique @db.VarChar(64)
+  passwordHash String
+  role         Int    @default(0)
+  enabled      Boolean @default(true)
+  createdAt    DateTime @default(now())
+}
+
+model AuditLog {
+  id           BigInt  @id @default(autoincrement())
+  actorAdminId BigInt?
+  action       String  @db.VarChar(64)
+  targetType   String? @db.VarChar(32)
+  targetId     BigInt?
+  before       Json?
+  after        Json?
+  ip           String? @db.VarChar(45)
+  createdAt    DateTime @default(now())
+  @@index([actorAdminId, createdAt])
+  @@index([targetType, targetId])
+}

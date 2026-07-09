@@ -1,0 +1,40 @@
+// Seeds the minimal catalogues many screens no-op without: gifts, VIP tiers, products,
+// and initial settings. All art URLs are PLACEHOLDER slots — replace with your own CDN.
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
+async function main() {
+  await prisma.setting.upsert({
+    where: { key: 'feature_flags' }, update: {},
+    create: { key: 'feature_flags', value: { enableLuckyBox: true, isCoinsMerchant: true, enableShare: true, enablePk: true } },
+  });
+
+  const gifts = [
+    { name: 'Rose', category: 0, priceCoins: 1, level: 1, sort: 1 },
+    { name: 'Heart', category: 0, priceCoins: 10, level: 1, sort: 2 },
+    { name: 'Crown', category: 1, priceCoins: 500, level: 3, sort: 3, comboEnabled: true },
+    { name: 'Lucky Box', category: 2, priceCoins: 100, level: 2, sort: 4, luckyConfig: { rebackTable: [1, 2, 5, 10, 50] } },
+    { name: 'Rocket', category: 3, priceCoins: 5000, level: 5, sort: 5 },
+  ];
+  for (const g of gifts) {
+    await prisma.gift.create({ data: { ...g, iconUrl: null, animUrl: null } });
+  }
+
+  const vip = [
+    { level: 1, name: 'Bronze', priceCoins: 1000n, durationDays: 30, sort: 1, benefits: { horn: false, vipCoins: 100 } },
+    { level: 2, name: 'Silver', priceCoins: 5000n, durationDays: 30, sort: 2, benefits: { horn: true, vipCoins: 600 } },
+    { level: 3, name: 'Gold', priceCoins: 20000n, durationDays: 30, sort: 3, benefits: { horn: true, birthdayGift: true, vipCoins: 3000 } },
+  ];
+  for (const v of vip) await prisma.vipLevel.create({ data: v });
+
+  const products = [
+    { sku: 'coins_60', title: '60 Coins', priceCents: 99, currency: 'USD', coins: 60n, sort: 1 },
+    { sku: 'coins_300', title: '300 Coins', priceCents: 499, currency: 'USD', coins: 300n, bonusCoins: 30n, sort: 2 },
+    { sku: 'coins_1000', title: '1000 Coins', priceCents: 1499, currency: 'USD', coins: 1000n, bonusCoins: 150n, sort: 3 },
+  ];
+  for (const p of products) await prisma.product.create({ data: p });
+
+  console.log('seed complete');
+}
+
+main().finally(() => prisma.$disconnect());
