@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:background="@color/ud" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include layout="@layout/r5" />
+    <androidx.core.widget.NestedScrollView android:id="@id/a8o" android:layout_width="fill_parent" android:layout_height="0.0dip" android:fillViewport="true" app:xv="a6g" app:yn="@id/ahi">
+        <preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="16.0dip" android:textStyle="bold" android:textColor="@color/xu" android:gravity="start|bottom|center" android:id="@id/amd" android:paddingBottom="8.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="57.0dip" android:text="@string/a7z" android:paddingStart="15.0dip" android:paddingEnd="0.0dip" app:yo="a6g" />
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/abl" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="wrap_content" app:yn="@id/amd" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="16.0dip" android:textStyle="bold" android:textColor="@color/xu" android:gravity="start|bottom|center" android:id="@id/amc" android:paddingBottom="8.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="57.0dip" android:text="@string/a7y" android:paddingStart="15.0dip" android:paddingEnd="0.0dip" app:yn="@id/abl" />
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/abk" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="3.5dip" android:layout_marginRight="3.5dip" android:layout_marginHorizontal="3.5dip" app:yn="@id/amc" />
+        </preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>
+    </androidx.core.widget.NestedScrollView>
+    <preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:id="@id/hi" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:yn="@id/ahi">
+        <preprocessed.conection.mutate.geocode.RequestApprovalsVCDelegateLayout android:id="@id/ag3" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="44.0dip" app:yk="a6g" app:yo="a6g" app:ag3="@color/xu" app:ag4="1.5dip" app:ag5="d" app:ag6="3.0dip" app:ag7="5.0dip" app:aga="14.0dip" app:agb="false" app:agc="@dimen/wc" app:agg="v" app:agh="@color/xu" app:agi="@color/xk" app:agj="15.0dip" />
+        <View android:id="@id/azr" android:background="#0affffff" android:layout_width="fill_parent" android:layout_height="0.5dip" app:yn="@id/ag3" />
+        <preprocessed.conection.mutate.geocode.P12GenSolvablePolynomialRing android:id="@id/a5w" android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:yn="@id/azr" />
+    </preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

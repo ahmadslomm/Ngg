@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:minHeight="80.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vm" android:textStyle="bold" android:textColor="@color/yc" android:gravity="center_vertical" android:id="@id/ai4" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="31.0dip" android:layout_marginTop="14.0dip" android:layout_marginStart="14.0dip" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:id="@id/a09" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.329987dip" android:layout_marginStart="8.0dip">
+        <ViewStub android:id="@id/b2y" android:layout="@layout/n5" android:layout_width="57.329987dip" android:layout_height="57.329987dip" android:layout_marginTop="2.0dip" android:layout_below="@id/m0" android:layout_marginEnd="4.669983dip" />
+        <ViewStub android:id="@id/b2m" android:layout="@layout/n2" android:layout_width="57.329987dip" android:layout_height="57.329987dip" android:layout_marginEnd="4.669983dip" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vm" android:textStyle="bold" android:textColor="@color/yc" android:gravity="center_vertical" android:id="@id/tvTitle" android:layout_width="wrap_content" android:layout_height="31.0dip" android:layout_marginTop="14.0dip" android:layout_marginStart="14.0dip" />
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a8z" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="9.329987dip" android:layout_marginStart="1.0dip" android:layout_marginEnd="1.0dip" app:y8="500.0dip" app:yo="a6g" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

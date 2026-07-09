@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/cm" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/abt" android:paddingLeft="11.669983dip" android:paddingRight="11.659973dip" android:scrollbars="vertical" android:fadingEdge="none" android:fadingEdgeLength="0.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/a_u" android:layout_below="@id/aag" android:overScrollMode="never" android:paddingStart="11.659973dip" android:paddingEnd="11.659973dip" />
+    <TextView android:textSize="12.0sp" android:textColor="@android:color/white" android:id="@id/ax5" android:background="#9e111212" android:paddingLeft="10.0dip" android:paddingTop="5.0dip" android:paddingRight="10.0dip" android:paddingBottom="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignTop="@id/abt" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/abs" android:paddingTop="3.0dip" android:paddingBottom="3.0dip" android:scrollbars="vertical" android:fadingEdge="none" android:fadingEdgeLength="0.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/aag" android:overScrollMode="never" />
+    <RelativeLayout android:orientation="vertical" android:id="@id/aag" android:background="@android:color/white" android:layout_width="fill_parent" android:layout_height="48.0dip">
+        <FrameLayout android:id="@id/g1" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginLeft="8.0dip" android:layout_marginStart="8.0dip">
+            <ImageView android:layout_width="wrap_content" android:layout_height="fill_parent" android:src="@drawable/x8" android:scaleType="centerInside" />
+        </FrameLayout>
+        <FrameLayout android:id="@id/g3" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_centerInParent="true">
+            <RelativeLayout android:layout_gravity="center_vertical" android:paddingLeft="15.0dip" android:paddingRight="15.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="15.0dip" android:paddingEnd="15.0dip">
+                <TextView android:textSize="17.0dip" android:textColor="#ff2c2b36" android:id="@id/aqe" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <ImageView android:id="@id/v1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="6.669983dip" android:src="@drawable/aqg" android:layout_toRightOf="@id/aqe" android:layout_alignBottom="@id/aqe" android:layout_marginStart="6.669983dip" android:layout_toEndOf="@id/aqe" />
+            </RelativeLayout>
+        </FrameLayout>
+        <FrameLayout android:id="@id/g2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="13.329987dip" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:layout_marginEnd="13.329987dip" android:layout_alignParentEnd="true">
+            <TextView android:textSize="13.0dip" android:textColor="@android:color/white" android:gravity="center" android:id="@id/apk" android:background="@drawable/lr" android:paddingLeft="12.329987dip" android:paddingRight="12.329987dip" android:layout_width="wrap_content" android:layout_height="26.0dip" android:minWidth="50.0dip" android:text="@string/h_" android:paddingStart="12.329987dip" android:paddingEnd="12.329987dip" />
+        </FrameLayout>
+    </RelativeLayout>
+    <RelativeLayout android:id="@id/a_u" android:background="#ff373c3d" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="48.0dip" android:layout_alignParentBottom="true">
+        <FrameLayout android:id="@id/g4" android:layout_width="wrap_content" android:layout_height="fill_parent" android:foreground="@drawable/lq" android:layout_alignParentRight="true" android:layout_alignParentEnd="true">
+            <TextView android:textSize="18.0sp" android:textColor="#b3ffffff" android:gravity="center" android:id="@id/au2" android:paddingLeft="12.0dip" android:paddingRight="12.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:minWidth="70.0dip" android:text="@string/h9" android:paddingStart="12.0dip" android:paddingEnd="12.0dip" />
+        </FrameLayout>
+        <View android:background="@android:color/black" android:layout_width="1.0dip" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" android:layout_marginBottom="15.0dip" android:layout_toLeftOf="@id/g4" android:layout_toStartOf="@id/g4" />
+    </RelativeLayout>
+</RelativeLayout>

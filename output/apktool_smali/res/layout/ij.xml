@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout android:orientation="horizontal" android:paddingBottom="12.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="12.0dip" android:paddingEnd="12.0dip">
+        <androidx.constraintlayout.widget.ConstraintLayout android:background="@drawable/alz" android:layout_width="265.0dip" android:layout_height="36.0dip" app:yk="a6g" app:yo="a6g">
+            <ImageView android:id="@id/y3" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/a8r" android:layout_marginStart="4.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+            <EditText android:textSize="12.0dip" android:textColor="@color/yc" android:textColorHint="@color/yj" android:gravity="center_vertical" android:id="@id/kx" android:background="@null" android:layout_width="0.0dip" android:layout_height="fill_parent" android:singleLine="true" android:imeOptions="actionSearch" android:layout_marginStart="4.0dip" app:y1="a6g" app:yj="@id/y3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView android:textSize="16.0dip" android:textColor="@color/zj" android:gravity="center" android:id="@id/avn" android:background="@drawable/aly" android:layout_width="74.0dip" android:layout_height="36.0dip" app:y1="a6g" app:yo="a6g" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/if" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

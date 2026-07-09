@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/xh" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag3" android:layout_width="fill_parent" android:layout_height="@dimen/we" android:layout_marginTop="7.0dip" app:ab9="@dimen/wa" app:abc="@drawable/a8y" app:abi="false" app:abj="fd" app:abk="4.0dip" app:abn="12.0dip" app:abv="0.0dip" app:ac2="@null" app:ac4="true" app:ac8="@style/a41" />
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/b0b" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="10.0dip" android:layout_weight="1.0" />
+    <preprocessed.conection.processer.discriminant.LiveTraceInfoView android:textSize="@dimen/vp" android:textStyle="bold" android:textColor="@color/yc" android:gravity="center_vertical" android:id="@id/ak9" android:layout_width="fill_parent" android:layout_height="52.0dip" android:includeFontPadding="false" android:drawablePadding="4.669983dip" android:drawableStart="@drawable/vw" android:layout_marginStart="13.329987dip" app:p5="@drawable/vw" app:v4="18.0dip" app:va="18.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

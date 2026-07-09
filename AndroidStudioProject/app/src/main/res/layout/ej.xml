@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/ud" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/a8l" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="15.0dip" android:paddingEnd="15.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

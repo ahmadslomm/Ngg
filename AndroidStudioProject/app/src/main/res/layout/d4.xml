@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/xh" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.processer.discriminant.CameraWriterLayout android:id="@id/af5" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:cube_ptr="http://schemas.android.com/apk/res-auto">
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/a92" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        </preprocessed.conection.processer.discriminant.CameraWriterLayout>
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a5m" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="135.0dip" android:layout_marginStart="60.0dip" android:layout_marginEnd="60.0dip">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="22.0dip" android:textColor="@color/zj" android:gravity="center" android:id="@id/at_" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="@color/zj" android:gravity="center" android:id="@id/ata" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_below="@id/at_" android:layout_centerHorizontal="true" />
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

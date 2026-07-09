@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@drawable/ahn" android:layout_width="fill_parent" android:layout_height="420.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:layout_width="fill_parent" android:layout_height="50.0dip">
+        <preprocessed.conection.processer.discriminant.reflowable.U32DefaultTransformerFactoryChooserLayout android:layout_gravity="start|bottom|center" android:id="@id/ag3" android:background="@color/zi" android:layout_width="wrap_content" android:layout_height="44.0dip" android:layout_marginTop="6.0dip" app:ag3="@color/xu" app:ag4="2.0dip" app:ag5="d" app:ag6="4.0dip" app:ag_="10.0dip" app:aga="16.0dip" app:agg="v" app:agh="@color/zj" app:agi="@color/w3" app:agj="@dimen/vs" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_gravity="end" android:id="@id/q_" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip" android:src="@drawable/na" android:layout_marginEnd="9.0dip" app:pq="@drawable/na" />
+    </preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>
+    <preprocessed.conection.mutate.geocode.VoiceRecognizerManager android:id="@id/b0b" android:layout_width="fill_parent" android:layout_height="360.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

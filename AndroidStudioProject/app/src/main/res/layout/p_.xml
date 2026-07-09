@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:background="@drawable/any" android:layout_width="170.0dip" android:layout_height="170.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.EmojiUpEmojiPackagerView android:id="@id/iv_mic" android:layout_width="70.0dip" android:layout_height="70.0dip" android:layout_marginTop="15.0dip" android:layout_centerHorizontal="true" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:a__="pag/yinbo/waitio_record_voice.pag" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/iv_cancel" android:visibility="gone" android:layout_width="70.0dip" android:layout_height="70.0dip" android:layout_marginTop="15.0dip" android:layout_centerHorizontal="true" app:pq="@drawable/yn" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <androidx.constraintlayout.widget.Barrier android:id="@id/en" android:layout_width="wrap_content" android:layout_height="wrap_content" app:cy="fd" app:k4="iv_cancel,iv_mic" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="24.0sp" android:textStyle="bold" android:textColor="@color/zj" android:id="@id/ax5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:includeFontPadding="false" android:layout_below="@id/iv_cancel" android:layout_centerHorizontal="true" app:y1="a6g" app:yk="a6g" app:yn="@id/en" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0sp" android:textColor="@color/xv" android:gravity="center" android:id="@id/ap5" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_alignParentBottom="true" app:xv="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

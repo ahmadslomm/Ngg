@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/an_" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="#ffd1d0dc" android:id="@id/aoz" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:layout_marginStart="20.0dip" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="#ffd1d0dc" android:id="@id/aoy" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="20.0dip" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

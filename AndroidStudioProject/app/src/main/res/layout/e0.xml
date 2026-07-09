@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/zh" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <Button android:id="@id/a6x" android:layout_width="150.0dip" android:layout_height="50.0dip" android:text="Ping" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.669983dip" android:textColor="@color/uh" android:id="@id/alv" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:scrollbars="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

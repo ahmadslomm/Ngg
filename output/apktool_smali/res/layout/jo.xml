@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="169.5dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/v5" android:layout_width="169.5dip" android:layout_height="144.0dip" android:scaleType="centerCrop" app:dk="15.199982dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:ahq="ab4" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="16.0dip" android:textColor="@color/uz" android:gravity="center" android:id="@id/at0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/v5" />
+</androidx.constraintlayout.widget.ConstraintLayout>

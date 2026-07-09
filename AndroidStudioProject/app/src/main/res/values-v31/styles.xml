@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="a3z" parent="@style/a3j">
+        <item name="android:windowBackground">@drawable/apb</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowDisablePreview">false</item>
+        <item name="android:windowSplashScreenBackground">#ff180635</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/apa</item>
+    </style>
+</resources>

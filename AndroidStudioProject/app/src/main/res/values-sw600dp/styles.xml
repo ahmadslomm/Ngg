@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="vf" parent="@style/fy">
+        <item name="ab_">gf</item>
+        <item name="abw">ly</item>
+    </style>
+</resources>

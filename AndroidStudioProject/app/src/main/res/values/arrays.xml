@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="a">
+        <item>@drawable/ns</item>
+        <item>@drawable/nt</item>
+        <item>@drawable/nu</item>
+        <item>@drawable/o0</item>
+        <item>@drawable/o1</item>
+        <item>@drawable/no</item>
+        <item>@drawable/np</item>
+        <item>@drawable/nq</item>
+        <item>@drawable/nr</item>
+        <item>@drawable/nx</item>
+        <item>@drawable/ny</item>
+        <item>@drawable/nz</item>
+        <item>@drawable/nv</item>
+        <item>@drawable/nw</item>
+    </array>
+    <string-array name="b">
+        <item>@string/kj</item>
+        <item>@string/kk</item>
+        <item>@string/kl</item>
+        <item>@string/kp</item>
+        <item>@string/kq</item>
+        <item>@string/ku</item>
+        <item>@string/kv</item>
+        <item>@string/kn</item>
+        <item>@string/ko</item>
+        <item>@string/ke</item>
+        <item>@string/kf</item>
+        <item>@string/kg</item>
+        <item>@string/ks</item>
+        <item>@string/kt</item>
+    </string-array>
+    <string-array name="c">
+        <item>@string/l1</item>
+        <item>@string/kz</item>
+        <item>@string/kx</item>
+        <item>@string/kc</item>
+        <item>@string/ki</item>
+        <item>@string/ky</item>
+        <item>@string/kd</item>
+        <item>@string/kr</item>
+        <item>@string/ka</item>
+        <item>@string/kb</item>
+        <item>@string/km</item>
+        <item>@string/kh</item>
+    </string-array>
+    <array name="d">
+        <item>@drawable/ia</item>
+        <item>@drawable/i7</item>
+        <item>@drawable/i3</item>
+        <item>@drawable/hr</item>
+        <item>@drawable/hx</item>
+        <item>@drawable/i5</item>
+        <item>@drawable/ht</item>
+        <item>@drawable/i9</item>
+        <item>@drawable/hi</item>
+        <item>@drawable/hk</item>
+        <item>@drawable/hz</item>
+        <item>@drawable/hv</item>
+    </array>
+    <array name="e">
+        <item>@drawable/ib</item>
+        <item>@drawable/i8</item>
+        <item>@drawable/i4</item>
+        <item>@drawable/hs</item>
+        <item>@drawable/hy</item>
+        <item>@drawable/i6</item>
+        <item>@drawable/hu</item>
+        <item>@drawable/i_</item>
+        <item>@drawable/hj</item>
+        <item>@drawable/hl</item>
+        <item>@drawable/i0</item>
+        <item>@drawable/hw</item>
+    </array>
+</resources>

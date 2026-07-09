@@ -1,0 +1,222 @@
+version: 2.10.0
+apkFileName: ZaffaLive.apk
+isFrameworkApk: false
+usesFramework:
+  ids:
+  - 1
+  tag: null
+sdkInfo:
+  minSdkVersion: 23
+  targetSdkVersion: 35
+packageInfo:
+  forcedPackageId: 127
+  renameManifestPackage: null
+versionInfo:
+  versionCode: 150
+  versionName: 1.21.150
+resourcesAreCompressed: false
+sharedLibrary: false
+sparseResources: false
+unknownFiles:
+  DebugProbesKt.bin: 8
+  androidsupportmultidexversion.txt: 0
+  billing.properties: 8
+  client_analytics.proto: 8
+  firebase-analytics-ktx.properties: 8
+  firebase-analytics.properties: 8
+  firebase-annotations.properties: 8
+  firebase-components.properties: 8
+  firebase-encoders-json.properties: 8
+  firebase-encoders-proto.properties: 8
+  firebase-encoders.properties: 8
+  firebase-iid-interop.properties: 8
+  firebase-installations-interop.properties: 8
+  firebase-measurement-connector.properties: 8
+  kotlin-tooling-metadata.json: 8
+  messaging_event.proto: 8
+  messaging_event_extension.proto: 8
+  play-services-ads-identifier.properties: 8
+  play-services-auth-api-phone.properties: 8
+  play-services-auth-base.properties: 8
+  play-services-auth.properties: 8
+  play-services-base.properties: 8
+  play-services-basement.properties: 8
+  play-services-cloud-messaging.properties: 8
+  play-services-location.properties: 8
+  play-services-measurement-api.properties: 8
+  play-services-measurement-base.properties: 8
+  play-services-measurement-impl.properties: 8
+  play-services-measurement-sdk-api.properties: 8
+  play-services-measurement-sdk.properties: 8
+  play-services-measurement.properties: 8
+  play-services-places-placereport.properties: 8
+  play-services-stats.properties: 8
+  play-services-tasks.properties: 8
+  protolite-well-known-types.properties: 8
+  transport-api.properties: 8
+  bin/AndroidManifest.xml: 8
+  bin/photoviewlibrary.jar: 8
+  com/qq/jce/wup/wup.properties: 8
+  firebase/perf/v1/perf_metric.proto: 8
+  google/protobuf/any.proto: 8
+  google/protobuf/api.proto: 8
+  google/protobuf/duration.proto: 8
+  google/protobuf/empty.proto: 8
+  google/protobuf/field_mask.proto: 8
+  google/protobuf/source_context.proto: 8
+  google/protobuf/struct.proto: 8
+  google/protobuf/timestamp.proto: 8
+  google/protobuf/type.proto: 8
+  google/protobuf/wrappers.proto: 8
+  okhttp3/internal/publicsuffix/NOTICE: 8
+  okhttp3/internal/publicsuffix/publicsuffixes.gz: 0
+doNotCompress:
+- classes.dex
+- classes2.dex
+- classes3.dex
+- classes4.dex
+- resources.arsc
+- META-INF/androidx.activity_activity-compose.version
+- META-INF/androidx.activity_activity-ktx.version
+- META-INF/androidx.activity_activity.version
+- META-INF/androidx.annotation_annotation-experimental.version
+- META-INF/androidx.appcompat_appcompat-resources.version
+- META-INF/androidx.appcompat_appcompat.version
+- META-INF/androidx.asynclayoutinflater_asynclayoutinflater.version
+- META-INF/androidx.autofill_autofill.version
+- META-INF/androidx.browser_browser.version
+- META-INF/androidx.cardview_cardview.version
+- META-INF/androidx.compose.animation_animation-core.version
+- META-INF/androidx.compose.animation_animation.version
+- META-INF/androidx.compose.foundation_foundation-layout.version
+- META-INF/androidx.compose.foundation_foundation.version
+- META-INF/androidx.compose.material3_material3-window-size-class.version
+- META-INF/androidx.compose.material3_material3.version
+- META-INF/androidx.compose.material_material-ripple.version
+- META-INF/androidx.compose.material_material.version
+- META-INF/androidx.compose.runtime_runtime-annotation.version
+- META-INF/androidx.compose.runtime_runtime-retain.version
+- META-INF/androidx.compose.runtime_runtime-saveable.version
+- META-INF/androidx.compose.runtime_runtime.version
+- META-INF/androidx.compose.ui_ui-geometry.version
+- META-INF/androidx.compose.ui_ui-graphics.version
+- META-INF/androidx.compose.ui_ui-text.version
+- META-INF/androidx.compose.ui_ui-tooling-preview.version
+- META-INF/androidx.compose.ui_ui-unit.version
+- META-INF/androidx.compose.ui_ui-util.version
+- META-INF/androidx.compose.ui_ui-viewbinding.version
+- META-INF/androidx.compose.ui_ui.version
+- META-INF/androidx.coordinatorlayout_coordinatorlayout.version
+- META-INF/androidx.core_core-ktx.version
+- META-INF/androidx.core_core-viewtree.version
+- META-INF/androidx.core_core.version
+- META-INF/androidx.cursoradapter_cursoradapter.version
+- META-INF/androidx.customview_customview-poolingcontainer.version
+- META-INF/androidx.customview_customview.version
+- META-INF/androidx.databinding_viewbinding.version
+- META-INF/androidx.datastore_datastore-preferences.version
+- META-INF/androidx.datastore_datastore.version
+- META-INF/androidx.documentfile_documentfile.version
+- META-INF/androidx.drawerlayout_drawerlayout.version
+- META-INF/androidx.dynamicanimation_dynamicanimation.version
+- META-INF/androidx.emoji2_emoji2-views-helper.version
+- META-INF/androidx.emoji2_emoji2.version
+- META-INF/androidx.exifinterface_exifinterface.version
+- META-INF/androidx.fragment_fragment-ktx.version
+- META-INF/androidx.fragment_fragment.version
+- META-INF/androidx.graphics_graphics-path.version
+- META-INF/androidx.interpolator_interpolator.version
+- META-INF/androidx.legacy_legacy-support-core-ui.version
+- META-INF/androidx.legacy_legacy-support-core-utils.version
+- META-INF/androidx.legacy_legacy-support-v4.version
+- META-INF/androidx.lifecycle_lifecycle-livedata-core-ktx.version
+- META-INF/androidx.lifecycle_lifecycle-livedata-core.version
+- META-INF/androidx.lifecycle_lifecycle-livedata-ktx.version
+- META-INF/androidx.lifecycle_lifecycle-livedata.version
+- META-INF/androidx.lifecycle_lifecycle-process.version
+- META-INF/androidx.lifecycle_lifecycle-runtime-compose.version
+- META-INF/androidx.lifecycle_lifecycle-runtime-ktx.version
+- META-INF/androidx.lifecycle_lifecycle-runtime.version
+- META-INF/androidx.lifecycle_lifecycle-viewmodel-compose.version
+- META-INF/androidx.lifecycle_lifecycle-viewmodel-ktx.version
+- META-INF/androidx.lifecycle_lifecycle-viewmodel-savedstate.version
+- META-INF/androidx.lifecycle_lifecycle-viewmodel.version
+- META-INF/androidx.loader_loader.version
+- META-INF/androidx.localbroadcastmanager_localbroadcastmanager.version
+- META-INF/androidx.media_media.version
+- META-INF/androidx.navigation_navigation-common-ktx.version
+- META-INF/androidx.navigation_navigation-common.version
+- META-INF/androidx.navigation_navigation-compose.version
+- META-INF/androidx.navigation_navigation-runtime-ktx.version
+- META-INF/androidx.navigation_navigation-runtime.version
+- META-INF/androidx.print_print.version
+- META-INF/androidx.profileinstaller_profileinstaller.version
+- META-INF/androidx.recyclerview_recyclerview.version
+- META-INF/androidx.room_room-ktx.version
+- META-INF/androidx.room_room-runtime.version
+- META-INF/androidx.savedstate_savedstate-compose.version
+- META-INF/androidx.savedstate_savedstate-ktx.version
+- META-INF/androidx.savedstate_savedstate.version
+- META-INF/androidx.slidingpanelayout_slidingpanelayout.version
+- META-INF/androidx.sqlite_sqlite-framework.version
+- META-INF/androidx.sqlite_sqlite.version
+- META-INF/androidx.startup_startup-runtime.version
+- META-INF/androidx.swiperefreshlayout_swiperefreshlayout.version
+- META-INF/androidx.tracing_tracing.version
+- META-INF/androidx.transition_transition.version
+- META-INF/androidx.vectordrawable_vectordrawable-animated.version
+- META-INF/androidx.vectordrawable_vectordrawable.version
+- META-INF/androidx.versionedparcelable_versionedparcelable.version
+- META-INF/androidx.viewpager2_viewpager2.version
+- META-INF/androidx.viewpager_viewpager.version
+- META-INF/androidx.window_window-core.version
+- META-INF/androidx.window_window.version
+- META-INF/com.google.android.material_material.version
+- META-INF/com.google.dagger_dagger.version
+- META-INF/kotlinx_coroutines_android.version
+- META-INF/kotlinx_coroutines_core.version
+- META-INF/kotlinx_coroutines_play_services.version
+- META-INF/version-control-info.textproto
+- META-INF/services/ak0
+- META-INF/services/ps2
+- png
+- assets/dexopt/baseline.prof
+- assets/dexopt/baseline.profm
+- assets/svga/bomb/waitio_bomb_banner_avatar_frame.svga
+- assets/svga/dynamic/waitio_moment_like.svga
+- assets/svga/dynamic/waitio_moment_like_white.svga
+- assets/svga/guide/waitio_new_user_guide_send_gift.svga
+- assets/svga/hosttag/waitio_tag_ace_host_ar.svga
+- assets/svga/hosttag/waitio_tag_ace_host_en.svga
+- assets/svga/hosttag/waitio_tag_elite_host_ar.svga
+- assets/svga/hosttag/waitio_tag_elite_host_en.svga
+- assets/svga/hosttag/waitio_tag_legend_host_ar.svga
+- assets/svga/hosttag/waitio_tag_legend_host_en.svga
+- assets/svga/hosttag/waitio_tag_rising_host_ar.svga
+- assets/svga/hosttag/waitio_tag_rising_host_en.svga
+- assets/svga/hosttag/waitio_tag_star_host_ar.svga
+- assets/svga/hosttag/waitio_tag_star_host_en.svga
+- assets/svga/kroom/waitio_birthday_lucky_bag.svga
+- assets/svga/kroom/waitio_cp_in_seat.svga
+- assets/svga/kroom/waitio_luckyBag.pag
+- assets/svga/kroom/waitio_pk_pingju_teq.svga
+- assets/svga/kroom/waitio_share_coin.svga
+- assets/svga/live/waitio_beauty_loading.svga
+- assets/svga/live/waitio_live_task.svga
+- assets/svga/live/waitio_pk_time3.svga
+- mp4
+- assets/svga/medal/waitio_xunzhangguang.svga
+- assets/svga/rocket/waitio_rocket1.svga
+- assets/svga/rocket/waitio_rocket2.svga
+- assets/svga/rocket/waitio_rocket3.svga
+- assets/svga/rocket/waitio_rocket_top1.svga
+- assets/svga/rocket/waitio_rocket_top1_r.svga
+- assets/svga/rocket/waitio_rocket_top2.svga
+- assets/svga/rocket/waitio_rocket_top2_r.svga
+- assets/svga/rocket/waitio_rocket_top3.svga
+- assets/svga/rocket/waitio_rocket_top3_r.svga
+- assets/svga/rocket/waitio_room_rocket.svga
+- assets/svga/yinbo/waitio_self_voice.svga
+- assets/svga/yinbo/waitio_self_voice1.svga
+- webp
+- mp3

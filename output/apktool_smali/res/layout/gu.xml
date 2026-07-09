@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:background="@color/xh" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/aax" android:background="@drawable/agf" android:layout_width="fill_parent" android:layout_height="64.0dip">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.339996dip" android:textColor="@color/zj" android:id="@id/adn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="14.339996dip" android:singleLine="true" android:layout_centerVertical="true" android:layout_marginStart="14.339996dip" android:layout_alignParentStart="true" />
+            <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:textColor="@color/xa" android:id="@id/aas" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_centerVertical="true" android:layout_marginEnd="5.0dip" android:layout_toStartOf="@id/a5a" app:dk="2.0dip" app:ahq="ab4" />
+            <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/a5a" android:background="@drawable/kl" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:alpha="0.3" android:layout_marginEnd="14.669983dip" android:layout_alignParentEnd="true" app:of="@drawable/kl" />
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+        <include android:id="@id/aay" layout="@layout/ix" />
+        <include android:id="@id/aaw" layout="@layout/ix" />
+        <preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:id="@id/aab" android:background="@drawable/agf" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="52.0dip" android:paddingStart="@dimen/wa" android:paddingEnd="@dimen/wa">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/v7" android:textColor="@color/xu" android:id="@id/av9" android:layout_width="wrap_content" android:layout_height="wrap_content" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+            <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/a5b" android:background="@drawable/kl" android:layout_width="wrap_content" android:layout_height="wrap_content" android:alpha="0.3" android:layout_alignParentEnd="true" app:of="@drawable/kl" app:xv="a6g" app:y1="a6g" app:yo="a6g" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/v8" android:textColor="@color/xk" android:gravity="center" android:id="@id/av8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="10.0dip" android:layout_marginEnd="6.0dip" app:xv="a6g" app:y2="@id/a5b" app:yo="a6g" />
+            <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ss" android:layout_width="20.0dip" android:layout_height="20.0dip" app:xv="a6g" app:y2="@id/av8" app:yo="a6g" />
+        </preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>
+        <View android:layout_width="fill_parent" android:layout_height="8.0dip" />
+        <include android:id="@id/aaq" layout="@layout/ix" />
+        <include android:id="@id/aav" layout="@layout/ix" />
+        <include android:id="@id/ab0" layout="@layout/ix" />
+        <include android:id="@id/aaz" layout="@layout/ix" />
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/aa7" android:background="@color/yq" android:layout_width="wrap_content" android:layout_height="50.0dip" android:paddingStart="@dimen/wa" android:paddingEnd="@dimen/wa">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/v7" android:textColor="@color/xu" android:id="@id/au7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginEnd="10.0dip" android:layout_toStartOf="@id/x8" android:layout_alignParentStart="true" />
+            <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/x8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentEnd="true" app:pr="@drawable/aq0" app:pu="@drawable/apz" />
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+        <View android:layout_width="fill_parent" android:layout_height="8.0dip" />
+        <include android:theme="@style/ox" android:id="@id/aap" layout="@layout/ix" />
+        <include android:id="@id/aau" layout="@layout/ix" />
+        <include android:id="@id/aat" android:visibility="gone" layout="@layout/ix" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:id="@id/mt" android:background="@color/xv" android:visibility="invisible" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ms" android:layout_width="fill_parent" android:layout_height="360.0dip" android:src="@drawable/x5" android:scaleType="centerCrop" app:pq="@drawable/x5" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@id/ahr" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.LiveSquareDrawerServiceView android:id="@id/n3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="centerCrop" android:layout_centerHorizontal="true" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <ViewStub android:id="@id/b0l" android:layout="@layout/in" android:inflatedId="@id/afs" android:layout_width="0.0dip" android:layout_height="0.0dip" app:xv="a6g" app:y0="1:1" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:yw="1.7" />
+    <ViewStub android:id="@id/b0g" android:layout="@layout/il" android:inflatedId="@id/oc" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginStart="4.0dip" app:xv="@id/n3" app:y1="@id/n3" />
+</androidx.constraintlayout.widget.ConstraintLayout>

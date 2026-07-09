@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:background="@drawable/abg" android:layout_width="fill_parent" android:layout_height="488.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:layout_width="fill_parent" android:layout_height="488.0dip" app:yo="a6g" />
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/b0b" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.google.android.material.tabs.TabLayout android:id="@id/ag3" android:layout_width="fill_parent" android:layout_height="42.0dip" app:yo="a6g" app:ab8="@drawable/ago" app:ab9="@dimen/wa" app:abc="@drawable/abh" app:abi="false" app:abj="fd" app:abk="12.5dip" app:abn="95.0dip" app:abv="0.0dip" app:abw="acc" app:ac2="@null" app:ac4="true" app:ac5="@style/a43" app:ac8="@style/a42" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/y0" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginTop="8.0dip" android:src="@drawable/abj" android:layout_marginEnd="13.0dip" app:y1="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/xb" android:layout_width="28.0dip" android:layout_height="28.0dip" android:layout_marginTop="8.0dip" android:src="@drawable/abi" android:layout_marginEnd="53.0dip" app:y1="a6g" app:yo="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

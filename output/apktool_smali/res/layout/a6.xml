@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="1.6799927dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.donkingliang.imageselector.view.SquareImageView android:layout_gravity="center" android:id="@id/u_" android:background="@drawable/amr" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/wz" android:scaleType="centerInside" />
+</FrameLayout>

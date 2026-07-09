@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="wrap_content" android:layout_height="30.0dip" android:layout_marginEnd="12.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/pq" android:layout_width="30.0dip" android:layout_height="30.0dip" app:gy="@color/u_" app:gz="true" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/w0" android:textColor="@color/zj" android:gravity="center" android:id="@id/am2" android:background="@drawable/ako" android:layout_width="13.329987dip" android:layout_height="13.329987dip" app:xv="@id/pq" app:y1="@id/pq" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

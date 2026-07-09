@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/wz" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ao5" android:layout_marginEnd="4.0dip" />
+    <preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout android:id="@id/adu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" app:a8r="false" app:a8s="1.0" app:a8t="#ffe23e00" app:a8v="true" app:a8y="2800" app:a93="#ffffc047" app:a9_="29.0">
+        <preprocessed.conection.mutate.geocode.PlaybackEndConfigView android:textSize="16.0dip" android:textColor="@color/xu" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/a5c" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:includeFontPadding="false" />
+    </preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout>
+    <ViewStub android:id="@id/b0h" android:layout="@layout/sn" android:inflatedId="@id/a1v" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" />
+    <ViewStub android:id="@id/b0e" android:layout="@layout/si" android:inflatedId="@id/a1h" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" />
+    <ViewStub android:id="@id/b0f" android:layout="@layout/sj" android:inflatedId="@id/v_" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" />
+    <ViewStub android:id="@id/b0j" android:layout="@layout/so" android:inflatedId="@id/xn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/afq" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="57.599976dip" android:scaleType="centerCrop" app:a0i="1" />
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/afo" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" app:b2="true" app:h4="true" app:a0i="1" />
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

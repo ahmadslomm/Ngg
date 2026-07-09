@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/svgaPlay" android:layout_width="fill_parent" android:layout_height="600.0dip" app:xv="a6g" app:yo="a6g" />
+    <View android:id="@id/azo" android:layout_width="fill_parent" android:layout_height="342.0dip" app:xv="a6g" app:yo="a6g" />
+    <androidx.constraintlayout.widget.Group android:id="@id/nd" android:layout_width="wrap_content" android:layout_height="wrap_content" app:k4="svgaPlay" />
+    <preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:id="@id/j8" android:visibility="gone" android:layout_width="327.0dip" android:layout_height="wrap_content" android:minHeight="380.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yo="a6g">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vr" android:textStyle="bold" android:textColor="#fffdeca5" android:id="@id/tvTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="63.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a8z" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" android:layout_marginStart="27.0dip" android:layout_marginEnd="27.0dip" app:xw="@id/ai5" app:y1="a6g" app:yk="a6g" app:yn="@id/tvTitle" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vr" android:textStyle="bold" android:textColor="#ff984919" android:gravity="center" android:id="@id/ai5" android:layout_width="190.5dip" android:layout_height="43.5dip" android:layout_marginBottom="37.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+    </preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.XCAdYYImageEncoderView android:textSize="@dimen/w0" android:textColor="@color/yc" android:ellipsize="end" android:gravity="center" android:id="@id/ao4" android:background="@drawable/j3" android:layout_width="wrap_content" android:layout_height="13.0dip" android:singleLine="true" android:paddingStart="3.0dip" android:paddingEnd="3.0dip" app:of="@drawable/j3" app:p6="@drawable/uw" app:p7="@drawable/ux"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" />

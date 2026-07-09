@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:id="@id/ahi" android:paddingBottom="@dimen/wj" android:layout_width="fill_parent" android:layout_height="@dimen/v2"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar android:gravity="center_vertical" android:id="@id/a8n" android:paddingTop="@dimen/v4" android:layout_width="fill_parent" android:layout_height="@dimen/v2" app:kh="0.0dip" style="@style/a4b">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_gravity="start|center" android:id="@id/s2" android:layout_width="21.0dip" android:layout_height="21.0dip" android:src="@drawable/a90" android:layout_marginStart="12.0dip" app:pq="@drawable/a90" />
+        <preprocessed.conection.mutate.geocode.LiveSaaSSearchPlaceHolderManagerView android:textSize="18.0dip" android:textColor="@color/uq" android:layout_gravity="center" android:id="@id/alg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" app:d1="a95" />
+        <androidx.appcompat.widget.ActionMenuView android:gravity="end|center" android:layout_gravity="end" android:id="@id/b5" android:layout_width="wrap_content" android:layout_height="fill_parent" />
+    </androidx.appcompat.widget.Toolbar>
+    <View android:id="@id/b1a" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.34000003dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

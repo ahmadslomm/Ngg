@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="637.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/b4e" android:layout_width="140.0dip" android:layout_height="140.0dip" android:layout_marginTop="245.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.EmojiUpEmojiPackagerView android:id="@id/b4f" android:layout_width="275.0dip" android:layout_height="275.0dip" app:xv="@id/b4e" app:y1="@id/b4e" app:yk="@id/b4e" app:yo="@id/b4e" app:a__="pag/rank/waitio_rank_avatar_frame.pag" />
+    <androidx.appcompat.widget.AppCompatImageView android:id="@id/b4g" android:visibility="gone" android:layout_width="34.0dip" android:layout_height="34.0dip" app:xv="@id/b4e" app:y1="@id/b4e" />
+    <ImageView android:id="@id/b3d" android:layout_width="178.0dip" android:layout_height="50.0dip" android:layout_marginTop="22.5dip" app:y1="a6g" app:yk="a6g" app:yn="@id/b4e" />
+    <preprocessed.conection.processer.discriminant.PostImageParameterFloatingStickersEventView android:id="@id/b3c" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/b3d" />
+    <preprocessed.conection.processer.discriminant.JSweetNewPairSweetPairByebyeReqView android:id="@id/b3a" android:layout_width="238.0dip" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/b3c" />
+    <preprocessed.conection.processer.discriminant.LiveTraceInfoView android:textSize="16.0dip" android:textColor="#ffffd966" android:id="@id/b36" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:drawablePadding="4.0dip" app:v4="20.0dip" app:v5="false" app:va="20.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/b3a" />
+    <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="68.0dip" android:src="@drawable/aac" app:xv="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

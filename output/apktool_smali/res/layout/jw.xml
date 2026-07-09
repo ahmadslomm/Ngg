@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.BUViewShowAreaTrackerLayout android:layout_width="52.0dip" android:layout_height="34.0dip" android:layout_marginEnd="7.0dip" app:df="7.0dip" app:dg="@color/wc" app:di="f4"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/qj" android:layout_width="24.0dip" android:layout_height="17.0dip" android:scaleType="centerCrop" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+</preprocessed.conection.processer.discriminant.BUViewShowAreaTrackerLayout>

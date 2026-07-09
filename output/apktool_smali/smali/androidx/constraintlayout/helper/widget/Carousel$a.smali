@@ -1,0 +1,86 @@
+.class public final Landroidx/constraintlayout/helper/widget/Carousel$a;
+.super Ljava/lang/Object;
+.source "zaffa"
+
+# interfaces
+.implements Ljava/lang/Runnable;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Landroidx/constraintlayout/helper/widget/Carousel;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x1
+    name = null
+.end annotation
+
+
+# instance fields
+.field public final synthetic a:Landroidx/constraintlayout/helper/widget/Carousel;
+
+
+# direct methods
+.method public constructor <init>(Landroidx/constraintlayout/helper/widget/Carousel;)V
+    .locals 0
+
+    .line 1
+    iput-object p1, p0, Landroidx/constraintlayout/helper/widget/Carousel$a;->a:Landroidx/constraintlayout/helper/widget/Carousel;
+
+    .line 2
+    .line 3
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 4
+    .line 5
+    .line 6
+    return-void
+.end method
+
+
+# virtual methods
+.method public run()V
+    .locals 3
+
+    .line 1
+    iget-object v0, p0, Landroidx/constraintlayout/helper/widget/Carousel$a;->a:Landroidx/constraintlayout/helper/widget/Carousel;
+
+    .line 2
+    .line 3
+    invoke-static {v0}, Landroidx/constraintlayout/helper/widget/Carousel;->K(Landroidx/constraintlayout/helper/widget/Carousel;)Landroidx/constraintlayout/motion/widget/MotionLayout;
+
+    .line 4
+    .line 5
+    .line 6
+    move-result-object v1
+
+    .line 7
+    const/4 v2, 0x0
+
+    .line 8
+    invoke-virtual {v1, v2}, Landroidx/constraintlayout/motion/widget/MotionLayout;->F0(F)V
+
+    .line 9
+    .line 10
+    .line 11
+    invoke-static {v0}, Landroidx/constraintlayout/helper/widget/Carousel;->L(Landroidx/constraintlayout/helper/widget/Carousel;)V
+
+    .line 12
+    .line 13
+    .line 14
+    invoke-static {v0}, Landroidx/constraintlayout/helper/widget/Carousel;->N(Landroidx/constraintlayout/helper/widget/Carousel;)Landroidx/constraintlayout/helper/widget/Carousel$b;
+
+    .line 15
+    .line 16
+    .line 17
+    invoke-static {v0}, Landroidx/constraintlayout/helper/widget/Carousel;->M(Landroidx/constraintlayout/helper/widget/Carousel;)I
+
+    .line 18
+    .line 19
+    .line 20
+    const/4 v0, 0x0
+
+    .line 21
+    throw v0
+.end method

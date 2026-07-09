@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:layout_width="61.329987dip" android:layout_height="61.329987dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/dt" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/w0" android:textColor="@color/yc" android:gravity="center" android:layout_gravity="end" android:id="@id/akv" android:background="@drawable/a3i" android:layout_width="wrap_content" android:layout_height="15.329987dip" android:layout_marginTop="7.669983dip" android:minWidth="15.329987dip" android:paddingStart="3.0dip" android:paddingEnd="3.0dip" android:layout_marginEnd="6.669983dip" />
+    <Chronometer android:textSize="@dimen/vz" android:textColor="@color/yc" android:ellipsize="end" android:gravity="center" android:layout_gravity="bottom|center" android:id="@id/akw" android:visibility="gone" android:layout_width="35.669983dip" android:layout_height="11.329987dip" android:singleLine="true" android:layout_marginEnd="2.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:background="@color/ud" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_gravity="center_horizontal" android:id="@id/tf" android:layout_width="100.0dip" android:layout_height="100.0dip" android:layout_marginTop="80.0dip" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="24.0dip" android:textColor="@color/xu" android:layout_gravity="center_horizontal" android:id="@id/aoj" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/w4" android:textColor="@color/xk" android:layout_gravity="center_horizontal" android:id="@id/bv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" />
+    <View android:background="#fff0f0f0" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginTop="31.0dip" android:layout_marginStart="21.0dip" android:layout_marginEnd="21.0dip" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a_o" android:background="@drawable/ag6" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="53.0dip" android:paddingStart="39.0dip" android:paddingEnd="39.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="16.0dip" android:textColor="@color/xu" android:id="@id/bu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/kl" android:layout_centerVertical="true" android:layout_alignParentEnd="true" app:pq="@drawable/kl" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <View android:background="#fff0f0f0" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginStart="21.0dip" android:layout_marginEnd="21.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

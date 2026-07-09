@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="fill_parent" android:layout_height="85.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:banner="http://schemas.android.com/apk/res-auto">
+    <com.youth.banner.Banner android:id="@id/ek" android:layout_width="fill_parent" android:layout_height="fill_parent" banner:cd="5.0dip" banner:ci="#80f6f8fb" banner:cj="5.0dip" banner:cl="@color/zj" banner:cm="5.0dip" banner:yo="a6g" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

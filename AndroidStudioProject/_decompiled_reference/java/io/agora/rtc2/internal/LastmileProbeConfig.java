@@ -1,0 +1,10 @@
+package io.agora.rtc2.internal;
+
+/* compiled from: zaffa */
+/* loaded from: classes3.dex */
+public class LastmileProbeConfig {
+    public int expectedDownlinkBitrate;
+    public int expectedUplinkBitrate;
+    public boolean probeDownlink;
+    public boolean probeUplink;
+}

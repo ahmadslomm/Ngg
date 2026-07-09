@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag4" android:layout_width="fill_parent" android:layout_height="46.0dip" android:layout_marginTop="6.5dip" android:layout_marginStart="5.5dip" app:ab9="0.0dip" app:abc="@null" app:abk="0.0dip" app:abv="0.0dip" app:abw="acc" app:abx="0.0dip" app:abz="0.0dip" app:ac0="0.0dip" />
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/b0b" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
+</merge>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:background="@color/yc" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/aae" android:background="@drawable/apb" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ImageView android:id="@id/rk" android:layout_width="110.0dip" android:layout_height="110.0dip" android:layout_marginTop="150.0dip" android:src="@drawable/apc" android:layout_centerHorizontal="true" />
+    <ImageView android:id="@id/aks" android:layout_width="144.0dip" android:layout_height="31.5dip" android:layout_marginTop="15.0dip" android:src="@drawable/ap_" android:layout_below="@id/rk" android:layout_centerHorizontal="true" />
+    <TextView android:textSize="16.0sp" android:textColor="#ffffffff" android:gravity="center" android:id="@id/asa" android:paddingLeft="20.0dip" android:paddingRight="20.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_below="@id/aks" android:paddingHorizontal="20.0dip" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a_q" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/th" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="centerCrop" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.0dip" android:textColor="@color/yc" android:id="@id/as0" android:background="@drawable/an2" android:paddingTop="12.0dip" android:paddingBottom="12.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" android:layoutDirection="ltr" android:paddingStart="21.0dip" android:paddingEnd="21.0dip" android:layout_marginEnd="16.0dip" android:layout_alignParentEnd="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

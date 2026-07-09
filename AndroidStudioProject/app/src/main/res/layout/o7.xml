@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:visibility="visible" android:layout_width="375.0dip" android:layout_height="125.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/f2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <androidx.appcompat.widget.AppCompatTextView android:textSize="14.0dip" android:textColor="@color/zj" android:ellipsize="end" android:gravity="start|center" android:id="@id/apl" android:layout_width="0.0dip" android:layout_height="0.0dip" android:maxLines="3" android:lineSpacingExtra="-2.0dip" android:layout_marginStart="90.0dip" android:layout_marginEnd="56.0dip" app:xv="a6g" app:y2="@id/atz" app:yk="a6g" app:yo="a6g" />
+    <TextView android:textStyle="bold" android:textColor="#ff760e0e" android:ellipsize="end" android:gravity="center" android:id="@id/atz" android:background="@drawable/ug" android:layout_width="56.0dip" android:layout_height="30.0dip" android:layout_marginTop="48.0dip" android:singleLine="true" android:includeFontPadding="false" android:layout_marginEnd="15.0dip" app:y1="a6g" app:yo="a6g" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:y_="0.367" app:yk="a6g" app:yo="a6g">
+        <View android:id="@id/b04" android:layout_width="50.0dip" android:layout_height="fill_parent" />
+        <View android:id="@id/b03" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <View android:id="@id/b05" android:layout_width="70.0dip" android:layout_height="fill_parent" />
+    </LinearLayout>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

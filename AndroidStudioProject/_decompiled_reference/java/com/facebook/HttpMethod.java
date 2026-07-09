@@ -1,0 +1,17 @@
+package com.facebook;
+
+import java.util.Arrays;
+
+/* compiled from: zaffa */
+/* loaded from: classes.dex */
+public enum HttpMethod {
+    GET,
+    POST,
+    DELETE;
+
+    /* renamed from: values, reason: to resolve conflict with enum method */
+    public static HttpMethod[] valuesCustom() {
+        HttpMethod[] valuesCustom = values();
+        return (HttpMethod[]) Arrays.copyOf(valuesCustom, valuesCustom.length);
+    }
+}

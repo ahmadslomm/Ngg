@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.gated.megabit.HybridHookViewControllerProtocolPage android:id="@id/mz" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/gs" android:layout_alignParentTop="true">
+        <androidx.viewpager2.widget.ViewPager2 android:id="@id/gr" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar>
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center" android:orientation="horizontal" android:id="@id/gs" android:layout_width="fill_parent" android:layout_height="10.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" />
+    <preprocessed.conection.mutate.geocode.PlayingDraftTimerView android:id="@id/gp" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vk" android:textColor="@color/w3" android:id="@id/a5f" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" android:layout_centerInParent="true" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip" />
+</preprocessed.conection.processer.gated.megabit.HybridHookViewControllerProtocolPage>

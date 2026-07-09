@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@drawable/ahk" android:layout_width="fill_parent" android:layout_height="212.66998dip">
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="48.669983dip">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.669983dip" android:textColor="@color/yo" android:id="@id/ue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="16.669983dip" android:layout_marginEnd="16.669983dip" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textStyle="bold" android:textColor="@color/yc" android:gravity="center" android:id="@id/axa" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.669983dip" android:textColor="@color/xr" android:id="@id/u1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="16.669983dip" android:layout_marginEnd="16.669983dip" android:layout_alignParentEnd="true" />
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+        <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_horizontal" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="11.339996dip" android:layout_marginBottom="11.339996dip" android:layout_weight="1.0" android:layout_marginStart="20.0dip" android:layout_marginEnd="20.0dip">
+            <preprocessed.conection.mutate.geocode.LiveLinkMicGuideMessageView android:id="@id/b4o" android:layout_width="108.0dip" android:layout_height="fill_parent" />
+            <preprocessed.conection.mutate.geocode.LiveLinkMicGuideMessageView android:id="@id/b4p" android:layout_width="108.0dip" android:layout_height="fill_parent" />
+            <preprocessed.conection.mutate.geocode.LiveLinkMicGuideMessageView android:id="@id/b4q" android:layout_width="108.0dip" android:layout_height="fill_parent" />
+        </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

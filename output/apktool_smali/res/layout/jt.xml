@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ivGift" android:layout_width="60.0dip" android:layout_height="60.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vh" android:textColor="@color/zj" android:id="@id/ak1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="9.0dip" app:y1="@id/ivGift" app:yk="@id/ivGift" app:yn="@id/ivGift" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

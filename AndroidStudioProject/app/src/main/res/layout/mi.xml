@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:id="@id/le" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.RightPicItemViewView android:textSize="13.0sp" android:textStyle="bold" android:textColor="@color/yc" android:ellipsize="marquee" android:gravity="center_vertical" android:layout_gravity="bottom" android:id="@id/akz" android:focusable="true" android:layout_width="wrap_content" android:layout_height="40.0dip" android:singleLine="true" android:marqueeRepeatLimit="marquee_forever" android:textDirection="locale" android:paddingStart="68.0dip" android:paddingEnd="12.0dip" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_gravity="start" android:id="@id/rm" android:layout_width="70.0dip" android:layout_height="70.0dip" android:src="@drawable/ad1" app:pq="@drawable/ad1" />
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.PlayingDraftTimerView android:layout_gravity="center" android:id="@id/a2i" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:id="@id/a5h" android:background="@color/x9" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/w3" android:textColor="@color/x7" android:gravity="center" android:layout_gravity="center" android:id="@id/ali" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="2.0" />
+        <View android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</merge>

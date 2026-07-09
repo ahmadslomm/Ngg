@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="wrap_content" android:layout_height="43.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.LiveSquareDrawerServiceView android:id="@id/a9w" android:layout_width="34.0dip" android:layout_height="34.0dip" android:layout_centerVertical="true" />
+    <preprocessed.conection.mutate.geocode.LiveSquareDrawerServiceView android:id="@id/a_1" android:layout_width="34.0dip" android:layout_height="34.0dip" android:layout_centerVertical="true" android:layout_marginStart="114.0dip" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_width="56.0dip" android:layout_height="27.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/z_" android:layout_marginStart="21.0dip" app:pq="@drawable/z_" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_width="56.0dip" android:layout_height="27.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/za" android:layout_marginStart="71.0dip" app:pq="@drawable/za" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:layoutDirection="ltr" android:layout_alignStart="@id/a9w" android:layout_alignEnd="@id/a_1">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/w0" android:layout_width="22.0dip" android:layout_height="22.0dip" android:layout_marginTop="4.0dip" android:layout_centerHorizontal="true" />
+        <preprocessed.conection.processer.discriminant.disperser.XCAdYYImageEncoderView android:textSize="9.0dip" android:textColor="#ffff6dac" android:id="@id/art" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:layout_below="@id/w0" android:layout_centerHorizontal="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

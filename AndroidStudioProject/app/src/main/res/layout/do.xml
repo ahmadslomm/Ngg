@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/xh" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:id="@id/mk" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    </ScrollView>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

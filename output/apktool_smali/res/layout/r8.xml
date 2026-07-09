@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/agr" android:layout_width="fill_parent" android:layout_height="63.0dip" android:layout_marginBottom="6.0dip" android:layout_marginStart="3.0dip" android:layout_marginEnd="3.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/sw" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/sx" android:layout_width="37.0dip" android:layout_height="37.0dip" android:layout_marginTop="3.0dip" android:scaleType="fitXY" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="10.0dip" android:textColor="#ff693507" android:gravity="center" android:id="@id/aj7" android:background="@drawable/aow" android:layout_width="16.0dip" android:layout_height="11.0dip" android:includeFontPadding="false" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/v8" android:textColor="#ff693507" android:gravity="center" android:id="@id/ak6" android:layout_width="fill_parent" android:layout_height="wrap_content" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+    <View android:id="@id/azq" android:background="@drawable/iw" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/sy" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:src="@drawable/aoq" app:pq="@drawable/aoq" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

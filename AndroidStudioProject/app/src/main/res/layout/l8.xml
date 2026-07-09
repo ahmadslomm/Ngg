@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="90.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/y4" android:layout_width="59.0dip" android:layout_height="66.0dip" android:layout_marginTop="3.0dip" android:src="@drawable/acf" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/iv_avatar" android:layout_width="47.5dip" android:layout_height="47.5dip" android:layout_marginTop="3.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/y5" android:layout_width="18.0dip" android:layout_height="18.0dip" android:layout_marginTop="-3.0dip" android:layout_marginEnd="-3.0dip" app:y1="@id/iv_avatar" app:yo="@id/iv_avatar" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/yl" android:id="@id/at0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-5.0dip" android:maxLines="1" app:y1="a6g" app:yk="a6g" app:yn="@id/y4" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:layout_gravity="center_horizontal" android:orientation="horizontal" android:background="@drawable/aht" android:paddingLeft="11.669983dip" android:paddingRight="11.669983dip" android:layout_width="wrap_content" android:layout_height="48.0dip" android:layout_marginTop="127.0dip" android:paddingStart="11.669983dip" android:paddingEnd="11.669983dip">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ivImage" android:layout_width="43.329987dip" android:layout_height="43.329987dip" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textColor="@color/yc" android:ellipsize="middle" android:id="@id/ak4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="@dimen/vg" android:minWidth="120.0dip" android:maxLines="2" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

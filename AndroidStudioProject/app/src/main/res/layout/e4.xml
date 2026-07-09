@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/ab3" android:background="@color/xh" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/a8n" android:background="@color/zi" android:layout_width="fill_parent" android:layout_height="@dimen/v2" android:minHeight="@dimen/v2" app:kh="0.0dip" app:xm="a6w">
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginStart="12.0dip" android:layout_marginEnd="5.0dip">
+            <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/b30" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/are" android:scaleType="centerInside" />
+            <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/iv_avatar" android:layout_width="35.0dip" android:layout_height="35.0dip" android:layout_marginStart="10.0dip" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="17.0dip" android:textStyle="bold" android:textColor="@color/zj" android:ellipsize="end" android:id="@id/axa" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.339996dip" android:layout_marginRight="13.339996dip" android:singleLine="true" android:layout_weight="1.0" android:layout_marginStart="5.0dip" android:layout_marginEnd="13.339996dip" />
+            <androidx.appcompat.widget.ActionMenuView android:gravity="end|center" android:id="@id/b5" android:layout_width="wrap_content" android:layout_height="fill_parent" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <preprocessed.conection.mutate.geocode.KMTapDetectScrollViewDelegateLayout android:id="@id/ch" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/j" android:layout_below="@id/a8n">
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/cg" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+            <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:id="@id/a1u" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:gravity="center_horizontal" android:layout_gravity="end" android:id="@id/a_y" android:background="@color/zi" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="33.0dip" />
+            </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    </preprocessed.conection.mutate.geocode.KMTapDetectScrollViewDelegateLayout>
+    <preprocessed.conection.processer.cases.transferable.SwiftSoup9Evaluator14IndexEvaluator android:id="@id/j" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="20.0dip" android:layout_alignParentBottom="true" />
+    <preprocessed.conection.mutate.geocode.ShareWebRichMsgData android:id="@id/agk" android:visibility="gone" android:layout_width="170.0dip" android:layout_height="170.0dip" android:layout_centerInParent="true" />
+    <RelativeLayout android:id="@id/a96" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/a8n">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ty" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <View android:background="@color/y2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+            <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/wu" android:layout_width="90.0dip" android:layout_height="90.0dip" android:src="@drawable/ko" app:pq="@drawable/ko" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/zj" android:gravity="center" android:id="@id/aos" android:layout_width="305.0dip" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" />
+        </LinearLayout>
+    </RelativeLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

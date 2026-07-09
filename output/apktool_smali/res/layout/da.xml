@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/xz" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.FancyDismissibleDialogControllerView android:id="@id/b02" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="4.0" />
+    <androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="6.0" app:ez="@color/yc" app:f0="13.329987dip" app:f1="0.0dip" app:ki="0.0dip">
+        <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:id="@id/b4l" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_alignParentBottom="true" />
+    </androidx.cardview.widget.CardView>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

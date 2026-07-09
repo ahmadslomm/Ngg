@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="324.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ty" android:layout_width="fill_parent" android:layout_height="324.0dip" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0sp" android:textStyle="bold" android:textColor="#ffffeaa8" android:id="@id/axa" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="11.5dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="@color/zf" android:gravity="center" android:id="@id/ax_" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="26.5dip" android:layout_marginStart="50.0dip" android:layout_marginEnd="50.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/axa" />
+    <preprocessed.conection.processer.discriminant.JCommonCollectLocationManagerView android:layout_width="180.0dip" android:layout_height="180.0dip" android:layout_marginTop="114.0dip" app:bc="true" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:a__="svga/kroom/waitio_room_lv_up_bg.svga" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/w_" android:layout_width="100.0dip" android:layout_height="100.0dip" android:layout_marginTop="154.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

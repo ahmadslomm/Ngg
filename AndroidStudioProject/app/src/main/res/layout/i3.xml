@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/zj" android:id="@id/avp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip" android:layout_marginStart="19.0dip" android:layout_marginEnd="19.0dip" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/aby" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/avp" />
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="106.0dip" android:layout_alignParentBottom="true">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vo" android:textColor="@color/yc" android:gravity="center" android:id="@id/at7" android:background="@drawable/agn" android:layout_width="180.0dip" android:layout_height="44.0dip" android:layout_marginTop="55.0dip" android:layout_centerInParent="true" />
+    </RelativeLayout>
+</RelativeLayout>

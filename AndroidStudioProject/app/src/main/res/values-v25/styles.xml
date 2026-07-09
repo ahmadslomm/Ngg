@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="hm" parent="@style/hx" />
+    <style name="hn" parent="@style/hy" />
+    <style name="hx" parent="@android:style/Theme.Material.NoActionBar" />
+    <style name="hy" parent="@android:style/Theme.Material.Light.NoActionBar" />
+</resources>

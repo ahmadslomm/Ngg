@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@id/b0u" android:layout_width="224.0dip" android:layout_height="224.0dip" android:layout_centerHorizontal="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.EmojiUpEmojiPackagerView android:id="@id/dq" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <ImageView android:id="@id/rq" android:layout_width="116.0dip" android:layout_height="77.5dip" android:layout_marginTop="67.5dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <TextView android:textSize="14.0dip" android:textStyle="bold" android:textColor="#ff7d3a00" android:gravity="center" android:id="@id/anj" android:layout_width="fill_parent" android:layout_height="wrap_content" app:yn="@id/rq" />
+    <TextView android:textSize="15.0dip" android:textStyle="bold" android:textColor="#ff7d3a00" android:gravity="center_horizontal" android:id="@id/ani" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="25.0dip" android:layout_centerHorizontal="true" app:xv="a6g" app:y1="a6g" app:yb="a6b" app:yk="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

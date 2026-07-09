@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:background="@drawable/h8" android:layout_width="fill_parent" android:layout_height="185.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/rs" android:layout_width="140.0dip" android:layout_height="140.0dip" android:layout_marginTop="9.0dip" android:layout_centerHorizontal="true" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/su" android:layout_width="15.0dip" android:layout_height="15.0dip" android:layout_margin="8.0dip" app:y1="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vn" android:textColor="@color/zj" android:ellipsize="end" android:gravity="center" android:id="@id/al9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.5dip" android:singleLine="true" app:y1="@id/rs" app:yk="@id/rs" app:yn="@id/rs" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="a">true</bool>
+    <bool name="c">true</bool>
+    <bool name="d">true</bool>
+    <bool name="e">true</bool>
+    <bool name="f">false</bool>
+    <bool name="g">false</bool>
+</resources>

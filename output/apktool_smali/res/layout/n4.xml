@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:id="@id/ahl" android:layout_width="fill_parent" android:layout_height="73.32999dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/afi" android:layout_width="fill_parent" android:layout_height="fill_parent" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/r8" android:layout_width="22.0dip" android:layout_height="22.0dip" android:layout_marginStart="28.0dip" app:gy="@color/yc" app:h0="0.6700001dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vm" android:textColor="@color/yc" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/ake" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:layout_marginStart="4.669983dip" app:xv="a6g" app:yj="@id/r8" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.RightPicItemViewView android:textSize="@dimen/vm" android:textColor="@color/yc" android:ellipsize="marquee" android:gravity="center_vertical" android:id="@id/akd" android:focusable="true" android:layout_width="0.0dip" android:layout_height="wrap_content" android:singleLine="true" android:marqueeRepeatLimit="marquee_forever" android:layout_marginEnd="20.0dip" app:xv="a6g" app:y1="a6g" app:yj="@id/ake" app:yo="a6g" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

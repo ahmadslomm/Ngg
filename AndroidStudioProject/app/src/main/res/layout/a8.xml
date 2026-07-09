@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="1.6699829dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.donkingliang.imageselector.view.SquareImageView android:layout_gravity="center" android:id="@id/vx" android:layout_width="fill_parent" android:layout_height="wrap_content" android:scaleType="centerCrop" />
+    <com.donkingliang.imageselector.view.SquareImageView android:layout_gravity="center" android:id="@id/wa" android:background="@drawable/am5" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <FrameLayout android:layout_gravity="end" android:id="@id/ad8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="25.339996dip" android:minHeight="25.349976dip">
+        <com.donkingliang.imageselector.view.SquareTextView android:textSize="13.339996dip" android:textColor="@android:color/white" android:gravity="center" android:layout_gravity="end" android:id="@id/avo" android:layout_width="25.339996dip" android:layout_height="25.339996dip" />
+    </FrameLayout>
+    <ImageView android:layout_gravity="end|bottom|center" android:id="@id/vc" android:padding="3.0dip" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/wt" />
+</FrameLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:visibility="visible" android:layout_width="375.0dip" android:layout_height="125.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/f2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/om" android:layout_width="30.0dip" android:layout_height="30.0dip" android:layout_marginStart="101.0dip" app:gy="#ffffe796" app:h0="1.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/on" android:layout_width="30.0dip" android:layout_height="30.0dip" android:layout_marginStart="25.0dip" app:gy="#ffffe796" app:h0="1.0dip" app:xv="@id/om" app:yj="@id/om" app:yo="@id/om" />
+    <TextView android:textSize="15.0sp" android:textColor="#ffffffff" android:id="@id/anp" android:layout_width="wrap_content" android:layout_height="wrap_content" app:xv="@id/om" app:y2="@id/on" app:yj="@id/om" app:yo="@id/om" />
+    <ImageView android:id="@id/ol" android:layout_width="37.0dip" android:layout_height="37.0dip" android:layout_marginStart="12.0dip" app:xv="@id/on" app:yj="@id/on" app:yo="@id/on" />
+    <TextView android:textSize="15.0sp" android:textColor="#ffffffff" android:id="@id/aln" android:layout_width="33.0dip" android:layout_height="18.0dip" android:layout_marginStart="6.0dip" app:xv="@id/ol" app:yj="@id/ol" app:yo="@id/ol" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:y_="0.367" app:yk="a6g" app:yo="a6g">
+        <View android:id="@id/b04" android:layout_width="50.0dip" android:layout_height="fill_parent" />
+        <View android:id="@id/b03" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <View android:id="@id/b05" android:layout_width="70.0dip" android:layout_height="fill_parent" />
+    </LinearLayout>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

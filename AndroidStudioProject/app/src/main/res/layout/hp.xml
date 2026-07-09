@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="488.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:layout_width="fill_parent" android:layout_height="488.0dip" app:yo="a6g" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/a8e" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="43.0dip" android:layout_marginBottom="30.0dip" />
+</androidx.constraintlayout.widget.ConstraintLayout>

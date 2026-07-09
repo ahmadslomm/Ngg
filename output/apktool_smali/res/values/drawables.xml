@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="drawable" name="ey">@drawable/f0</item>
+    <item type="drawable" name="ez">@drawable/ex</item>
+    <item type="drawable" name="gc">#3333b5e5</item>
+    <item type="drawable" name="gd">#0cffffff</item>
+</resources>

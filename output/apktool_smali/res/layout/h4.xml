@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:orientation="vertical" android:clipChildren="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.githang.statusbar.StatusBarView android:id="@id/af1" android:layout_width="fill_parent" android:layout_height="wrap_content" app:yo="a6g" />
+    <com.google.android.material.tabs.TabLayout android:id="@id/ag3" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="42.0dip" android:layout_below="@id/af1" android:layout_marginStart="9.0dip" android:layout_alignParentStart="true" app:ab8="@null" app:abc="@null" app:abv="0.0dip" app:abw="acc" app:abz="6.0dip" app:ac0="6.0dip" app:ac2="@null" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/b1g" android:layout_width="wrap_content" android:layout_height="42.0dip" android:layout_below="@id/af1" android:layout_alignParentEnd="true">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ww" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/vu" android:layout_centerVertical="true" android:layout_marginEnd="@dimen/wa" app:pq="@drawable/vu" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="9.0dip" android:textColor="#ff19062b" android:gravity="center" android:id="@id/atd" android:background="@drawable/ami" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="14.0dip" android:layout_marginTop="4.0dip" android:minWidth="14.0dip" android:includeFontPadding="false" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" android:layout_marginEnd="-3.0dip" android:layout_alignEnd="@id/ww" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/a47" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/ag3" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_gravity="center" android:id="@id/hp" android:tag="2" android:layout_width="wrap_content" android:layout_height="18.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yo="a6g">
+        <View android:id="@id/azl" android:layout_width="0.0dip" android:layout_height="0.0dip" app:xw="@id/azk" app:y1="@id/ao8" app:yj="@id/azw" app:yn="@id/azm" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/te" android:layout_width="0.0dip" android:layout_height="fill_parent" android:scaleType="centerCrop" app:y0="w,4:3" app:yk="a6g" />
+        <View android:id="@id/azw" android:layout_width="1.0dip" android:layout_height="fill_parent" android:layout_marginEnd="1.0dip" app:y1="@id/te" app:yk="a6g" />
+        <View android:id="@id/azm" android:layout_width="1.0dip" android:layout_height="0.0dip" app:y_="0.13" app:yj="@id/te" app:yo="a6g" />
+        <View android:id="@id/azk" android:layout_width="1.0dip" android:layout_height="0.0dip" app:xv="a6g" app:y_="0.07" app:yj="@id/te" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="11.0dip" android:textStyle="bold" android:textColor="@color/yc" android:gravity="center" android:id="@id/ao8" android:paddingTop="0.30000007dip" android:layout_width="wrap_content" android:layout_height="0.0dip" android:minWidth="13.0dip" android:paddingStart="0.0dip" android:paddingEnd="3.0dip" android:layout_marginStart="0.0dip" app:xv="a6g" app:yj="@id/te" app:yo="a6g" />
+    </preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>
+</FrameLayout>

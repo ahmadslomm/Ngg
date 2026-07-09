@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.CameraWriterLayout android:id="@id/aes" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.githang.statusbar.StatusBarView android:id="@id/af0" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:yo="a6g">
+            <androidx.viewpager2.widget.ViewPager2 android:id="@id/b26" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        </preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar>
+        <FrameLayout android:id="@id/hn" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="wrap_content" android:layout_height="35.0dip" android:layout_marginTop="52.0dip" android:paddingHorizontal="4.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/af0">
+            <preprocessed.conection.processer.discriminant.ResHubResUpdateProcessorView android:layout_gravity="center" android:id="@id/abp" android:scrollbars="none" android:layout_width="wrap_content" android:layout_height="35.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+        </FrameLayout>
+    </preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>
+</preprocessed.conection.processer.discriminant.CameraWriterLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:id="@id/n_" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:background="@color/zi" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/na" android:focusable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="centerCrop" app:dk="3.0dip" app:ahq="ab4" />
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:orientation="vertical" android:id="@id/aa4" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:layout_width="fill_parent" android:layout_height="fill_parent" app:dk="3.0dip" app:ahq="ab4" />
+            <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="#cc2c2b36" app:dk="3.0dip" app:pq="#cc2c2b36" app:ahq="ab4" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="17.0dip" android:textColor="@color/yc" android:id="@id/aoh" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="22.0dip" android:layout_centerHorizontal="true" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0dip" android:textColor="@color/yc" android:id="@id/asu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/aoh" android:layout_centerHorizontal="true" />
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    </preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

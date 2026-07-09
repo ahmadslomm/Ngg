@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:background="@color/ud" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/py" android:layout_width="fill_parent" android:layout_height="wrap_content" android:adjustViewBounds="true" app:yo="a6g" />
+    <com.githang.statusbar.StatusBarView android:id="@id/af0" android:layout_width="fill_parent" android:layout_height="wrap_content" app:yk="a6g" app:yo="a6g" />
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/b28" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:yo="a6g" />
+    <ImageView android:id="@id/r4" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/are" android:layout_marginStart="15.0dip" app:yk="a6g" app:yn="@id/af0" />
+    <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag3" android:fadingEdge="horizontal" android:fadingEdgeLength="20.0dip" android:clipChildren="false" android:layout_width="0.0dip" android:layout_height="44.0dip" android:requiresFadingEdge="horizontal" app:y2="@id/iv_gift" app:yj="@id/r4" app:yn="@id/af0" app:ab9="0.0dip" app:abc="@drawable/z2" app:abn="15.0dip" app:abw="acc" app:aby="0.0dip" app:abz="0.0dip" app:ac0="0.0dip" app:ac4="true" app:ac8="@style/a3w" app:aca="true" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/iv_gift" android:layout_width="35.0dip" android:layout_height="35.0dip" android:layout_marginTop="4.5dip" android:src="@drawable/a8z" android:layout_marginEnd="15.0dip" app:pq="@drawable/a8z" app:y1="a6g" app:yn="@id/af0" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

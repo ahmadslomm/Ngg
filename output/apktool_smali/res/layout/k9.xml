@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:paddingLeft="10.0dip" android:layout_width="167.0dip" android:layout_height="225.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/ty" android:layout_width="157.0dip" android:layout_height="225.0dip" android:scaleType="centerCrop" app:dk="15.0dip" app:y1="a6g" app:yo="a6g" app:ahq="ab4" />
+    <View android:background="@drawable/jm" android:layout_width="157.0dip" android:layout_height="70.0dip" app:xv="a6g" app:yk="a6g" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/um" android:layout_width="21.0dip" android:layout_height="15.0dip" android:layout_marginTop="4.0dip" android:layout_marginStart="8.0dip" app:xw="@id/at0" app:yk="a6g" />
+    <ImageView android:id="@id/wx" android:visibility="gone" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginStart="5.0dip" app:xv="@id/um" app:yj="@id/um" app:yo="@id/um" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="16.0sp" android:textColor="@color/zj" android:id="@id/at0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8.0dip" android:maxLines="1" android:layout_marginStart="8.0dip" app:xv="a6g" app:yk="a6g" app:yu="100.0dip" />
+    <preprocessed.conection.processer.discriminant.EmojiUpEmojiPackagerView android:id="@id/yd" android:layout_width="58.0dip" android:layout_height="58.0dip" app:xv="a6g" app:y1="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

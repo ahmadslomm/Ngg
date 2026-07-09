@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout android:background="@drawable/abm" android:layout_width="416.0dip" android:layout_height="191.0dip" android:layout_marginTop="10.0dip" android:layout_marginStart="14.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0dip" android:textColor="#ff79f4ff" android:id="@id/arb" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="14.0dip" android:layout_marginStart="12.0dip" app:yk="a6g" app:yo="a6g" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a87" android:layout_width="360.0dip" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginStart="5.0dip" app:yk="a6g" app:yn="@id/arb" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

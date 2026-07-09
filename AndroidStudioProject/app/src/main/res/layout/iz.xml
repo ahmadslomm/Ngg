@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:id="@id/ahi" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar android:gravity="center_vertical" android:id="@id/a8n" android:layout_width="fill_parent" android:layout_height="@dimen/v2" app:kh="0.0dip" style="@style/a4b">
+        <androidx.appcompat.widget.ActionMenuView android:gravity="end|center" android:layout_gravity="end" android:id="@id/b5" android:layout_width="wrap_content" android:layout_height="fill_parent" />
+    </androidx.appcompat.widget.Toolbar>
+    <View android:id="@id/b1a" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.34000003dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

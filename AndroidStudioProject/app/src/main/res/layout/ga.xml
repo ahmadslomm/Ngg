@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/za" android:background="@drawable/lc" android:layout_width="315.0dip" android:layout_height="335.0dip" android:paddingStart="20.0dip" android:paddingEnd="20.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/u6">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/yc" android:id="@id/axa" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="40.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0sp" android:textStyle="bold" android:textColor="@color/zf" android:gravity="center" android:id="@id/ax_" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/axa" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/xk" android:layout_width="120.0dip" android:layout_height="120.0dip" android:layout_marginTop="15.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/ax_" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="16.0sp" android:textStyle="bold" android:textColor="#ff280d00" android:gravity="center" android:id="@id/atg" android:layout_width="235.0dip" android:layout_height="44.0dip" android:layout_marginBottom="33.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

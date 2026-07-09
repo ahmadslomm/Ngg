@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:clipChildren="true" android:layout_width="fill_parent" android:layout_height="488.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:layout_width="fill_parent" android:layout_height="488.0dip" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/xa" android:layout_width="fill_parent" android:layout_height="400.0dip" android:layout_marginBottom="80.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+    <preprocessed.conection.processer.place.categorie.aurora.GuildBundleView android:id="@id/aaj" android:layout_width="fill_parent" android:layout_height="300.0dip" android:layout_marginTop="52.0dip" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/v3" android:layout_width="fill_parent" android:layout_height="400.0dip" android:layout_marginBottom="80.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+    <View android:background="@drawable/abn" android:layout_width="130.0dip" android:layout_height="197.0dip" android:layout_marginTop="65.0dip" android:layout_marginStart="0.0dip" app:yk="a6g" app:yo="a6g" />
+    <View android:background="@drawable/abn" android:layout_width="130.0dip" android:layout_height="197.0dip" android:layout_marginTop="65.0dip" android:layout_marginEnd="-2.0dip" app:y1="a6g" app:yo="a6g" />
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/b19" android:background="@drawable/acc" android:layout_width="344.0dip" android:layout_height="99.0dip" android:layout_marginBottom="11.5dip" app:xv="a6g" app:y1="a6g" app:yk="a6g">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="19.0dip" android:textColor="@color/zj" android:id="@id/av0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0sp" android:textColor="#ffffe045" android:id="@id/auz" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawablePadding="4.0dip" android:drawableStart="@drawable/abl" app:y1="a6g" app:yk="a6g" app:yn="@id/av0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

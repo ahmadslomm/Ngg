@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:background="@color/zi" android:layout_width="fill_parent" android:layout_height="70.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/sh" android:layout_width="50.0dip" android:layout_height="50.0dip" android:scaleType="centerCrop" android:layout_marginStart="35.5dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <androidx.appcompat.widget.AppCompatImageView android:id="@id/wx" android:visibility="gone" android:layout_width="17.0dip" android:layout_height="17.0dip" app:xv="@id/sh" app:y1="@id/sh" />
+    <preprocessed.conection.mutate.geocode.LiveSaaSSearchPlaceHolderManagerView android:textSize="14.0dip" android:textColor="@color/vl" android:gravity="center" android:id="@id/alo" android:layout_width="0.0dip" android:layout_height="wrap_content" app:d1="a3l" app:xv="a6g" app:y2="@id/sh" app:yk="a6g" app:yo="a6g" />
+    <ImageView android:id="@id/s8" android:visibility="gone" android:layout_width="25.0dip" android:layout_height="32.0dip" app:xv="a6g" app:y2="@id/sh" app:yk="a6g" app:yo="a6g" />
+    <ImageView android:id="@id/r_" android:layout_width="17.0dip" android:layout_height="17.0dip" android:layout_marginTop="1.0px" android:scaleType="centerCrop" android:layout_marginEnd="15.0dip" app:xv="a6g" app:y1="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.LiveSaaSSearchPlaceHolderManagerView android:textSize="13.0dip" android:textColor="@color/wl" android:id="@id/ao5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="4.0dip" app:d1="a3l" app:xv="a6g" app:y2="@id/r_" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_marginStart="8.0dip" android:layout_marginEnd="10.0dip" app:y2="@id/ao5" app:yj="@id/sh">
+        <preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout android:id="@id/adu" android:layout_width="wrap_content" android:layout_height="wrap_content" app:a8r="false" app:a8s="1.0" app:a8t="#ffe23e00" app:a8v="true" app:a8y="2800" app:a93="#ffffc047" app:a9_="29.0">
+            <preprocessed.conection.mutate.geocode.PlaybackEndConfigView android:textSize="14.0dip" android:textColor="@color/yc" android:ellipsize="end" android:gravity="start" android:id="@id/alh" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+        </preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout>
+        <preprocessed.conection.processer.discriminant.PostImageParameterFloatingStickersEventView android:id="@id/ayq" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="25.0dip" android:layout_marginTop="4.0dip" android:minHeight="17.0dip" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

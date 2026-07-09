@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/dw" android:layout_width="360.0dip" android:layout_height="640.0dip" android:layout_centerInParent="true" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/w3" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+    <ViewStub android:id="@id/b0q" android:layout="@layout/sl" android:inflatedId="@id/aa1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    <ViewStub android:id="@id/b0p" android:layout="@layout/sk" android:inflatedId="@id/aa0" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    <ViewStub android:id="@id/b0r" android:layout="@layout/sm" android:inflatedId="@id/aa2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    <ViewStub android:id="@id/b0n" android:layout="@layout/s5" android:inflatedId="@id/aa1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    <ViewStub android:id="@id/b0m" android:layout="@layout/s4" android:inflatedId="@id/aa0" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    <ViewStub android:id="@id/b0o" android:layout="@layout/s6" android:inflatedId="@id/aa2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

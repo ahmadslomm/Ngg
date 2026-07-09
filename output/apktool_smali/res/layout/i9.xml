@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/az7" android:background="@drawable/agj" android:layout_width="fill_parent" android:layout_height="70.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginStart="15.0dip">
+            <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/az6" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_centerVertical="true" />
+            <include android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="-5.0dip" android:layout_alignBottom="@id/az6" android:layout_alignStart="@id/az6" android:layout_alignEnd="@id/az6" layout="@layout/ox" />
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+        <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginStart="9.339996dip">
+            <preprocessed.conection.mutate.geocode.DrCommentsItemViewOfCellLayout android:id="@id/a5d" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0dip" android:textColor="@color/yj" android:ellipsize="end" android:id="@id/az9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/wh" android:singleLine="true" />
+        </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+        <preprocessed.conection.mutate.geocode.RecordAlbumBuildDelegateView android:textSize="12.0dip" android:textColor="@color/zj" android:gravity="center" android:id="@id/az5" android:background="@drawable/aiu" android:paddingTop="2.0dip" android:paddingBottom="2.0dip" android:layout_width="48.0dip" android:layout_height="wrap_content" android:src="@drawable/a8i" android:layout_marginStart="7.5dip" android:layout_marginEnd="15.0dip" app:pq="@drawable/a8i" app:uh="0.5" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

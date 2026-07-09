@@ -1,0 +1,124 @@
+.class public final Ly85$c;
+.super Ljava/lang/Object;
+.source "zaffa"
+
+# interfaces
+.implements Ljava/lang/Comparable;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Ly85;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x9
+    name = "c"
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Ljava/lang/Object;",
+        "Ljava/lang/Comparable<",
+        "Ly85$c;",
+        ">;"
+    }
+.end annotation
+
+
+# instance fields
+.field public final a:I
+
+.field public final b:I
+
+.field public final c:Ljava/lang/String;
+
+.field public final d:Ljava/lang/String;
+
+
+# direct methods
+.method public constructor <init>(IILjava/lang/String;Ljava/lang/String;)V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 2
+    .line 3
+    .line 4
+    iput p1, p0, Ly85$c;->a:I
+
+    .line 5
+    .line 6
+    iput p2, p0, Ly85$c;->b:I
+
+    .line 7
+    .line 8
+    iput-object p3, p0, Ly85$c;->c:Ljava/lang/String;
+
+    .line 9
+    .line 10
+    iput-object p4, p0, Ly85$c;->d:Ljava/lang/String;
+
+    .line 11
+    .line 12
+    return-void
+.end method
+
+
+# virtual methods
+.method public a(Ly85$c;)I
+    .locals 2
+
+    .line 1
+    iget v0, p1, Ly85$c;->a:I
+
+    .line 2
+    .line 3
+    iget v1, p0, Ly85$c;->a:I
+
+    .line 4
+    .line 5
+    sub-int/2addr v1, v0
+
+    .line 6
+    if-nez v1, :cond_0
+
+    .line 7
+    .line 8
+    iget v0, p0, Ly85$c;->b:I
+
+    .line 9
+    .line 10
+    iget p1, p1, Ly85$c;->b:I
+
+    .line 11
+    .line 12
+    sub-int/2addr v0, p1
+
+    .line 13
+    return v0
+
+    .line 14
+    :cond_0
+    return v1
+.end method
+
+.method public bridge synthetic compareTo(Ljava/lang/Object;)I
+    .locals 0
+
+    .line 1
+    check-cast p1, Ly85$c;
+
+    .line 2
+    .line 3
+    invoke-virtual {p0, p1}, Ly85$c;->a(Ly85$c;)I
+
+    .line 4
+    .line 5
+    .line 6
+    move-result p1
+
+    .line 7
+    return p1
+.end method

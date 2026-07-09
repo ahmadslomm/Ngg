@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="@dimen/w8"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:id="@id/aa8" android:layout_width="35.5dip" android:layout_height="fill_parent" app:xv="a6g" app:yk="a6g" app:yo="a6g">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0sp" android:textColor="@color/zj" android:gravity="center" android:id="@id/amb" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/xb" android:layout_width="25.0dip" android:layout_height="32.0dip" android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginRight="@dimen/wa" android:layout_toRightOf="@id/aa8" android:layout_centerVertical="true" android:layout_marginEnd="@dimen/wa" android:layout_toEndOf="@id/aa8" app:xv="a6g" app:y2="@id/akf" app:yj="@id/aa8" app:yo="a6g">
+        <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/pv" android:layout_width="50.0dip" android:layout_height="50.0dip" android:scaleType="centerCrop" />
+        <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_weight="1.0" android:layout_marginStart="6.669983dip">
+            <preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout android:id="@id/ads" android:layout_width="wrap_content" android:layout_height="wrap_content" app:a8r="false" app:a8s="1.0" app:a8t="@color/w7" app:a8v="true" app:a8y="2800" app:a93="@color/wp" app:a9_="29.0">
+                <preprocessed.conection.mutate.geocode.PlaybackEndConfigView android:textSize="@dimen/v7" android:textColor="@color/yw" android:ellipsize="end" android:id="@id/ao2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+            </preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout>
+            <preprocessed.conection.processer.discriminant.PostImageParameterFloatingStickersEventView android:id="@id/ayw" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" />
+        </LinearLayout>
+    </LinearLayout>
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.0sp" android:textColor="#ffffcc00" android:gravity="center" android:id="@id/akf" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:drawablePadding="4.0dip" android:layout_centerVertical="true" android:drawableEnd="@drawable/kp" android:layout_marginEnd="15.0dip" android:layout_alignParentEnd="true" app:p2="@drawable/kp" app:xv="a6g" app:y1="a6g" app:yo="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

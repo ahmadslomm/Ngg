@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.CameraWriterLayout android:id="@id/aes" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.google.android.material.appbar.AppBarLayout android:id="@id/e1" android:background="@color/zi" android:layout_width="fill_parent" android:layout_height="wrap_content" app:o5="0.0dip">
+                <androidx.constraintlayout.widget.ConstraintLayout android:paddingTop="15.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" app:zk="ac6|l7">
+                    <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/h_" android:layout_width="0.0dip" android:layout_height="77.5dip" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g">
+                        <TextView android:textSize="18.0dip" android:textStyle="bold" android:textColor="@color/yc" android:id="@id/ajz" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" android:layout_marginStart="16.0dip" app:yk="a6g" app:yo="a6g" />
+                        <TextView android:textSize="14.0dip" android:textColor="#ccffffff" android:id="@id/ak0" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="16.0dip" app:yk="a6g" app:yn="@id/ajz" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/h5" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="15.0dip" android:layout_marginHorizontal="15.0dip" app:yk="a6g" app:yn="@id/h_">
+                        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="17.0dip" android:textStyle="bold" android:textColor="@color/yc" android:id="@id/ail" android:layout_width="0.0dip" android:layout_height="wrap_content" app:y2="@id/aim" app:yk="a6g" app:yo="a6g" />
+                        <TextView android:textSize="14.0dip" android:textColor="#ffcccccc" android:gravity="center" android:id="@id/aim" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layoutDirection="locale" app:xv="@id/ail" app:y2="@id/q5" app:yo="@id/ail" />
+                        <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/q5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/x7" app:xv="@id/aim" app:y1="a6g" app:yo="@id/aim" />
+                        <FrameLayout android:id="@id/ei" android:padding="1.0dip" android:layout_width="fill_parent" android:layout_height="105.0dip" android:layout_marginTop="10.0dip" app:yn="@id/ail">
+                            <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/q3" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+                            <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/q4" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+                            <com.youth.banner.Banner android:id="@id/eh" android:layout_width="fill_parent" android:layout_height="fill_parent" app:ce="10.0dip" app:ci="@color/zi" app:cj="6.0dip" app:cl="@color/zi" app:cm="6.0dip" app:cp="3000" app:cq="b00" />
+                        </FrameLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView android:textSize="17.0dip" android:textStyle="bold" android:textColor="@color/yc" android:id="@id/ajn" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginStart="15.0dip" app:yn="@id/h5" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag3" android:layout_width="fill_parent" android:layout_height="27.0dip" android:layout_marginTop="14.0dip" android:layout_marginStart="5.0dip" app:yk="a6g" app:yo="a6g" app:ab9="0.0dip" app:ab_="aeu" app:abc="@null" app:abi="false" app:abj="fd" app:abk="4.0dip" app:abn="15.0dip" app:abs="5.0dip" app:abv="0.0dip" app:abw="acc" app:abz="0.0dip" app:ac0="0.0dip" app:ac2="@null" app:ac4="true" app:ac8="@style/a40" />
+            </com.google.android.material.appbar.AppBarLayout>
+            <preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar android:layout_width="fill_parent" android:layout_height="fill_parent" app:xl="@string/a5">
+                <androidx.viewpager2.widget.ViewPager2 android:id="@id/b27" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+            </preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </preprocessed.conection.processer.discriminant.CameraWriterLayout>
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/qs" android:layout_width="58.0dip" android:layout_height="58.0dip" android:layout_marginBottom="32.0dip" android:layout_marginEnd="15.0dip" app:xv="a6g" app:y1="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:paddingLeft="@dimen/wa" android:paddingRight="@dimen/wa" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="@dimen/wa" android:paddingEnd="@dimen/wa"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@drawable/am8" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="68.0dip" android:paddingStart="15.0dip" android:paddingEnd="15.0dip">
+        <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/pq" android:layout_width="48.0dip" android:layout_height="48.0dip" app:dk="10.0dip" app:ahq="ab4" />
+        <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginStart="8.0dip" android:layout_marginEnd="8.0dip">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vo" android:textColor="@color/uh" android:ellipsize="end" android:id="@id/ao2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vk" android:textColor="@color/uh" android:id="@id/ajb" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" />
+        </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textColor="@color/yc" android:ellipsize="end" android:gravity="center" android:id="@id/ajs" android:background="@drawable/am9" android:layout_width="wrap_content" android:layout_height="32.0dip" android:singleLine="true" android:paddingStart="16.0dip" android:paddingEnd="16.0dip" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

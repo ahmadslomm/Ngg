@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="7.0dip" android:layout_marginBottom="7.0dip">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/a_2" android:layout_width="101.0dip" android:layout_height="58.0dip" android:scaleType="fitXY" android:layout_marginStart="13.339996dip" />
+        <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignTop="@id/a_2" android:layout_alignBottom="@id/a_2" android:layout_marginStart="10.0dip" android:layout_marginEnd="13.339996dip" android:layout_toEndOf="@id/a_2" android:layout_alignParentEnd="true">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="@color/xu" android:ellipsize="end" android:id="@id/axp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="2" android:includeFontPadding="false" android:lineSpacingExtra="-1.0dip" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.0dip" android:textColor="@color/yo" android:ellipsize="end" android:id="@id/axo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:maxLines="1" android:includeFontPadding="false" />
+        </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

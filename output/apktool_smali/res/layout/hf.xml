@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.CameraWriterLayout android:id="@id/aes" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <com.google.android.material.appbar.AppBarLayout android:id="@id/e1" android:background="@color/zi" android:layout_width="fill_parent" android:layout_height="wrap_content" app:o5="0.0dip">
+            <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="wrap_content" app:zk="ac6|l7">
+                <com.youth.banner.Banner android:id="@id/ej" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="100.0dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="10.0dip" android:layout_marginHorizontal="10.0dip" app:cd="5.0dip" app:ci="#80f6f8fb" app:cj="5.0dip" app:cl="@color/zj" app:cm="5.0dip" app:yo="a6g" />
+                <com.youth.banner.Banner android:id="@id/a7g" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="85.0dip" android:layout_marginLeft="10.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="10.0dip" android:layout_marginHorizontal="10.0dip" app:ca="true" app:cp="5000" app:y1="a6g" app:yk="a6g" app:yn="@id/ej" />
+                <preprocessed.conection.processer.discriminant.SVGGroupElementView android:layout_width="wrap_content" android:layout_height="0.0dip" android:src="@drawable/wi" android:adjustViewBounds="true" app:xv="@id/a7g" app:yk="@id/a7g" app:yo="@id/a7g" />
+                <preprocessed.conection.processer.discriminant.SVGGroupElementView android:layout_width="wrap_content" android:layout_height="0.0dip" android:src="@drawable/wj" android:adjustViewBounds="true" app:xv="@id/a7g" app:y1="@id/a7g" app:yo="@id/a7g" />
+                <androidx.recyclerview.widget.RecyclerView android:id="@id/a8k" android:fadingEdgeLength="24.0dip" android:layout_width="fill_parent" android:layout_height="64.0dip" android:layout_marginTop="14.0dip" android:requiresFadingEdge="horizontal" app:yn="@id/a7g" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="34.0dip" android:layout_marginTop="12.0dip" android:layout_marginStart="10.0dip">
+                <preprocessed.conection.processer.discriminant.LiveTraceInfoView android:textSize="14.0dip" android:textColor="@color/xu" android:gravity="center" android:id="@id/au0" android:background="@drawable/afu" android:paddingBottom="2.0dip" android:layout_width="wrap_content" android:layout_height="27.0dip" android:drawableStart="@drawable/wa" android:paddingStart="8.0dip" android:paddingEnd="8.0dip" app:v4="20.0dip" app:va="20.0dip" />
+                <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag4" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_weight="1.0" app:yo="a6g" app:ab8="@null" app:ab9="0.0dip" app:abc="@null" app:abk="0.0dip" app:abv="0.0dip" app:abw="acc" app:abx="0.0dip" app:abz="0.0dip" app:ac0="0.0dip" app:ac2="@null" />
+                <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/uo" android:padding="3.0dip" android:layout_width="29.0dip" android:layout_height="29.0dip" android:src="@drawable/wb" android:layout_marginEnd="7.0dip" />
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" app:xl="@string/a5">
+            <androidx.viewpager2.widget.ViewPager2 android:id="@id/ab1" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="5.0dip" />
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</preprocessed.conection.processer.discriminant.CameraWriterLayout>

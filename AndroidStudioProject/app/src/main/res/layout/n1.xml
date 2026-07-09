@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:background="@drawable/k0" android:layout_width="260.0dip" android:layout_height="36.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/vr" android:layout_width="20.0dip" android:layout_height="20.0dip" android:src="@drawable/adg" android:layout_marginStart="7.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.0dip" android:textColor="@color/zj" android:id="@id/arw" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" android:layout_marginEnd="5.0dip" app:xv="a6g" app:y2="@id/ar4" app:yj="@id/vr" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="10.0sp" android:textStyle="bold" android:textColor="@color/zj" android:gravity="center" android:id="@id/ar4" android:layout_width="47.0dip" android:layout_height="20.0dip" android:layout_marginEnd="7.0dip" app:xv="a6g" app:y1="a6g" app:yo="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

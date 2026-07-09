@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:orientation="vertical" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/xm" android:layout_width="164.0dip" android:layout_height="280.0dip" android:layout_marginTop="30.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textStyle="bold" android:gravity="center" android:id="@id/asg" android:background="@drawable/abo" android:layout_width="76.0dip" android:layout_height="24.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

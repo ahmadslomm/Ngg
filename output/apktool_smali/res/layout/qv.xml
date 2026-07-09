@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:visibility="gone" android:layout_width="60.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/afu" android:layout_width="60.0dip" android:layout_height="60.0dip" android:layout_centerHorizontal="true" />
+    <androidx.compose.ui.platform.ComposeView android:id="@id/a6o" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-11.0dip" android:layout_below="@id/afu" android:layout_centerHorizontal="true" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="9.0sp" android:textColor="#ffffefa7" android:gravity="center" android:id="@id/apn" android:background="@drawable/l_" android:layout_width="35.0dip" android:layout_height="14.0dip" android:layout_marginTop="-2.0dip" android:layout_below="@id/afu" android:layout_centerHorizontal="true" />
+</RelativeLayout>

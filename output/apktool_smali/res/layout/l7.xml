@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="86.0dip" android:layout_height="wrap_content" android:layout_marginStart="7.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ty" android:layout_width="86.0dip" android:layout_height="128.0dip" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/iv_avatar" android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_marginTop="39.0dip" android:layout_centerHorizontal="true" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="11.0sp" android:textColor="@color/zj" android:id="@id/ax7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="100dp" android:layout_below="@id/ty" android:layout_centerHorizontal="true" />
+</RelativeLayout>

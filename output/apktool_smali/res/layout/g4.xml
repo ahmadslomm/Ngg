@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/ty" android:layout_width="fill_parent" android:layout_height="fill_parent" app:yo="a6g" />
+    <View android:background="@color/xz" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="110.0dip" app:yo="a6g">
+        <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/b11" android:background="@drawable/a4a" android:layout_width="361.0dip" android:layout_height="191.0dip" android:layout_marginTop="45.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+        <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/xo" android:layout_width="81.0dip" android:layout_height="81.0dip" android:scaleType="centerCrop" app:dk="17.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:ahq="ab4" />
+        <TextView android:textSize="19.0sp" android:textColor="@color/zj" android:id="@id/avb" android:layout_width="wrap_content" android:layout_height="wrap_content" app:y1="a6g" app:yk="a6g" app:yn="@id/xo" />
+        <TextView android:textSize="19.0sp" android:textColor="@color/yl" android:id="@id/ax_" android:layout_width="wrap_content" android:layout_height="wrap_content" app:y1="a6g" app:yk="a6g" app:yn="@id/avb" />
+        <TextView android:textSize="21.0sp" android:textColor="@color/zj" android:gravity="center" android:id="@id/aqg" android:background="@drawable/aj2" android:layout_width="291.0dip" android:layout_height="51.0dip" android:layout_marginTop="45.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/b11" />
+        <TextView android:textSize="21.0sp" android:textColor="@color/zj" android:gravity="center" android:id="@id/apd" android:background="@drawable/a4_" android:layout_width="291.0dip" android:layout_height="51.0dip" android:layout_marginTop="20.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/aqg" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

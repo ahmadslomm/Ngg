@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="c">48.0dip</dimen>
+    <dimen name="oq">450.0dip</dimen>
+    <dimen name="or">600.0dip</dimen>
+    <dimen name="ot">24.0dip</dimen>
+    <dimen name="ow">24.0dip</dimen>
+    <dimen name="q_">20.0dip</dimen>
+    <dimen name="qb">4.0dip</dimen>
+    <dimen name="qf">96.0dip</dimen>
+    <dimen name="qi">0.0dip</dimen>
+    <dimen name="qj">0.0dip</dimen>
+    <dimen name="qk">104.0dip</dimen>
+    <dimen name="qs">68.0dip</dimen>
+    <dimen name="qu">28.0dip</dimen>
+    <dimen name="qv">64.0dip</dimen>
+    <dimen name="qw">32.0dip</dimen>
+    <dimen name="qx">24.0dip</dimen>
+    <dimen name="qy">32.0dip</dimen>
+</resources>

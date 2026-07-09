@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/il" android:layout_width="fill_parent" android:layout_height="48.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/vr" android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_centerVertical="true" android:layout_marginStart="15.0dip" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="@color/xu" android:id="@id/axa" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="8.0dip" android:layout_toEndOf="@id/vr" />
+    <preprocessed.conection.processer.discriminant.SVGGroupElementView android:layout_width="12.0dip" android:layout_height="12.0dip" android:src="@drawable/a88" android:layout_centerVertical="true" android:layout_marginEnd="12.0dip" android:layout_alignParentEnd="true" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

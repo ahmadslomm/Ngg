@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:background="@color/xh" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/a05" android:fadingEdge="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:listSelector="@android:color/transparent" android:cacheColorHint="@android:color/transparent" android:divider="@color/xf" android:dividerHeight="@dimen/uv" android:fastScrollEnabled="false" android:headerDividersEnabled="true" android:footerDividersEnabled="false" android:smoothScrollbar="true" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/l1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true">
+        <preprocessed.conection.mutate.geocode.RecordVideoTimeView android:id="@id/l0" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

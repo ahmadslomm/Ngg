@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_gravity="center" android:background="@drawable/a5f" android:layout_width="320.0dip" android:layout_height="465.0dip" app:oj="@drawable/a5f">
+        <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/a9q" android:layout_width="55.0dip" android:layout_height="55.0dip" android:layout_marginTop="150.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:a7d="@color/yc" app:a7e="1.0dip" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/a5g" android:layout_marginStart="35.0dip" app:pq="@drawable/a5g" app:xv="@id/a9q" app:yk="@id/a9q" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textColor="@color/yc" android:gravity="center" android:id="@id/ayh" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:includeFontPadding="false" app:y1="a6g" app:yk="a6g" app:yn="@id/a9q" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/abu" android:background="@drawable/aic" android:paddingTop="5.0dip" android:paddingBottom="5.0dip" android:clipToPadding="false" android:layout_width="290.0dip" android:layout_height="210.0dip" android:layout_marginBottom="13.5dip" android:paddingVertical="5.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+    </preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

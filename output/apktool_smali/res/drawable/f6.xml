@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:state_checked="true" android:id="@id/gy" android:drawable="@drawable/fi" />
+    <item android:id="@id/ou" android:drawable="@drawable/fm" app:aae="true" />
+    <item android:state_checked="false" android:id="@id/ayk" android:drawable="@android:color/transparent" />
+    <transition android:drawable="@drawable/f8" android:toId="@id/ayk" android:fromId="@id/gy" />
+    <transition android:drawable="@drawable/fa" android:toId="@id/gy" android:fromId="@id/ayk" />
+    <transition android:drawable="@drawable/f_" android:toId="@id/ayk" android:fromId="@id/ou" />
+    <transition android:drawable="@drawable/fb" android:toId="@id/ou" android:fromId="@id/ayk" />
+    <transition android:drawable="@drawable/f9" android:toId="@id/gy" android:fromId="@id/ou" />
+    <transition android:drawable="@drawable/f7" android:toId="@id/ou" android:fromId="@id/gy" />
+</animated-selector>

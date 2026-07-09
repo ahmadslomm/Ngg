@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="h3">All Photos</string>
+    <string name="h4">Cancel</string>
+    <string name="h5">Confirm</string>
+    <string name="h6">Hint</string>
+    <string name="h7">Photos</string>
+    <string name="h8">This album needs to be granted access to storage and photos, please go to Settings > App > Permissions to configure permissions.</string>
+    <string name="h9">Preview</string>
+    <string name="h_">Send</string>
+    <string name="ha">This month</string>
+    <string name="hb">This today</string>
+    <string name="hc">This week</string>
+</resources>

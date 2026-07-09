@@ -1,0 +1,123 @@
+package p000;
+
+import java.util.AbstractList;
+import java.util.Collection;
+import java.util.List;
+import java.util.RandomAccess;
+
+/* compiled from: zaffa */
+/* loaded from: classes3.dex */
+public abstract class hg7 extends AbstractList implements vk7 {
+
+    /* renamed from: a */
+    public boolean f17022a;
+
+    public hg7(boolean z) {
+        this.f17022a = z;
+    }
+
+    @Override // java.util.AbstractList, java.util.AbstractCollection, java.util.Collection, java.util.List
+    public boolean add(Object obj) {
+        m21496f();
+        return super.add(obj);
+    }
+
+    @Override // java.util.AbstractList, java.util.List
+    public boolean addAll(int i, Collection collection) {
+        m21496f();
+        return super.addAll(i, collection);
+    }
+
+    @Override // java.util.AbstractList, java.util.AbstractCollection, java.util.Collection, java.util.List
+    public void clear() {
+        m21496f();
+        super.clear();
+    }
+
+    @Override // p000.vk7
+    /* renamed from: d */
+    public final void mo21494d() {
+        if (this.f17022a) {
+            this.f17022a = false;
+        }
+    }
+
+    @Override // p000.vk7
+    /* renamed from: e */
+    public final boolean mo21495e() {
+        return this.f17022a;
+    }
+
+    @Override // java.util.AbstractList, java.util.Collection, java.util.List
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof List)) {
+            return false;
+        }
+        if (!(obj instanceof RandomAccess)) {
+            return super.equals(obj);
+        }
+        List list = (List) obj;
+        int size = size();
+        if (size != list.size()) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            if (!get(i).equals(list.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /* renamed from: f */
+    public final void m21496f() {
+        if (!this.f17022a) {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    @Override // java.util.AbstractList, java.util.Collection, java.util.List
+    public int hashCode() {
+        int size = size();
+        int i = 1;
+        for (int i2 = 0; i2 < size; i2++) {
+            i = (i * 31) + get(i2).hashCode();
+        }
+        return i;
+    }
+
+    @Override // java.util.AbstractList, java.util.List
+    public abstract Object remove(int i);
+
+    @Override // java.util.AbstractCollection, java.util.Collection, java.util.List
+    public final boolean remove(Object obj) {
+        m21496f();
+        int indexOf = indexOf(obj);
+        if (indexOf == -1) {
+            return false;
+        }
+        remove(indexOf);
+        return true;
+    }
+
+    @Override // java.util.AbstractCollection, java.util.Collection, java.util.List
+    public final boolean removeAll(Collection collection) {
+        m21496f();
+        return super.removeAll(collection);
+    }
+
+    @Override // java.util.AbstractCollection, java.util.Collection, java.util.List
+    public final boolean retainAll(Collection collection) {
+        m21496f();
+        return super.retainAll(collection);
+    }
+
+    @Override // java.util.AbstractCollection, java.util.Collection, java.util.List
+    public boolean addAll(Collection collection) {
+        m21496f();
+        return super.addAll(collection);
+    }
+}

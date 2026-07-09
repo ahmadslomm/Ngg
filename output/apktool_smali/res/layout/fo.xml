@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center" android:orientation="vertical" android:layout_width="45.0dip" android:layout_height="fill_parent" android:layout_marginLeft="12.5dip" android:layout_marginRight="12.5dip" android:layout_marginStart="12.5dip" android:layout_marginEnd="12.5dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ivGift" android:layout_width="45.0dip" android:layout_height="45.0dip" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textColor="@color/u_" android:ellipsize="end" android:id="@id/ak6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.5dip" android:singleLine="true" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

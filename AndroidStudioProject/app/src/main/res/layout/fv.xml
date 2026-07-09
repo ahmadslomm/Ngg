@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="0.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/li" android:layout_width="32.0dip" android:layout_height="32.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/td" android:visibility="gone" android:layout_width="19.329987dip" android:layout_height="12.669983dip" android:src="@drawable/aa6" app:pq="@drawable/aa6" app:xv="@id/li" app:y1="@id/li" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

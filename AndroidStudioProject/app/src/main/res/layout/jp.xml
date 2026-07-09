@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="108.0dip" android:layout_height="135.0dip" android:layout_marginEnd="10.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/py" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="centerCrop" />
+    <ImageView android:id="@id/v8" android:layout_width="28.0dip" android:layout_height="31.0dip" android:src="@drawable/uk" app:yk="a6g" app:yo="a6g" />
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g">
+        <ImageView android:id="@id/v9" android:layout_width="wrap_content" android:layout_height="22.0dip" android:adjustViewBounds="true" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+        <TextView android:textSize="10.0sp" android:textColor="@color/yc" android:id="@id/ajw" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8.0dip" app:xv="@id/v9" app:y1="a6g" app:yk="a6g" app:yo="@id/v9" />
+        <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/yc" android:id="@id/ajv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="3.0dip" app:xw="@id/v9" app:y1="a6g" app:yk="a6g" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

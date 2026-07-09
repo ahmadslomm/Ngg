@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="5.0dip" app:ez="@color/xx" app:f0="7.0dip" app:f1="0.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:id="@id/zb" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <preprocessed.conection.processer.initnewsyscache.argue.MailStaffEmailVMView android:textSize="@dimen/vj" android:textColor="@color/yc" android:layout_gravity="start|center" android:id="@id/aix" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginBottom="5.0dip" android:includeFontPadding="false" android:layout_weight="1.0" android:lineSpacingExtra="1.0dip" android:lineSpacingMultiplier="1.0" android:textDirection="locale" android:textAlignment="viewStart" android:layout_marginStart="9.329987dip" android:layout_marginEnd="40.0dip" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_gravity="end|bottom|center" android:id="@id/og" android:layout_width="67.32999dip" android:layout_height="54.669983dip" android:layout_marginTop="7.0dip" />
+    </preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>
+</androidx.cardview.widget.CardView>

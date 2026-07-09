@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="@dimen/wa" android:paddingRight="@dimen/wa" android:layout_width="fill_parent" android:layout_height="63.329987dip" android:paddingStart="@dimen/wa" android:paddingEnd="@dimen/wa"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/ta" android:layout_width="43.329987dip" android:layout_height="43.329987dip" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:layout_weight="1.0" android:layout_marginStart="10.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textColor="@color/xu" android:ellipsize="end" android:id="@id/ao2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vo" android:textColor="@color/xk" android:ellipsize="end" android:id="@id/ane" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.669983dip" android:singleLine="true" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textColor="@color/yc" android:gravity="center" android:id="@id/ajs" android:background="@drawable/ahx" android:layout_width="66.66998dip" android:layout_height="28.0dip" android:layout_marginLeft="10.0dip" android:layout_marginStart="10.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

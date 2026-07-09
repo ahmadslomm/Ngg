@@ -1,0 +1,17 @@
+# Original & working APK (>100MB, GitHub rejects; you already hold the binary)
+apk_copy/
+*.apk
+
+# Downloaded tooling & Python venv (not part of the project)
+tools/
+
+# Raw full-unzip duplicate of the APK contents
+extracted/
+
+# Redundant: jadx Java is mirrored in AndroidStudioProject/_decompiled_reference,
+# and apktool res is mirrored in AndroidStudioProject/app/src/main/res
+output/jadx_out/
+output/apktool_out/
+
+# Logs
+output/*.log

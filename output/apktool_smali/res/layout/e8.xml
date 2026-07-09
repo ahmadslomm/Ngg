@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="#ffeeeeee" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="34.669983dip" android:paddingStart="11.299988dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.299988dip" android:textColor="#ff5c5b67" android:id="@id/apb" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.299988dip" android:textColor="#ff5c5b67" android:id="@id/cm" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="#ffffffff" android:layout_width="fill_parent" android:layout_height="42.0dip" android:paddingStart="11.299988dip">
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <EditText android:textSize="15.299988dip" android:textColor="#ff333333" android:textColorHint="#ffd1d0dc" android:id="@id/cj" android:background="@color/zi" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" android:inputType="textPassword" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.299988dip" android:textColor="#ffd1d0dc" android:id="@id/ck" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:maxLines="2" />
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ci" android:background="@drawable/lp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="8.669983dip" app:of="@drawable/lp" />
+        <preprocessed.conection.mutate.steak.NetworkingSMGCeImageLoading android:id="@id/cn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false" android:button="@null" android:layout_marginEnd="14.0dip" app:ov="@drawable/lt" app:ow="@drawable/ls" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <Button android:textSize="15.299988dip" android:textColor="#ffffffff" android:id="@id/cl" android:background="@drawable/agk" android:layout_width="fill_parent" android:layout_height="42.0dip" android:layout_marginTop="24.669983dip" android:layout_marginStart="11.299988dip" android:layout_marginEnd="11.299988dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

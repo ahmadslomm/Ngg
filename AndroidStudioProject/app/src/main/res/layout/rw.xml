@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="76.0dip" android:layout_height="75.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView android:textSize="8.0dip" android:textColor="#ffececec" android:gravity="center_horizontal" android:id="@id/aj6" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="31.0dip" app:yo="a6g" />
+    <TextView android:textSize="18.0dip" android:textColor="#ffececec" android:id="@id/al_" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="49.0dip" android:text="1" android:includeFontPadding="false" android:layout_marginStart="7.0dip" app:yk="a6g" app:yo="a6g" />
+    <TextView android:textSize="18.0dip" android:textColor="#ffececec" android:id="@id/ala" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="49.0dip" android:text="5" android:includeFontPadding="false" android:layout_marginStart="22.5dip" app:yk="a6g" app:yo="a6g" />
+    <TextView android:textSize="20.0sp" android:textColor="#ffececec" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="45.5dip" android:text=":" android:includeFontPadding="false" android:layout_marginStart="35.5dip" app:yk="a6g" app:yo="a6g" />
+    <TextView android:textSize="18.0dip" android:textColor="#ffececec" android:id="@id/amq" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="49.0dip" android:text="1" android:includeFontPadding="false" android:layout_marginStart="43.0dip" app:yk="a6g" app:yo="a6g" />
+    <TextView android:textSize="18.0dip" android:textColor="#ffececec" android:id="@id/amr" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="49.0dip" android:text="5" android:includeFontPadding="false" android:layout_marginStart="58.5dip" app:yk="a6g" app:yo="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

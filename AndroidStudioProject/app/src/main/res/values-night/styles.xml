@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="nh" parent="@style/nf" />
+    <style name="ni" parent="@style/nf" />
+    <style name="nj" parent="@style/no" />
+    <style name="nk" parent="@style/np" />
+    <style name="nl" parent="@style/nq" />
+    <style name="nm" parent="@style/nr" />
+    <style name="nn" parent="@style/o0" />
+    <style name="p1" parent="@style/ox" />
+    <style name="p2" parent="@style/oy" />
+    <style name="p3" parent="@style/oz" />
+    <style name="p4" parent="@style/ox" />
+    <style name="p5" parent="@style/oz" />
+    <style name="p6" parent="@style/pg" />
+    <style name="p7" parent="@style/ph" />
+    <style name="p8" parent="@style/pi" />
+    <style name="p9" parent="@style/pj" />
+    <style name="p_" parent="@style/pk" />
+    <style name="pa" parent="@style/pl" />
+    <style name="pb" parent="@style/pm" />
+    <style name="pc" parent="@style/pn" />
+    <style name="pd" parent="@style/po" />
+    <style name="pe" parent="@style/q5" />
+    <style name="pf" parent="@style/q6" />
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="75.0dip" android:paddingStart="10.0dip">
+        <preprocessed.conection.mutate.geocode.LiveSquareDrawerServiceView android:id="@id/p6" android:layout_width="53.0dip" android:layout_height="53.0dip" android:layout_centerVertical="true" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textStyle="bold" android:textColor="@color/zj" android:ellipsize="end" android:id="@id/p7" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" android:layout_toStartOf="@id/p5" android:layout_toEndOf="@id/p6" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0dip" android:textColor="@color/yc" android:gravity="center" android:id="@id/p5" android:background="@drawable/amf" android:layout_width="wrap_content" android:layout_height="28.0dip" android:singleLine="true" android:layout_centerVertical="true" android:paddingStart="15.0dip" android:paddingEnd="15.0dip" android:layout_marginEnd="13.0dip" android:layout_alignParentEnd="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

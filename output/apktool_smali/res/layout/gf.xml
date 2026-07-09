@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/a5g" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="@dimen/v2" layout="@layout/pb" />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:id="@id/aes" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.processer.discriminant.disperser.EditContentResourceModelView android:id="@id/abo" android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@drawable/amg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a_e" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" android:layout_marginStart="37.0dip" android:layout_marginEnd="37.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="#ffbcbbc7" android:id="@id/aio" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/q6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentEnd="true" app:oh="@drawable/aq0" app:or="@drawable/apz" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0dip" android:textColor="@color/yc" android:gravity="center" android:id="@id/ai5" android:background="@drawable/amn" android:layout_width="fill_parent" android:layout_height="42.0dip" android:layout_marginTop="20.0dip" android:layout_marginBottom="27.0dip" android:layout_marginStart="34.0dip" android:layout_marginEnd="34.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

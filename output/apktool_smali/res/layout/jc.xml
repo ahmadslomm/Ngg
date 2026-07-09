@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="70.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:layout_width="50.0dip" android:layout_height="50.0dip">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/vy" android:layout_width="50.0dip" android:layout_height="50.0dip" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/zj" android:id="@id/atf" android:background="@drawable/nb" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="6.0dip" android:paddingEnd="6.0dip" android:layout_alignParentEnd="true" app:of="@drawable/nb" />
+    </RelativeLayout>
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="#ffffeaa8" android:id="@id/apy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:gravity="center" android:id="@id/aq6" android:layout_width="70.0dip" android:layout_height="30.0dip" />
+</LinearLayout>

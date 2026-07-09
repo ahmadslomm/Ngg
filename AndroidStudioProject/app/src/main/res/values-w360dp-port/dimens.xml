@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="q2">4.0dip</dimen>
+    <dimen name="q4">18.0dip</dimen>
+    <dimen name="q5">40.0dip</dimen>
+    <dimen name="q6">2.0dip</dimen>
+    <dimen name="q8">2.0dip</dimen>
+    <dimen name="q9">40.0dip</dimen>
+    <dimen name="q_">40.0dip</dimen>
+    <dimen name="qm">4.0dip</dimen>
+</resources>

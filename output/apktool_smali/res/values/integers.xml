@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="a">220</integer>
+    <integer name="b">150</integer>
+    <integer name="c">150</integer>
+    <integer name="d">150</integer>
+    <integer name="e">127</integer>
+    <integer name="f">150</integer>
+    <integer name="g">2</integer>
+    <integer name="h">300</integer>
+    <integer name="google_play_services_version">12451000</integer>
+    <integer name="i">320</integer>
+    <integer name="w">250</integer>
+    <integer name="x">300</integer>
+    <integer name="y">350</integer>
+    <integer name="z">400</integer>
+    <integer name="a0">50</integer>
+    <integer name="a2">150</integer>
+    <integer name="ab">300</integer>
+    <integer name="ac">350</integer>
+    <integer name="ad">200</integer>
+    <integer name="ae">250</integer>
+    <integer name="af">75</integer>
+    <integer name="ag">150</integer>
+    <integer name="ah">0</integer>
+    <integer name="ai">4</integer>
+    <integer name="aj">100</integer>
+    <integer name="ak">100</integer>
+    <integer name="al">1</integer>
+    <integer name="am">1</integer>
+    <integer name="an">3</integer>
+    <integer name="ao">75</integer>
+    <integer name="ap">120</integer>
+    <integer name="aq">100</integer>
+    <item type="integer" name="ar">@integer/z</item>
+    <item type="integer" name="as">@integer/w</item>
+    <item type="integer" name="at">@integer/a2</item>
+    <item type="integer" name="au">@integer/a2</item>
+    <integer name="av">16</integer>
+    <integer name="aw">32</integer>
+    <integer name="ax">32</integer>
+    <integer name="ay">52</integer>
+    <integer name="az">250</integer>
+    <integer name="b0">2</integer>
+    <integer name="b1">1</integer>
+    <integer name="b2">0</integer>
+    <integer name="b3">200</integer>
+    <integer name="b4">999</integer>
+    <integer name="b5">200</integer>
+    <integer name="b6">0</integer>
+    <integer name="b7">20</integer>
+    <integer name="b8">201</integer>
+</resources>

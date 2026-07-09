@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.InteractionLoggingOnGELControllerLayout android:id="@id/ab3" android:layout_width="76.0dip" android:layout_height="76.0dip" android:layout_marginLeft="0.0dip" android:layout_marginRight="9.669983dip" android:layout_marginStart="0.0dip" android:layout_marginEnd="9.669983dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/sd" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="centerCrop" app:dk="7.0dip" app:ahq="ab4" />
+    <preprocessed.conection.processer.discriminant.disperser.LuckyDogTimerTaskInternalProtocolView android:layout_gravity="end" android:id="@id/qo" android:visibility="gone" android:layout_width="20.0dip" android:layout_height="20.0dip" android:layout_margin="3.3299866dip" android:src="@drawable/nn" app:pq="@drawable/nn" />
+</preprocessed.conection.processer.discriminant.InteractionLoggingOnGELControllerLayout>

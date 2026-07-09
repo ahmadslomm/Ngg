@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/az7" android:layout_width="fill_parent" android:layout_height="70.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/a1g" android:layout_width="fill_parent" android:layout_height="69.5dip" android:layout_marginStart="@dimen/wa" android:layout_marginEnd="@dimen/wa">
+        <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="50.0dip" android:layout_height="50.0dip">
+            <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/az6" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+            <androidx.appcompat.widget.AppCompatImageView android:id="@id/vt" android:visibility="gone" android:layout_width="17.0dip" android:layout_height="17.0dip" app:xv="a6g" app:y1="a6g" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginStart="8.0dip">
+            <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout android:id="@id/ads" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" app:a8r="false" app:a8s="1.0" app:a8t="@color/w7" app:a8v="true" app:a8y="2800" app:a93="@color/wp" app:a9_="29.0">
+                    <preprocessed.conection.mutate.geocode.PlaybackEndConfigView android:textSize="@dimen/v7" android:textStyle="bold" android:textColor="@color/zj" android:ellipsize="end" android:id="@id/a5c" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:drawablePadding="5.0dip" android:paddingEnd="5.0dip" />
+                </preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout>
+                <include layout="@layout/ol" />
+                <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ra" android:layout_width="16.0dip" android:layout_height="16.0dip" android:layout_marginStart="5.0dip" />
+            </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+            <preprocessed.conection.processer.discriminant.PostImageParameterFloatingStickersEventView android:orientation="vertical" android:id="@id/rvSignIcons" android:layout_width="fill_parent" android:layout_height="30.0dip" android:layout_marginTop="5.0dip" android:layout_toEndOf="@id/iv_avatar" />
+        </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/wv" android:layout_width="50.0dip" android:layout_height="50.0dip" android:scaleType="fitXY" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/uu" android:visibility="gone" android:layout_width="15.0dip" android:layout_height="15.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/xb" android:layout_marginStart="15.0dip" />
+    <View android:background="#0dffffff" android:layout_width="fill_parent" android:layout_height="0.5dip" android:layout_below="@id/a1g" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

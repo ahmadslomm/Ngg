@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar android:layout_width="fill_parent" android:layout_height="0.0dip" app:xw="@id/ov" app:yo="a6g">
+        <androidx.viewpager2.widget.ViewPager2 android:id="@id/b0b" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar>
+    <preprocessed.conection.mutate.corrected.forenotice.ConsultationBView android:gravity="center" android:orientation="horizontal" android:id="@id/ov" android:layout_width="fill_parent" android:layout_height="38.0dip" app:xv="a6g" app:yk="a6g" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ivGroup" android:layout_width="wrap_content" android:layout_height="wrap_content" app:xw="@id/tvGroupDesc" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:yq="a6b" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vp" android:textStyle="bold" android:textColor="@color/yc" android:gravity="center" android:id="@id/tvGroupDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginStart="13.0dip" android:layout_marginEnd="13.0dip" app:xp="true" app:xw="@id/tvGroupAction" app:y1="a6g" app:yk="a6g" app:yn="@id/ivGroup" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textColor="@color/yc" android:gravity="center" android:id="@id/tvGroupAction" android:background="@drawable/aj3" android:layout_width="wrap_content" android:layout_height="28.669983dip" android:layout_marginTop="22.0dip" android:layout_marginBottom="9.0dip" android:minWidth="98.0dip" android:paddingStart="10.0dip" android:paddingEnd="10.0dip" app:xp="true" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yn="@id/tvGroupDesc" />
+    <androidx.constraintlayout.widget.Group android:id="@id/nd" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" app:k4="ivGroup,tvGroupAction,tvGroupDesc" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:id="@id/ae0" android:layout_width="fill_parent" android:layout_height="433.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.Guideline android:orientation="horizontal" android:id="@id/nx" android:layout_width="wrap_content" android:layout_height="wrap_content" app:y3="93.0dip" />
+    <ImageView android:textSize="@dimen/wi" android:textColor="@color/yw" android:id="@id/tvTitle" android:layout_width="266.0dip" android:layout_height="39.0dip" android:layout_marginTop="26.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:yq="a6b" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/v8" android:textColor="@color/xo" android:gravity="center" android:id="@id/anl" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="111.0dip" app:yk="a6g" app:yo="a6g" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/a8m" android:layout_width="225.0dip" android:layout_height="151.0dip" android:layout_marginTop="10.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/anl" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0dip" android:textStyle="bold" android:textColor="#ff693507" android:gravity="center" android:id="@id/aiw" android:background="@drawable/aos" android:layout_width="202.0dip" android:layout_height="59.0dip" android:layout_marginTop="14.0dip" android:layout_marginBottom="86.5dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/ud" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/iz" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vq" android:textColor="@color/yc" android:ellipsize="end" android:gravity="center" android:id="@id/ak3" android:background="@drawable/aid" android:layout_width="fill_parent" android:layout_height="33.329987dip" android:layout_marginLeft="15.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="15.0dip" android:layout_marginBottom="7.3299866dip" android:singleLine="true" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
+    <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:id="@id/af9" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
+    <View android:background="#1affffff" android:layout_width="fill_parent" android:layout_height="0.5dip" />
+    <include android:id="@id/a4w" layout="@layout/fp" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

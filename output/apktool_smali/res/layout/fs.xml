@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:paddingLeft="@dimen/wa" android:paddingRight="@dimen/wa" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingStart="@dimen/wa" android:paddingEnd="@dimen/wa"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="18.669983dip" android:layout_marginBottom="18.669983dip">
+        <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vo" android:textColor="@color/z3" android:gravity="center_vertical" android:id="@id/anq" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawablePadding="5.0dip" />
+        </preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textColor="@color/z3" android:ellipsize="end" android:id="@id/anr" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="30.0dip" android:singleLine="true" android:layout_marginStart="30.0dip" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

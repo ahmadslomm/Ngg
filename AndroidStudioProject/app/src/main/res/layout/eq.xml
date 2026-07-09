@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:background="@drawable/z8" android:layout_width="fill_parent" android:layout_height="101.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/wg" android:layout_width="60.0dip" android:layout_height="60.0dip" app:xv="@id/wh" app:y1="@id/wh" app:yk="@id/wh" app:yo="@id/wh" />
+    <preprocessed.conection.processer.discriminant.JCommonCollectLocationManagerView android:id="@id/wh" android:layout_width="90.0dip" android:layout_height="90.0dip" android:layout_marginStart="27.0dip" app:xv="a6g" app:yk="a6g" />
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/vk" android:layout_width="160.0dip" android:layout_height="65.0dip" android:layout_marginTop="23.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/tl" android:layout_width="60.0dip" android:layout_height="60.0dip" app:xv="@id/tm" app:y1="@id/tm" app:yk="@id/tm" app:yo="@id/tm" />
+    <preprocessed.conection.processer.discriminant.JCommonCollectLocationManagerView android:id="@id/tm" android:layout_width="90.0dip" android:layout_height="90.0dip" android:layout_marginEnd="27.0dip" app:xv="a6g" app:y1="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

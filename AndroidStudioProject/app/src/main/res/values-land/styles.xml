@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="vf" parent="@style/fy">
+        <item name="ab_">gf</item>
+        <item name="abw">ly</item>
+    </style>
+    <style name="a1o" parent="@style/v2">
+        <item name="android:textAppearance">?acx</item>
+        <item name="android:textColor">?ia</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_gravity">start|center|top</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">@integer/am</item>
+    </style>
+    <style name="a1r" parent="@style/gl">
+        <item name="android:layout_gravity">start|bottom|center</item>
+    </style>
+</resources>

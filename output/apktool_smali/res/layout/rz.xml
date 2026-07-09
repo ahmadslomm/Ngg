@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ok" android:layout_width="43.0dip" android:layout_height="43.0dip" android:src="@drawable/t9" app:pq="@drawable/t9" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.WKIDLMoveConversationRequestView android:textSize="10.0sp" android:textColor="@color/zj" android:gravity="bottom|center" android:id="@id/ax_" android:layout_width="60.0dip" android:layout_height="43.0dip" app:xv="@id/ok" app:y1="a6g" app:yk="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="9.0sp" android:textColor="@color/zj" android:id="@id/ax5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/ok" />
+</androidx.constraintlayout.widget.ConstraintLayout>

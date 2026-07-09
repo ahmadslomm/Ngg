@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:visibility="visible" android:layout_width="375.0dip" android:layout_height="110.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/f2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="100.0dip" app:xv="a6g" app:yo="a6g">
+        <preprocessed.conection.processer.discriminant.SVGGroupElementView android:layout_width="fill_parent" android:layout_height="fill_parent" android:src="@drawable/mw" />
+        <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/iv_avatar" android:layout_width="48.5dip" android:layout_height="48.5dip" android:layout_marginTop="31.0dip" android:layout_marginStart="67.5dip" app:gy="@color/yl" app:h0="1.5dip" app:yk="a6g" app:yo="a6g" />
+        <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/s9" android:layout_width="48.5dip" android:layout_height="48.5dip" android:layout_marginTop="31.0dip" android:layout_marginStart="30.0dip" app:gy="@color/yl" app:h0="1.5dip" app:yk="a6g" app:yo="a6g" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_width="36.0dip" android:layout_height="33.0dip" android:layout_marginTop="57.5dip" android:src="@drawable/mv" android:layout_marginStart="51.5dip" app:pq="@drawable/mv" app:yk="a6g" app:yo="a6g" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0sp" android:textColor="@color/vv" android:id="@id/aix" android:layout_width="205.0dip" android:layout_height="wrap_content" android:layout_marginTop="35.0dip" android:layout_marginStart="25.0dip" app:yj="@id/iv_avatar" app:yo="a6g" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:y_="0.367" app:yk="a6g" app:yo="a6g">
+        <View android:id="@id/b04" android:layout_width="50.0dip" android:layout_height="fill_parent" />
+        <View android:id="@id/b03" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <View android:id="@id/b05" android:layout_width="70.0dip" android:layout_height="fill_parent" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

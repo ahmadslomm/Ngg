@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center" android:orientation="horizontal" android:id="@id/a2c" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:id="@id/awu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.processer.discriminant.reflowable.assignments.QUICardListCardCellConfigView android:textSize="11.5sp" android:textColor="#ffffffff" android:gravity="center" android:id="@id/ab_" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@id/a2c" android:layout_toEndOf="@id/a2c" mv:a41="#fffd481f" mv:a43="true" mv:a45="#ffffffff" mv:a46="1.0dip" xmlns:mv="http://schemas.android.com/apk/res-auto" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

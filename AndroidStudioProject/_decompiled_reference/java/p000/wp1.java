@@ -1,0 +1,8 @@
+package p000;
+
+/* compiled from: zaffa */
+/* loaded from: classes3.dex */
+public final class wp1 extends Exception {
+    public wp1(int i) {
+    }
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:background="@color/xh" android:clipChildren="false" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.mutate.geocode.KMTapDetectScrollViewDelegateLayout android:id="@id/ch" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/j" android:layout_alignWithParentIfMissing="true">
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/cg" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    </preprocessed.conection.mutate.geocode.KMTapDetectScrollViewDelegateLayout>
+    <preprocessed.conection.processer.cases.transferable.SwiftSoup9Evaluator14IndexEvaluator android:id="@id/j" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="20.0dip" android:layout_alignParentBottom="true" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

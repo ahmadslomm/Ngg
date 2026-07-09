@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.CameraWriterLayout android:id="@id/aes" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a85" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="16.0dip" android:textStyle="bold" android:textColor="@color/yc" android:id="@id/aui" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginStart="7.0dip" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a8d" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    </LinearLayout>
+</preprocessed.conection.processer.discriminant.CameraWriterLayout>

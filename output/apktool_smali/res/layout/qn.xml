@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.XCAdYYImageEncoderView android:textSize="@dimen/vo" android:ellipsize="end" android:gravity="center" android:id="@id/agm" android:layout_width="fill_parent" android:layout_height="42.0dip" android:layout_marginTop="10.0dip" android:singleLine="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" />

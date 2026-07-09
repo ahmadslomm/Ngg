@@ -1,0 +1,116 @@
+
+== ACTIVITIES (81) ==
+  com.android.billingclient.api.ProxyBillingActivity
+  com.android.billingclient.api.ProxyBillingActivityV2
+  com.donkingliang.imageselector.ClipImageActivity
+  com.donkingliang.imageselector.ImageSelectorActivity
+  com.donkingliang.imageselector.PreviewActivity
+  com.facebook.CustomTabActivity
+  com.facebook.CustomTabMainActivity
+  com.facebook.FacebookActivity
+  com.google.android.gms.auth.api.signin.internal.SignInHubActivity
+  com.google.android.gms.common.api.GoogleApiActivity
+  com.pairip.licensecheck.LicenseActivity
+  preprocessed.conection.mutate.nudged.AMapLogFileHandlerActivity
+  preprocessed.conection.mutate.nudged.ATouchAreaExpandableButtonActivity
+  preprocessed.conection.mutate.nudged.AddFriendSendMessageViewControllerDelegate
+  preprocessed.conection.mutate.nudged.AnlyStationAddSpecialsViewControllerActivity
+  preprocessed.conection.mutate.nudged.AvatarSceneSmallHome
+  preprocessed.conection.mutate.nudged.CLCoverWindowActivity
+  preprocessed.conection.mutate.nudged.DismissDialogCommandRootActivity
+  preprocessed.conection.mutate.nudged.FaceBubbleAnimationViewActivity
+  preprocessed.conection.mutate.nudged.GRWMessagingCacheActivity
+  preprocessed.conection.mutate.nudged.GuildAIO36GuildAIOCellHeaderViewSubviewLayoutsActivity
+  preprocessed.conection.mutate.nudged.GuildFeedThirdVideoInfoProtocolActivity
+  preprocessed.conection.mutate.nudged.HNewOfflineResActivity
+  preprocessed.conection.mutate.nudged.IDriveChannelParamsActivity
+  preprocessed.conection.mutate.nudged.IZPlanMemeFaceServiceActivity
+  preprocessed.conection.mutate.nudged.InterviewCoachReplayModelActivity
+  preprocessed.conection.mutate.nudged.LTDrawFeedAdActivity
+  preprocessed.conection.mutate.nudged.LiveGoodListViewHandlerActivity
+  preprocessed.conection.mutate.nudged.LiveSaaSSwitchSceneParamsActivity
+  preprocessed.conection.mutate.nudged.LocAuthorizationAlertActivity
+  preprocessed.conection.mutate.nudged.MFaceActionDelegateActivity
+  preprocessed.conection.mutate.nudged.MerchantAgileLiveCardAdMetaLoggerActivity
+  preprocessed.conection.mutate.nudged.MoziOpsLogUploadRespondEventModelActivity
+  preprocessed.conection.mutate.nudged.PDLCacheMetadataRepositoryImplActivity
+  preprocessed.conection.mutate.nudged.PPrivacyPolicyWebViewControllerActivity
+  preprocessed.conection.mutate.nudged.PlayerAPMHelperActivity
+  preprocessed.conection.mutate.nudged.QGroupMemberRecentChatVCServiceActivity
+  preprocessed.conection.mutate.nudged.RedCarpetShelfSupportedRenderersActivity
+  preprocessed.conection.mutate.nudged.S33SequencesSeqBaseSeqIteratorActivity
+  preprocessed.conection.mutate.nudged.SearchKit19SRUserSecurityModel
+  preprocessed.conection.mutate.nudged.StorageAccessProtocolActivity
+  preprocessed.conection.mutate.nudged.TPPlayerAdapterActivity
+  preprocessed.conection.mutate.nudged.VideoEditCanvasHelperActivity
+  preprocessed.conection.mutate.nudged.WKOrderModelActivity
+  preprocessed.conection.mutate.nudged.YouthSearchChannelRecommdTabViewDelegateActivity
+  preprocessed.conection.mutate.nudged.prettify.BDPanShareDirServiceActivity
+  preprocessed.conection.mutate.warm.suspensive.D29Double2DoubleMapEntryActivity
+  preprocessed.conection.mutate.warm.suspensive.OMIDJSFetcherActivity
+  preprocessed.conection.mutate.warm.suspensive.Profile23SignMeNoteSectionHeaderActivity
+  preprocessed.conection.processer.LFetchUserRoomServiceActivity
+  preprocessed.conection.processer.PlayerOverlayActionSupportedRenderersActivity
+  preprocessed.conection.processer.cases.ProfileAdDataActivity
+  preprocessed.conection.processer.clendar.factioy.neat.DownloadHelper
+  preprocessed.conection.processer.clendar.factioy.neat.NearbySearchPoiViewActivity
+  preprocessed.conection.processer.clendar.factioy.neat.QLRoomDataSourceActivity
+  preprocessed.conection.processer.clendar.factioy.neat.SceneSettingsModelActivity
+  preprocessed.conection.processer.commutepage.AAVVideoPlayerResourceLoaderControllerDelegateActivity
+  preprocessed.conection.processer.commutepage.EUWordCardPhonItemCellActivity
+  preprocessed.conection.processer.gated.remuxer.justified.SMMessageBaseCellViewActivity
+  preprocessed.conection.processer.gkms.BUMultiFormatActivity
+  preprocessed.conection.processer.gkms.IDriveLabelModificationActivity
+  preprocessed.conection.processer.gkms.QSLMainWindowRootViewControllerActivity
+  preprocessed.conection.processer.gkms.lerch.IdssTabTopCardModelActivity
+  preprocessed.conection.processer.globaltrain.StorageChatSourceViewControllerActivity
+  preprocessed.conection.processer.initnewsyscache.interaction.ephemeral.FootmarkFinishControllerActivity
+  preprocessed.conection.processer.interval.ColiveAgoraServiceDelegateActivity
+  preprocessed.conection.processer.interval.HomeTravelStepModelActivity
+  preprocessed.conection.processer.interval.PreciseCareResolutionFactorActivity
+  preprocessed.conection.processer.interval.SClientRequestInfoActivity
+  preprocessed.conection.processer.interval.TinyVideoRedEnvolopeEnterViewActivity
+  preprocessed.conection.processer.interval.VASRenderLottieViewModelActivity
+  preprocessed.conection.processer.maneger.gatherer.BPlusBaseRefreshComponentActivity
+  preprocessed.conection.processer.multitude.DetailNatantPaddingViewUpdatedModelActivity
+  preprocessed.conection.processer.place.categorie.pardise.LiveSaaIESLiveSaaRoomVerifyRootActivity
+  preprocessed.conection.processer.place.categorie.pardise.PanFLTRouterServiceProtocolActivity
+  preprocessed.conection.processer.place.categorie.pardise.PhotoDoodleViewActivity
+  preprocessed.conection.processer.place.categorie.pardise.SFFontStyleSettingViewDelegateActivity
+  preprocessed.conection.processer.prevent.raking.provinces.KGYouthPlayMoreViewDelegateActivity
+  preprocessed.conection.processer.rcognizer.CYNewLifeExchangeViewActivity
+  preprocessed.conection.processer.verdant.Notability19ToolPresetsItemViewActivity
+  preprocessed.conection.processer.verdant.RevokRspActivity
+
+== SERVICES (10) ==
+  androidx.room.MultiInstanceInvalidationService
+  com.google.android.datatransport.runtime.backends.TransportBackendDiscovery
+  com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService
+  com.google.android.gms.auth.api.signin.RevocationBoundService
+  com.google.android.gms.measurement.AppMeasurementJobService
+  com.google.android.gms.measurement.AppMeasurementService
+  com.google.firebase.components.ComponentDiscoveryService
+  com.google.firebase.messaging.FirebaseMessagingService
+  preprocessed.conection.mutate.conlloction.LibrarySubscribeRecommendCategoryModelService
+  preprocessed.conection.mutate.conlloction.SFFeedImmersiveLongImageCellService
+
+== RECEIVERS (7) ==
+  androidx.profileinstaller.ProfileInstallReceiver
+  com.facebook.AuthenticationTokenManager$CurrentAuthenticationTokenChangedBroadcastReceiver
+  com.facebook.CurrentAccessTokenExpirationBroadcastReceiver
+  com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver
+  com.google.android.gms.measurement.AppMeasurementReceiver
+  com.google.firebase.iid.FirebaseInstanceIdReceiver
+  preprocessed.conection.mutate.segments.KWAIFaceActionData
+
+== PROVIDERS (8) ==
+  androidx.startup.InitializationProvider
+  com.adjust.sdk.SystemLifecycleContentProvider
+  com.donkingliang.imageselector.provider.ImageSelectorProvider
+  com.facebook.FacebookContentProvider
+  com.facebook.internal.FacebookInitProvider
+  com.google.firebase.provider.FirebaseInitProvider
+  me.jessyan.autosize.InitProvider
+  preprocessed.conection.mutate.warm.ThirdTokenFetchRequest
+
+== main activity == preprocessed.conection.processer.PlayerOverlayActionSupportedRenderersActivity

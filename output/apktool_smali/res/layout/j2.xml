@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:layout_marginTop="3.0dip" android:layout_marginRight="3.0dip" android:layout_marginBottom="3.0dip" android:layout_marginHorizontal="3.0dip" android:layout_marginVertical="3.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/tg" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="28.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/afj" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="28.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/vi" android:visibility="gone" android:layout_width="114.0dip" android:layout_height="28.0dip" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="11.0dip" android:textColor="@color/zj" android:ellipsize="marquee" android:gravity="start|center" android:id="@id/arc" android:focusable="true" android:visibility="gone" android:layout_width="85.0dip" android:layout_height="28.0dip" android:singleLine="true" android:marqueeRepeatLimit="marquee_forever" android:textDirection="locale" app:y1="@id/vi" app:yo="@id/vi" />
+</androidx.constraintlayout.widget.ConstraintLayout>

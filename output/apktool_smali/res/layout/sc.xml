@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/a64" android:layout_width="38.669983dip" android:layout_height="38.669983dip" android:layout_alignParentTop="true" android:layout_marginStart="13.339996dip" android:layout_alignParentEnd="true" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2.0dip" android:layout_marginStart="8.0dip">
+        <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="60.0dip">
+            <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/x2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="fitXY" android:adjustViewBounds="true" android:maxHeight="134.0dip" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="@color/uh" android:gravity="center" android:id="@id/atn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignTop="@id/x2" android:layout_alignBottom="@id/x2" android:layout_alignStart="@id/x2" android:layout_alignEnd="@id/x2" />
+        </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

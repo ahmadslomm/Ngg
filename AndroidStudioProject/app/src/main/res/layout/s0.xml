@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.cheat.KGSVOpenCardPointInfoView android:id="@id/b56" android:background="#ffffff00" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    <preprocessed.conection.processer.discriminant.cheat.KGSVOpenCardPointInfoView android:id="@id/b55" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    <preprocessed.conection.processer.discriminant.cheat.KGSVOpenCardPointInfoView android:id="@id/b52" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    <preprocessed.conection.processer.discriminant.cheat.KGSVOpenCardPointInfoView android:id="@id/b53" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    <preprocessed.conection.processer.discriminant.cheat.KGSVOpenCardPointInfoView android:id="@id/b54" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    <preprocessed.conection.processer.discriminant.cheat.KGSVOpenCardPointInfoView android:id="@id/b51" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+</LinearLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:contentDescription="waitio"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/b0s" android:visibility="invisible" android:layout_width="345.0dip" android:layout_height="80.0dip" />
+    <RelativeLayout android:id="@id/b0t" android:visibility="gone" android:layout_width="345.0dip" android:layout_height="80.0dip" />
+</RelativeLayout>

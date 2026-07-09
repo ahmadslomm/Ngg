@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="103.0dip" android:layout_height="125.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/sx" android:layout_width="55.0dip" android:layout_height="44.0dip" android:layout_marginTop="35.0dip" android:scaleType="fitXY" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0dip" android:textStyle="bold" android:gravity="center" android:id="@id/aj7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="18.0dip" android:layout_marginBottom="8.5dip" app:xv="a6g" app:y1="a6g" app:yk="a6g">
+        <ImageView android:layout_width="18.0dip" android:layout_height="18.0dip" android:src="@drawable/u6" />
+        <preprocessed.conection.processer.discriminant.WKIDLMoveConversationRequestView android:textSize="14.5dip" android:textStyle="bold" android:textColor="@color/zj" android:gravity="center" android:layout_gravity="center_vertical" android:id="@id/ak6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" android:layout_marginStart="3.0dip" app:a_z="0.8000001dip" />
+    </LinearLayout>
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/sy" android:visibility="gone" android:layout_width="97.0dip" android:layout_height="119.0dip" android:src="@drawable/tp" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="315.0dip" android:layout_height="wrap_content" app:ez="@color/yc" app:f0="15.0dip" app:f1="0.0dip" app:ki="0.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="18.0dip" android:textStyle="bold" android:textColor="@color/xv" android:id="@id/axa" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dip" />
+            <TextView android:textSize="15.0dip" android:textColor="@color/vl" android:gravity="center" android:id="@id/ax_" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" />
+            <RelativeLayout android:layout_width="fill_parent" android:layout_height="100.0dip" android:layout_marginTop="16.0dip">
+                <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ivGift" android:layout_width="100.0dip" android:layout_height="100.0dip" android:layout_centerInParent="true" />
+                <TextView android:textSize="12.0dip" android:textColor="@color/zj" android:gravity="center" android:id="@id/apw" android:background="@drawable/am0" android:layout_width="wrap_content" android:layout_height="22.0dip" android:paddingStart="12.0dip" android:paddingEnd="12.0dip" android:layout_marginStart="70.0dip" />
+            </RelativeLayout>
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0dip" android:textColor="@color/vl" android:gravity="center" android:id="@id/at0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="32.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="32.0dip" android:minHeight="21.0dip" android:includeFontPadding="false" android:layout_marginHorizontal="32.0dip" />
+            <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginTop="25.0dip" android:layout_marginBottom="25.0dip">
+                <preprocessed.conection.mutate.geocode.LiveSaaSSearchPlaceHolderManagerView android:textSize="16.0dip" android:textColor="@color/vl" android:gravity="center" android:id="@id/ap4" android:background="@drawable/aik" android:layout_width="0.0dip" android:layout_height="50.0dip" android:layout_weight="1.0" android:layout_marginStart="20.0dip" app:d1="a3l" />
+                <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/b0x" android:background="@drawable/ake" android:layout_width="0.0dip" android:layout_height="50.0dip" android:layout_weight="1.0" android:layout_marginStart="11.0dip" android:layout_marginEnd="20.0dip">
+                    <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/u6" />
+                    <preprocessed.conection.mutate.geocode.LiveSaaSSearchPlaceHolderManagerView android:textSize="16.0dip" android:textColor="@color/yc" android:gravity="center" android:id="@id/ap2" android:layout_width="wrap_content" android:layout_height="50.0dip" android:layout_marginStart="6.0dip" app:d1="a3l" />
+                </LinearLayout>
+            </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+        </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+</androidx.cardview.widget.CardView>

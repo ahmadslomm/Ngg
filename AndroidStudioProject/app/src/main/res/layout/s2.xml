@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@id/il" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.PlaybackEndConfigView android:textSize="12.0dip" android:textColor="@color/z0" android:gravity="center" android:id="@id/axu" android:layout_width="wrap_content" android:layout_height="wrap_content" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/uk" android:layout_width="20.0dip" android:layout_height="15.0dip" android:src="@drawable/a71" app:xv="@id/axu" app:yj="@id/axu" app:yo="@id/axu" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/yu" android:visibility="gone" android:layout_width="35.0dip" android:layout_height="35.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

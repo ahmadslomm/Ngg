@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:visibility="visible" android:layout_width="351.0dip" android:layout_height="134.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/f2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/a9p" android:layout_width="41.0dip" android:layout_height="41.0dip" android:layout_marginTop="23.5dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/ty" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <preprocessed.conection.processer.initnewsyscache.argue.MailStaffEmailVMView android:textSize="14.0dip" android:textStyle="bold" android:textColor="#ffffffff" android:ellipsize="end" android:gravity="center" android:id="@id/aix" android:paddingLeft="22.5dip" android:paddingRight="22.5dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:maxLines="1" android:textDirection="locale" android:paddingHorizontal="22.5dip" app:xp="true" app:y1="a6g" app:yb="a6b" app:yk="a6g" app:yn="@id/a9p" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:y_="0.367" app:yk="a6g" app:yo="a6g">
+        <View android:id="@id/b04" android:layout_width="50.0dip" android:layout_height="fill_parent" />
+        <View android:id="@id/b03" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <View android:id="@id/b05" android:layout_width="70.0dip" android:layout_height="fill_parent" />
+    </LinearLayout>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

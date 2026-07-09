@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@drawable/ak7" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a0t" android:layout_width="fill_parent" android:layout_height="57.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vq" android:textColor="@color/uh" android:gravity="center" android:id="@id/alr" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawablePadding="6.0dip" android:layout_centerInParent="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <View android:background="#ffeaeaf2" android:layout_width="fill_parent" android:layout_height="0.6700001dip" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a0a" android:layout_width="fill_parent" android:layout_height="57.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vq" android:textColor="@color/uh" android:gravity="center" android:id="@id/aig" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawablePadding="6.0dip" android:layout_centerInParent="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <View android:background="#ffeaeaf2" android:layout_width="fill_parent" android:layout_height="0.6700001dip" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a0s" android:layout_width="fill_parent" android:layout_height="57.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vq" android:textColor="@color/uh" android:gravity="center" android:id="@id/alm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawablePadding="6.0dip" android:layout_centerInParent="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <View android:background="#ffeaeaf2" android:layout_width="fill_parent" android:layout_height="0.6700001dip" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a0d" android:layout_width="fill_parent" android:layout_height="57.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vq" android:textColor="#ff999999" android:gravity="center" android:id="@id/aip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

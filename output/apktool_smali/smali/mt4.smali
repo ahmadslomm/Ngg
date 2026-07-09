@@ -1,0 +1,399 @@
+.class public final Lmt4;
+.super Ljava/lang/Object;
+.source "zaffa"
+
+
+# annotations
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "<T:",
+        "Ljava/lang/Object;",
+        ">",
+        "Ljava/lang/Object;"
+    }
+.end annotation
+
+
+# instance fields
+.field public final a:Lgk0;
+
+.field public final b:Lwl1;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Lwl1<",
+            "TT;",
+            "Lui0<",
+            "-",
+            "Ltn5;",
+            ">;",
+            "Ljava/lang/Object;",
+            ">;"
+        }
+    .end annotation
+.end field
+
+.field public final c:Le20;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Le20<",
+            "TT;>;"
+        }
+    .end annotation
+.end field
+
+.field public final d:Ljava/util/concurrent/atomic/AtomicInteger;
+
+
+# direct methods
+.method public constructor <init>(Lgk0;Lil1;Lwl1;Lwl1;)V
+    .locals 2
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lgk0;",
+            "Lil1<",
+            "-",
+            "Ljava/lang/Throwable;",
+            "Ltn5;",
+            ">;",
+            "Lwl1<",
+            "-TT;-",
+            "Ljava/lang/Throwable;",
+            "Ltn5;",
+            ">;",
+            "Lwl1<",
+            "-TT;-",
+            "Lui0<",
+            "-",
+            "Ltn5;",
+            ">;+",
+            "Ljava/lang/Object;",
+            ">;)V"
+        }
+    .end annotation
+
+    .line 1
+    const-string v0, "scope"
+
+    .line 2
+    .line 3
+    invoke-static {p1, v0}, Ll42;->f(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 4
+    .line 5
+    .line 6
+    const-string v0, "onComplete"
+
+    .line 7
+    .line 8
+    invoke-static {p2, v0}, Ll42;->f(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 9
+    .line 10
+    .line 11
+    const-string v0, "onUndeliveredElement"
+
+    .line 12
+    .line 13
+    invoke-static {p3, v0}, Ll42;->f(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 14
+    .line 15
+    .line 16
+    const-string v0, "consumeMessage"
+
+    .line 17
+    .line 18
+    invoke-static {p4, v0}, Ll42;->f(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 19
+    .line 20
+    .line 21
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 22
+    .line 23
+    .line 24
+    iput-object p1, p0, Lmt4;->a:Lgk0;
+
+    .line 25
+    .line 26
+    iput-object p4, p0, Lmt4;->b:Lwl1;
+
+    .line 27
+    .line 28
+    const/4 p4, 0x0
+
+    .line 29
+    const/4 v0, 0x6
+
+    .line 30
+    const v1, 0x7fffffff
+
+    .line 31
+    .line 32
+    .line 33
+    invoke-static {v1, p4, p4, v0, p4}, Ls20;->b(ILpw;Lil1;ILjava/lang/Object;)Le20;
+
+    .line 34
+    .line 35
+    .line 36
+    move-result-object p4
+
+    .line 37
+    iput-object p4, p0, Lmt4;->c:Le20;
+
+    .line 38
+    .line 39
+    new-instance p4, Ljava/util/concurrent/atomic/AtomicInteger;
+
+    .line 40
+    .line 41
+    const/4 v0, 0x0
+
+    .line 42
+    invoke-direct {p4, v0}, Ljava/util/concurrent/atomic/AtomicInteger;-><init>(I)V
+
+    .line 43
+    .line 44
+    .line 45
+    iput-object p4, p0, Lmt4;->d:Ljava/util/concurrent/atomic/AtomicInteger;
+
+    .line 46
+    .line 47
+    invoke-interface {p1}, Lgk0;->e()Lvj0;
+
+    .line 48
+    .line 49
+    .line 50
+    move-result-object p1
+
+    .line 51
+    sget-object p4, Ld62;->j0:Ld62$b;
+
+    .line 52
+    .line 53
+    invoke-interface {p1, p4}, Lvj0;->c(Lvj0$c;)Lvj0$b;
+
+    .line 54
+    .line 55
+    .line 56
+    move-result-object p1
+
+    .line 57
+    check-cast p1, Ld62;
+
+    .line 58
+    .line 59
+    if-nez p1, :cond_0
+
+    .line 60
+    .line 61
+    goto :goto_0
+
+    .line 62
+    :cond_0
+    new-instance p4, Lmt4$a;
+
+    .line 63
+    .line 64
+    invoke-direct {p4, p2, p0, p3}, Lmt4$a;-><init>(Lil1;Lmt4;Lwl1;)V
+
+    .line 65
+    .line 66
+    .line 67
+    invoke-interface {p1, p4}, Ld62;->F0(Lil1;)Llw0;
+
+    .line 68
+    .line 69
+    .line 70
+    :goto_0
+    return-void
+.end method
+
+.method public static final synthetic a(Lmt4;)Lwl1;
+    .locals 0
+
+    .line 1
+    iget-object p0, p0, Lmt4;->b:Lwl1;
+
+    .line 2
+    .line 3
+    return-object p0
+.end method
+
+.method public static final synthetic b(Lmt4;)Le20;
+    .locals 0
+
+    .line 1
+    iget-object p0, p0, Lmt4;->c:Le20;
+
+    .line 2
+    .line 3
+    return-object p0
+.end method
+
+.method public static final synthetic c(Lmt4;)Ljava/util/concurrent/atomic/AtomicInteger;
+    .locals 0
+
+    .line 1
+    iget-object p0, p0, Lmt4;->d:Ljava/util/concurrent/atomic/AtomicInteger;
+
+    .line 2
+    .line 3
+    return-object p0
+.end method
+
+.method public static final synthetic d(Lmt4;)Lgk0;
+    .locals 0
+
+    .line 1
+    iget-object p0, p0, Lmt4;->a:Lgk0;
+
+    .line 2
+    .line 3
+    return-object p0
+.end method
+
+
+# virtual methods
+.method public final e(Ljava/lang/Object;)V
+    .locals 6
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(TT;)V"
+        }
+    .end annotation
+
+    .line 1
+    iget-object v0, p0, Lmt4;->c:Le20;
+
+    .line 2
+    .line 3
+    invoke-interface {v0, p1}, Lqp4;->m(Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 4
+    .line 5
+    .line 6
+    move-result-object p1
+
+    .line 7
+    instance-of v0, p1, Lu20$a;
+
+    .line 8
+    .line 9
+    if-eqz v0, :cond_1
+
+    .line 10
+    .line 11
+    invoke-static {p1}, Lu20;->e(Ljava/lang/Object;)Ljava/lang/Throwable;
+
+    .line 12
+    .line 13
+    .line 14
+    move-result-object p1
+
+    .line 15
+    if-nez p1, :cond_0
+
+    .line 16
+    .line 17
+    new-instance p1, Lf60;
+
+    .line 18
+    .line 19
+    const-string v0, "Channel was closed normally"
+
+    .line 20
+    .line 21
+    invoke-direct {p1, v0}, Lf60;-><init>(Ljava/lang/String;)V
+
+    .line 22
+    .line 23
+    .line 24
+    :cond_0
+    throw p1
+
+    .line 25
+    :cond_1
+    invoke-static {p1}, Lu20;->i(Ljava/lang/Object;)Z
+
+    .line 26
+    .line 27
+    .line 28
+    move-result p1
+
+    .line 29
+    if-eqz p1, :cond_3
+
+    .line 30
+    .line 31
+    iget-object p1, p0, Lmt4;->d:Ljava/util/concurrent/atomic/AtomicInteger;
+
+    .line 32
+    .line 33
+    invoke-virtual {p1}, Ljava/util/concurrent/atomic/AtomicInteger;->getAndIncrement()I
+
+    .line 34
+    .line 35
+    .line 36
+    move-result p1
+
+    .line 37
+    if-nez p1, :cond_2
+
+    .line 38
+    .line 39
+    new-instance v3, Lmt4$b;
+
+    .line 40
+    .line 41
+    const/4 p1, 0x0
+
+    .line 42
+    invoke-direct {v3, p0, p1}, Lmt4$b;-><init>(Lmt4;Lui0;)V
+
+    .line 43
+    .line 44
+    .line 45
+    const/4 v4, 0x3
+
+    .line 46
+    const/4 v5, 0x0
+
+    .line 47
+    iget-object v0, p0, Lmt4;->a:Lgk0;
+
+    .line 48
+    .line 49
+    const/4 v1, 0x0
+
+    .line 50
+    const/4 v2, 0x0
+
+    .line 51
+    invoke-static/range {v0 .. v5}, Lxw;->d(Lgk0;Lvj0;Lkk0;Lwl1;ILjava/lang/Object;)Ld62;
+
+    .line 52
+    .line 53
+    .line 54
+    :cond_2
+    return-void
+
+    .line 55
+    :cond_3
+    new-instance p1, Ljava/lang/IllegalStateException;
+
+    .line 56
+    .line 57
+    const-string v0, "Check failed."
+
+    .line 58
+    .line 59
+    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    .line 60
+    .line 61
+    .line 62
+    throw p1
+.end method

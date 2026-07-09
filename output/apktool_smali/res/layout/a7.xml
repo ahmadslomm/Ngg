@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="76.66998dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:id="@id/m3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.329987dip" android:layout_marginRight="6.6799927dip" android:layout_centerVertical="true" android:layout_marginStart="13.329987dip" android:layout_marginEnd="6.669983dip">
+        <ImageView android:id="@id/vx" android:layout_width="52.669983dip" android:layout_height="52.669983dip" android:scaleType="centerCrop" />
+    </FrameLayout>
+    <ImageView android:id="@id/y5" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" android:src="@drawable/xo" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:layout_marginEnd="15.0dip" android:layout_alignParentEnd="true" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="6.669983dip" android:layout_marginRight="6.669983dip" android:layout_toLeftOf="@id/y5" android:layout_toRightOf="@id/m3" android:layout_centerVertical="true" android:layout_marginStart="6.669983dip" android:layout_marginEnd="6.669983dip" android:layout_toStartOf="@id/y5" android:layout_toEndOf="@id/m3">
+        <TextView android:textSize="15.0dip" android:textColor="#ffffffff" android:id="@id/aqe" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+        <TextView android:textSize="12.0dip" android:textColor="#b3ffffff" android:id="@id/aqf" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="6.669983dip" android:singleLine="true" android:layout_marginStart="6.669983dip" />
+    </LinearLayout>
+    <View android:background="@android:color/darker_gray" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="1.0px" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:layout_below="@id/m3" android:layout_marginStart="10.0dip" android:layout_marginEnd="10.0dip" />
+</RelativeLayout>

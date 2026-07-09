@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/vs" android:layout_width="52.0dip" android:layout_height="52.0dip" android:layout_marginTop="-10.0dip" android:scaleType="fitCenter" android:layout_centerHorizontal="true" />
+    <org.libpag.PAGImageView android:id="@id/vr" android:visibility="invisible" android:layout_width="52.0dip" android:layout_height="52.0dip" android:layout_marginTop="-10.0dip" android:layout_centerHorizontal="true" android:alpha="0.0" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0dip" android:textColor="#ffbfc4d4" android:id="@id/axa" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/vr" android:layout_centerHorizontal="true" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0dip" android:textColor="#ff19062b" android:gravity="center" android:id="@id/auj" android:background="@drawable/am4" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="15.0dip" android:maxLines="1" android:layout_alignTop="@id/vr" android:paddingStart="4.0dip" android:paddingEnd="4.0dip" android:layout_alignStart="@id/vr" />
+</RelativeLayout>

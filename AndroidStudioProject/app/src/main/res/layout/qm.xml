@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vt" android:textStyle="bold" android:textColor="@color/zj" android:ellipsize="end" android:gravity="center_horizontal" android:id="@id/a80" android:paddingBottom="@dimen/ve" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" android:paddingStart="12.0dip" android:paddingEnd="12.0dip" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/a7y" android:background="@color/ug" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="0.5dip" android:scaleType="fitXY" android:layout_below="@id/a80" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/hy" android:background="@drawable/aqy" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginEnd="18.0dip" android:layout_alignParentEnd="true" app:of="@drawable/aqy" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

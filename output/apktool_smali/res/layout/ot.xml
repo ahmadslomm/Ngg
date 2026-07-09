@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:id="@id/j6" android:layout_width="296.66406dip" android:layout_height="wrap_content" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yo="a6g"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vp" android:textStyle="bold" android:textColor="@color/yc" android:gravity="center" android:id="@id/amk" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="43.0dip" android:layout_marginStart="28.0dip" android:layout_marginEnd="28.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/abm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="30.0dip" android:layout_marginStart="5.0dip" android:layout_marginEnd="10.329987dip" app:y1="a6g" app:yk="a6g" app:yn="@id/amk" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vp" android:textColor="@color/vb" android:gravity="center" android:id="@id/ai6" android:background="@drawable/ak3" android:layout_width="172.0dip" android:layout_height="42.0dip" android:layout_marginTop="33.0dip" android:layout_marginBottom="40.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yn="@id/abm" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

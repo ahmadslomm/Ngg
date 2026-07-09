@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="140.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.JCommonCollectLocationManagerView android:id="@id/uv" android:layout_width="fill_parent" android:layout_height="140.0dip" android:layout_marginTop="-12.0dip" />
+    <ProgressBar android:id="@id/a6p" android:layout_width="50.0dip" android:layout_height="5.0dip" android:layout_marginTop="68.0dip" android:max="100" android:progressDrawable="@drawable/a_s" android:layout_marginStart="15.0dip" style="?android:progressBarStyleHorizontal" />
+</RelativeLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="horizontal" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/a64" android:layout_width="38.669983dip" android:layout_height="38.669983dip" android:layout_alignParentTop="true" android:layout_marginStart="13.339996dip" android:layout_alignParentEnd="true" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-8.669983dip" android:layout_marginStart="-5.0dip">
+        <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="horizontal" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/a61" android:paddingTop="18.669983dip" android:paddingBottom="18.669983dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingStart="24.669983dip" android:paddingEnd="24.669983dip">
+                <preprocessed.conection.processer.discriminant.JCommonCollectLocationManagerView android:id="@id/a65" android:layout_width="15.0dip" android:layout_height="15.0dip" android:scaleType="centerCrop" android:layout_marginEnd="4.0dip" />
+                <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="@color/yc" android:gravity="center_vertical" android:id="@id/a66" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+            <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/a67" android:background="@drawable/mi" android:layout_width="8.0dip" android:layout_height="8.0dip" android:layout_marginTop="8.0dip" android:layout_marginStart="-6.0dip" />
+        </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.DrDrawingBoradViewView android:textSize="@dimen/vk" android:textColor="@color/yc" android:id="@id/ajb" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAlignment="viewStart" android:layout_marginEnd="2.0dip" app:xv="a6g" app:y2="@id/alo" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.initnewsyscache.argue.MailStaffEmailVMView android:textSize="@dimen/vk" android:textColor="@color/yc" android:id="@id/alo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textDirection="ltr" android:textAlignment="viewStart" app:xv="a6g" app:y1="a6g" app:yo="a6g" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector android:height="@dimen/tl" android:width="@dimen/tl"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:state_pressed="true" android:id="@id/a72" android:drawable="@drawable/fu" />
+    <item android:state_checked="true" android:id="@id/gy" android:drawable="@drawable/fr" />
+    <item android:id="@id/b4u" android:drawable="@drawable/fr" app:aah="true" />
+    <item android:id="@id/ayk" android:drawable="@drawable/fx" />
+    <transition android:drawable="@drawable/fv" android:toId="@id/gy" android:fromId="@id/a72" />
+    <transition android:drawable="@drawable/fv" android:toId="@id/b4u" android:fromId="@id/a72" />
+    <transition android:drawable="@drawable/fw" android:toId="@id/ayk" android:fromId="@id/a72" />
+    <transition android:drawable="@drawable/fs" android:toId="@id/a72" android:fromId="@id/gy" />
+    <transition android:drawable="@drawable/ft" android:toId="@id/ayk" android:fromId="@id/gy" />
+    <transition android:drawable="@drawable/fs" android:toId="@id/a72" android:fromId="@id/b4u" />
+    <transition android:drawable="@drawable/fz" android:toId="@id/a72" android:fromId="@id/ayk" />
+    <transition android:drawable="@drawable/fy" android:toId="@id/gy" android:fromId="@id/ayk" />
+</animated-selector>

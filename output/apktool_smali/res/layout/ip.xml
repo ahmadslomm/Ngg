@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip">
+        <preprocessed.conection.mutate.geocode.LiveSquareDrawerServiceView android:id="@id/nb" android:layout_width="49.0dip" android:layout_height="49.0dip" android:scaleType="centerCrop" android:layout_centerHorizontal="true" />
+        <View android:layout_width="49.0dip" android:layout_height="49.0dip" android:layout_centerHorizontal="true" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vv" android:textColor="@color/xa" android:id="@id/nc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/v0" android:layout_below="@id/nb" android:layout_centerHorizontal="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

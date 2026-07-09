@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="4.669983dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/pq" android:layout_width="32.669983dip" android:layout_height="32.669983dip" app:gy="@color/u_" app:gz="true" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/w0" android:textColor="@color/zj" android:gravity="center" android:id="@id/am2" android:background="@drawable/ako" android:layout_width="13.329987dip" android:layout_height="13.329987dip" app:xv="@id/pq" app:y1="@id/pq" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/qo" android:layout_width="12.0dip" android:layout_height="12.0dip" android:src="@drawable/nn" app:pq="@drawable/nn" app:y1="@id/pq" app:yo="@id/pq" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

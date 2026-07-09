@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/y0" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/a92" app:pq="@drawable/a92" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/xk" android:layout_width="35.0dip" android:layout_height="35.0dip" android:src="@drawable/a91" android:layout_marginStart="5.5dip" android:layout_marginEnd="15.0dip" app:pq="@drawable/a91" />
+</LinearLayout>

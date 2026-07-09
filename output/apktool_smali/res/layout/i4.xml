@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:orientation="vertical" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.githang.statusbar.StatusBarView android:id="@id/af1" android:layout_width="fill_parent" android:layout_height="wrap_content" app:yo="a6g" />
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/a47" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/ag3" />
+    <com.google.android.material.tabs.TabLayout android:id="@id/ag3" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="42.0dip" android:layout_below="@id/af1" android:layout_marginStart="9.0dip" android:layout_alignParentStart="true" app:ab8="@null" app:abc="@null" app:abv="0.0dip" app:abw="acc" app:abz="6.0dip" app:ac0="6.0dip" app:ac2="@null" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="42.0dip" android:layout_below="@id/af1" android:layout_alignParentEnd="true">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ti" android:visibility="visible" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/a8v" android:scaleType="centerInside" app:pq="@drawable/a8v" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ya" android:visibility="visible" android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/afj" android:scaleType="centerInside" android:layout_marginStart="15.0dip" android:layout_marginEnd="15.0dip" app:pq="@drawable/afj" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

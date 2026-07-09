@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:background="@color/ud" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <TextView android:textSize="12.0dip" android:textColor="@color/xu" android:id="@id/ank" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginStart="20.0dip" android:layout_marginEnd="10.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/ahi" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/abd" android:paddingLeft="15.0dip" android:paddingRight="15.0dip" android:paddingBottom="80.0dip" android:layout_width="0.0dip" android:layout_height="0.0dip" android:layout_marginTop="28.0dip" android:paddingHorizontal="15.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yn="@id/ank" />
+    <TextView android:textSize="15.0dip" android:textColor="#ffffffff" android:gravity="center" android:id="@id/aiw" android:background="@drawable/ir" android:layout_width="176.0dip" android:layout_height="44.0dip" android:layout_marginBottom="30.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

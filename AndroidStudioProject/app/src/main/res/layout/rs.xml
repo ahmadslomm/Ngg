@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="#ffffffff" android:id="@id/apm" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#fffcf3d0" android:id="@id/ard" android:paddingLeft="2.0dip" android:paddingRight="2.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5.0dip" android:paddingHorizontal="2.0dip" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="#ffffffff" android:gravity="center" android:layout_width="10.0dip" android:layout_height="wrap_content" android:text=":" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#fffcf3d0" android:id="@id/asj" android:paddingLeft="2.0dip" android:paddingRight="2.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingHorizontal="2.0dip" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="#ffffffff" android:gravity="center" android:layout_width="10.0dip" android:layout_height="wrap_content" android:text=":" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#fffcf3d0" android:id="@id/avi" android:paddingLeft="2.0dip" android:paddingRight="2.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingHorizontal="2.0dip" />
+</LinearLayout>

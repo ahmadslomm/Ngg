@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:background="@color/ud" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.githang.statusbar.StatusBarView android:id="@id/af1" android:layout_width="fill_parent" android:layout_height="wrap_content" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/aaf" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/af1">
+        <preprocessed.conection.mutate.geocode.RequestApprovalsVCDelegateLayout android:id="@id/ag3" android:fadingEdgeLength="18.0dip" android:clipChildren="false" android:layout_width="wrap_content" android:layout_height="41.0dip" android:layout_weight="1.0" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:requiresFadingEdge="horizontal" android:layout_marginStart="50.0dip" android:layout_marginEnd="13.339996dip" app:aft="33.0dip" app:ag3="#ffffffff" app:ag4="2.0dip" app:ag5="d" app:ag6="4.0dip" app:ag7="0.0dip" app:aga="13.339996dip" app:agb="false" app:agc="@dimen/w9" app:agg="v" app:agh="@color/yc" app:agi="@color/yo" app:agj="17.0dip" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/tv" android:layout_width="41.0dip" android:layout_height="41.0dip" android:src="@drawable/are" android:scaleType="centerInside" android:layout_centerVertical="true" app:pq="@drawable/are" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <preprocessed.conection.mutate.geocode.VoiceRecognizerManager android:id="@id/b2_" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/aaf" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

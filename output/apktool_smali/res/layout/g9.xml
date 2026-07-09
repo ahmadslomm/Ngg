@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="170.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar android:layout_width="fill_parent" android:layout_height="60.0dip" android:layout_marginBottom="54.0dip" android:paddingStart="70.0dip" app:xv="a6g" app:yk="a6g">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a8i" android:layout_width="fill_parent" android:layout_height="60.0dip" />
+    </preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/ps" android:layout_width="38.0dip" android:layout_height="38.0dip" app:xv="@id/r6" app:y1="@id/r6" app:ya="0.55" app:yk="@id/r6" app:yo="@id/r6" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/r6" android:layout_width="60.0dip" android:layout_height="60.0dip" android:layout_marginEnd="40.0dip" app:xv="a6g" app:y1="@id/r7" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/pt" android:layout_width="38.0dip" android:layout_height="38.0dip" app:xv="@id/r7" app:y1="@id/r7" app:ya="0.45" app:yk="@id/r7" app:yo="@id/r7" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/r7" android:layout_width="60.0dip" android:layout_height="60.0dip" app:xv="a6g" app:y1="a6g" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/qk" android:layout_width="21.0dip" android:layout_height="21.0dip" android:src="@drawable/xc" app:xv="a6g" app:y1="@id/r7" app:yk="@id/r6" />
+</androidx.constraintlayout.widget.ConstraintLayout>

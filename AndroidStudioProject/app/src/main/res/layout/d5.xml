@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:background="@color/xv" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.VoiceRecognizerManager android:id="@id/a6e" android:background="@color/uc" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <include android:id="@id/ahi" layout="@layout/iz" />
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

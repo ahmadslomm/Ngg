@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/ud" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag3" android:layout_width="fill_parent" android:layout_height="42.0dip" android:layout_marginStart="13.329987dip" android:layout_marginEnd="13.329987dip" app:abi="false" app:abk="4.0dip" app:ac2="@null" app:ac8="@style/a3q" />
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/b0b" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

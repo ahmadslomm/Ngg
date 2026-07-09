@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_gravity="center" android:clipChildren="false" android:clipToPadding="false" android:layout_width="295.0dip" android:layout_height="501.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.RecommendItemTagViewLayout android:id="@id/b0c" android:layout_width="295.0dip" android:layout_height="445.0dip" app:ds="12.0dip" app:dv="12.0dip" app:y0="315:420" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:yq="a6b" app:agx="12.0dip" app:ah0="12.0dip">
+        <androidx.viewpager2.widget.ViewPager2 android:id="@id/b0b" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </preprocessed.conection.mutate.geocode.RecommendItemTagViewLayout>
+    <ImageView android:id="@id/sb" android:padding="8.0dip" android:layout_width="44.0dip" android:layout_height="44.0dip" android:src="@drawable/wy" android:contentDescription="@null" app:xv="@id/b0c" app:yk="@id/b0c" app:yo="@id/b0c" />
+    <ImageView android:id="@id/sc" android:padding="8.0dip" android:layout_width="44.0dip" android:layout_height="44.0dip" android:src="@drawable/wy" android:contentDescription="@null" android:scaleX="-1.0" app:xv="@id/b0c" app:y1="@id/b0c" app:yo="@id/b0c" />
+    <preprocessed.conection.mutate.geocode.LSNAutoScrollLabelView android:id="@id/ow" android:layout_width="wrap_content" android:layout_height="16.0dip" android:layout_marginBottom="5.0dip" app:xv="@id/b0c" app:y1="a6g" app:yk="a6g" />
+    <ImageView android:id="@id/q_" android:background="@drawable/ke" android:layout_width="36.0dip" android:layout_height="36.0dip" android:layout_marginTop="20.0dip" android:src="@drawable/o3" android:contentDescription="@null" app:y1="a6g" app:yk="a6g" app:yn="@id/b0c" />
+</androidx.constraintlayout.widget.ConstraintLayout>

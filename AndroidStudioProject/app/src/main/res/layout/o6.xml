@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:visibility="visible" android:layout_width="351.0dip" android:layout_height="113.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/f2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/iv_avatar" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_marginTop="44.5dip" android:layout_marginStart="18.5dip" app:gy="#ffffc340" app:gz="true" app:h0="1.5dip" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.initnewsyscache.argue.MailStaffEmailVMView android:textSize="14.0dip" android:textStyle="bold" android:textColor="@color/zj" android:ellipsize="end" android:id="@id/aix" android:layout_width="114.5dip" android:layout_height="wrap_content" android:layout_marginTop="48.0dip" android:maxLines="2" android:shadowColor="#66000000" android:shadowDy="2.0" android:shadowRadius="3.0" android:layout_marginStart="8.0dip" app:yj="@id/iv_avatar" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/iv_gift" android:layout_width="80.0dip" android:layout_height="80.0dip" android:layout_marginTop="17.0dip" android:layout_marginEnd="92.5dip" app:y1="a6g" app:yo="a6g" />
+    <TextView android:textSize="16.0dip" android:textStyle="bold" android:textColor="#ffffdeb7" android:id="@id/aqz" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="55.0dip" android:layout_marginStart="5.0dip" app:yj="@id/iv_gift" app:yo="a6g" />
+    <TextView android:textStyle="bold" android:textColor="#ff580202" android:gravity="center" android:id="@id/ar4" android:background="@drawable/ug" android:layout_width="57.0dip" android:layout_height="31.0dip" android:layout_marginTop="48.0dip" android:shadowColor="#ffff5553" android:shadowDx="0.0" android:shadowDy="1.0" app:y1="a6g" app:yo="a6g" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:y_="0.367" app:yk="a6g" app:yo="a6g">
+        <View android:id="@id/b04" android:layout_width="50.0dip" android:layout_height="fill_parent" />
+        <View android:id="@id/b03" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <View android:id="@id/b05" android:layout_width="70.0dip" android:layout_height="fill_parent" />
+    </LinearLayout>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

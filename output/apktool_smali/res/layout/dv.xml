@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/ud" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.githang.statusbar.StatusBarView android:id="@id/af1" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <preprocessed.conection.processer.discriminant.EmojiUpEmojiPackagerView android:id="@id/ty" android:layout_width="fill_parent" android:layout_height="200.0dip" app:a__="pag/main/waitio_main_top_bg.pag" />
+    <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:id="@id/mk" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/af1" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/tv" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginTop="8.0dip" android:src="@drawable/are" android:layout_below="@id/af1" android:layout_marginStart="15.0dip" />
+</RelativeLayout>

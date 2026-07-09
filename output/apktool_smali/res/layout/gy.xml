@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.LiveTraceInfoView android:textSize="14.0dip" android:textColor="@color/xu" android:gravity="center" android:id="@id/au0" android:background="@drawable/afu" android:layout_width="wrap_content" android:layout_height="27.0dip" android:drawableStart="@drawable/wa" android:paddingStart="8.0dip" android:paddingEnd="8.0dip" android:layout_marginStart="8.0dip" app:v4="20.0dip" app:va="20.0dip" app:xv="@id/ag4" app:yk="a6g" app:yo="@id/ag4" />
+    <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag4" android:layout_width="0.0dip" android:layout_height="30.0dip" android:layout_weight="1.0" app:y2="@id/uo" app:yj="@id/au0" app:yo="a6g" app:ab8="@null" app:ab9="0.0dip" app:abc="@null" app:abk="0.0dip" app:abv="0.0dip" app:abw="acc" app:abx="0.0dip" app:abz="0.0dip" app:ac0="0.0dip" app:ac2="@null" />
+    <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/uo" android:padding="3.0dip" android:layout_width="29.0dip" android:layout_height="29.0dip" android:src="@drawable/wb" android:layout_marginEnd="7.0dip" app:xv="@id/ag4" app:y1="a6g" app:yo="@id/ag4" />
+    <preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="5.0dip" app:xv="a6g" app:yn="@id/ag4">
+        <androidx.viewpager2.widget.ViewPager2 android:id="@id/ab1" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" app:xv="a6g" app:yn="@id/ag4" />
+    </preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar>
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/x1" android:layout_width="58.0dip" android:layout_height="58.0dip" android:layout_marginBottom="32.0dip" android:src="@drawable/a_4" android:layout_marginEnd="15.0dip" app:xv="a6g" app:y1="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

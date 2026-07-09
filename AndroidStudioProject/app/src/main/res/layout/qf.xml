@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="@dimen/w8"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0sp" android:textColor="@color/yc" android:gravity="center" android:id="@id/amb" android:layout_width="35.0dip" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/pv" android:layout_width="50.0dip" android:layout_height="50.0dip" android:scaleType="centerCrop" android:layout_centerInParent="true" app:dk="8.0dip" app:ahq="ab4" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:paddingTop="2.0dip" android:paddingBottom="2.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginStart="8.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/v7" android:textColor="@color/yw" android:ellipsize="end" android:id="@id/amm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.0sp" android:textColor="#ffffd000" android:gravity="center" android:id="@id/akf" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:drawablePadding="6.0dip" android:drawableEnd="@drawable/ad9" android:layout_marginEnd="15.0dip" app:p2="@drawable/ad9" />
+</LinearLayout>

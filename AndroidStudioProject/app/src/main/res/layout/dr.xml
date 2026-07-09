@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView android:id="@id/tz" android:layout_width="fill_parent" android:layout_height="282.0dip" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:id="@id/a08" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <include android:id="@id/ahi" layout="@layout/iz" />
+        <RelativeLayout android:id="@id/a9a" android:layout_width="fill_parent" android:layout_height="204.0dip" android:layout_marginLeft="15.0dip" android:layout_marginTop="10.0dip" android:layout_marginRight="15.0dip" android:layout_marginHorizontal="15.0dip">
+            <preprocessed.conection.mutate.geocode.LiveSquareDrawerServiceView android:id="@id/iv_avatar" android:layout_width="60.0dip" android:layout_height="60.0dip" android:layout_marginTop="16.0dip" android:layout_marginStart="25.0dip" />
+            <TextView android:textSize="18.0dip" android:textStyle="bold" android:textColor="@color/zj" android:ellipsize="end" android:id="@id/ay6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:maxWidth="100.0dip" android:singleLine="true" android:layout_marginStart="8.0dip" android:layout_toEndOf="@id/iv_avatar" />
+            <TextView android:textSize="14.0dip" android:textColor="@color/zj" android:id="@id/axq" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3.0dip" android:layout_below="@id/ay6" android:layout_marginStart="8.0dip" android:layout_toEndOf="@id/iv_avatar" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="16.0dip" android:textColor="@color/zj" android:gravity="center" android:id="@id/ayg" android:background="@drawable/air" android:layout_width="90.0dip" android:layout_height="30.0dip" android:layout_marginTop="31.0dip" android:minWidth="90.0dip" android:layout_marginEnd="30.0dip" android:layout_alignParentEnd="true" />
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/a8_" android:paddingLeft="3.0dip" android:paddingRight="3.0dip" android:layout_width="fill_parent" android:layout_height="110.0dip" android:layout_marginTop="12.0dip" android:layout_below="@id/iv_avatar" android:paddingHorizontal="3.0dip" />
+        </RelativeLayout>
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="@drawable/aiq" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="15.0dip" android:layout_below="@id/a08">
+        <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag3" android:layout_width="fill_parent" android:layout_height="42.0dip" android:layout_marginTop="7.3299866dip" app:abc="@drawable/a8y" app:abi="false" app:abk="4.0dip" app:abn="16.0dip" app:ac2="@null" app:ac8="@style/a3k" />
+        <androidx.viewpager2.widget.ViewPager2 android:id="@id/b0b" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="12.0dip" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

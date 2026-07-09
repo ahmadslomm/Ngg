@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="231.0dip" android:layout_height="65.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:background="@drawable/abq" android:layout_width="fill_parent" android:layout_height="50.0dip" app:xv="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/iv_avatar" android:layout_width="34.0dip" android:layout_height="34.0dip" android:layout_marginStart="6.5dip" app:gy="#ff98ecf6" app:gz="true" app:h0="1.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/xm" android:layout_width="65.0dip" android:layout_height="65.0dip" android:layout_marginStart="108.5dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:id="@id/atf" android:layout_width="wrap_content" android:layout_height="wrap_content" app:xv="a6g" app:yj="@id/xm" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="11.0dip" android:textColor="#ffffde3a" android:ellipsize="end" android:id="@id/aw3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="17.0dip" android:maxWidth="75.0dip" android:singleLine="true" android:layout_marginStart="5.5dip" app:yj="@id/iv_avatar" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="11.0dip" android:textColor="@color/zj" android:ellipsize="end" android:id="@id/ax_" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="75.0dip" android:singleLine="true" android:layout_marginStart="5.5dip" app:yj="@id/iv_avatar" app:yn="@id/aw3" />
+</androidx.constraintlayout.widget.ConstraintLayout>

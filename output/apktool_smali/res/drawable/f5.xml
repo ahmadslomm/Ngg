@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector android:drawable="@drawable/fj"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <target android:name="@string/f7" android:animation="@drawable/m" />
+    <target android:name="@string/f7" android:animation="@drawable/n" />
+    <target android:name="@string/f8" android:animation="@drawable/o" />
+</animated-vector>

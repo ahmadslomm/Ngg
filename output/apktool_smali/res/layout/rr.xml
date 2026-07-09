@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center" android:orientation="vertical" android:id="@id/a1y" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" android:layoutDirection="ltr" android:layout_marginStart="28.0dip" android:layout_marginEnd="28.0dip">
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/wt" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="17.0dip" android:textColor="@color/xk" android:gravity="center" android:id="@id/at9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawablePadding="15.0dip" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="@color/yc" android:gravity="center" android:id="@id/ar8" android:background="@drawable/amn" android:layout_width="159.0dip" android:layout_height="42.0dip" android:layout_marginTop="20.0dip" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="311.0dip" android:layout_height="121.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/sx" android:layout_width="103.0dip" android:layout_height="73.0dip" android:layout_marginTop="22.5dip" android:scaleType="fitXY" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0dip" android:textStyle="bold" android:gravity="center" android:id="@id/aj7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.WKIDLMoveConversationRequestView android:textSize="14.0dip" android:textStyle="bold" android:textColor="@color/zj" android:id="@id/ak6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.5dip" android:drawablePadding="3.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:a_z="0.8000001dip" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/sy" android:visibility="gone" android:layout_width="307.0dip" android:layout_height="115.0dip" android:src="@drawable/tq" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

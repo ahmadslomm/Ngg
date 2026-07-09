@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="b_" parent="@style/e1" />
+    <style name="bg" parent="@style/e2" />
+    <style name="fw" parent="@style/e3" />
+    <style name="v8" parent="@android:style/Widget">
+        <item name="android:background">?is</item>
+        <item name="android:stateListAnimator">@animator/a</item>
+        <item name="android:touchscreenBlocksFocus">true</item>
+        <item name="android:keyboardNavigationCluster">true</item>
+    </style>
+    <style name="e1" parent="@style/dv">
+        <item name="i4">?android:colorError</item>
+    </style>
+    <style name="e2" parent="@style/dw">
+        <item name="i4">?android:colorError</item>
+    </style>
+    <style name="e3" parent="@style/ec">
+        <item name="android:touchscreenBlocksFocus">true</item>
+        <item name="android:keyboardNavigationCluster">true</item>
+    </style>
+</resources>

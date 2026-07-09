@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:orientation="vertical" android:id="@id/a_r" android:background="@color/xh" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/ty" android:layout_width="fill_parent" android:layout_height="200.0dip" />
+    <include android:id="@id/ahi" android:visibility="gone" layout="@layout/iz" />
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/a2v" android:paddingBottom="62.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/ahi" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a_t" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="62.0dip" android:layout_alignParentBottom="true">
+        <preprocessed.conection.mutate.geocode.RCTScrollEvent android:id="@id/ce" android:background="@drawable/im" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/b1a" android:layout_centerVertical="true" />
+        <View android:background="@color/ye" android:layout_width="fill_parent" android:layout_height="0.5dip" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <ViewStub android:id="@id/b2e" android:layout="@layout/n0" android:layout_width="fill_parent" android:layout_height="240.0dip" android:layout_marginTop="91.0dip" />
+    <ViewStub android:id="@id/b2x" android:layout="@layout/my" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="40.0dip" android:elevation="2.0dip" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

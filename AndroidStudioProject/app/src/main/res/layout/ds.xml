@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/ud" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="11.0dip" android:layout_marginBottom="11.0dip">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="@color/xu" android:gravity="start|center" android:id="@id/cw" android:layout_width="fill_parent" android:layout_height="46.0dip" android:paddingStart="13.339996dip" android:paddingEnd="13.339996dip" app:p3="@drawable/aq0" app:p4="@drawable/apz" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textColor="@color/xu" android:gravity="start|center" android:id="@id/cy" android:layout_width="fill_parent" android:layout_height="46.0dip" android:paddingStart="13.339996dip" android:paddingEnd="13.339996dip" app:p3="@drawable/aq0" app:p4="@drawable/apz" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.0dip" android:textColor="@color/xk" android:id="@id/cx" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="13.339996dip" android:layout_marginStart="13.339996dip" android:layout_marginEnd="13.339996dip" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

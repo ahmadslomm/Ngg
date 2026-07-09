@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/iv_avatar" android:layout_width="50.0dip" android:layout_height="50.0dip" app:yk="a6g" app:yo="a6g" app:a7d="#ff9dffea" app:a7e="1.0dip" />
+</androidx.constraintlayout.widget.ConstraintLayout>

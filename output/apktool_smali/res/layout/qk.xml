@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/vd"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.geocode.MallImageEditorConfig android:id="@id/xr" android:layout_width="126.0dip" android:layout_height="126.0dip" android:scaleType="centerCrop" app:dk="10.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:ahq="ab4" />
+    <ImageView android:id="@id/xs" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_marginBottom="-10.0dip" android:src="@drawable/wq" android:layout_marginEnd="-10.0dip" app:xv="@id/xr" app:y1="@id/xr" app:ya="1.0" app:yk="@id/xr" app:yo="@id/xr" app:yp="1.0" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0dip" android:textStyle="bold" android:textColor="@color/yc" android:gravity="center" android:id="@id/a7x" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="24.0dip" android:includeFontPadding="false" android:lineSpacingExtra="3.0dip" android:layout_marginStart="28.0dip" android:layout_marginEnd="28.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/xr" />
+</androidx.constraintlayout.widget.ConstraintLayout>

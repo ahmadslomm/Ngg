@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="70.0dip" android:paddingStart="@dimen/wa" android:paddingEnd="@dimen/wa"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="wrap_content" android:layout_height="fill_parent">
+        <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/az6" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_centerVertical="true" />
+        <include android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="-5.0dip" android:layout_alignBottom="@id/az6" android:layout_alignStart="@id/az6" android:layout_alignEnd="@id/az6" layout="@layout/ox" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginStart="9.339996dip">
+        <preprocessed.conection.mutate.geocode.DrCommentsItemViewOfCellLayout android:id="@id/a5d" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/v8" android:textColor="@color/xk" android:ellipsize="end" android:id="@id/az_" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/wh" android:singleLine="true" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/v8" android:textColor="@color/xk" android:ellipsize="end" android:id="@id/ayx" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/wh" android:singleLine="true" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/sp" android:background="@drawable/aiy" android:layout_width="40.0dip" android:layout_height="22.0dip" android:src="@drawable/afe" android:layout_marginStart="5.0dip" app:pq="@drawable/afe" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/ph" android:background="@drawable/aiz" android:layout_width="40.0dip" android:layout_height="22.0dip" android:src="@drawable/afd" android:layout_marginStart="5.0dip" app:pq="@drawable/afd" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

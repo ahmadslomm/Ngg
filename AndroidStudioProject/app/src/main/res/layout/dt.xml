@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:background="@color/ud" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <View android:background="@color/ug" android:layout_width="fill_parent" android:layout_height="@dimen/uv" android:layout_marginTop="@dimen/ux" />
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:background="@color/ye" android:padding="@dimen/uu" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="@dimen/v1">
+        <EditText android:textSize="@dimen/w2" android:textColor="@color/x6" android:textColorHint="@color/x7" android:gravity="start|center|top" android:id="@id/kn" android:background="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/w4" android:textColor="@color/x7" android:id="@id/ko" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/v0" android:layout_below="@id/kn" android:layout_alignParentEnd="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <View android:background="@color/ug" android:layout_width="fill_parent" android:layout_height="@dimen/uv" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

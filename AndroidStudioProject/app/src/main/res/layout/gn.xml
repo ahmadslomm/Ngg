@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:orientation="vertical" android:clipChildren="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.tabs.TabLayout android:id="@id/ag3" android:clipChildren="true" android:layout_width="wrap_content" android:layout_height="32.0dip" android:layout_marginStart="1.5dip" android:layout_marginEnd="50.0dip" app:ab8="@null" app:abc="@null" app:abv="0.0dip" app:abw="acc" app:ac2="@null" />
+    <preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/ag3">
+        <androidx.viewpager2.widget.ViewPager2 android:id="@id/a47" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar>
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/lf" android:layout_width="58.0dip" android:layout_height="58.0dip" android:layout_marginBottom="32.0dip" android:scaleType="center" android:layout_alignParentBottom="true" android:layout_marginEnd="15.0dip" android:layout_alignParentEnd="true" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

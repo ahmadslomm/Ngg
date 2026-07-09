@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/a_v" android:background="@color/zi" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/ae2" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center" android:orientation="vertical" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerInParent="true">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="17.0dip" android:textStyle="bold" android:textColor="@color/yc" android:ellipsize="end" android:gravity="center" android:id="@id/ar_" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="60.0dip" android:maxWidth="360.0dip" android:singleLine="true" />
+        <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/a_7" android:visibility="visible" android:clipChildren="false" android:layout_width="100.0dip" android:layout_height="100.0dip" android:layout_marginBottom="50.0dip" />
+        <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/ae3" android:visibility="gone" android:layout_width="170.0dip" android:layout_height="170.0dip" android:scaleType="fitCenter" />
+        <ViewStub android:id="@id/b0d" android:layout="@layout/s7" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <ViewStub android:id="@id/a7" android:layout="@layout/qc" android:layout_width="227.0dip" android:layout_height="wrap_content" />
+        <ViewStub android:id="@id/a6" android:layout="@layout/qb" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.0dip" android:textColor="@color/yc" android:ellipsize="end" android:gravity="center" android:id="@id/ar9" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="60.0dip" android:maxWidth="360.0dip" android:maxLines="3" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

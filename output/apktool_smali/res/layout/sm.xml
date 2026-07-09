@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_gravity="center" android:background="@drawable/a5h" android:layout_width="320.0dip" android:layout_height="285.0dip" app:oj="@drawable/a5h">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="17.0dip" android:textColor="#ff3c004b" android:gravity="center" android:id="@id/ase" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="30.0dip" android:layout_marginTop="130.0dip" android:layout_marginRight="30.0dip" android:layout_marginHorizontal="30.0dip" app:xp="true" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="15.0dip" android:textStyle="bold" android:textColor="#ff4b0000" android:gravity="center" android:id="@id/asb" android:background="@drawable/a5e" android:layout_width="230.0dip" android:layout_height="50.0dip" android:layout_marginBottom="45.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" />
+    </preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>
+</preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>

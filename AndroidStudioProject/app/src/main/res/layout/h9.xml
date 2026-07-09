@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.CameraWriterLayout android:orientation="vertical" android:id="@id/a93" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/a8a" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="225.0dip" android:layout_marginTop="10.0dip" android:layout_marginStart="5.0dip" />
+        </preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar>
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/xu" android:id="@id/aui" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginStart="15.0dip" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a8d" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    </LinearLayout>
+</preprocessed.conection.processer.discriminant.CameraWriterLayout>

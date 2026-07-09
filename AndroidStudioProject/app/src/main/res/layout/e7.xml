@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:id="@id/ab3" android:background="@color/ud" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include android:id="@id/ahi" layout="@layout/iz" />
+    <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:id="@id/a_i" android:clickable="true" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+        <androidx.core.widget.NestedScrollView android:id="@id/ac9" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:paddingTop="6.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+                <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:layout_marginEnd="3.6599731dip">
+                    <androidx.recyclerview.widget.RecyclerView android:id="@id/a92" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+                </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+                <EditText android:textSize="@dimen/vo" android:textColor="@color/xu" android:textColorHint="@color/xl" android:id="@id/kk" android:background="@null" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="@dimen/wa" android:lineSpacingMultiplier="1.25" android:layout_marginStart="@dimen/wa" android:layout_marginEnd="@dimen/wa" app:of="@null" />
+            </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+        </androidx.core.widget.NestedScrollView>
+    </preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>
+    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginStart="@dimen/wa">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textStyle="bold" android:textColor="@color/yy" android:textColorHint="@color/yc" android:ellipsize="end" android:gravity="center_vertical" android:id="@id/anq" android:background="@drawable/ajm" android:layout_width="wrap_content" android:layout_height="22.0dip" android:singleLine="true" android:drawablePadding="3.3299866dip" android:paddingStart="3.3299866dip" android:paddingEnd="6.669983dip" app:p6="@drawable/oz" app:p7="@drawable/oz" />
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vl" android:textColor="@color/za" android:id="@id/ans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignBottom="@id/anq" android:layout_marginEnd="@dimen/wa" android:layout_alignParentEnd="true" />
+    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+    <View android:background="#33ffffff" android:layout_width="fill_parent" android:layout_height="0.48000002dip" android:layout_marginTop="9.0dip" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:fitsSystemWindows="false" android:layout_width="fill_parent" android:layout_height="43.329987dip" android:fillViewport="true" android:paddingStart="@dimen/wa" android:paddingEnd="@dimen/wa">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/vi" android:textColor="@color/z_" android:gravity="center_vertical" android:id="@id/alu" android:layout_width="wrap_content" android:layout_height="fill_parent" android:drawablePadding="3.3299866dip" android:drawableStart="@drawable/ow" />
+        <View android:layout_width="0.0dip" android:layout_height="1.0dip" android:layout_weight="1.0" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/qr" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/os" app:pq="@drawable/os" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <include android:id="@id/go" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="280.0dip" layout="@layout/ft" />
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

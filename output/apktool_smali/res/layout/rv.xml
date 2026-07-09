@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="77.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <preprocessed.conection.processer.discriminant.SVGGroupElementView android:layout_width="fill_parent" android:layout_height="78.0dip" android:src="@drawable/a5u" android:scaleType="fitXY" android:layout_marginStart="3.5dip" android:layout_marginEnd="4.5dip" />
+    <ImageView android:id="@id/iv_gift" android:layout_width="55.0dip" android:layout_height="55.0dip" android:layout_centerVertical="true" android:layout_marginStart="23.0dip" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/a89" android:fadingEdgeLength="40.0dip" android:layout_width="fill_parent" android:layout_height="45.5dip" android:layout_marginTop="16.0dip" android:requiresFadingEdge="horizontal" android:layout_marginStart="86.5dip" android:layout_marginEnd="25.0dip" />
+    <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/ws" android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/a5y" android:layout_centerVertical="true" android:layout_marginEnd="19.0dip" android:layout_alignParentEnd="true" />
+</RelativeLayout>

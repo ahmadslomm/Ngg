@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:layout_width="fill_parent" android:layout_height="70.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0sp" android:textColor="@color/xu" android:id="@id/aln" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="15.0dip" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/pq" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_centerVertical="true" android:layout_marginStart="12.0dip" android:layout_toEndOf="@id/aln" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0sp" android:textColor="@color/xu" android:id="@id/alh" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="8.0dip" android:layout_toEndOf="@id/pq" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="13.0sp" android:textColor="#ffffcc00" android:id="@id/ao5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawablePadding="4.0dip" android:layout_centerVertical="true" android:drawableEnd="@drawable/apu" android:layout_marginEnd="15.0dip" android:layout_alignParentEnd="true" app:p2="@drawable/apu" />
+</preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>

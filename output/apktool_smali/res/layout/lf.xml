@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:layout_width="fill_parent" android:layout_height="65.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/sh" android:layout_width="50.0dip" android:layout_height="50.0dip" android:scaleType="centerCrop" android:layout_marginStart="15.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.LiveSaaSSearchPlaceHolderManagerView android:textColor="@color/zj" android:gravity="center" android:id="@id/ajs" android:paddingLeft="15.0dip" android:paddingRight="15.0dip" android:layout_width="wrap_content" android:layout_height="30.0dip" android:minWidth="90.0dip" android:layout_marginEnd="15.0dip" android:paddingHorizontal="15.0dip" app:d1="a3l" app:xv="a6g" app:y1="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_marginLeft="10.0dip" android:layout_marginRight="10.0dip" android:layout_marginHorizontal="10.0dip" app:y2="@id/ajs" app:yj="@id/sh">
+        <preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout android:id="@id/ads" android:layout_width="fill_parent" android:layout_height="wrap_content" app:a8r="false" app:a8s="1.0" app:a8t="#ffe23e00" app:a8v="true" app:a8y="2800" app:a93="#ffffc047" app:a9_="29.0">
+            <preprocessed.conection.mutate.geocode.PlaybackEndConfigView android:textSize="14.0dip" android:textColor="@color/xu" android:ellipsize="end" android:id="@id/ao2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:singleLine="true" />
+        </preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout>
+        <preprocessed.conection.processer.discriminant.PostImageParameterFloatingStickersEventView android:id="@id/ayr" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="25.0dip" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

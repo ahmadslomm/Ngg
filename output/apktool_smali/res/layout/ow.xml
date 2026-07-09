@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/b0w" android:layout_width="345.0dip" android:layout_height="50.0dip" android:src="@drawable/a9e" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.mutate.geocode.MultiTabsInfoViewModelView android:id="@id/iv_avatar" android:layout_width="40.0dip" android:layout_height="40.0dip" android:layout_marginStart="17.0dip" app:gy="@color/yc" app:gz="true" app:h0="1.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.discriminant.PostImageParameterFloatingStickersEventView android:id="@id/ayw" android:layout_width="wrap_content" android:layout_height="15.0dip" android:layout_marginTop="7.0dip" app:yj="@id/iv_avatar" app:yo="@id/b0w" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="11.0sp" android:textColor="#ffffd400" android:ellipsize="end" android:id="@id/at0" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="7.5dip" android:maxLines="1" android:layout_marginStart="5.0dip" app:y2="@id/wp" app:yj="@id/ayw" app:yo="@id/b0w" />
+    <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="11.0sp" android:textColor="@color/zj" android:ellipsize="end" android:id="@id/ax_" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.5dip" android:maxLines="1" android:layout_marginStart="3.0dip" app:yj="@id/iv_avatar" app:yn="@id/ayw" app:yu="130.0dip" />
+    <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:id="@id/wp" android:layout_width="80.0dip" android:layout_height="70.0dip" android:layout_marginStart="200.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

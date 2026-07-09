@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <RelativeLayout android:id="@id/a97" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip" app:yk="a6g" app:yo="a6g">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0dip" android:textColor="@color/xu" android:gravity="center_vertical" android:id="@id/apq" android:layout_width="wrap_content" android:layout_height="24.0dip" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0dip" android:textColor="#b3ffffff" android:gravity="center_vertical" android:id="@id/apr" android:layout_width="wrap_content" android:layout_height="24.0dip" android:layout_toStartOf="@id/ur" />
+            <preprocessed.conection.processer.discriminant.SVGGroupElementView android:id="@id/ur" android:padding="4.5dip" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/a88" android:layout_alignParentEnd="true" />
+            <preprocessed.conection.processer.interval.enbance.SearchCondLocationViewControllerView android:id="@id/iy" android:layout_width="345.0dip" android:layout_height="103.5dip" android:layout_marginTop="2.5dip" android:layout_below="@id/apq" />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

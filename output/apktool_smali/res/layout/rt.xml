@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/a14" android:layout_width="fill_parent" android:layout_height="32.0dip" android:layout_marginStart="@dimen/wa" android:layout_marginEnd="@dimen/wa" app:y1="a6g" app:yk="a6g" app:yo="a6g">
+        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="@dimen/wi" android:textStyle="bold" android:textColor="@color/xu" android:id="@id/axa" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <View android:layout_width="0.0dip" android:layout_height="1.0dip" android:layout_weight="1.0" />
+        <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_width="14.669983dip" android:layout_height="14.669983dip" android:src="@drawable/kl" android:alpha="0.3" android:layout_marginStart="2.0dip" app:pq="@drawable/kl" />
+    </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    <com.youth.banner.Banner android:id="@id/ec" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="100.0dip" android:layout_marginLeft="15.0dip" android:layout_marginRight="15.0dip" android:layout_marginHorizontal="15.0dip" app:cr="8.0dip" app:y1="a6g" app:yk="a6g" app:yn="@id/a14" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/abr" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginBottom="6.0dip" android:layout_marginStart="@dimen/wa" app:y1="a6g" app:yk="a6g" app:yn="@id/ec" app:z9="0.0dip" />
+</androidx.constraintlayout.widget.ConstraintLayout>

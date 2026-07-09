@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/b0w" android:layout_width="363.0dip" android:layout_height="531.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g">
+        <ImageView android:id="@id/yj" android:layout_width="342.0dip" android:layout_height="62.0dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a8h" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="87.0dip" android:layout_marginStart="26.0dip" android:layout_marginEnd="26.0dip" app:yo="a6g" />
+        <preprocessed.conection.processer.discriminant.WKIDLMoveConversationRequestView android:textSize="24.0dip" android:textStyle="bold" android:textColor="@color/zj" android:gravity="center" android:id="@id/auf" android:layout_width="150.0dip" android:layout_height="50.0dip" android:layout_marginBottom="19.0dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:a_y="#ff9a6500" app:a_z="1.0dip" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

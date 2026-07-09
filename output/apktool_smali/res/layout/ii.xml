@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.MoreBusesPopView android:theme="@style/ox" android:id="@id/ag3" android:layout_width="wrap_content" android:layout_height="28.0dip" android:layout_marginStart="12.0dip" app:ab8="@drawable/afw" app:ab9="0.0dip" app:abc="@null" app:abk="0.0dip" app:abq="10.0dip" app:abr="6.0dip" app:abv="0.0dip" app:abw="acc" app:abx="0.0dip" app:abz="12.0dip" app:ac0="12.0dip" app:ac2="@null" app:ac8="@style/a3x" />
+    <preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.viewpager2.widget.ViewPager2 android:id="@id/my" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </preprocessed.conection.processer.discriminant.FaceGProPostDetailTabBar>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.core.widget.NestedScrollView android:id="@id/aca" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout android:orientation="vertical" android:paddingBottom="10.0dip" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.githang.statusbar.StatusBarView android:id="@id/af1" android:layout_width="fill_parent" android:layout_height="wrap_content" app:yo="a6g" />
+            <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/ha" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="wrap_content" app:yn="@id/af1">
+                <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/iv_avatar" android:layout_width="70.0dip" android:layout_height="70.0dip" android:layout_marginTop="60.0dip" android:layout_marginEnd="30.0dip" app:y1="a6g" app:yo="a6g" />
+                <preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout android:id="@id/adu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="48.0dip" android:layout_marginStart="25.0dip" android:layout_toEndOf="@id/iv_avatar" app:yk="a6g" app:yo="a6g" app:a8r="false" app:a8s="1.0" app:a8t="#ffe23e00" app:a8v="true" app:a8y="2800" app:a93="#ffffc047" app:a9_="29.0">
+                    <preprocessed.conection.mutate.geocode.PlaybackEndConfigView android:textSize="22.0sp" android:textStyle="bold" android:textColor="@color/xu" android:id="@id/ay6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=" " android:includeFontPadding="false" />
+                </preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout>
+                <ImageView android:id="@id/qq" android:layout_width="18.0dip" android:layout_height="18.0dip" android:src="@drawable/a73" android:layout_marginStart="4.0dip" app:xv="@id/adu" app:yj="@id/adu" app:yo="@id/adu" />
+                <preprocessed.conection.processer.interval.enbance.WesterosPopupWindowConfigDataView android:id="@id/axu" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_toEndOf="@id/iv_avatar" app:yk="@id/adu" app:yn="@id/adu" />
+                <preprocessed.conection.processer.discriminant.PostImageParameterFloatingStickersEventView android:orientation="vertical" android:id="@id/rvSignIcons" android:layout_width="0.0dip" android:layout_height="25.0dip" android:layout_marginTop="6.0dip" android:layout_marginEnd="10.0dip" app:y2="@id/iv_avatar" app:yk="@id/adu" app:yn="@id/axu" />
+                <preprocessed.conection.mutate.geocode.MobilelbsModuleInfoPBView android:id="@id/authListView" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_marginEnd="10.0dip" app:y2="@id/iv_avatar" app:yk="@id/adu" app:yn="@id/rvSignIcons" />
+                <androidx.constraintlayout.widget.Barrier android:id="@id/et" android:layout_width="wrap_content" android:layout_height="wrap_content" app:cy="fd" app:k4="rvSignIcons,authListView,iv_avatar" />
+                <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="30.0dip" android:layout_marginBottom="0.0dip" android:minHeight="46.0dip" android:layout_below="@id/rvSignIcons" app:yn="@id/et">
+                    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/b13" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+                        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/xu" android:id="@id/aqa" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:layout_centerHorizontal="true" />
+                        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/xk" android:id="@id/aqj" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_below="@id/aqa" android:layout_centerHorizontal="true" />
+                    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+                    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/b15" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+                        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/xu" android:id="@id/aqd" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:layout_centerHorizontal="true" />
+                        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/xk" android:id="@id/ao9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_below="@id/aqd" android:layout_centerHorizontal="true" />
+                    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+                    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/b0y" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+                        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/xu" android:id="@id/ap8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:layout_centerHorizontal="true" />
+                        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/xk" android:id="@id/ar3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_below="@id/ap8" android:layout_centerHorizontal="true" />
+                    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+                    <preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout android:id="@id/b1u" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+                        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/xu" android:id="@id/axr" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:layout_centerHorizontal="true" />
+                        <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/xk" android:id="@id/ayd" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_below="@id/axr" android:layout_centerHorizontal="true" />
+                    </preprocessed.conection.processer.discriminant.disperser.OCAvifTranscodeInfoLayout>
+                </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout android:layout_gravity="center_horizontal" android:id="@id/b22" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="80.0dip" android:layout_marginLeft="12.0dip" android:layout_marginTop="20.0dip" android:layout_marginRight="12.0dip" android:layout_marginHorizontal="12.0dip" app:yk="a6g" app:yn="@id/ha">
+                <ImageView android:id="@id/yx" android:layout_width="68.0dip" android:layout_height="68.0dip" android:layout_marginStart="12.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+                <ImageView android:id="@id/yz" android:layout_width="82.0dip" android:layout_height="25.0dip" android:layout_marginTop="17.5dip" android:scaleType="fitStart" android:layout_marginStart="4.0dip" app:yj="@id/yx" app:yo="a6g" />
+                <TextView android:textSize="12.0dip" android:textColor="@color/xu" android:gravity="start" android:id="@id/ayc" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginStart="5.0dip" app:y2="@id/anx" app:yj="@id/yx" app:yn="@id/yz" />
+                <TextView android:textSize="12.0dip" android:textStyle="bold" android:textColor="#ff19062b" android:gravity="center" android:id="@id/anx" android:layout_width="96.0dip" android:layout_height="34.0dip" android:layout_marginEnd="12.0dip" app:xv="a6g" app:y1="a6g" app:yo="a6g" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/clWallet" android:layout_width="0.0dip" android:layout_height="70.0dip" android:layout_marginTop="12.0dip" android:layout_marginStart="12.0dip" app:y2="@id/clDiamonds" app:yk="a6g" app:yn="@id/b22">
+                <TextView android:textSize="14.0sp" android:textColor="#ff9d4817" android:id="@id/ao6" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="13.0dip" android:includeFontPadding="false" android:layout_marginStart="59.0dip" app:yo="a6g" />
+                <TextView android:textSize="19.0sp" android:textStyle="bold" android:textColor="#ff9d4817" android:id="@id/ao7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:includeFontPadding="false" app:yk="@id/ao6" app:yn="@id/ao6" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/clDiamonds" android:layout_width="0.0dip" android:layout_height="70.0dip" android:layout_marginTop="12.0dip" android:layout_marginStart="7.0dip" android:layout_marginEnd="12.0dip" app:y1="a6g" app:yj="@id/clWallet" app:yn="@id/b22">
+                <TextView android:textSize="14.0sp" android:textColor="#ff5c0096" android:id="@id/ajh" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="13.0dip" android:includeFontPadding="false" android:layout_marginStart="59.0dip" app:yo="a6g" />
+                <TextView android:textSize="19.0sp" android:textStyle="bold" android:textColor="#ff5c0096" android:id="@id/aji" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:includeFontPadding="false" app:yk="@id/ajh" app:yn="@id/ajh" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.Barrier android:id="@id/eu" android:layout_width="wrap_content" android:layout_height="wrap_content" app:cy="fd" app:k4="clWallet,clDiamonds" />
+            <LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/a2f" android:background="@drawable/ajt" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="12.0dip" android:layout_marginTop="12.0dip" android:layout_marginRight="12.0dip" android:layout_marginHorizontal="12.0dip" app:yn="@id/eu">
+                <include android:id="@id/b1l" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" layout="@layout/k4" />
+                <include android:id="@id/b1s" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" layout="@layout/k4" />
+                <include android:id="@id/b0z" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" layout="@layout/k4" />
+                <include android:id="@id/b17" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" layout="@layout/k4" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:background="@drawable/ajt" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginBottom="30.0dip" android:layout_marginStart="12.0dip" android:layout_marginEnd="12.0dip" app:yn="@id/a2f">
+                <include android:id="@id/b12" layout="@layout/k3" />
+                <include android:id="@id/b1e" layout="@layout/k3" />
+                <include android:id="@id/b10" layout="@layout/k3" />
+                <include android:id="@id/b1c" layout="@layout/k3" />
+                <include android:id="@id/b1d" layout="@layout/k3" />
+                <include android:id="@id/b18" android:visibility="gone" layout="@layout/k3" />
+                <include android:id="@id/b0v" layout="@layout/k3" />
+                <include android:id="@id/b1m" layout="@layout/k3" />
+                <include android:id="@id/b14" layout="@layout/k3" />
+                <include android:id="@id/b1k" layout="@layout/k3" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

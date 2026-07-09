@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item app:aaa="true">
+        <objectAnimator android:valueTo="0.39dip" android:valueType="floatType" android:propertyName="elevation" />
+    </item>
+    <item app:aaa="false">
+        <objectAnimator android:valueTo="0.0dip" android:valueType="floatType" android:propertyName="elevation" />
+    </item>
+</selector>

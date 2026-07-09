@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.mutate.geocode.KMTapDetectScrollViewDelegateLayout android:id="@id/a94" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <preprocessed.conection.mutate.geocode.PlayingDraftTimerView android:id="@id/a2j" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a92" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <preprocessed.conection.mutate.geocode.RecordVideoTimeView android:layout_gravity="center" android:id="@id/a5g" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </preprocessed.conection.processer.discriminant.disperser.MyListenNoDataSectionControllerLayout>
+</preprocessed.conection.mutate.geocode.KMTapDetectScrollViewDelegateLayout>

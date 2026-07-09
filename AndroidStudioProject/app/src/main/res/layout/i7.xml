@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:orientation="vertical" android:id="@id/a08" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:orientation="vertical" android:background="#ff140424" android:layout_width="fill_parent" android:layout_height="612.0dip">
+        <View android:background="@drawable/arb" android:layout_width="fill_parent" android:layout_height="473.0dip" />
+        <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag3" android:layout_width="fill_parent" android:layout_height="30.5dip" android:layout_marginTop="12.5dip" app:y1="a6g" app:yk="a6g" app:yo="a6g" app:abc="@drawable/a8y" app:abi="false" app:abk="4.0dip" app:abn="16.0dip" app:ac2="@null" app:ac8="@style/a3k" />
+        <androidx.viewpager2.widget.ViewPager2 android:id="@id/b0b" android:layout_width="0.0dip" android:layout_height="0.0dip" android:layout_marginTop="15.0dip" app:xw="@id/b4k" app:y1="a6g" app:yk="a6g" app:yn="@id/ag3" />
+        <preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout android:gravity="center_vertical" android:orientation="vertical" android:id="@id/b4k" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginBottom="8.669983dip" app:xv="a6g" app:y1="a6g" app:yk="a6g" app:yn="@id/b0b">
+            <RelativeLayout android:background="@drawable/kd" android:layout_width="fill_parent" android:layout_height="140.0dip" android:layout_marginLeft="15.0dip" android:layout_marginRight="15.0dip" android:layout_marginHorizontal="15.0dip">
+                <androidx.recyclerview.widget.RecyclerView android:id="@id/a8v" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="3.0dip" android:layout_marginTop="23.0dip" android:layout_marginRight="3.0dip" android:layout_marginHorizontal="3.0dip" />
+            </RelativeLayout>
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="19.0dip" android:textColor="@color/zj" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/ayg" android:background="@drawable/ara" android:layout_width="206.0dip" android:layout_height="45.0dip" android:layout_marginTop="20.0dip" />
+        </preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>
+    </preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>
+</preprocessed.conection.processer.discriminant.disperser.ChatCore23VisualRoomSystemMessageLayout>

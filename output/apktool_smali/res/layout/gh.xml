@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.CameraWriterLayout android:id="@id/a93" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <androidx.recyclerview.widget.RecyclerView android:id="@id/a84" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/ff" android:background="@drawable/n3" android:layout_width="fill_parent" android:layout_height="100.0dip" app:of="@drawable/n3">
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/zj" android:gravity="center" android:id="@id/aub" android:layout_width="wrap_content" android:layout_height="wrap_content" app:xv="a6g" app:y2="@id/wg" app:yk="a6g" app:yo="a6g" />
+            <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/wg" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginStart="45.0dip" app:xv="a6g" app:yk="a6g" app:yo="a6g" />
+            <preprocessed.conection.mutate.geocode.AIGCContentOutputView android:id="@id/tl" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginStart="-4.0dip" app:xv="a6g" app:yj="@id/wg" app:yo="a6g" />
+            <preprocessed.conection.mutate.steak.GameCenterFollowRecommendVideoModelView android:layout_width="30.0dip" android:layout_height="30.0dip" android:src="@drawable/n_" app:pq="@drawable/n_" app:xv="a6g" app:y1="@id/tl" app:yk="@id/wg" app:yo="a6g" />
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="90.0dip" android:layout_height="fill_parent" android:layout_marginStart="10.0dip" app:xv="a6g" app:yj="@id/tl" app:yo="a6g">
+                <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/zj" android:id="@id/asn" android:layout_width="fill_parent" android:layout_height="wrap_content" android:maxLines="1" />
+                <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/zj" android:id="@id/ats" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:maxLines="1" />
+            </LinearLayout>
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="12.0sp" android:textColor="@color/zj" android:gravity="center" android:id="@id/avm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:drawablePadding="2.0dip" android:drawableStart="@drawable/n1" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" android:layout_marginEnd="15.0dip" app:p5="@drawable/n1" app:xv="a6g" app:y1="a6g" app:yo="a6g" />
+            <preprocessed.conection.mutate.steak.LiveActivityMagicGestureRootView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ff19062b" android:gravity="center" android:id="@id/aop" android:visibility="visible" android:layout_width="100.0dip" android:layout_height="40.0dip" android:paddingStart="5.0dip" android:paddingEnd="5.0dip" android:layout_marginEnd="15.0dip" app:xv="a6g" app:y1="a6g" app:yo="a6g" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</preprocessed.conection.processer.discriminant.CameraWriterLayout>

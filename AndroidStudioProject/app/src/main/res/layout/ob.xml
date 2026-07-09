@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr android:gravity="center_vertical" android:layout_gravity="center" android:orientation="horizontal" android:visibility="visible" android:layout_width="360.0dip" android:layout_height="110.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.handers.TopicTextViewDelegateView android:id="@id/f2" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <preprocessed.conection.processer.initnewsyscache.argue.MailStaffEmailVMView android:textSize="@dimen/vm" android:ellipsize="end" android:id="@id/aix" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:textDirection="locale" android:layout_marginStart="55.0dip" app:xp="true" app:xv="a6g" app:y2="@id/ak6" app:yb="a6b" app:yk="a6g" app:yo="a6g" />
+    <preprocessed.conection.processer.initnewsyscache.argue.MailStaffEmailVMView android:textSize="23.329987dip" android:id="@id/ak6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" android:layout_centerVertical="true" android:textDirection="locale" android:layout_marginStart="4.0dip" android:layout_marginEnd="55.0dip" app:xv="a6g" app:y1="a6g" app:yj="@id/aix" app:yo="a6g" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="0.0dip" app:xv="a6g" app:y_="0.367" app:yk="a6g" app:yo="a6g">
+        <View android:id="@id/b04" android:layout_width="50.0dip" android:layout_height="fill_parent" />
+        <View android:id="@id/b03" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <View android:id="@id/b05" android:layout_width="70.0dip" android:layout_height="fill_parent" />
+    </LinearLayout>
+</preprocessed.conection.processer.discriminant.disperser.ArkAppConfigMgr>

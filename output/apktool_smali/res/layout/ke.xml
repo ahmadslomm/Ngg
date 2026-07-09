@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout android:id="@id/adr" android:layout_width="wrap_content" android:layout_height="wrap_content" app:xv="a6g" app:yk="a6g" app:yo="a6g" app:a8r="false" app:a8s="1.0" app:a8t="#ffe23e00" app:a8v="true" app:a8y="2800" app:a93="#ffffc047" app:a9_="29.0">
+        <preprocessed.conection.mutate.geocode.PlaybackEndConfigView android:textSize="16.0dip" android:textColor="@color/yc" android:ellipsize="end" android:id="@id/b3c" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="180.0dip" android:maxLines="1" app:d1="a3l" />
+    </preprocessed.conection.processer.discriminant.chan.PPluginCustomerServiceLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

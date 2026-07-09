@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="484.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <preprocessed.conection.processer.discriminant.MoreBusesPopView android:id="@id/ag3" android:layout_width="wrap_content" android:layout_height="40.0dip" android:layout_marginStart="10.0dip" app:yk="a6g" app:yo="a6g" app:abc="@drawable/a8x" app:abi="false" app:abk="3.0dip" app:abn="15.0dip" app:ac5="@style/a3y" app:ac8="@style/a3x" />
+    <ImageView android:id="@id/tn" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginTop="12.0dip" android:src="@drawable/a44" android:layout_marginEnd="12.0dip" app:y1="a6g" app:yo="a6g" />
+    <androidx.viewpager2.widget.ViewPager2 android:id="@id/b0a" android:layout_width="fill_parent" android:layout_height="440.0dip" app:yn="@id/ag3" />
+</androidx.constraintlayout.widget.ConstraintLayout>
