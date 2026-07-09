@@ -1,0 +1,6181 @@
+{
+ "app": {
+  "name": "ZaffaLive",
+  "package": "com.waig.nalo",
+  "apk": "ZaffaLive-150-v1.21.150.apk",
+  "note": "Static evidence-based reconstruction. Every endpoint = decrypted static string; every model field = @hq4(SerializedName) decrypted key. No dynamic capture yet (request/response bodies per-endpoint binding + final base URL + sign secret require Frida)."
+ },
+ "hosts": [
+  {
+   "host": "waignwhalo.com",
+   "role": "candidate REST/API base",
+   "evidence": "encrypted static string"
+  },
+  {
+   "host": "tanmchat.com",
+   "role": "candidate API/chat base",
+   "evidence": "encrypted static string"
+  }
+ ],
+ "sdks": {
+  "tencent_im_trtc": {
+   "version": "9.0.7657",
+   "usersig_endpoint": "/api/GetUserSig.php",
+   "sdkappid": "server-provided"
+  },
+  "agora": {
+   "app_id": "server-provided (agoraAppId/agoraKey keys present)"
+  },
+  "faceunity": {
+   "bundled": true
+  },
+  "firebase": {
+   "project": "waignalo",
+   "sender": "136048901320",
+   "app_id": "1:136048901320:android:77446a7f3acd9a8fddf9fd"
+  },
+  "adjust": {
+   "hosts": [
+    "app.adjust.com",
+    "gdpr.adjust.com"
+   ]
+  },
+  "bugly": {
+   "host": "android.bugly.qq.com"
+  }
+ },
+ "auth": {
+  "headers": [
+   "timestamp",
+   "sign",
+   "token",
+   "Authorization"
+  ],
+  "session_tokens": [
+   "token",
+   "device_token",
+   "access_token",
+   "latest_logined_token",
+   "gameToken",
+   "extra_game_token",
+   "fb_token",
+   "userSig"
+  ],
+  "sign_note": "sign = hash(params + timestamp + embedded secret). Exact formula/secret require interceptor trace (Frida).",
+  "evidence": "decrypted header strings + /api/GetUserSig.php"
+ },
+ "contract": {
+  "request_envelope": {
+   "auto_params": [
+    "action",
+    "lang",
+    "deviceid",
+    "_login_uid",
+    "token"
+   ],
+   "signed_headers": [
+    "sign",
+    "timestamp"
+   ],
+   "sign": "md5_hex_lower( concat_sorted('{'+k+'}'+'{'+v+'}') + 'awgwd^1ad87' + timestamp_ms )",
+   "sign_evidence": "p000/jr1.java:978-1005 ; p000/qm2.java (MD5)",
+   "optional_body_encrypt": "C3958m.m30048e/m30049f : base64( XOR(json, md5('com.waig.nalo')) )  (p000/C3958m.java:47-67)"
+  },
+  "response_envelope": {
+   "shape": {
+    "response_status": {
+     "code": "int (0=success)",
+     "error": "string message"
+    },
+    "response_data": "object|array"
+   },
+   "evidence": "p000/r92.java:22-89  (keys: response_status, code, error, response_data)",
+   "optional_body_decrypt": "C3958m.m30052i : base64-decode then XOR(key=action_pwd)  where action_pwd = config field cw3.f10294B; empty -> plaintext (p000/C3958m.java:97-116)"
+  },
+  "pagination_fields": [
+   "page",
+   "pageRowCount",
+   "pageColumnCount",
+   "limit",
+   "sort",
+   "total",
+   "total_num",
+   "surplus"
+  ],
+  "error_model": {
+   "success": "response_status.code == 0",
+   "failure": "response_status.code != 0 -> show response_status.error",
+   "known_client_messages": [
+    "not allow Login account or password is not correct",
+    "not allow Login uid or token is empty",
+    "not allow Login on AccountLoginActivity"
+   ],
+   "note": "numeric error codes are server-defined; client only branches on code==0 and renders error text"
+  }
+ },
+ "counts": {
+  "endpoints_total": 280,
+  "json_rpc": 154,
+  "action_rest": 104,
+  "php_h5": 22,
+  "model_classes": 244,
+  "unique_json_keys": 883,
+  "endpoints_with_traced_callers": 264
+ },
+ "endpoints": [
+  {
+   "id": "activity.clickBanner",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "activity",
+   "method": "clickBanner",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "a",
+     "method": "m27924c",
+     "line": 38
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "activity.createRoomEvents",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "activity",
+   "method": "createRoomEvents",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "a",
+     "method": "m27925d",
+     "line": 46
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "activity.getBannerList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "activity",
+   "method": "getBannerList",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "a",
+     "method": "m27926e",
+     "line": 59
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "activity.getBannerListV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "activity",
+   "method": "getBannerListV",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "activity.getRoomEvents",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "activity",
+   "method": "getRoomEvents",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "a",
+     "method": "m27927f",
+     "line": 67
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "app.checkAppVersion",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "app",
+   "method": "checkAppVersion",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/mutate/nudged/ATouchAreaExpandableButtonActivity.java",
+     "class": "C4824b",
+     "method": "m37290S1",
+     "line": 165
+    },
+    {
+     "file": "preprocessed/conection/mutate/nudged/ATouchAreaExpandableButtonActivity.java",
+     "class": "C4824b",
+     "method": "m37290S1",
+     "line": 166
+    },
+    {
+     "file": "preprocessed/conection/processer/gkms/BUMultiFormatActivity.java",
+     "class": "a",
+     "method": "m40078C2",
+     "line": 925
+    },
+    {
+     "file": "preprocessed/conection/processer/gkms/BUMultiFormatActivity.java",
+     "class": "a",
+     "method": "m40078C2",
+     "line": 926
+    }
+   ],
+   "caller_count": 4
+  },
+  {
+   "id": "app.commonConfig",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "app",
+   "method": "commonConfig",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/ur2.java",
+     "class": "RunnableC7864c",
+     "method": "if",
+     "line": 681
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "app.getConfig",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "app",
+   "method": "getConfig",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/mo2.java",
+     "class": "a",
+     "method": "m31141k",
+     "line": 839
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "app.getConfigV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "app",
+   "method": "getConfigV",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "app.initApp",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "app",
+   "method": "initApp",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/jm2.java",
+     "class": "C3515a",
+     "method": "invokeSuspend",
+     "line": 55
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "app.uploadPing",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "app",
+   "method": "uploadPing",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/ej0.java",
+     "class": "a",
+     "method": "m15496d",
+     "line": 109
+    },
+    {
+     "file": "p000/om1.java",
+     "class": "a",
+     "method": "m34620c",
+     "line": 109
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "backPhoto.updateDefultPhoto",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "backPhoto",
+   "method": "updateDefultPhoto",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/ym2.java",
+     "class": "RunnableC7165b",
+     "method": "run",
+     "line": 190
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "backPhoto.updatePhoto",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "backPhoto",
+   "method": "updatePhoto",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/mutate/nudged/IDriveChannelParamsActivity.java",
+     "class": "RunnableC4850e",
+     "method": "if",
+     "line": 656
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.deleteCensorSong",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "deleteCensorSong",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/rl3.java",
+     "class": "rl3",
+     "method": "m44961d",
+     "line": 22
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.deleteSong",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "deleteSong",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/kl0.java",
+     "class": "a",
+     "method": "m27353a",
+     "line": 533
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.getCensorIngUSongCnt",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "getCensorIngUSongCnt",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/rl3.java",
+     "class": "rl3",
+     "method": "m44962e",
+     "line": 30
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.getLikeBottleList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "getLikeBottleList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/rl3.java",
+     "class": "rl3",
+     "method": "m44963f",
+     "line": 36
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.getUserCensorSongs",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "getUserCensorSongs",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/rl3.java",
+     "class": "rl3",
+     "method": "m44964g",
+     "line": 44
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.getUserTimelineExNew",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "getUserTimelineExNew",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/rl3.java",
+     "class": "rl3",
+     "method": "m44965h",
+     "line": 52
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.likeBottle",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "likeBottle",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/rl3.java",
+     "class": "rl3",
+     "method": "m44966i",
+     "line": 61
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.playFinish",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "playFinish",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C5448q7.java",
+     "class": "i",
+     "method": "if",
+     "line": 788
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.unlikeBottle",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "unlikeBottle",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/rl3.java",
+     "class": "rl3",
+     "method": "m44967j",
+     "line": 70
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "bottle.uploadSong",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "bottle",
+   "method": "uploadSong",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/kl0.java",
+     "class": "a",
+     "method": "if",
+     "line": 132
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "comment.addComment",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "comment",
+   "method": "addComment",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "b",
+     "method": "m27930b",
+     "line": 162
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "comment.bottleCommentList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "comment",
+   "method": "bottleCommentList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "b",
+     "method": "m27931c",
+     "line": 97
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "comment.bottleInfoNew",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "comment",
+   "method": "bottleInfoNew",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "b",
+     "method": "m27932d",
+     "line": 106
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "comment.commentCommentList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "comment",
+   "method": "commentCommentList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "b",
+     "method": "m27933e",
+     "line": 114
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "comment.delMyComment",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "comment",
+   "method": "delMyComment",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "b",
+     "method": "m27934f",
+     "line": 124
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "comment.praiseComment",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "comment",
+   "method": "praiseComment",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "b",
+     "method": "m27935g",
+     "line": 133
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "comment.unpraiseComment",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "comment",
+   "method": "unpraiseComment",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "b",
+     "method": "m27936h",
+     "line": 142
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "countryZone.getZonelist",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "countryZone",
+   "method": "getZonelist",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/iw1.java",
+     "class": "iw1",
+     "method": "m24499k",
+     "line": 200
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "couple.cpRank",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "couple",
+   "method": "cpRank",
+   "category": "agency",
+   "tags": [
+    "agency"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/xe4.java",
+     "class": "xe4",
+     "method": "m56019b",
+     "line": 30
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "couple.onAnswerCouple",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "couple",
+   "method": "onAnswerCouple",
+   "category": "agency",
+   "tags": [
+    "agency"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/sd3.java",
+     "class": "C5915b",
+     "method": "m46652l2",
+     "line": 82
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "feedback.report",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "feedback",
+   "method": "report",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/m66.java",
+     "class": "m66",
+     "method": "if",
+     "line": 76
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "feedTopic.info",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "feedTopic",
+   "method": "info",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/w85.java",
+     "class": "w85",
+     "method": "m54199d",
+     "line": 22
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "feedTopic.newUsong",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "feedTopic",
+   "method": "newUsong",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/w85.java",
+     "class": "w85",
+     "method": "m54200e",
+     "line": 30
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "feedTopic.recomList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "feedTopic",
+   "method": "recomList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/w85.java",
+     "class": "w85",
+     "method": "m54201f",
+     "line": 38
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "feedTopic.selectList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "feedTopic",
+   "method": "selectList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/w85.java",
+     "class": "w85",
+     "method": "m54202g",
+     "line": 44
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.checkHasPacketGift",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "checkHasPacketGift",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20455d",
+     "line": 24
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.getClientGiftTabs",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "getClientGiftTabs",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20456e",
+     "line": 32
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.getCommonGift",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "getCommonGift",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20457f",
+     "line": 40
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.getDrawGiftTemplate",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "getDrawGiftTemplate",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20458g",
+     "line": 46
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.getGiftList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "getGiftList",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20459h",
+     "line": 52
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.getPacketGift",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "getPacketGift",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20461j",
+     "line": 74
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.getReceieveGift",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "getReceieveGift",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20462k",
+     "line": 82
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.getTopUserGiftMap",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "getTopUserGiftMap",
+   "category": "ranking",
+   "tags": [
+    "ranking",
+    "gift",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20463l",
+     "line": 90
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.getUserGiftMap",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "getUserGiftMap",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20464m",
+     "line": 98
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.getUserSongGiftList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "getUserSongGiftList",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20465n",
+     "line": 106
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.sendPrivateGift",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "sendPrivateGift",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20466o",
+     "line": 116
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.sendSongGift",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "sendSongGift",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20467p",
+     "line": 124
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.shareGiftMapMoment",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "shareGiftMapMoment",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20468q",
+     "line": 132
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "gift.songGiftRank",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "gift",
+   "method": "songGiftRank",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20469r",
+     "line": 138
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "login.checkMobile",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "login",
+   "method": "checkMobile",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/mutate/nudged/LocAuthorizationAlertActivity.java",
+     "class": "HandlerC4898z",
+     "method": "m37618z2",
+     "line": 1874
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "mall.buyCustomizeTheme",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "mall",
+   "method": "buyCustomizeTheme",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/yn4.java",
+     "class": "yn4",
+     "method": "m58340a",
+     "line": 21
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "mall.buyProduct",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "mall",
+   "method": "buyProduct",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "class": "c",
+     "method": "m18070S",
+     "line": 3609
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "mall.buyTheme",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "mall",
+   "method": "buyTheme",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/fk2.java",
+     "class": "C2575f",
+     "method": "m17549u2",
+     "line": 872
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "mall.getMallProductV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "mall",
+   "method": "getMallProductV",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "mall.getMyProduct",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "mall",
+   "method": "getMyProduct",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "class": "c",
+     "method": "if",
+     "line": 3383
+    },
+    {
+     "file": "p000/fv5.java",
+     "class": "c",
+     "method": "if",
+     "line": 3486
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "mall.giveAwayProduct",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "mall",
+   "method": "giveAwayProduct",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "class": "c",
+     "method": "m18067M",
+     "line": 3569
+    },
+    {
+     "file": "p000/fv5.java",
+     "class": "c",
+     "method": "m18067M",
+     "line": 3575
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "mall.giveAwayUserList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "mall",
+   "method": "giveAwayUserList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j85.java",
+     "class": "ViewOnClickListenerC3433c",
+     "method": "m25079q2",
+     "line": 288
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "mall.useProduct",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "mall",
+   "method": "useProduct",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "class": "c",
+     "method": "m18078d0",
+     "line": 3660
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "mall.useTheme",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "mall",
+   "method": "useTheme",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/fk2.java",
+     "class": "C2575f",
+     "method": "m17548s2",
+     "line": 860
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "medal.adornMedalList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "medal",
+   "method": "adornMedalList",
+   "category": "vip",
+   "tags": [
+    "vip"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/go2.java",
+     "class": "go2",
+     "method": "m19989a",
+     "line": 30
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "medal.getMedalList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "medal",
+   "method": "getMedalList",
+   "category": "vip",
+   "tags": [
+    "vip"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/go2.java",
+     "class": "go2",
+     "method": "m19990b",
+     "line": 39
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "medal.getSomeUserMedalList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "medal",
+   "method": "getSomeUserMedalList",
+   "category": "vip",
+   "tags": [
+    "vip",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/go2.java",
+     "class": "go2",
+     "method": "m19988c",
+     "line": 19
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "medal.getUserMedalListAdorn",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "medal",
+   "method": "getUserMedalListAdorn",
+   "category": "vip",
+   "tags": [
+    "vip",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/go2.java",
+     "class": "go2",
+     "method": "m19991d",
+     "line": 50
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "medal.getUserMedalListAll",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "medal",
+   "method": "getUserMedalListAll",
+   "category": "vip",
+   "tags": [
+    "vip",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/go2.java",
+     "class": "go2",
+     "method": "m19992e",
+     "line": 60
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "moment.browseUsids",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "moment",
+   "method": "browseUsids",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/m74.java",
+     "class": "c",
+     "method": "if",
+     "line": 561
+    },
+    {
+     "file": "p000/m74.java",
+     "class": "c",
+     "method": "if",
+     "line": 562
+    },
+    {
+     "file": "p000/tn2.java",
+     "class": "C6152p",
+     "method": "if",
+     "line": 957
+    },
+    {
+     "file": "p000/tn2.java",
+     "class": "C6152p",
+     "method": "if",
+     "line": 958
+    }
+   ],
+   "caller_count": 4
+  },
+  {
+   "id": "moment.follow",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "moment",
+   "method": "follow",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "d",
+     "method": "m27943d",
+     "line": 226
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "moment.getPublicSongTxt",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "moment",
+   "method": "getPublicSongTxt",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "d",
+     "method": "m27944e",
+     "line": 236
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "moment.hasHistory",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "moment",
+   "method": "hasHistory",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "d",
+     "method": "m27945f",
+     "line": 245
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "moment.history",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "moment",
+   "method": "history",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "d",
+     "method": "m27946g",
+     "line": 251
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "moment.recomV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "moment",
+   "method": "recomV",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "moment.song",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "moment",
+   "method": "song",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "d",
+     "method": "m27948i",
+     "line": 267
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "moment.topic",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "moment",
+   "method": "topic",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "d",
+     "method": "m27949j",
+     "line": 275
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "notice.checkNotice",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "notice",
+   "method": "checkNotice",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/sq3.java",
+     "class": "C5963m",
+     "method": "if",
+     "line": 1022
+    },
+    {
+     "file": "p000/sq3.java",
+     "class": "C5963m",
+     "method": "if",
+     "line": 1022
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "notice.clearNoticeAndImCount",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "notice",
+   "method": "clearNoticeAndImCount",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/sq3.java",
+     "class": "C5963m",
+     "method": "if",
+     "line": 2766
+    },
+    {
+     "file": "p000/sq3.java",
+     "class": "C5963m",
+     "method": "if",
+     "line": 2766
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "preArea.getServer",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "preArea",
+   "method": "getServer",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/mo2.java",
+     "class": "a",
+     "method": "m31137g",
+     "line": 782
+    },
+    {
+     "file": "p000/jr1.java",
+     "class": "RunnableC3543i",
+     "method": "if",
+     "line": 808
+    },
+    {
+     "file": "p000/jr1.java",
+     "class": "RunnableC3543i",
+     "method": "if",
+     "line": 820
+    },
+    {
+     "file": "p000/jr1.java",
+     "class": "RunnableC3543i",
+     "method": "if",
+     "line": 910
+    },
+    {
+     "file": "p000/jr1.java",
+     "class": "RunnableC3543i",
+     "method": "if",
+     "line": 932
+    }
+   ],
+   "caller_count": 5
+  },
+  {
+   "id": "report.addBlackList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "report",
+   "method": "addBlackList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "m31781f",
+     "line": 392
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "report.checkInBlackList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "report",
+   "method": "checkInBlackList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "m31782h",
+     "line": 400
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "report.delBlackList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "report",
+   "method": "delBlackList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "m31791v",
+     "line": 658
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "report.getBlackList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "report",
+   "method": "getBlackList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "if",
+     "line": 423
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "report.getReportConfig",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "report",
+   "method": "getReportConfig",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "e",
+     "method": "m27953d",
+     "line": 315
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "report.reportUser",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "report",
+   "method": "reportUser",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/fx4.java",
+     "class": "C2654g",
+     "method": "if",
+     "line": 531
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.addRole",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "addRole",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26343b",
+     "line": 143
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.batchGetRoomInfos",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "batchGetRoomInfos",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/mq3.java",
+     "class": "c",
+     "method": "if",
+     "line": 2637
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.collectRoom",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "collectRoom",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30831f",
+     "line": 266
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30839p",
+     "line": 590
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "room.createRoomEx",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "createRoomEx",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/dl2.java",
+     "class": "b",
+     "method": "m13669j",
+     "line": 364
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.delRole",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "delRole",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26344c",
+     "line": 20
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.discoverRoom",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "discoverRoom",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/xt1.java",
+     "class": "xt1",
+     "method": "m56699d",
+     "line": 49
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.gameRank",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "gameRank",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/xe4.java",
+     "class": "xe4",
+     "method": "m56020c",
+     "line": 41
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getActivityGames",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getActivityGames",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26345d",
+     "line": 29
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getActivityGamesV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getActivityGamesV",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "room.getApplyMicList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getApplyMicList",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26346e",
+     "line": 35
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getBlackList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getBlackList",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30834k",
+     "line": 293
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getCallFansList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getCallFansList",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26347f",
+     "line": 43
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getCoinFlowRank",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getCoinFlowRank",
+   "category": "ranking",
+   "tags": [
+    "ranking",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26348g",
+     "line": 51
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getCoinFlowTotalRank",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getCoinFlowTotalRank",
+   "category": "ranking",
+   "tags": [
+    "ranking",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/xe4.java",
+     "class": "xe4",
+     "method": "m56022e",
+     "line": 63
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getCountryListV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getCountryListV",
+   "category": "room",
+   "tags": [
+    "room",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "room.getCountryRoomListV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getCountryRoomListV",
+   "category": "room",
+   "tags": [
+    "room",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "room.getHotvalAndMedal",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getHotvalAndMedal",
+   "category": "vip",
+   "tags": [
+    "vip",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24882f",
+     "line": 35
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getMyRoomList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getMyRoomList",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/dl2.java",
+     "class": "b",
+     "method": "m13670l",
+     "line": 372
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getRecommendRoomV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getRecommendRoomV",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "room.getRoomCharmRank",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getRoomCharmRank",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26349h",
+     "line": 59
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getRoomInfo",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getRoomInfo",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30833j",
+     "line": 285
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getRoomModelConfig",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getRoomModelConfig",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26351j",
+     "line": 75
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getSendGiftRankV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getSendGiftRankV",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "room.getTop",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getTop",
+   "category": "ranking",
+   "tags": [
+    "ranking",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "room.getTopicRandom",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getTopicRandom",
+   "category": "ranking",
+   "tags": [
+    "ranking",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/mutate/nudged/LiveGoodListViewHandlerActivity.java",
+     "class": "C4868f",
+     "method": "m37531b2",
+     "line": 412
+    },
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26352k",
+     "line": 83
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "room.getUserCharmRankV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getUserCharmRankV",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "room.getUserContributeRank",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getUserContributeRank",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26353l",
+     "line": 91
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getUserOnlineList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getUserOnlineList",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26354m",
+     "line": 102
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.getUserOnlineListV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getUserOnlineListV",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "room.getWealthInfo",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "getWealthInfo",
+   "category": "vip",
+   "tags": [
+    "vip",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/tc4.java",
+     "class": "C6074d",
+     "method": "m48564x0",
+     "line": 682
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.inviteFriends",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "inviteFriends",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58849i",
+     "line": 128
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.luckyGiftRank",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "luckyGiftRank",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/xe4.java",
+     "class": "xe4",
+     "method": "m56021d",
+     "line": 52
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.shareReport",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "shareReport",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C5448q7.java",
+     "class": "i",
+     "method": "if",
+     "line": 850
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.updateRoomImg",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "updateRoomImg",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4075mi.java",
+     "class": "b",
+     "method": "if",
+     "line": 143
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "room.updateRoomInfo",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "room",
+   "method": "updateRoomInfo",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "class": "k14",
+     "method": "m26356o",
+     "line": 120
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30838o",
+     "line": 579
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30840q",
+     "line": 599
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30841r",
+     "line": 607
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30842s",
+     "line": 617
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30843t",
+     "line": 627
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30845v",
+     "line": 641
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "class": "c",
+     "method": "m30846w",
+     "line": 651
+    }
+   ],
+   "caller_count": 8
+  },
+  {
+   "id": "search.friendSearch",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "search",
+   "method": "friendSearch",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/processer/maneger/gatherer/BPlusBaseRefreshComponentActivity.java",
+     "class": "C5254f",
+     "method": "if",
+     "line": 459
+    },
+    {
+     "file": "preprocessed/conection/processer/maneger/gatherer/BPlusBaseRefreshComponentActivity.java",
+     "class": "C5254f",
+     "method": "if",
+     "line": 460
+    },
+    {
+     "file": "p000/pq2.java",
+     "class": "C4764b",
+     "method": "if",
+     "line": 256
+    },
+    {
+     "file": "p000/pq2.java",
+     "class": "C4764b",
+     "method": "if",
+     "line": 256
+    }
+   ],
+   "caller_count": 4
+  },
+  {
+   "id": "search.recommend",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "search",
+   "method": "recommend",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/xt1.java",
+     "class": "xt1",
+     "method": "m56702g",
+     "line": 77
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "search.roomSearch",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "search",
+   "method": "roomSearch",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/xt1.java",
+     "class": "xt1",
+     "method": "m56703h",
+     "line": 86
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "search.userSearch",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "search",
+   "method": "userSearch",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/xt1.java",
+     "class": "xt1",
+     "method": "m56705j",
+     "line": 108
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "sq.config",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "sq",
+   "method": "config",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "task.getSignInListV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "task",
+   "method": "getSignInListV",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "task.giveBeans",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "task",
+   "method": "giveBeans",
+   "category": "wallet",
+   "tags": [
+    "wallet"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/fx4.java",
+     "class": "C2654g",
+     "method": "if",
+     "line": 528
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "task.signInV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "task",
+   "method": "signInV",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "user.bashGetIsSubscribe",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "bashGetIsSubscribe",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24879c",
+     "line": 118
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.batchGetUserinfoV",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "batchGetUserinfoV",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [],
+   "caller_count": 0
+  },
+  {
+   "id": "user.getCountryConfig",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getCountryConfig",
+   "category": "user",
+   "tags": [
+    "user",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24881e",
+     "line": 29
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getCountryList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getCountryList",
+   "category": "user",
+   "tags": [
+    "user",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24880d",
+     "line": 23
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getFansList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getFansList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "if",
+     "line": 434
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getFriendList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getFriendList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/processer/maneger/gatherer/BPlusBaseRefreshComponentActivity.java",
+     "class": "C5254f",
+     "method": "m40609f2",
+     "line": 419
+    },
+    {
+     "file": "preprocessed/conection/processer/maneger/gatherer/BPlusBaseRefreshComponentActivity.java",
+     "class": "C5254f",
+     "method": "m40609f2",
+     "line": 420
+    },
+    {
+     "file": "p000/pq2.java",
+     "class": "C4764b",
+     "method": "m36623E2",
+     "line": 241
+    },
+    {
+     "file": "p000/pq2.java",
+     "class": "C4764b",
+     "method": "if",
+     "line": 245
+    },
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "if",
+     "line": 456
+    }
+   ],
+   "caller_count": 5
+  },
+  {
+   "id": "user.getGiftWallList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getGiftWallList",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "class": "C2867h",
+     "method": "m20460i",
+     "line": 66
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getIsSubscribe",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getIsSubscribe",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/vm2.java",
+     "class": "a",
+     "method": "m53231n0",
+     "line": 4554
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getNewUserPrizes",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getNewUserPrizes",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24883g",
+     "line": 43
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getSensitivePath",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getSensitivePath",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24884h",
+     "line": 51
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getSubcribeList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getSubcribeList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "if",
+     "line": 445
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getUserIdentity",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getUserIdentity",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24885i",
+     "line": 57
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getUserImSendStatus",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getUserImSendStatus",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/ViewOnClickListenerC2286e1.java",
+     "class": "m",
+     "method": "m14532M2",
+     "line": 933
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.getUserinfo",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getUserinfo",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/lb1.java",
+     "class": "a",
+     "method": "if",
+     "line": 593
+    },
+    {
+     "file": "p000/lb1.java",
+     "class": "a",
+     "method": "m28981u",
+     "line": 813
+    },
+    {
+     "file": "p000/lb1.java",
+     "class": "a",
+     "method": "m28981u",
+     "line": 818
+    }
+   ],
+   "caller_count": 3
+  },
+  {
+   "id": "user.getWhiteList",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "getWhiteList",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24886j",
+     "line": 63
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.recommendUser",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "recommendUser",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/ny1.java",
+     "class": "c",
+     "method": "if",
+     "line": 1295
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.registerFinish",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "registerFinish",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24887k",
+     "line": 69
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.setCountry",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "setCountry",
+   "category": "user",
+   "tags": [
+    "user",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24888l",
+     "line": 77
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.subcribe",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "subcribe",
+   "category": "payment",
+   "tags": [
+    "payment",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "m31776t",
+     "line": 350
+    },
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "if",
+     "line": 360
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "user.supporter",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "supporter",
+   "category": "ranking",
+   "tags": [
+    "ranking",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/zf5.java",
+     "class": "c",
+     "method": "if",
+     "line": 655
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.unbind",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "unbind",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/processer/interval/SClientRequestInfoActivity.java",
+     "class": "C5236d",
+     "method": "m40541i2",
+     "line": 424
+    },
+    {
+     "file": "preprocessed/conection/processer/interval/SClientRequestInfoActivity.java",
+     "class": "C5236d",
+     "method": "m40541i2",
+     "line": 427
+    },
+    {
+     "file": "preprocessed/conection/processer/interval/HomeTravelStepModelActivity.java",
+     "class": "C5230b",
+     "method": "m40494i2",
+     "line": 346
+    },
+    {
+     "file": "preprocessed/conection/processer/interval/HomeTravelStepModelActivity.java",
+     "class": "C5230b",
+     "method": "m40494i2",
+     "line": 349
+    }
+   ],
+   "caller_count": 4
+  },
+  {
+   "id": "user.unsubcribe",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "unsubcribe",
+   "category": "payment",
+   "tags": [
+    "payment",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "m31790u",
+     "line": 638
+    },
+    {
+     "file": "p000/C4155my.java",
+     "class": "e",
+     "method": "if",
+     "line": 648
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "user.updateCountry",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "updateCountry",
+   "category": "user",
+   "tags": [
+    "user",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24889m",
+     "line": 85
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.updateLang",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "updateLang",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "class": "j46",
+     "method": "m24890n",
+     "line": 93
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "user.updateUInfo",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "updateUInfo",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/C6951xo.java",
+     "class": "a",
+     "method": "m56453e",
+     "line": 297
+    },
+    {
+     "file": "p000/C2868h0.java",
+     "class": "C2868h0",
+     "method": "m20480j",
+     "line": 144
+    },
+    {
+     "file": "p000/C2868h0.java",
+     "class": "C2868h0",
+     "method": "if",
+     "line": 155
+    }
+   ],
+   "caller_count": 3
+  },
+  {
+   "id": "user.uploadAvatar",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "user",
+   "method": "uploadAvatar",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "p000/zv3.java",
+     "class": "RunnableC7396b",
+     "method": "run",
+     "line": 204
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "wallet.getWalletInfo",
+   "style": "json-rpc",
+   "transport": "POST",
+   "module": "wallet",
+   "method": "getWalletInfo",
+   "category": "wallet",
+   "tags": [
+    "wallet"
+   ],
+   "evidence": "decrypted static string (analysis/rpc_methods.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/processer/gated/megabit/C5176d.java",
+     "class": "d",
+     "method": "m40035j",
+     "line": 680
+    },
+    {
+     "file": "preprocessed/conection/processer/gated/megabit/C5176d.java",
+     "class": "d",
+     "method": "m40035j",
+     "line": 680
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "Action/Anchor.inviteJoinGuildRes",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "Anchor",
+   "method": "inviteJoinGuildRes",
+   "category": "agency",
+   "tags": [
+    "agency"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/fy5.java",
+     "class": "ViewOnClickListenerC2705z",
+     "method": "m18237i1",
+     "line": 4624
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/Api.GetUserSig",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "Api",
+   "method": "GetUserSig",
+   "category": "user",
+   "tags": [
+    "user",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/q90.java",
+     "class": "C5502l",
+     "method": "m42772q",
+     "line": 1598
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/BDCenter.inviteGuildRes",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "BDCenter",
+   "method": "inviteGuildRes",
+   "category": "agency",
+   "tags": [
+    "agency"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/fy5.java",
+     "class": "ViewOnClickListenerC2705z",
+     "method": "m18238j1",
+     "line": 4633
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/BDCenter.inviteUserRes",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "BDCenter",
+   "method": "inviteUserRes",
+   "category": "agency",
+   "tags": [
+    "agency",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/fy5.java",
+     "class": "ViewOnClickListenerC2705z",
+     "method": "m18239k1",
+     "line": 4642
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/bestFriend.handleInvitation",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "bestFriend",
+   "method": "handleInvitation",
+   "category": "agency",
+   "tags": [
+    "agency",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/ec3.java",
+     "class": "C2352b",
+     "method": "m15152l2",
+     "line": 81
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/ChargeGiftBag.getGiftBagStatus",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "ChargeGiftBag",
+   "method": "getGiftBagStatus",
+   "category": "payment",
+   "tags": [
+    "payment",
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/ss1.java",
+     "class": "C5976b",
+     "method": "m47577e",
+     "line": 143
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/Game.createGameRoom",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "Game",
+   "method": "createGameRoom",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/bn2.java",
+     "class": "C0752h",
+     "method": "if",
+     "line": 1050
+    },
+    {
+     "file": "p000/dn2.java",
+     "class": "c",
+     "method": "if",
+     "line": 903
+    },
+    {
+     "file": "p000/C6600vi.java",
+     "class": "c",
+     "method": "if",
+     "line": 856
+    }
+   ],
+   "caller_count": 3
+  },
+  {
+   "id": "Action/Game.getGameRoomId",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "Game",
+   "method": "getGameRoomId",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C6918xi.java",
+     "class": "c",
+     "method": "if",
+     "line": 1976
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/GameMall.exchangeProduct",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "GameMall",
+   "method": "exchangeProduct",
+   "category": "wallet",
+   "tags": [
+    "wallet"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "class": "c",
+     "method": "m18079r",
+     "line": 3675
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/GameMall.getMallProduct",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "GameMall",
+   "method": "getMallProduct",
+   "category": "wallet",
+   "tags": [
+    "wallet"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "class": "c",
+     "method": "if",
+     "line": 3486
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/HiddenSettings.getHiddenSettings",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "HiddenSettings",
+   "method": "getHiddenSettings",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/mutate/nudged/PDLCacheMetadataRepositoryImplActivity.java",
+     "class": "C4917e",
+     "method": "m37767Y1",
+     "line": 368
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/HiddenSettings.updateHiddenSettings",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "HiddenSettings",
+   "method": "updateHiddenSettings",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/mutate/nudged/PDLCacheMetadataRepositoryImplActivity.java",
+     "class": "C4917e",
+     "method": "m37769a2",
+     "line": 419
+    },
+    {
+     "file": "preprocessed/conection/mutate/nudged/PDLCacheMetadataRepositoryImplActivity.java",
+     "class": "C4917e",
+     "method": "m37770b2",
+     "line": 428
+    },
+    {
+     "file": "preprocessed/conection/mutate/nudged/PDLCacheMetadataRepositoryImplActivity.java",
+     "class": "C4917e",
+     "method": "m37771c2",
+     "line": 437
+    },
+    {
+     "file": "preprocessed/conection/mutate/nudged/PDLCacheMetadataRepositoryImplActivity.java",
+     "class": "C4917e",
+     "method": "m37772d2",
+     "line": 446
+    }
+   ],
+   "caller_count": 4
+  },
+  {
+   "id": "Action/IMSvc.getQuickChatMsg",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "IMSvc",
+   "method": "getQuickChatMsg",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/mo2.java",
+     "class": "a",
+     "method": "m31143m",
+     "line": 862
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/JoyPlay.getUidAndToken",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "JoyPlay",
+   "method": "getUidAndToken",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/bn2.java",
+     "class": "C0752h",
+     "method": "m6654m",
+     "line": 949
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveLuckyBags.fetchBagInfos",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveLuckyBags",
+   "method": "fetchBagInfos",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54768g",
+     "line": 75
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveLuckyBags.getBag",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveLuckyBags",
+   "method": "getBag",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54767f",
+     "line": 69
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LivePk.breakOffPk",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LivePk",
+   "method": "breakOffPk",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C6484ux.java",
+     "class": "a",
+     "method": "if",
+     "line": 74
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LivePk.cancelPkMatch",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LivePk",
+   "method": "cancelPkMatch",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/la5.java",
+     "class": "c",
+     "method": "if",
+     "line": 349
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LivePk.friendList",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LivePk",
+   "method": "friendList",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C3349is.java",
+     "class": "c",
+     "method": "if",
+     "line": 656
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LivePk.getPkInfo",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LivePk",
+   "method": "getPkInfo",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C6484ux.java",
+     "class": "d",
+     "method": "if",
+     "line": 789
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LivePk.matchLivePk",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LivePk",
+   "method": "matchLivePk",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/la5.java",
+     "class": "c",
+     "method": "if",
+     "line": 1049
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LivePk.recently",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LivePk",
+   "method": "recently",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C3349is.java",
+     "class": "RunnableC7614c",
+     "method": "if",
+     "line": 2011
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LivePk.refusePk",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LivePk",
+   "method": "refusePk",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C6484ux.java",
+     "class": "i",
+     "method": "if",
+     "line": 1870
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LivePk.startLivePk",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LivePk",
+   "method": "startLivePk",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C6484ux.java",
+     "class": "k",
+     "method": "if",
+     "line": 2228
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRocketGift.gifts",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRocketGift",
+   "method": "gifts",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54769h",
+     "line": 81
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRocketGift.roomGifts",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRocketGift",
+   "method": "roomGifts",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54772k",
+     "line": 111
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.addRole",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "addRole",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "class": "f63",
+     "method": "m16969a",
+     "line": 31
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.blockade",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "blockade",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "class": "j30",
+     "method": "m24853a",
+     "line": 51
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoomBomb.getBombConfig",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoomBomb",
+   "method": "getBombConfig",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "class": "j30",
+     "method": "m24854c",
+     "line": 59
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoomBomb.getRoomPrizeRecord",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoomBomb",
+   "method": "getRoomPrizeRecord",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54775n",
+     "line": 129
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.createRoom",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "createRoom",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "class": "j30",
+     "method": "m24850b",
+     "line": 21
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.delRole",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "delRole",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "class": "f63",
+     "method": "m16970b",
+     "line": 44
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.getCoinFlowRank",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "getCoinFlowRank",
+   "category": "ranking",
+   "tags": [
+    "ranking",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "class": "f63",
+     "method": "m16973f",
+     "line": 77
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.getMyCollectRoomList",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "getMyCollectRoomList",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "class": "f63",
+     "method": "m16971c",
+     "line": 56
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.getRoomExtraInfo",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "getRoomExtraInfo",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C6484ux.java",
+     "class": "f",
+     "method": "if",
+     "line": 1151
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.getRoomInfo",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "getRoomInfo",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "class": "j30",
+     "method": "m24855d",
+     "line": 67
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.getUserContributeRank",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "getUserContributeRank",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "class": "f63",
+     "method": "m16974g",
+     "line": 89
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.getUserOnlineList",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "getUserOnlineList",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "class": "f63",
+     "method": "m16975h",
+     "line": 105
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.heartbeat",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "heartbeat",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "class": "j30",
+     "method": "m24851e",
+     "line": 30
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.joinRoom",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "joinRoom",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "class": "j30",
+     "method": "m24852f",
+     "line": 38
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.kickUser",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "kickUser",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "class": "j30",
+     "method": "m24856g",
+     "line": 75
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoomLevel.getRoomLevelInfo",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoomLevel",
+   "method": "getRoomLevelInfo",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54773l",
+     "line": 117
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoomLevel.getRoomLevelPrize",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoomLevel",
+   "method": "getRoomLevelPrize",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54774m",
+     "line": 123
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoomLevel.getTaskList",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoomLevel",
+   "method": "getTaskList",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54776o",
+     "line": 135
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.recommend",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "recommend",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "class": "f63",
+     "method": "m16972d",
+     "line": 65
+    },
+    {
+     "file": "p000/C3349is.java",
+     "class": "c",
+     "method": "if",
+     "line": 1332
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "Action/LiveRoom.sendLiveGift",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "sendLiveGift",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "class": "j30",
+     "method": "m24857h",
+     "line": 84
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.setTextConfig",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "setTextConfig",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "class": "f63",
+     "method": "m16976i",
+     "line": 116
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveRoom.updateRoomImg",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveRoom",
+   "method": "updateRoomImg",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/b86.java",
+     "class": "a",
+     "method": "if",
+     "line": 1179
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LiveSearch.roomSearch",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LiveSearch",
+   "method": "roomSearch",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/xt1.java",
+     "class": "xt1",
+     "method": "m56704i",
+     "line": 98
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/luckyBags.fetchBagInfos",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "luckyBags",
+   "method": "fetchBagInfos",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54768g",
+     "line": 75
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/luckyBags.getBag",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "luckyBags",
+   "method": "getBag",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54767f",
+     "line": 69
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LuckyDraw.drawPrizesPreview",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LuckyDraw",
+   "method": "drawPrizesPreview",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/ba2.java",
+     "class": "c",
+     "method": "if",
+     "line": 651
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LuckyNumber.getConfig",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LuckyNumber",
+   "method": "getConfig",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "c",
+     "method": "m27939c",
+     "line": 184
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/LuckyNumber.setConfig",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "LuckyNumber",
+   "method": "setConfig",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/C3758ky.java",
+     "class": "c",
+     "method": "m27940d",
+     "line": 192
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/MiniGame.getUidAndToken",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "MiniGame",
+   "method": "getUidAndToken",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/bn2.java",
+     "class": "C0752h",
+     "method": "m6655n",
+     "line": 955
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/MiniGame.getUidAndTokenByAmg",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "MiniGame",
+   "method": "getUidAndTokenByAmg",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/bn2.java",
+     "class": "C0752h",
+     "method": "m6653l",
+     "line": 943
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/MiniGame.getUidAndTokenByYomi",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "MiniGame",
+   "method": "getUidAndTokenByYomi",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/bn2.java",
+     "class": "C0752h",
+     "method": "m6658r",
+     "line": 978
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/MiniGame.getUidAndTokenV2",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "MiniGame",
+   "method": "getUidAndTokenV2",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/bn2.java",
+     "class": "C0752h",
+     "method": "m6664o",
+     "line": 1122
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/MiniGame.tokenDestroy",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "MiniGame",
+   "method": "tokenDestroy",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/processer/discriminant/PlcRecoStatEventView.java",
+     "class": "C5123l",
+     "method": "m39162M",
+     "line": 1200
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/Noble.getBirthdayInfo",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "Noble",
+   "method": "getBirthdayInfo",
+   "category": "vip",
+   "tags": [
+    "vip"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/vq3.java",
+     "class": "vq3",
+     "method": "m53536e",
+     "line": 37
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/Noble.receiveBirthdayPresent",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "Noble",
+   "method": "receiveBirthdayPresent",
+   "category": "vip",
+   "tags": [
+    "vip"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/vq3.java",
+     "class": "vq3",
+     "method": "m53537f",
+     "line": 43
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/Noble.sendHorn",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "Noble",
+   "method": "sendHorn",
+   "category": "vip",
+   "tags": [
+    "vip"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/vq3.java",
+     "class": "vq3",
+     "method": "m53535d",
+     "line": 23
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/Noble.shareMoment",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "Noble",
+   "method": "shareMoment",
+   "category": "vip",
+   "tags": [
+    "vip",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/vq3.java",
+     "class": "vq3",
+     "method": "m53538g",
+     "line": 49
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RadioRoomPk.rank",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RadioRoomPk",
+   "method": "rank",
+   "category": "ranking",
+   "tags": [
+    "ranking",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/zx5.java",
+     "class": "c",
+     "method": "if",
+     "line": 702
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RocketGift.gifts",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RocketGift",
+   "method": "gifts",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54769h",
+     "line": 81
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RocketGift.roomGifts",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RocketGift",
+   "method": "roomGifts",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54772k",
+     "line": 111
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomAct.getActInfoById",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomAct",
+   "method": "getActInfoById",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "preprocessed/conection/processer/clendar/factioy/onnx/ASMEmoticonManagerView.java",
+     "class": "C5065j",
+     "method": "m38856e",
+     "line": 594
+    },
+    {
+     "file": "preprocessed/conection/processer/clendar/factioy/onnx/LiveGoodsCampaignListModelView.java",
+     "class": "C5082q",
+     "method": "m38895h",
+     "line": 1011
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "Action/RoomAct.joinAct",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomAct",
+   "method": "joinAct",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/uq3.java",
+     "class": "uq3",
+     "method": "m51471c",
+     "line": 19
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.batchGetUserInfo",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "batchGetUserInfo",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58837a",
+     "line": 21
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.blockade",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "blockade",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58843b",
+     "line": 80
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.cancelCallFans",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "cancelCallFans",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58844c",
+     "line": 88
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.disableMic",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "disableMic",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58845d",
+     "line": 96
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.divideGroup",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "divideGroup",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58846e",
+     "line": 104
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.getDynamicKey",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "getDynamicKey",
+   "category": "room",
+   "tags": [
+    "room",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58848g",
+     "line": 120
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.heartbeat",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "heartbeat",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58838h",
+     "line": 31
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.inviteJoinMic",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "inviteJoinMic",
+   "category": "agency",
+   "tags": [
+    "agency",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58850j",
+     "line": 136
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.joinMic",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "joinMic",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58839k",
+     "line": 39
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.joinRoom",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "joinRoom",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58840l",
+     "line": 47
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.kickUser",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "kickUser",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58851m",
+     "line": 144
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.lockMic",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "lockMic",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58852n",
+     "line": 152
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.mute",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "mute",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58853o",
+     "line": 160
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.notifyUpdateUInfo",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "notifyUpdateUInfo",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58854p",
+     "line": 168
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.quitMic",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "quitMic",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58841q",
+     "line": 60
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.sendGift",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "sendGift",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58855r",
+     "line": 177
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.sendLuckyNum",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "sendLuckyNum",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58856s",
+     "line": 201
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.setCharmConfig",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "setCharmConfig",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58842t",
+     "line": 68
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.setTextConfig",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "setTextConfig",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58857u",
+     "line": 209
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.startCallFans",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "startCallFans",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58858v",
+     "line": 217
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.startTimingPKGroup",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "startTimingPKGroup",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58859w",
+     "line": 227
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.stopTimingPKGroup",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "stopTimingPKGroup",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58860x",
+     "line": 243
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomApi.switchMic",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomApi",
+   "method": "switchMic",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58861y",
+     "line": 251
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomBomb.getBombConfig",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomBomb",
+   "method": "getBombConfig",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "class": "yw1",
+     "method": "m58847f",
+     "line": 112
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomBomb.getRoomPrizeRecord",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomBomb",
+   "method": "getRoomPrizeRecord",
+   "category": "gift",
+   "tags": [
+    "gift",
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54775n",
+     "line": 129
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomLevel.getRoomLevelInfo",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomLevel",
+   "method": "getRoomLevelInfo",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54773l",
+     "line": 117
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomLevel.getRoomLevelPrize",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomLevel",
+   "method": "getRoomLevelPrize",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54774m",
+     "line": 123
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/RoomLevel.getTaskList",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "RoomLevel",
+   "method": "getTaskList",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "class": "wl2",
+     "method": "m54776o",
+     "line": 135
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/SuperManage.ban",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "SuperManage",
+   "method": "ban",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "class": "c73",
+     "method": "m7774a",
+     "line": 19
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/SuperManage.behaviorBan",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "SuperManage",
+   "method": "behaviorBan",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "class": "c73",
+     "method": "m7775b",
+     "line": 31
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/SuperManage.deleteSong",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "SuperManage",
+   "method": "deleteSong",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "class": "c73",
+     "method": "m7776c",
+     "line": 43
+    },
+    {
+     "file": "p000/kl0.java",
+     "class": "a",
+     "method": "m27356f",
+     "line": 333
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "Action/SuperManage.resetLiveRoom",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "SuperManage",
+   "method": "resetLiveRoom",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "class": "c73",
+     "method": "m7777d",
+     "line": 54
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/SuperManage.resetRoom",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "SuperManage",
+   "method": "resetRoom",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "class": "c73",
+     "method": "m7778e",
+     "line": 66
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/SuperManage.resetUser",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "SuperManage",
+   "method": "resetUser",
+   "category": "room",
+   "tags": [
+    "room",
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "class": "c73",
+     "method": "m7779f",
+     "line": 78
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "Action/UsersRoamMsg.getIMNum",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "UsersRoamMsg",
+   "method": "getIMNum",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/sq3.java",
+     "class": "C5963m",
+     "method": "m47436s3",
+     "line": 1941
+    },
+    {
+     "file": "p000/sq3.java",
+     "class": "C5963m",
+     "method": "m47436s3",
+     "line": 1941
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "Action/UsersRoamMsg.getRelationIMNum",
+   "style": "action-rest",
+   "transport": "POST",
+   "controller": "UsersRoamMsg",
+   "method": "getRelationIMNum",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/action_endpoints.txt)",
+   "callers": [
+    {
+     "file": "p000/sq3.java",
+     "class": "C5963m",
+     "method": "m47434r3",
+     "line": 1935
+    },
+    {
+     "file": "p000/sq3.java",
+     "class": "C5963m",
+     "method": "m47434r3",
+     "line": 1935
+    }
+   ],
+   "caller_count": 2
+  },
+  {
+   "id": "/api/GetUserSig.php",
+   "style": "php",
+   "transport": "POST",
+   "category": "user",
+   "tags": [
+    "user",
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 426
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/api/v1/upload/applog",
+   "style": "php",
+   "transport": "POST",
+   "category": "config",
+   "tags": [
+    "config"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 396
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/googleplaySub/getSubOrder.php",
+   "style": "php",
+   "transport": "POST",
+   "category": "payment",
+   "tags": [
+    "payment"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 380
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/googleplaySub/getSubReceipt.php",
+   "style": "php",
+   "transport": "POST",
+   "category": "payment",
+   "tags": [
+    "payment"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 381
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/googleplaySub/subProductList.php",
+   "style": "php",
+   "transport": "POST",
+   "category": "payment",
+   "tags": [
+    "payment"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 379
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/anchor/index.html?lang=",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 418
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/announcementFamily/index.html?uid=",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "agency",
+   "tags": [
+    "agency"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 441
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/coinsMerchant/index.html?uid=",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "wallet",
+   "tags": [
+    "wallet"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 446
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/cpReward/index.html?",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 466
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/friendCenter/index.html?",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 478
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/luckyBox/index.html?uid=",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "gift",
+   "tags": [
+    "gift"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 433
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/magicBox/index.html?lang=",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 427
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/medalRank/index.html?",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "vip",
+   "tags": [
+    "vip"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 440
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/mobiChecker/index.php?bundleId=",
+   "style": "php",
+   "transport": "POST",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 425
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/pkReward/index.html?",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 475
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/pkRule/index.html?",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "user",
+   "tags": [],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 474
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/report/index.html?lang=",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 401
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/roomParty/index.html?",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 437
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/roomScoreRank/index.html?type=%1$s&",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "room",
+   "tags": [
+    "room"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 451
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/vipScoreRank/index.html?type=%1$s&",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "vip",
+   "tags": [
+    "vip"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 452
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/html/wealth_grade/index.html?lang=",
+   "style": "h5-webview",
+   "transport": "GET",
+   "category": "vip",
+   "tags": [
+    "vip"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 414
+    }
+   ],
+   "caller_count": 1
+  },
+  {
+   "id": "/share_bottle/index.php?",
+   "style": "php",
+   "transport": "POST",
+   "category": "user",
+   "tags": [
+    "user"
+   ],
+   "evidence": "decrypted static string (analysis/php_h5_paths.txt)",
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "class": "vl3",
+     "method": "if",
+     "line": 392
+    }
+   ],
+   "caller_count": 1
+  }
+ ]
+}

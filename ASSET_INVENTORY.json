@@ -1,0 +1,1155 @@
+{
+ "app": "ZaffaLive",
+ "package": "com.waig.nalo",
+ "apk": "ZaffaLive-150-v1.21.150.apk",
+ "note": "Bundled assets enumerated from APK (read-only). Remote assets (gift icons, VIP frames, banners) are NOT bundled; they are delivered at runtime via server model fields (svga_url, pic_url, url_lv1..4, themeUrl, banner_url, prizeImage). res/ drawable & layout NAMES are obfuscated (a0.xml...) so only counts are given.",
+ "bundled_asset_counts_by_class": {
+  "animation-svga": 85,
+  "animation-pag": 68,
+  "h5-jsbridge": 6,
+  "ar-model": 5,
+  "image": 4,
+  "animation-video": 3,
+  "h5-legal-html": 2,
+  "runtime-profile": 2,
+  "config-text": 1
+ },
+ "bundled_asset_counts_by_feature": {
+  "room-live": 33,
+  "profile": 22,
+  "room-bomb-game": 17,
+  "audio-wave": 13,
+  "rocket-gift": 12,
+  "misc": 10,
+  "host-tag": 10,
+  "home-nav": 8,
+  "friend": 7,
+  "room-emoji": 7,
+  "room-banner": 5,
+  "live": 5,
+  "home": 4,
+  "dj-level": 4,
+  "couple": 3,
+  "faceunity-ar": 3,
+  "gift": 2,
+  "ranking": 2,
+  "moments": 2,
+  "faceunity-beauty": 2,
+  "loading": 1,
+  "lucky-gift": 1,
+  "medal": 1,
+  "onboarding": 1,
+  "login": 1
+ },
+ "res_counts_obfuscated_names": {
+  "values": 143,
+  "drawable": 2267,
+  "layout": 718,
+  "color": 115,
+  "anim": 55,
+  "raw": 3,
+  "mipmap": 1
+ },
+ "remote_asset_url_fields": {
+  "gift_icon": [
+   "gift_image",
+   "giftUrl",
+   "pic",
+   "pic_url",
+   "small_pic_url",
+   "svga_url",
+   "svga_type"
+  ],
+  "vip_frame_medal": [
+   "avatarFrame",
+   "avatarFrameJson",
+   "vipMedalImg",
+   "level_medal",
+   "url_lv1",
+   "url_lv2",
+   "url_lv3",
+   "url_lv4",
+   "medal"
+  ],
+  "banner_activity": [
+   "banner_url",
+   "bar_label_url",
+   "page_image",
+   "page_image_new",
+   "special_url",
+   "act_url"
+  ],
+  "theme_room_bg": [
+   "themeUrl",
+   "themeDiyJson",
+   "bgImg",
+   "bgIcon",
+   "bgResId",
+   "roomAvatar"
+  ],
+  "prize_reward": [
+   "prizeImage",
+   "prize_images",
+   "preview_url",
+   "zip_url"
+  ]
+ },
+ "bundled_assets": [
+  {
+   "path": "assets/dexopt/baseline.prof",
+   "bytes": 16085,
+   "class": "runtime-profile",
+   "feature": "misc"
+  },
+  {
+   "path": "assets/dexopt/baseline.profm",
+   "bytes": 1954,
+   "class": "runtime-profile",
+   "feature": "misc"
+  },
+  {
+   "path": "assets/graphics/controller_cpp.bundle",
+   "bytes": 1608550,
+   "class": "ar-model",
+   "feature": "faceunity-beauty"
+  },
+  {
+   "path": "assets/graphics/face_beautification.bundle",
+   "bytes": 5281702,
+   "class": "ar-model",
+   "feature": "faceunity-beauty"
+  },
+  {
+   "path": "assets/model/ai_face_processor.bundle",
+   "bytes": 22632281,
+   "class": "ar-model",
+   "feature": "faceunity-ar"
+  },
+  {
+   "path": "assets/model/ai_hand_processor.bundle",
+   "bytes": 886457,
+   "class": "ar-model",
+   "feature": "faceunity-ar"
+  },
+  {
+   "path": "assets/model/ai_human_processor.bundle",
+   "bytes": 16997967,
+   "class": "ar-model",
+   "feature": "faceunity-ar"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv1.pag",
+   "bytes": 119286,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv1_h150.pag",
+   "bytes": 52442,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv2.pag",
+   "bytes": 124903,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv2_h150.pag",
+   "bytes": 52807,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv3.pag",
+   "bytes": 116925,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv3_h150.pag",
+   "bytes": 69768,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv4.pag",
+   "bytes": 169202,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv4_h150.pag",
+   "bytes": 67494,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv5.pag",
+   "bytes": 214451,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv5_h150.pag",
+   "bytes": 75492,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv6.pag",
+   "bytes": 957045,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv6_h150.pag",
+   "bytes": 100684,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv7.pag",
+   "bytes": 263624,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_anim_lv7_h150.pag",
+   "bytes": 93475,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_banner_avatar_frame.pag",
+   "bytes": 124302,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/bomb/waitio_bomb_banner_bg.pag",
+   "bytes": 177617,
+   "class": "animation-pag",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/pag/cp/waitio_cp_heart.pag",
+   "bytes": 45552,
+   "class": "animation-pag",
+   "feature": "couple"
+  },
+  {
+   "path": "assets/pag/gift/waitio_gift_continuous.pag",
+   "bytes": 322097,
+   "class": "animation-pag",
+   "feature": "gift"
+  },
+  {
+   "path": "assets/pag/home/waitio_new_user_pack1.pag",
+   "bytes": 97380,
+   "class": "animation-pag",
+   "feature": "home-nav"
+  },
+  {
+   "path": "assets/pag/home/waitio_online_like.pag",
+   "bytes": 14027,
+   "class": "animation-pag",
+   "feature": "home-nav"
+  },
+  {
+   "path": "assets/pag/home/waitio_tab_dynamic.pag",
+   "bytes": 20805,
+   "class": "animation-pag",
+   "feature": "home-nav"
+  },
+  {
+   "path": "assets/pag/home/waitio_tab_home.pag",
+   "bytes": 23674,
+   "class": "animation-pag",
+   "feature": "home-nav"
+  },
+  {
+   "path": "assets/pag/home/waitio_tab_live.pag",
+   "bytes": 21219,
+   "class": "animation-pag",
+   "feature": "home-nav"
+  },
+  {
+   "path": "assets/pag/home/waitio_tab_mine.pag",
+   "bytes": 22945,
+   "class": "animation-pag",
+   "feature": "home-nav"
+  },
+  {
+   "path": "assets/pag/home/waitio_tab_msg.pag",
+   "bytes": 21366,
+   "class": "animation-pag",
+   "feature": "home-nav"
+  },
+  {
+   "path": "assets/pag/home/waitio_wation_online_greet.pag",
+   "bytes": 13312,
+   "class": "animation-pag",
+   "feature": "home-nav"
+  },
+  {
+   "path": "assets/pag/kroom/waitio_gift.pag",
+   "bytes": 19349,
+   "class": "animation-pag",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/pag/kroom/waitio_hotroom_playing.pag",
+   "bytes": 368,
+   "class": "animation-pag",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/pag/kroom/waitio_hotroom_white_playing.pag",
+   "bytes": 2714,
+   "class": "animation-pag",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/pag/kroom/waitio_hotroom_white_playing2.pag",
+   "bytes": 359,
+   "class": "animation-pag",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/pag/loading/waitio_common_loading.pag",
+   "bytes": 175228,
+   "class": "animation-pag",
+   "feature": "loading"
+  },
+  {
+   "path": "assets/pag/lucky/waitio_lucky_gift.pag",
+   "bytes": 680196,
+   "class": "animation-pag",
+   "feature": "lucky-gift"
+  },
+  {
+   "path": "assets/pag/main/waitio_main_top_bg.pag",
+   "bytes": 188219,
+   "class": "animation-pag",
+   "feature": "home"
+  },
+  {
+   "path": "assets/pag/rank/waitio_rank_avatar_cp_frame.pag",
+   "bytes": 352423,
+   "class": "animation-pag",
+   "feature": "ranking"
+  },
+  {
+   "path": "assets/pag/rank/waitio_rank_avatar_frame.pag",
+   "bytes": 858670,
+   "class": "animation-pag",
+   "feature": "ranking"
+  },
+  {
+   "path": "assets/pag/topbanner/waitio_bg_gold_man_1.pag",
+   "bytes": 476154,
+   "class": "animation-pag",
+   "feature": "room-banner"
+  },
+  {
+   "path": "assets/pag/topbanner/waitio_bg_gold_man_2.pag",
+   "bytes": 507941,
+   "class": "animation-pag",
+   "feature": "room-banner"
+  },
+  {
+   "path": "assets/pag/topbanner/waitio_bg_gold_man_3.pag",
+   "bytes": 530815,
+   "class": "animation-pag",
+   "feature": "room-banner"
+  },
+  {
+   "path": "assets/pag/topbanner/waitio_bg_lucky_draw_winning.pag",
+   "bytes": 181864,
+   "class": "animation-pag",
+   "feature": "room-banner"
+  },
+  {
+   "path": "assets/pag/topbanner/waitio_bg_lucky_package.pag",
+   "bytes": 149012,
+   "class": "animation-pag",
+   "feature": "room-banner"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip1.pag",
+   "bytes": 116381,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip10.pag",
+   "bytes": 143208,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip11.pag",
+   "bytes": 151300,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip12.pag",
+   "bytes": 152403,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip13.pag",
+   "bytes": 155573,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip14.pag",
+   "bytes": 155847,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip15.pag",
+   "bytes": 110939,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip2.pag",
+   "bytes": 117689,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip3.pag",
+   "bytes": 123550,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip4.pag",
+   "bytes": 131679,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip5.pag",
+   "bytes": 132931,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip6.pag",
+   "bytes": 136182,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip7.pag",
+   "bytes": 144416,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip8.pag",
+   "bytes": 144325,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/userspace/waitio_vip9.pag",
+   "bytes": 142834,
+   "class": "animation-pag",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_record_voice.pag",
+   "bytes": 617,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_def.pag",
+   "bytes": 41126,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_vip10.pag",
+   "bytes": 52613,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_vip11.pag",
+   "bytes": 52347,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_vip12.pag",
+   "bytes": 52917,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_vip13.pag",
+   "bytes": 100401,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_vip14.pag",
+   "bytes": 104353,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_vip15.pag",
+   "bytes": 104289,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_vip7.pag",
+   "bytes": 41107,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_vip8.pag",
+   "bytes": 43029,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/pag/yinbo/waitio_yinbo_vip9.pag",
+   "bytes": 41983,
+   "class": "animation-pag",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/roomEmoji/face_11/waitio_face_11.png",
+   "bytes": 17971,
+   "class": "image",
+   "feature": "room-emoji"
+  },
+  {
+   "path": "assets/roomEmoji/face_11/waitio_face_11.svga",
+   "bytes": 26691,
+   "class": "animation-svga",
+   "feature": "room-emoji"
+  },
+  {
+   "path": "assets/roomEmoji/face_58/waitio_welcome.png",
+   "bytes": 25399,
+   "class": "image",
+   "feature": "room-emoji"
+  },
+  {
+   "path": "assets/roomEmoji/face_58/waitio_welcome.svga",
+   "bytes": 29170,
+   "class": "animation-svga",
+   "feature": "room-emoji"
+  },
+  {
+   "path": "assets/roomEmoji/face_59/waitio_goodbye.png",
+   "bytes": 23787,
+   "class": "image",
+   "feature": "room-emoji"
+  },
+  {
+   "path": "assets/roomEmoji/face_59/waitio_goodbye.svga",
+   "bytes": 26648,
+   "class": "animation-svga",
+   "feature": "room-emoji"
+  },
+  {
+   "path": "assets/roomEmoji/waitio_faceConfig.txt",
+   "bytes": 2701,
+   "class": "config-text",
+   "feature": "room-emoji"
+  },
+  {
+   "path": "assets/svga/bomb/waitio_bomb_banner_avatar_frame.svga",
+   "bytes": 18435,
+   "class": "animation-svga",
+   "feature": "room-bomb-game"
+  },
+  {
+   "path": "assets/svga/cp/waitio_cp_avatar.svga",
+   "bytes": 337613,
+   "class": "animation-svga",
+   "feature": "couple"
+  },
+  {
+   "path": "assets/svga/cp/waitio_cp_heart.svga",
+   "bytes": 54872,
+   "class": "animation-svga",
+   "feature": "couple"
+  },
+  {
+   "path": "assets/svga/dj/waitio_dj_lv0.svga",
+   "bytes": 129766,
+   "class": "animation-svga",
+   "feature": "dj-level"
+  },
+  {
+   "path": "assets/svga/dj/waitio_dj_lv1.svga",
+   "bytes": 207008,
+   "class": "animation-svga",
+   "feature": "dj-level"
+  },
+  {
+   "path": "assets/svga/dj/waitio_dj_lv2.svga",
+   "bytes": 209327,
+   "class": "animation-svga",
+   "feature": "dj-level"
+  },
+  {
+   "path": "assets/svga/dj/waitio_dj_lv3.svga",
+   "bytes": 327954,
+   "class": "animation-svga",
+   "feature": "dj-level"
+  },
+  {
+   "path": "assets/svga/dynamic/waitio_moment_like.svga",
+   "bytes": 1380,
+   "class": "animation-svga",
+   "feature": "moments"
+  },
+  {
+   "path": "assets/svga/dynamic/waitio_moment_like_white.svga",
+   "bytes": 1370,
+   "class": "animation-svga",
+   "feature": "moments"
+  },
+  {
+   "path": "assets/svga/friend/waitio_friend_lv0.svga",
+   "bytes": 18274,
+   "class": "animation-svga",
+   "feature": "friend"
+  },
+  {
+   "path": "assets/svga/friend/waitio_friend_lv10.svga",
+   "bytes": 21293,
+   "class": "animation-svga",
+   "feature": "friend"
+  },
+  {
+   "path": "assets/svga/friend/waitio_friend_lv20.svga",
+   "bytes": 31084,
+   "class": "animation-svga",
+   "feature": "friend"
+  },
+  {
+   "path": "assets/svga/friend/waitio_friend_lv30.svga",
+   "bytes": 26405,
+   "class": "animation-svga",
+   "feature": "friend"
+  },
+  {
+   "path": "assets/svga/friend/waitio_friend_lv40.svga",
+   "bytes": 30459,
+   "class": "animation-svga",
+   "feature": "friend"
+  },
+  {
+   "path": "assets/svga/friend/waitio_friend_lv5.svga",
+   "bytes": 29972,
+   "class": "animation-svga",
+   "feature": "friend"
+  },
+  {
+   "path": "assets/svga/friend/waitio_friend_lv50.svga",
+   "bytes": 37197,
+   "class": "animation-svga",
+   "feature": "friend"
+  },
+  {
+   "path": "assets/svga/gift/waitio_gift_continuous.svga",
+   "bytes": 210153,
+   "class": "animation-svga",
+   "feature": "gift"
+  },
+  {
+   "path": "assets/svga/guide/waitio_new_user_guide_send_gift.svga",
+   "bytes": 53310,
+   "class": "animation-svga",
+   "feature": "onboarding"
+  },
+  {
+   "path": "assets/svga/home/waitio_hot_g.svga",
+   "bytes": 108867,
+   "class": "animation-svga",
+   "feature": "home"
+  },
+  {
+   "path": "assets/svga/home/waitio_hot_g_rtl.svga",
+   "bytes": 109291,
+   "class": "animation-svga",
+   "feature": "home"
+  },
+  {
+   "path": "assets/svga/home/waitio_shark.svga",
+   "bytes": 310233,
+   "class": "animation-svga",
+   "feature": "home"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_ace_host_ar.svga",
+   "bytes": 35885,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_ace_host_en.svga",
+   "bytes": 35789,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_elite_host_ar.svga",
+   "bytes": 34507,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_elite_host_en.svga",
+   "bytes": 34337,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_legend_host_ar.svga",
+   "bytes": 36892,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_legend_host_en.svga",
+   "bytes": 34337,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_rising_host_ar.svga",
+   "bytes": 31800,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_rising_host_en.svga",
+   "bytes": 31695,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_star_host_ar.svga",
+   "bytes": 32285,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/hosttag/waitio_tag_star_host_en.svga",
+   "bytes": 32204,
+   "class": "animation-svga",
+   "feature": "host-tag"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_bg_game_winning.svga",
+   "bytes": 31442,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_birthday_lucky_bag.svga",
+   "bytes": 25276,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_cp_in_seat.svga",
+   "bytes": 5509,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_gift_huizhi.svga",
+   "bytes": 11614,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_hotroom_green_playing.svga",
+   "bytes": 549,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_jinchang.svga",
+   "bytes": 18185,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_luckyBag.pag",
+   "bytes": 59207,
+   "class": "animation-pag",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_lucky_bag.pag",
+   "bytes": 469245,
+   "class": "animation-pag",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_lucky_gift.svga",
+   "bytes": 132895,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_lucky_gift_tip_top.svga",
+   "bytes": 652834,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_lucky_gift_winning.svga",
+   "bytes": 463978,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_hs_teq.svga",
+   "bytes": 81068,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_hs_yinni.svga",
+   "bytes": 90183,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_hs_yuenan.svga",
+   "bytes": 6241,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_hs_zd.svga",
+   "bytes": 89080,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_lan_teq.svga",
+   "bytes": 81174,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_lan_yinni.svga",
+   "bytes": 89241,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_lan_yuenan.svga",
+   "bytes": 89909,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_lan_zd.svga",
+   "bytes": 89649,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_pingju_teq.svga",
+   "bytes": 4349,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_pingju_yinni.svga",
+   "bytes": 7636,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_pingju_yuenan.svga",
+   "bytes": 6233,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_pingju_zd.svga",
+   "bytes": 6625,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_time_jindutiao.svga",
+   "bytes": 6094,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_time_kaichang.svga",
+   "bytes": 108915,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_pk_time_kaichang_zd.svga",
+   "bytes": 112648,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_room_lv_box_bg.svga",
+   "bytes": 153761,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_room_lv_up_bg.svga",
+   "bytes": 102090,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/kroom/waitio_share_coin.svga",
+   "bytes": 2627,
+   "class": "animation-svga",
+   "feature": "room-live"
+  },
+  {
+   "path": "assets/svga/live/waitio_beauty_loading.svga",
+   "bytes": 5989,
+   "class": "animation-svga",
+   "feature": "live"
+  },
+  {
+   "path": "assets/svga/live/waitio_live_task.svga",
+   "bytes": 90359,
+   "class": "animation-svga",
+   "feature": "live"
+  },
+  {
+   "path": "assets/svga/live/waitio_match_start.svga",
+   "bytes": 184209,
+   "class": "animation-svga",
+   "feature": "live"
+  },
+  {
+   "path": "assets/svga/live/waitio_pk_gift.svga",
+   "bytes": 12597,
+   "class": "animation-svga",
+   "feature": "live"
+  },
+  {
+   "path": "assets/svga/live/waitio_pk_time3.svga",
+   "bytes": 35959,
+   "class": "animation-svga",
+   "feature": "live"
+  },
+  {
+   "path": "assets/svga/login/waitio_login_bg.mp4",
+   "bytes": 1063246,
+   "class": "animation-video",
+   "feature": "login"
+  },
+  {
+   "path": "assets/svga/medal/waitio_xunzhangguang.svga",
+   "bytes": 7098,
+   "class": "animation-svga",
+   "feature": "medal"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_proscenium.mp4",
+   "bytes": 1217754,
+   "class": "animation-video",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket1.svga",
+   "bytes": 1573343,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket2.svga",
+   "bytes": 1477325,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket3.svga",
+   "bytes": 1585253,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket_foreground.mp4",
+   "bytes": 1188385,
+   "class": "animation-video",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket_top1.svga",
+   "bytes": 306171,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket_top1_r.svga",
+   "bytes": 306197,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket_top2.svga",
+   "bytes": 306216,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket_top2_r.svga",
+   "bytes": 306286,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket_top3.svga",
+   "bytes": 333389,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_rocket_top3_r.svga",
+   "bytes": 333475,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/rocket/waitio_room_rocket.svga",
+   "bytes": 475917,
+   "class": "animation-svga",
+   "feature": "rocket-gift"
+  },
+  {
+   "path": "assets/svga/userspace/waitio_VIP1ma.svga",
+   "bytes": 200373,
+   "class": "animation-svga",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/svga/userspace/waitio_VIP2ying.svga",
+   "bytes": 264247,
+   "class": "animation-svga",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/svga/userspace/waitio_VIP3lang.svga",
+   "bytes": 318524,
+   "class": "animation-svga",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/svga/userspace/waitio_VIP4bao.svga",
+   "bytes": 437338,
+   "class": "animation-svga",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/svga/userspace/waitio_VIP5fenghuang.svga",
+   "bytes": 567775,
+   "class": "animation-svga",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/svga/userspace/waitio_VIP6shizi.svga",
+   "bytes": 622224,
+   "class": "animation-svga",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/svga/yinbo/waitio_self_voice.svga",
+   "bytes": 562,
+   "class": "animation-svga",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/svga/yinbo/waitio_self_voice1.svga",
+   "bytes": 567,
+   "class": "animation-svga",
+   "feature": "audio-wave"
+  },
+  {
+   "path": "assets/waitio_amg.config",
+   "bytes": 728,
+   "class": "h5-jsbridge",
+   "feature": "misc"
+  },
+  {
+   "path": "assets/waitio_app.config",
+   "bytes": 4012,
+   "class": "h5-jsbridge",
+   "feature": "misc"
+  },
+  {
+   "path": "assets/waitio_avatar_default_logo.png",
+   "bytes": 44992,
+   "class": "image",
+   "feature": "profile"
+  },
+  {
+   "path": "assets/waitio_baishun.config",
+   "bytes": 820,
+   "class": "h5-jsbridge",
+   "feature": "misc"
+  },
+  {
+   "path": "assets/waitio_joyplay.config",
+   "bytes": 604,
+   "class": "h5-jsbridge",
+   "feature": "misc"
+  },
+  {
+   "path": "assets/waitio_other.config",
+   "bytes": 492,
+   "class": "h5-jsbridge",
+   "feature": "misc"
+  },
+  {
+   "path": "assets/waitio_protocol_privacy.config",
+   "bytes": 65012,
+   "class": "h5-legal-html",
+   "feature": "misc"
+  },
+  {
+   "path": "assets/waitio_protocol_service.config",
+   "bytes": 65012,
+   "class": "h5-legal-html",
+   "feature": "misc"
+  },
+  {
+   "path": "assets/waitio_yomi.config",
+   "bytes": 536,
+   "class": "h5-jsbridge",
+   "feature": "misc"
+  }
+ ]
+}
