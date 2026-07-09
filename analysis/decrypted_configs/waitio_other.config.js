@@ -1,0 +1,1 @@
+(function(){if(LingxianAndroid.jsInjectOther){return;};LingxianAndroid.jsInjectOther=true;function handlerGameData(method,data){return JSInterface.parseData(JSON.stringify({ method:method, data:data}))};LingxianAndroid.XGGameClose=function(arg){ return handlerGameData('XGGameClose',arg)};LingxianAndroid.XGPay=function(arg){ return handlerGameData('XGPay',arg)};})();
