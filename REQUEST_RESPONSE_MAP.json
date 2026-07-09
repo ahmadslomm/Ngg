@@ -1,0 +1,9702 @@
+{
+ "app": "ZaffaLive",
+ "package": "com.waig.nalo",
+ "apk": "ZaffaLive-150-v1.21.150.apk",
+ "hosts_bootstrap": [
+  "waignwhalo.com",
+  "tanmchat.com"
+ ],
+ "contract": {
+  "source": "statically reversed from p000/jr1.java (m25947g,m25948h), p000/qm2.java, p000/vl3.java",
+  "transport": "OkHttp; OkHttpClient has NO CertificatePinner (he3 builder m21420h()==null) -> MITM-capturable with a system CA",
+  "auto_injected_params": {
+   "action": "the module.method or Action/Controller.method identifier",
+   "lang": "language-country, from vl3.m53098c()",
+   "deviceid": "device id, from bm3.m6543d(context)",
+   "_login_uid": "logged-in user id",
+   "token": "session token"
+  },
+  "signed_headers": [
+   "sign",
+   "timestamp"
+  ],
+  "sign_algorithm": {
+   "steps": [
+    "keys = sort(params.keySet()) ascending",
+    "S = concat for each key of  '{'+key+'}'+'{'+value+'}'   (File/List<File> skipped)",
+    "timestamp = String(System.currentTimeMillis())   # milliseconds",
+    "sign = md5_hex_lowercase( S + PRIVATE_KEY + timestamp )"
+   ],
+   "PRIVATE_KEY": "awgwd^1ad87",
+   "md5": "qm2.m43462e -> MessageDigest('MD5') -> lowercase 32-hex (qm2.m43460c)",
+   "log_format_string_verbatim": "sign=%s, PRIVATE_KEY=%s,time=%s,md5Sign=%s",
+   "reference_impl": "runtime_capture/scripts/zaffa_sign.py (self-test included)"
+  },
+  "optional_body_obfuscation": "C3958m.m30049f: base64-decode then XOR with key=md5('com.waig.nalo'); used on reported reqBody",
+  "response_envelope": {
+   "resCode": "int status  (r92.m44417d(jsonObject))",
+   "resData": "payload      (r92.m44420g(jsonObject))",
+   "note": "list payloads add pagination keys: total,total_num,page*,sort,limit,surplus"
+  }
+ },
+ "counts": {
+  "endpoints": 280
+ },
+ "endpoints": [
+  {
+   "id": "activity.clickBanner",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "activity.createRoomEvents",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "activity.getBannerList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "activity.getBannerListV",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "activity.getRoomEvents",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "app.checkAppVersion",
+   "category": "config",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "app.commonConfig",
+   "category": "config",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "app.getConfig",
+   "category": "config",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "app.getConfigV",
+   "category": "config",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "app.initApp",
+   "category": "config",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "app.uploadPing",
+   "category": "config",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "backPhoto.updateDefultPhoto",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "backPhoto.updatePhoto",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.deleteCensorSong",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.deleteSong",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.getCensorIngUSongCnt",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.getLikeBottleList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.getUserCensorSongs",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.getUserTimelineExNew",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.likeBottle",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.playFinish",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.unlikeBottle",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "bottle.uploadSong",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "comment.addComment",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "comment.bottleCommentList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "comment.bottleInfoNew",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "comment.commentCommentList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "comment.delMyComment",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "comment.praiseComment",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "comment.unpraiseComment",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "countryZone.getZonelist",
+   "category": "config",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "couple.cpRank",
+   "category": "agency",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "fx2",
+     "C0739e",
+     "C0738d"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "couple.onAnswerCouple",
+   "category": "agency",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "fx2",
+     "C0739e",
+     "C0738d"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "feedback.report",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "feedTopic.info",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "feedTopic.newUsong",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "feedTopic.recomList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "feedTopic.selectList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.checkHasPacketGift",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.getClientGiftTabs",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.getCommonGift",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.getDrawGiftTemplate",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.getGiftList",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.getPacketGift",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.getReceieveGift",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.getTopUserGiftMap",
+   "category": "ranking",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C5639r",
+     "ea1",
+     "C2445et",
+     "ta4",
+     "ya1",
+     "v21"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.getUserGiftMap",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.getUserSongGiftList",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.sendPrivateGift",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.sendSongGift",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.shareGiftMapMoment",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "gift.songGiftRank",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "login.checkMobile",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "mall.buyCustomizeTheme",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "mall.buyProduct",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "mall.buyTheme",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "mall.getMallProductV",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "mall.getMyProduct",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "mall.giveAwayProduct",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "mall.giveAwayUserList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "mall.useProduct",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "mall.useTheme",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "medal.adornMedalList",
+   "category": "vip",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "medal.getMedalList",
+   "category": "vip",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "medal.getSomeUserMedalList",
+   "category": "vip",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "medal.getUserMedalListAdorn",
+   "category": "vip",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "medal.getUserMedalListAll",
+   "category": "vip",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "moment.browseUsids",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "moment.follow",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "moment.getPublicSongTxt",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "moment.hasHistory",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "moment.history",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "moment.recomV",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "moment.song",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "moment.topic",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "notice.checkNotice",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "notice.clearNoticeAndImCount",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "preArea.getServer",
+   "category": "config",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "report.addBlackList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "report.checkInBlackList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "report.delBlackList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "report.getBlackList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "report.getReportConfig",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "report.reportUser",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.addRole",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.batchGetRoomInfos",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.collectRoom",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.createRoomEx",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.delRole",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.discoverRoom",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.gameRank",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getActivityGames",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getActivityGamesV",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getApplyMicList",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getBlackList",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getCallFansList",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getCoinFlowRank",
+   "category": "ranking",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C5639r",
+     "ea1",
+     "C2445et",
+     "ta4",
+     "ya1",
+     "v21"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getCoinFlowTotalRank",
+   "category": "ranking",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C5639r",
+     "ea1",
+     "C2445et",
+     "ta4",
+     "ya1",
+     "v21"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getCountryListV",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getCountryRoomListV",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getHotvalAndMedal",
+   "category": "vip",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getMyRoomList",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getRecommendRoomV",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getRoomCharmRank",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getRoomInfo",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getRoomModelConfig",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getSendGiftRankV",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getTop",
+   "category": "ranking",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C5639r",
+     "ea1",
+     "C2445et",
+     "ta4",
+     "ya1",
+     "v21"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getTopicRandom",
+   "category": "ranking",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C5639r",
+     "ea1",
+     "C2445et",
+     "ta4",
+     "ya1",
+     "v21"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getUserCharmRankV",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getUserContributeRank",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getUserOnlineList",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getUserOnlineListV",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.getWealthInfo",
+   "category": "vip",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.inviteFriends",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.luckyGiftRank",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.shareReport",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.updateRoomImg",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "room.updateRoomInfo",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "search.friendSearch",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "search.recommend",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "search.roomSearch",
+   "category": "room",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "search.userSearch",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "sq.config",
+   "category": "config",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "task.getSignInListV",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "task.giveBeans",
+   "category": "wallet",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C6013a",
+     "a",
+     "C6014b",
+     "b14",
+     "wm1",
+     "wz0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "task.signInV",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.bashGetIsSubscribe",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.batchGetUserinfoV",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getCountryConfig",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getCountryList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getFansList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getFriendList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getGiftWallList",
+   "category": "gift",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getIsSubscribe",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getNewUserPrizes",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getSensitivePath",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getSubcribeList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getUserIdentity",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getUserImSendStatus",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getUserinfo",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.getWhiteList",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.recommendUser",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.registerFinish",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.setCountry",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.subcribe",
+   "category": "payment",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "y81",
+     "j40",
+     "gr5",
+     "ey3",
+     "a95",
+     "y72"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.supporter",
+   "category": "ranking",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C5639r",
+     "ea1",
+     "C2445et",
+     "ta4",
+     "ya1",
+     "v21"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.unbind",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.unsubcribe",
+   "category": "payment",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "y81",
+     "j40",
+     "gr5",
+     "ey3",
+     "a95",
+     "y72"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.updateCountry",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.updateLang",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.updateUInfo",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "user.uploadAvatar",
+   "category": "user",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "wallet.getWalletInfo",
+   "category": "wallet",
+   "style": "json-rpc",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C6013a",
+     "a",
+     "C6014b",
+     "b14",
+     "wm1",
+     "wz0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/Anchor.inviteJoinGuildRes",
+   "category": "agency",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "fx2",
+     "C0739e",
+     "C0738d"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/Api.GetUserSig",
+   "category": "user",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/BDCenter.inviteGuildRes",
+   "category": "agency",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "fx2",
+     "C0739e",
+     "C0738d"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/BDCenter.inviteUserRes",
+   "category": "agency",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "fx2",
+     "C0739e",
+     "C0738d"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/bestFriend.handleInvitation",
+   "category": "agency",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "fx2",
+     "C0739e",
+     "C0738d"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/ChargeGiftBag.getGiftBagStatus",
+   "category": "payment",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "y81",
+     "j40",
+     "gr5",
+     "ey3",
+     "a95",
+     "y72"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/Game.createGameRoom",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/Game.getGameRoomId",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/GameMall.exchangeProduct",
+   "category": "wallet",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C6013a",
+     "a",
+     "C6014b",
+     "b14",
+     "wm1",
+     "wz0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/GameMall.getMallProduct",
+   "category": "wallet",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C6013a",
+     "a",
+     "C6014b",
+     "b14",
+     "wm1",
+     "wz0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/HiddenSettings.getHiddenSettings",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/HiddenSettings.updateHiddenSettings",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/IMSvc.getQuickChatMsg",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/JoyPlay.getUidAndToken",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveLuckyBags.fetchBagInfos",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveLuckyBags.getBag",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LivePk.breakOffPk",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LivePk.cancelPkMatch",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LivePk.friendList",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LivePk.getPkInfo",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LivePk.matchLivePk",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LivePk.recently",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LivePk.refusePk",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LivePk.startLivePk",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRocketGift.gifts",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRocketGift.roomGifts",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.addRole",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.blockade",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoomBomb.getBombConfig",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoomBomb.getRoomPrizeRecord",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.createRoom",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.delRole",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.getCoinFlowRank",
+   "category": "ranking",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C5639r",
+     "ea1",
+     "C2445et",
+     "ta4",
+     "ya1",
+     "v21"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.getMyCollectRoomList",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.getRoomExtraInfo",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.getRoomInfo",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.getUserContributeRank",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.getUserOnlineList",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.heartbeat",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.joinRoom",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.kickUser",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoomLevel.getRoomLevelInfo",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoomLevel.getRoomLevelPrize",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoomLevel.getTaskList",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.recommend",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.sendLiveGift",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.setTextConfig",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveRoom.updateRoomImg",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LiveSearch.roomSearch",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/luckyBags.fetchBagInfos",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/luckyBags.getBag",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LuckyDraw.drawPrizesPreview",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LuckyNumber.getConfig",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/LuckyNumber.setConfig",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/MiniGame.getUidAndToken",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/MiniGame.getUidAndTokenByAmg",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/MiniGame.getUidAndTokenByYomi",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/MiniGame.getUidAndTokenV2",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/MiniGame.tokenDestroy",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/Noble.getBirthdayInfo",
+   "category": "vip",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/Noble.receiveBirthdayPresent",
+   "category": "vip",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/Noble.sendHorn",
+   "category": "vip",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/Noble.shareMoment",
+   "category": "vip",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RadioRoomPk.rank",
+   "category": "ranking",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C5639r",
+     "ea1",
+     "C2445et",
+     "ta4",
+     "ya1",
+     "v21"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RocketGift.gifts",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RocketGift.roomGifts",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomAct.getActInfoById",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomAct.joinAct",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.batchGetUserInfo",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.blockade",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.cancelCallFans",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.disableMic",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.divideGroup",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.getDynamicKey",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.heartbeat",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.inviteJoinMic",
+   "category": "agency",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "fx2",
+     "C0739e",
+     "C0738d"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.joinMic",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.joinRoom",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.kickUser",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.lockMic",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.mute",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.notifyUpdateUInfo",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.quitMic",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.sendGift",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.sendLuckyNum",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.setCharmConfig",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.setTextConfig",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.startCallFans",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.startTimingPKGroup",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.stopTimingPKGroup",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomApi.switchMic",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomBomb.getBombConfig",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomBomb.getRoomPrizeRecord",
+   "category": "gift",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomLevel.getRoomLevelInfo",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomLevel.getRoomLevelPrize",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/RoomLevel.getTaskList",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/SuperManage.ban",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/SuperManage.behaviorBan",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/SuperManage.deleteSong",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/SuperManage.resetLiveRoom",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/SuperManage.resetRoom",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/SuperManage.resetUser",
+   "category": "room",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/UsersRoamMsg.getIMNum",
+   "category": "user",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "Action/UsersRoamMsg.getRelationIMNum",
+   "category": "user",
+   "style": "action-rest",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/api/GetUserSig.php",
+   "category": "user",
+   "style": "php",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/api/v1/upload/applog",
+   "category": "config",
+   "style": "php",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cw3",
+     "p84",
+     "f24",
+     "k01"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/googleplaySub/getSubOrder.php",
+   "category": "payment",
+   "style": "php",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "y81",
+     "j40",
+     "gr5",
+     "ey3",
+     "a95",
+     "y72"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/googleplaySub/getSubReceipt.php",
+   "category": "payment",
+   "style": "php",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "y81",
+     "j40",
+     "gr5",
+     "ey3",
+     "a95",
+     "y72"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/googleplaySub/subProductList.php",
+   "category": "payment",
+   "style": "php",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "y81",
+     "j40",
+     "gr5",
+     "ey3",
+     "a95",
+     "y72"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/anchor/index.html?lang=",
+   "category": "user",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/announcementFamily/index.html?uid=",
+   "category": "agency",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "fx2",
+     "C0739e",
+     "C0738d"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/coinsMerchant/index.html?uid=",
+   "category": "wallet",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C6013a",
+     "a",
+     "C6014b",
+     "b14",
+     "wm1",
+     "wz0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/cpReward/index.html?",
+   "category": "user",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/friendCenter/index.html?",
+   "category": "user",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/luckyBox/index.html?uid=",
+   "category": "gift",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "l63",
+     "C3785a",
+     "a",
+     "dp5",
+     "C3393j",
+     "d13"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/magicBox/index.html?lang=",
+   "category": "user",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/medalRank/index.html?",
+   "category": "vip",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/mobiChecker/index.php?bundleId=",
+   "category": "user",
+   "style": "php",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/pkReward/index.html?",
+   "category": "user",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/pkRule/index.html?",
+   "category": "user",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/report/index.html?lang=",
+   "category": "user",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/roomParty/index.html?",
+   "category": "room",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/roomScoreRank/index.html?type=%1$s&",
+   "category": "room",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "C3336f",
+     "ri3",
+     "es2",
+     "qt3",
+     "di3"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/vipScoreRank/index.html?type=%1$s&",
+   "category": "vip",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/html/wealth_grade/index.html?lang=",
+   "category": "vip",
+   "style": "h5-webview",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "cj0",
+     "e86",
+     "C6061c",
+     "C3119a",
+     "t82",
+     "C2886h6"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  },
+  {
+   "id": "/share_bottle/index.php?",
+   "category": "user",
+   "style": "php",
+   "request": {
+    "auto_params": [
+     "action",
+     "lang",
+     "deviceid",
+     "_login_uid",
+     "token"
+    ],
+    "signed_headers": [
+     "sign",
+     "timestamp"
+    ],
+    "endpoint_specific_params_CAPTURED": null
+   },
+   "response": {
+    "envelope": [
+     "resCode",
+     "resData"
+    ],
+    "model_candidates_heuristic": [
+     "uf5",
+     "C3333c",
+     "C3335e",
+     "vm0",
+     "fr1",
+     "ao0"
+    ],
+    "response_body_CAPTURED": null
+   },
+   "binding_status": "STATIC (names+envelope proven); exact bodies require on-device capture"
+  }
+ ]
+}
