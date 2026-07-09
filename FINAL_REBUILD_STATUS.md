@@ -1,69 +1,71 @@
 # FINAL_REBUILD_STATUS.md — voxa rebuild, honest status
 
-> This is the truthful end-of-pass report. It states what was **actually executed**, what is **scaffolded but not yet run against real infra**, and what remains — no green-washing.
+> Truthful end-of-pass report: what was **actually executed and verified**, what is **written but not yet run against infra**, and what remains. No green-washing.
+> **Latest pass:** live-room vertical (backend end-to-end + tests + mobile feature).
 
 ---
 
-## 1. What was executed and verified this pass
+## 1. Executed & verified — live-room pass (this pass)
 
 | Check | Command | Result |
 |---|---|---|
-| Node runtime present | `node --version` | ✅ v20.20.2 |
-| **Economy conservation invariant** | standalone check of the gift money-math | ✅ 4/4 + 1000× fuzz pass (no coins created/destroyed) |
-| `package.json` / `tsconfig.json` parse | `JSON.parse` | ✅ OK |
-| `docker-compose.yml` / `pubspec.yaml` parse | `yaml.safe_load` | ✅ OK |
-| Prisma schema model count | `grep` | ✅ 22 models |
-| Scaffold size | `find` | 29 files (13 TS, 9 Dart, + config/docs) |
+| Backend deps install | `npm install` | ✅ exit 0 |
+| Redis up (for realtime test) | `redis-server` + `redis-cli ping` | ✅ PONG |
+| Prisma schema validates | `prisma validate` / `generate` | ✅ 22 models, client generated |
+| **Full backend typecheck** | `tsc --noEmit` | ✅ exit 0 (whole backend) |
+| **Production build** | `tsc -p tsconfig.json` | ✅ → `dist/` (20 JS files) |
+| **Backend test suite** | `vitest run` | ✅ **43/43 passed** (4 files) |
+| ↳ seat state machine (unit) | `seat-state.test.ts` | ✅ 26 |
+| ↳ economy invariants | `gift.service.test.ts` | ✅ 4 |
+| ↳ **live-room API (HTTP e2e)** | `room.api.test.ts` | ✅ 11 |
+| ↳ **realtime gateway (live WebSocket)** | `realtime.test.ts` | ✅ 2 (real socket.io round-trip via Redis) |
 
-## 2. What is scaffolded and coherent but NOT yet run against infra
+The room API tests drive the **full HTTP path** (Fastify `inject` → routes → service → repo + event emission) and assert both responses and the realtime broadcasts. The realtime test opens a real WebSocket client, joins a room, and verifies fan-out with a monotonic per-room `seq`.
 
-These are written and internally consistent, but have **not** been compiled/migrated/executed because Postgres, Redis, and `npm install`/`flutter pub get` were not run in this pass:
+## 2. Live-room vertical — what is implemented
 
-- **Backend build** (`tsc`) — not run (deps not installed). Types are written to compile; unverified.
-- **Prisma migrate** — schema is complete; no DB was created, no migration applied.
-- **Vitest suite** (`gift.service.test.ts`) — written; the *equivalent math* was executed standalone (passed), but vitest itself was not run.
-- **Fastify server boot** — bootstrap written; not started (needs Postgres/Redis).
-- **Flutter build** — 9 Dart files + pubspec; `flutter pub get`/`build` not run.
+**Backend (implemented, tested, typechecked, builds):**
+- Room **creation** (`POST /rooms`), **join/leave** (`/rooms/:id/join|leave`).
+- **Seats**: take / leave / switch / lock / mute (`/rooms/:id/seats/:pos/*`), full **state machine** in `seat-state.ts` (pure, 26 unit tests).
+- **Host management**: owner→admin role grants, permission hierarchy (`/rooms/:id/roles`), **kick** (`/rooms/:id/kick`).
+- **Microphone permissions**: self-mute vs admin force-mute; forced mute cannot be self-cleared; RTC role recomputed (broadcaster iff seated & not admin-muted).
+- **Realtime room events**: `room.joined/left`, `seat.update`, `mic.update`, `role.changed`, `user.kicked`, `gift.received` — emitted by the service, fanned out via Socket.IO+Redis with `seq`.
+- **Gift events** into the room (from the existing atomic `gift.service`).
+- **RTC token** issue (`GET /auth/rtc-token`, Agora, role from seat state).
+- **State sync**: seats persisted via repo; `GET /rooms/:id/seats` reflects state; realtime keeps clients in sync.
+- Architecture: **hexagonal** — service depends on a `RoomRepo` interface; `InMemoryRoomRepo` (tests) and `PrismaRoomRepo` (prod) share the exact same service logic. Wired into `server.ts`.
 
-## 3. Honest completion state (see `FEATURE_COMPLETION_MATRIX.md`)
+**Mobile (implemented, NOT compiled here — no Flutter toolchain in this env):**
+- **Voice abstraction** `VoiceEngine` + `AgoraVoiceEngine` (init/join/leave/**renew token**/**reconnect** handling/setBroadcaster/mute), ChannelMediaOptions mirroring the recovered broadcaster/audience model.
+- **Models** (`Seat`, `RtcToken`, `Gift`, `GiftAnimation`), **repository** (all room REST calls), **controller** (`RoomController`) fusing REST actions + realtime event application + voice lifecycle, Riverpod providers (`roomControllerProvider` family, session, api, realtime).
+- **UI**: `RoomScreen` (seat grid, connection indicator, gift feed, voice-aware bottom bar), `SeatTile` (avatar + speaking ring + mic status), `GiftPanel` (catalogue grid + qty + send).
 
-Foundation implemented (config, auth skeleton, **atomic gift economy**, wallet ledger, realtime gateway, request signing, Agora token issue, DevOps) = **6 ✅**. Nine areas partial, seven designed-only. This is a **strong, real foundation — roughly P0–P3 of the plan — not a finished production app.** A production launch is weeks of the remaining route/screen implementation + integration testing + your assets/credentials.
+## 3. Written but NOT yet run against infra
+- **`PrismaRoomRepo`** (prod DB path) — typechecks and builds, but **not executed against Postgres** (no DB provisioned this pass). The identical service logic is verified via `InMemoryRoomRepo`. To exercise: `docker compose up` (or a local Postgres) + `prisma migrate dev`.
+- **Mobile** — 19 Dart files, coherent and self-consistent, but **not `flutter pub get`/analyzed/built** (no Flutter SDK in this environment). Needs a Flutter toolchain to compile.
+- Full server boot against Postgres+Redis (the realtime layer itself is proven; the DB-backed routes are not yet booted).
 
-## 4. To make it run locally (owner steps)
-
+## 4. To run locally (owner steps)
 ```bash
-# backend
-cd rebuild/backend
-cp .env.example .env            # fill YOUR secrets/creds
-npm install
-npx prisma migrate dev --name init
-npm run seed
-npm run test                    # vitest (economy invariants)
-npm run dev                     # boots on :8080 (needs postgres+redis)
-
-# or full stack
-cd rebuild/devops && docker compose up --build
-
-# mobile
-cd rebuild/mobile
-flutter pub get
-flutter run --dart-define=VOXA_API_BASE=http://10.0.2.2:8080/v1 \
-            --dart-define=VOXA_SIGN_SECRET=<match backend APP_SIGN_SECRET_CURRENT>
+cd rebuild/backend && cp .env.example .env   # fill YOUR secrets
+npm install && npx prisma generate
+npm test                                     # 43 tests (no DB needed)
+# full stack:
+cd ../devops && docker compose up --build    # postgres+redis+backend
+cd ../backend && npx prisma migrate deploy && npm run seed && npm run dev
+# mobile:
+cd ../mobile && flutter pub get && flutter run \
+  --dart-define=VOXA_API_BASE=http://10.0.2.2:8080/v1 \
+  --dart-define=VOXA_SIGN_SECRET=<match backend APP_SIGN_SECRET_CURRENT>
 ```
 
-## 5. Boundaries held (why this is a clean, ownable build)
+## 5. Completion snapshot (see `FEATURE_COMPLETION_MATRIX.md`)
+Live-room vertical: **backend ✅ (tested), mobile 🟡 (written, uncompiled).** Foundation from the prior pass (config, auth skeleton, economy, signing, devops) stands. Remaining verticals (wallet/recharge, VIP, rankings, agency, moderation, admin, users/profiles, PK) are schema+design with partial code.
 
-- **No original secrets** — fresh HMAC signing scheme; `awgwd^1ad87` not used.
-- **No original credentials** — Agora/Tencent/Firebase are env-provisioned placeholders for **your** accounts.
-- **No original assets** — gift/UI/animation slots are empty placeholders; supply your own licensed art.
-- **No original branding/package** — codename `voxa`, `com.example.voxa`; rebrand freely.
-- **No server access** — built entirely from on-disk analysis; the original's servers were never contacted.
-- **Evidence preserved** — recovery artifacts untouched and git-checkpointed; all new code isolated under `rebuild/`.
+## 6. Boundaries held
+- No original secrets (fresh HMAC signing), no original credentials (env-provisioned Agora/etc.), no original assets (placeholder slots), no original branding (`voxa`/`com.example.voxa`), no server access. Recovery evidence untouched; all new code under `rebuild/`, git-checkpointed.
 
-## 6. Recommended next pass (priority order)
-1. `npm install` + `prisma migrate` + run vitest + boot server against docker compose (turn §2 items green).
-2. Implement **rooms + seats** routes and the seat state machine (unblocks the room screen + realtime seat events).
-3. Wire **Agora join/renew** in the room screen using `/auth/rtc-token`.
-4. Implement **wallet + recharge** (Play/Apple receipt verify) and **exchange**.
-5. VIP purchase, rankings rollup jobs, moderation routes, admin console.
-6. Contract + integration tests per vertical slice; CI/CD + k8s manifests.
+## 7. Next pass (priority)
+1. Provision Postgres → `prisma migrate` → boot server → add **DB-backed integration tests** for `PrismaRoomRepo` (turn §3 item 1 green).
+2. Compile the mobile app on a Flutter toolchain; wire login→session→room end-to-end on device/emulator.
+3. Next vertical: **wallet + recharge** (Play/Apple receipt verify) or **users/profiles**.

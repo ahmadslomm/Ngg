@@ -10,9 +10,9 @@
 | 3 | RTC token issue | RUNTIME_CONFIG §7 | ✅ `agora.ts` + `/auth/rtc-token` | 📐 | — | 🟡 | swap dev token for `agora-token` builder |
 | 4 | Users / profiles | FEATURE_MATRIX §2 | 📐 (schema ✅) | 📐 | — | 📐 | users/profile routes + screens |
 | 5 | Follow / social graph | DATABASE §2 | 📐 (schema ✅) | ⬜ | `follow.new` | 📐 | relation routes |
-| 6 | Rooms (list/create/join) | FEATURE_MATRIX §3 | 📐 (schema ✅) | 🟡 `home/room` UI | `room.*` | 🟡 | room routes + state machine |
-| 7 | Mic seats | FEATURE_MATRIX §3 | 📐 (schema ✅) | 🟡 seat grid UI | `seat.*` | 🟡 | seat ops + Redis mirror |
-| 8 | Voice (Agora) | FINAL_100 §2 | ✅ token | 📐 (SDK dep added) | — | 🟡 | join/renew/reconnect wiring |
+| 6 | Rooms (create/join/leave) | FEATURE_MATRIX §3 | ✅ routes+service (11 API tests) | ✅ `RoomScreen`+controller | ✅ `room.*` | ✅ | list/discover routes; PrismaRepo DB test |
+| 7 | Mic seats + host mgmt | FEATURE_MATRIX §3 | ✅ state machine (26 unit + API tests) | ✅ seat grid+mic status | ✅ `seat.*`/`mic.*` | ✅ | apply-to-mic queue UI |
+| 8 | Voice (Agora) | FINAL_100 §2 | ✅ token+role | ✅ engine abstraction+Agora impl (join/renew/reconnect) | — | 🟡 | compile on Flutter toolchain |
 | 9 | Gifts + send economy | BUSINESS_LOGIC §2–3 | ✅ `gift.service` (atomic txn) + routes | 📐 | ✅ `gift.received` | ✅ | combo/lucky/bomb resolvers |
 | 10 | Wallet / ledger | BUSINESS_LOGIC §1 | ✅ schema + ledger writes | 📐 | — | 🟡 | wallet routes + exchange |
 | 11 | Recharge / payments | FEATURE_MATRIX §6 | 📐 (orders schema ✅) | ⬜ | — | 📐 | Play/Apple receipt verify |

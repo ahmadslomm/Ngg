@@ -5,14 +5,19 @@ import rateLimit from '@fastify/rate-limit';
 import { env, isProd } from './lib/env.js';
 import { verifySignature } from './lib/sign.js';
 import { redis } from './lib/redis.js';
-import { initRealtime } from './realtime/gateway.js';
+import { initRealtime, emitRoomEvent } from './realtime/gateway.js';
 import { authRoutes } from './modules/auth/auth.routes.js';
 import { configRoutes } from './modules/config/config.routes.js';
 import { giftRoutes } from './modules/gifts/gift.routes.js';
+import { roomRoutes } from './modules/rooms/room.routes.js';
+import { RoomService } from './modules/rooms/room.service.js';
+import { PrismaRoomRepo } from './modules/rooms/room.prisma-repo.js';
 
 declare module 'fastify' {
   interface FastifyInstance { authenticate: any }
-  interface FastifyRequest { user: { id: bigint } }
+}
+declare module '@fastify/jwt' {
+  interface FastifyJWT { user: { id: bigint } }
 }
 
 async function build() {
@@ -41,11 +46,18 @@ async function build() {
 
   app.get('/health', async () => ({ code: 0, status: 'ok' }));
 
+  // Room vertical: Prisma-backed repo; service broadcasts through the realtime gateway.
+  const roomService = new RoomService(
+    new PrismaRoomRepo(),
+    (room, e) => emitRoomEvent(room, { ev: e.ev, data: e.data }),
+  );
+
   await app.register(async (v1) => {
     await configRoutes(v1);
     await authRoutes(v1);
     await giftRoutes(v1);
-    // TODO: users, rooms, seats, wallet, vip, ranking, agency, moderation, admin
+    await roomRoutes(roomService)(v1);
+    // TODO: users, wallet, vip, ranking, agency, moderation, admin
   }, { prefix: '/v1' });
 
   return app;
