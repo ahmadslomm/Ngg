@@ -1,0 +1,1114 @@
+{
+ "app": "ZaffaLive",
+ "package": "com.waig.nalo",
+ "apk": "ZaffaLive-150-v1.21.150.apk",
+ "recovery_method": "STATIC — traced the client's own IM parser (p000/p11.java, q90.java) to the Gson DTO each opcode deserializes 'data' into, then listed that DTO's decrypted @hq4 fields. This is the authoritative payload CONTRACT (the client cannot read fields the server does not send). NO live capture was possible in this environment (no device/KVM); 'example_SCHEMA_DERIVED' values are type-defaults, NOT observed traffic.",
+ "envelope": {
+  "container": "Tencent V2TIMCustomElem.getData() -> UTF-8 JSON",
+  "keys": {
+   "type/msgType": "int opcode",
+   "rid": "int room id",
+   "uid": "int sender",
+   "Seq": "long",
+   "MsgTimeStamp": "long",
+   "ClientTimeStamp": "long",
+   "data/list": "payload"
+  },
+  "evidence": "p000/p11.java:1325 (optInt type), :1416 (getData); keys decrypted via d82.m13169a"
+ },
+ "opcodes": {
+  "10200": {
+   "callback": "parseJoInUser (user joins room)",
+   "handler": "p000/p11.java case 10200 (:1802)",
+   "parse": "ho2.m21989e(str32, t43.class)",
+   "usage": "render new participant + entry effect (entryShow)",
+   "dto_class": "t43",
+   "dto_file": "p000/t43.java",
+   "field_count": 35,
+   "fields": [
+    {
+     "json": "carFrame",
+     "type": "String"
+    },
+    {
+     "json": "carFrameJson",
+     "type": "String"
+    },
+    {
+     "json": "carDiyJson",
+     "type": "String"
+    },
+    {
+     "json": "entryShow",
+     "type": "String"
+    },
+    {
+     "json": "rookieGiftId",
+     "type": "int"
+    },
+    {
+     "json": "isFans",
+     "type": "int"
+    },
+    {
+     "json": "avatar_small",
+     "type": "String"
+    },
+    {
+     "json": "best_friend_nick",
+     "type": "String"
+    },
+    {
+     "json": "best_friend_avatar",
+     "type": "String"
+    },
+    {
+     "json": "actTitles",
+     "type": "String"
+    },
+    {
+     "json": "avatar",
+     "type": "String"
+    },
+    {
+     "json": "avatarFrame",
+     "type": "String"
+    },
+    {
+     "json": "avatarFrameJson",
+     "type": "String"
+    },
+    {
+     "json": "chatBubble",
+     "type": "String"
+    },
+    {
+     "json": "couple_lv",
+     "type": "int"
+    },
+    {
+     "json": "couple_nick",
+     "type": "String"
+    },
+    {
+     "json": "couple_uid",
+     "type": "int"
+    },
+    {
+     "json": "couple_avatar",
+     "type": "String"
+    },
+    {
+     "json": "familyLevel",
+     "type": "int"
+    },
+    {
+     "json": "familyTag",
+     "type": "String"
+    },
+    {
+     "json": "guildTag",
+     "type": "String"
+    },
+    {
+     "json": "guildTagUrl",
+     "type": "String"
+    },
+    {
+     "json": "medal",
+     "type": "String"
+    },
+    {
+     "json": "nick",
+     "type": "String"
+    },
+    {
+     "json": "noble_level",
+     "type": "int"
+    },
+    {
+     "json": "role",
+     "type": "int"
+    },
+    {
+     "json": "sex",
+     "type": "int"
+    },
+    {
+     "json": "symbol",
+     "type": "int"
+    },
+    {
+     "json": "auth_list",
+     "type": "List<ex4>"
+    },
+    {
+     "json": "uid",
+     "type": "int"
+    },
+    {
+     "json": "uidLevel",
+     "type": "int"
+    },
+    {
+     "json": "vipMedalImg",
+     "type": "String"
+    },
+    {
+     "json": "vipName",
+     "type": "String"
+    },
+    {
+     "json": "wealthLv",
+     "type": "int"
+    },
+    {
+     "json": "charm_lv",
+     "type": "int"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "carFrame": "",
+    "carFrameJson": "",
+    "carDiyJson": "",
+    "entryShow": "",
+    "rookieGiftId": 0,
+    "isFans": 0,
+    "avatar_small": "",
+    "best_friend_nick": "",
+    "best_friend_avatar": "",
+    "actTitles": "",
+    "avatar": "",
+    "avatarFrame": "",
+    "avatarFrameJson": "",
+    "chatBubble": "",
+    "couple_lv": 0,
+    "couple_nick": "",
+    "couple_uid": 0,
+    "couple_avatar": "",
+    "familyLevel": 0,
+    "familyTag": "",
+    "guildTag": "",
+    "guildTagUrl": "",
+    "medal": "",
+    "nick": "",
+    "noble_level": 0,
+    "role": 0,
+    "sex": 0,
+    "symbol": 0,
+    "auth_list": [],
+    "uid": 0,
+    "uidLevel": 0,
+    "vipMedalImg": "",
+    "vipName": "",
+    "wealthLv": 0,
+    "charm_lv": 0
+   }
+  },
+  "10201": {
+   "callback": "UserInfo (participant profile update)",
+   "handler": "p000/p11.java case 10201 (:1817,:1820)",
+   "parse": "ho2.m21989e(str32, t43.class)",
+   "usage": "refresh a user's room card (frame/medal/noble)",
+   "dto_class": "t43",
+   "dto_file": "p000/t43.java",
+   "field_count": 35,
+   "fields": [
+    {
+     "json": "carFrame",
+     "type": "String"
+    },
+    {
+     "json": "carFrameJson",
+     "type": "String"
+    },
+    {
+     "json": "carDiyJson",
+     "type": "String"
+    },
+    {
+     "json": "entryShow",
+     "type": "String"
+    },
+    {
+     "json": "rookieGiftId",
+     "type": "int"
+    },
+    {
+     "json": "isFans",
+     "type": "int"
+    },
+    {
+     "json": "avatar_small",
+     "type": "String"
+    },
+    {
+     "json": "best_friend_nick",
+     "type": "String"
+    },
+    {
+     "json": "best_friend_avatar",
+     "type": "String"
+    },
+    {
+     "json": "actTitles",
+     "type": "String"
+    },
+    {
+     "json": "avatar",
+     "type": "String"
+    },
+    {
+     "json": "avatarFrame",
+     "type": "String"
+    },
+    {
+     "json": "avatarFrameJson",
+     "type": "String"
+    },
+    {
+     "json": "chatBubble",
+     "type": "String"
+    },
+    {
+     "json": "couple_lv",
+     "type": "int"
+    },
+    {
+     "json": "couple_nick",
+     "type": "String"
+    },
+    {
+     "json": "couple_uid",
+     "type": "int"
+    },
+    {
+     "json": "couple_avatar",
+     "type": "String"
+    },
+    {
+     "json": "familyLevel",
+     "type": "int"
+    },
+    {
+     "json": "familyTag",
+     "type": "String"
+    },
+    {
+     "json": "guildTag",
+     "type": "String"
+    },
+    {
+     "json": "guildTagUrl",
+     "type": "String"
+    },
+    {
+     "json": "medal",
+     "type": "String"
+    },
+    {
+     "json": "nick",
+     "type": "String"
+    },
+    {
+     "json": "noble_level",
+     "type": "int"
+    },
+    {
+     "json": "role",
+     "type": "int"
+    },
+    {
+     "json": "sex",
+     "type": "int"
+    },
+    {
+     "json": "symbol",
+     "type": "int"
+    },
+    {
+     "json": "auth_list",
+     "type": "List<ex4>"
+    },
+    {
+     "json": "uid",
+     "type": "int"
+    },
+    {
+     "json": "uidLevel",
+     "type": "int"
+    },
+    {
+     "json": "vipMedalImg",
+     "type": "String"
+    },
+    {
+     "json": "vipName",
+     "type": "String"
+    },
+    {
+     "json": "wealthLv",
+     "type": "int"
+    },
+    {
+     "json": "charm_lv",
+     "type": "int"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "carFrame": "",
+    "carFrameJson": "",
+    "carDiyJson": "",
+    "entryShow": "",
+    "rookieGiftId": 0,
+    "isFans": 0,
+    "avatar_small": "",
+    "best_friend_nick": "",
+    "best_friend_avatar": "",
+    "actTitles": "",
+    "avatar": "",
+    "avatarFrame": "",
+    "avatarFrameJson": "",
+    "chatBubble": "",
+    "couple_lv": 0,
+    "couple_nick": "",
+    "couple_uid": 0,
+    "couple_avatar": "",
+    "familyLevel": 0,
+    "familyTag": "",
+    "guildTag": "",
+    "guildTagUrl": "",
+    "medal": "",
+    "nick": "",
+    "noble_level": 0,
+    "role": 0,
+    "sex": 0,
+    "symbol": 0,
+    "auth_list": [],
+    "uid": 0,
+    "uidLevel": 0,
+    "vipMedalImg": "",
+    "vipName": "",
+    "wealthLv": 0,
+    "charm_lv": 0
+   }
+  },
+  "10202": {
+   "callback": "radioInfo (audio room info)",
+   "handler": "p000/p11.java case 10202 (:1841)",
+   "parse": "reads audio_model + list",
+   "usage": "radio/audio room state",
+   "note": "payload built inline; audio_model field",
+   "fields": [
+    {
+     "json": "audio_model",
+     "type": "int"
+    },
+    {
+     "json": "list",
+     "type": "array"
+    }
+   ]
+  },
+  "10300": {
+   "callback": "onAnchorMicList (full mic-seat list)",
+   "handler": "p000/p11.java case 10300 -> m35390H -> m35389F (:2588)",
+   "parse": "list of qw1 seat entries (List<qh0>/SparseArray<qw1>)",
+   "usage": "render all mic seats",
+   "dto_class": "qw1",
+   "dto_file": "p000/qw1.java",
+   "field_count": 9,
+   "fields": [
+    {
+     "json": "likeState",
+     "type": "int"
+    },
+    {
+     "json": "isSing",
+     "type": "boolean"
+    },
+    {
+     "json": "name",
+     "type": "String"
+    },
+    {
+     "json": "nick",
+     "type": "String"
+    },
+    {
+     "json": "propers",
+     "type": "C5619a"
+    },
+    {
+     "json": "uid",
+     "type": "int"
+    },
+    {
+     "json": "auth_list",
+     "type": "List<ex4>"
+    },
+    {
+     "json": "role",
+     "type": "?"
+    },
+    {
+     "json": "needNetUpdated",
+     "type": "?"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "likeState": 0,
+    "isSing": false,
+    "name": "",
+    "nick": "",
+    "propers": null,
+    "uid": 0,
+    "auth_list": [],
+    "role": null,
+    "needNetUpdated": null
+   }
+  },
+  "10403": {
+   "callback": "onMicList / onInviteJoinMic (incremental mic update)",
+   "handler": "p000/p11.java case 10403 -> m35374l -> m35351* ",
+   "parse": "seat delta (qw1)",
+   "usage": "update a single/few seats",
+   "dto_class": "qw1",
+   "dto_file": "p000/qw1.java",
+   "field_count": 9,
+   "fields": [
+    {
+     "json": "likeState",
+     "type": "int"
+    },
+    {
+     "json": "isSing",
+     "type": "boolean"
+    },
+    {
+     "json": "name",
+     "type": "String"
+    },
+    {
+     "json": "nick",
+     "type": "String"
+    },
+    {
+     "json": "propers",
+     "type": "C5619a"
+    },
+    {
+     "json": "uid",
+     "type": "int"
+    },
+    {
+     "json": "auth_list",
+     "type": "List<ex4>"
+    },
+    {
+     "json": "role",
+     "type": "?"
+    },
+    {
+     "json": "needNetUpdated",
+     "type": "?"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "likeState": 0,
+    "isSing": false,
+    "name": "",
+    "nick": "",
+    "propers": null,
+    "uid": 0,
+    "auth_list": [],
+    "role": null,
+    "needNetUpdated": null
+   }
+  },
+  "10405": {
+   "callback": "onMicList (mic list, seq-gated)",
+   "handler": "p000/p11.java case 10405 -> m35391R -> m35389F",
+   "parse": "list of qw1 seat entries",
+   "usage": "authoritative mic re-sync",
+   "dto_class": "qw1",
+   "dto_file": "p000/qw1.java",
+   "field_count": 9,
+   "fields": [
+    {
+     "json": "likeState",
+     "type": "int"
+    },
+    {
+     "json": "isSing",
+     "type": "boolean"
+    },
+    {
+     "json": "name",
+     "type": "String"
+    },
+    {
+     "json": "nick",
+     "type": "String"
+    },
+    {
+     "json": "propers",
+     "type": "C5619a"
+    },
+    {
+     "json": "uid",
+     "type": "int"
+    },
+    {
+     "json": "auth_list",
+     "type": "List<ex4>"
+    },
+    {
+     "json": "role",
+     "type": "?"
+    },
+    {
+     "json": "needNetUpdated",
+     "type": "?"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "likeState": 0,
+    "isSing": false,
+    "name": "",
+    "nick": "",
+    "propers": null,
+    "uid": 0,
+    "auth_list": [],
+    "role": null,
+    "needNetUpdated": null
+   }
+  },
+  "10600": {
+   "callback": "onRoomGift (gift broadcast)",
+   "handler": "p000/p11.java case 10600 -> m35392U (:2846)",
+   "parse": "ho2.m21989e(str, l63.class); sub-object fromUInfo -> t43",
+   "usage": "play gift SVGA/combo + update charm/contribution",
+   "sub_objects": {
+    "fromUInfo": "t43 (sender profile)"
+   },
+   "dto_class": "l63",
+   "dto_file": "p000/l63.java",
+   "field_count": 40,
+   "fields": [
+    {
+     "json": "sub_image",
+     "type": "String"
+    },
+    {
+     "json": "bind_uid",
+     "type": "int"
+    },
+    {
+     "json": "source",
+     "type": "int"
+    },
+    {
+     "json": "process",
+     "type": "int"
+    },
+    {
+     "json": "limit",
+     "type": "int"
+    },
+    {
+     "json": "surplus",
+     "type": "int"
+    },
+    {
+     "json": "drawRatio",
+     "type": "float"
+    },
+    {
+     "json": "drawXY",
+     "type": "String"
+    },
+    {
+     "json": "clientSvgaDynamics",
+     "type": "gl3<HashMap<String, InterfaceC5146a.d>, HashMap<String, InterfaceC5146a.g>>"
+    },
+    {
+     "json": "rebackMultipeList",
+     "type": "List<C3786b>"
+    },
+    {
+     "json": "new_rebackMultipeList",
+     "type": "List<C3785a>"
+    },
+    {
+     "json": "send_type",
+     "type": "int"
+    },
+    {
+     "json": "kind",
+     "type": "int"
+    },
+    {
+     "json": "level",
+     "type": "int"
+    },
+    {
+     "json": "lucky_draw_number",
+     "type": "int"
+    },
+    {
+     "json": "merge_num",
+     "type": "int"
+    },
+    {
+     "json": "showPrizeConins",
+     "type": "boolean"
+    },
+    {
+     "json": "gid",
+     "type": "int"
+    },
+    {
+     "json": "num",
+     "type": "int"
+    },
+    {
+     "json": "name",
+     "type": "String"
+    },
+    {
+     "json": "price",
+     "type": "int"
+    },
+    {
+     "json": "resource_idx",
+     "type": "String"
+    },
+    {
+     "json": "resource_url",
+     "type": "String"
+    },
+    {
+     "json": "bid",
+     "type": "String"
+    },
+    {
+     "json": "url",
+     "type": "String"
+    },
+    {
+     "json": "hide_window",
+     "type": "int"
+    },
+    {
+     "json": "uids",
+     "type": "String"
+    },
+    {
+     "json": "continuous",
+     "type": "String"
+    },
+    {
+     "json": "continuous_url",
+     "type": "String"
+    },
+    {
+     "json": "model",
+     "type": "int"
+    },
+    {
+     "json": "prize_type",
+     "type": "int"
+    },
+    {
+     "json": "prize_coins",
+     "type": "int"
+    },
+    {
+     "json": "prize_level",
+     "type": "int"
+    },
+    {
+     "json": "prize_percent",
+     "type": "int"
+    },
+    {
+     "json": "reback_type",
+     "type": "int"
+    },
+    {
+     "json": "lucky_box",
+     "type": "int"
+    },
+    {
+     "json": "box_type",
+     "type": "int"
+    },
+    {
+     "json": "svga_type",
+     "type": "int"
+    },
+    {
+     "json": "svga_url",
+     "type": "String"
+    },
+    {
+     "json": "svga_expire",
+     "type": "long"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "sub_image": "",
+    "bind_uid": 0,
+    "source": 0,
+    "process": 0,
+    "limit": 0,
+    "surplus": 0,
+    "drawRatio": 0.0,
+    "drawXY": "",
+    "clientSvgaDynamics": null,
+    "rebackMultipeList": [],
+    "new_rebackMultipeList": [],
+    "send_type": 0,
+    "kind": 0,
+    "level": 0,
+    "lucky_draw_number": 0,
+    "merge_num": 0,
+    "showPrizeConins": false,
+    "gid": 0,
+    "num": 0,
+    "name": "",
+    "price": 0,
+    "resource_idx": "",
+    "resource_url": "",
+    "bid": "",
+    "url": "",
+    "hide_window": 0,
+    "uids": "",
+    "continuous": "",
+    "continuous_url": "",
+    "model": 0,
+    "prize_type": 0,
+    "prize_coins": 0,
+    "prize_level": 0,
+    "prize_percent": 0,
+    "reback_type": 0,
+    "lucky_box": 0,
+    "box_type": 0,
+    "svga_type": 0,
+    "svga_url": "",
+    "svga_expire": 0
+   }
+  },
+  "10700": {
+   "callback": "onKickUser",
+   "handler": "p000/p11.java case 10700 -> m35375m -> m35351O (:2300)",
+   "parse": "ho2.m21989e(str, d13.class) + inline uid(FgYJ=)/type/surplus/subType",
+   "usage": "remove/ban a user; block duration = surplus*1000ms",
+   "inline_fields": [
+    {
+     "json": "uid",
+     "type": "int"
+    },
+    {
+     "json": "surplus",
+     "type": "int (seconds)"
+    },
+    {
+     "json": "subType",
+     "type": "int"
+    },
+    {
+     "json": "bid",
+     "type": "int (room id)"
+    }
+   ],
+   "dto_class": "d13",
+   "dto_file": "p000/d13.java",
+   "field_count": 6,
+   "fields": [
+    {
+     "json": "type",
+     "type": "int"
+    },
+    {
+     "json": "subType",
+     "type": "int"
+    },
+    {
+     "json": "bid",
+     "type": "int"
+    },
+    {
+     "json": "expiredSurplus",
+     "type": "long"
+    },
+    {
+     "json": "bagNum",
+     "type": "int"
+    },
+    {
+     "json": "clientAction",
+     "type": "?"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "type": 0,
+    "subType": 0,
+    "bid": 0,
+    "expiredSurplus": 0,
+    "bagNum": 0,
+    "clientAction": null
+   }
+  },
+  "10800": {
+   "callback": "onUserRoleChange",
+   "handler": "p000/p11.java case 10800 -> m35383u -> m35360Z (:2415)",
+   "parse": "inline JSON fields (no DTO)",
+   "usage": "promote/demote admin/owner; wc3.m54353b0(opUid,uid,roleOld,roleNew)",
+   "fields": [
+    {
+     "json": "opUid",
+     "type": "int (actor)"
+    },
+    {
+     "json": "uid",
+     "type": "int (target)"
+    },
+    {
+     "json": "roleOld",
+     "type": "int"
+    },
+    {
+     "json": "roleNew",
+     "type": "int"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "opUid": 0,
+    "uid": 0,
+    "roleOld": 0,
+    "roleNew": 0
+   }
+  },
+  "10900": {
+   "callback": "onTimingPKInfo (group timing-PK state)",
+   "handler": "p000/p11.java case 10900 (:1654) wc3.m54372l(optInt,JSONObject)",
+   "parse": "JSONObject parsed inline in handler",
+   "usage": "update timing-PK bar/score",
+   "note": "parsed as raw JSONObject; fields overlap C3732ks (pk values/times)",
+   "fields": [
+    {
+     "json": "pkValue",
+     "type": "int"
+    },
+    {
+     "json": "pk_status",
+     "type": "int"
+    },
+    {
+     "json": "countDown",
+     "type": "int"
+    },
+    {
+     "json": "pkStartTime",
+     "type": "long"
+    }
+   ]
+  },
+  "11300": {
+   "callback": "onGlobalHorn (cross-room megaphone)",
+   "handler": "p000/q90.java (:1350) opcode 11300/21300",
+   "parse": "ho2.m21989e(..., gq3.class)",
+   "usage": "scroll a global horn banner across all rooms",
+   "dto_class": "gq3",
+   "dto_file": "p000/gq3.java",
+   "field_count": 12,
+   "fields": [
+    {
+     "json": "num",
+     "type": "int"
+    },
+    {
+     "json": "from",
+     "type": "int"
+    },
+    {
+     "json": "to",
+     "type": "int"
+    },
+    {
+     "json": "gid",
+     "type": "String"
+    },
+    {
+     "json": "url",
+     "type": "String"
+    },
+    {
+     "json": "msgType",
+     "type": "int"
+    },
+    {
+     "json": "name",
+     "type": "String"
+    },
+    {
+     "json": "toSex",
+     "type": "int"
+    },
+    {
+     "json": "special_url",
+     "type": "String"
+    },
+    {
+     "json": "svga_type",
+     "type": "int"
+    },
+    {
+     "json": "svga_url",
+     "type": "String"
+    },
+    {
+     "json": "bind_uid",
+     "type": "int"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "num": 0,
+    "from": 0,
+    "to": 0,
+    "gid": "",
+    "url": "",
+    "msgType": 0,
+    "name": "",
+    "toSex": 0,
+    "special_url": "",
+    "svga_type": 0,
+    "svga_url": "",
+    "bind_uid": 0
+   }
+  },
+  "13000": {
+   "callback": "onSystemMsg (room system / bomb)",
+   "handler": "p000/p11.java case 13000 (:1696-1728)",
+   "parse": "variant: optString('msg') OR ho2.m21989e(str, bg4.class)",
+   "usage": "system text toast AND bomb-game state",
+   "sub_variants": {
+    "text": "{msg:String}",
+    "bomb": "bg4"
+   },
+   "dto_class": "bg4",
+   "dto_file": "p000/bg4.java",
+   "field_count": 5,
+   "fields": [
+    {
+     "json": "currentCoins",
+     "type": "int"
+    },
+    {
+     "json": "bombLevel",
+     "type": "int"
+    },
+    {
+     "json": "bombStatus",
+     "type": "int"
+    },
+    {
+     "json": "displayStartTime",
+     "type": "long"
+    },
+    {
+     "json": "countDown",
+     "type": "int"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "currentCoins": 0,
+    "bombLevel": 0,
+    "bombStatus": 0,
+    "displayStartTime": 0,
+    "countDown": 0
+   }
+  },
+  "13100": {
+   "callback": "msg_live_pk_match_success",
+   "handler": "p000/p11.java case 13100 (:1507)",
+   "parse": "ho2.m21989e(str32, C3732ks.class)",
+   "usage": "start PK UI: both sides, values, countdown",
+   "dto_class": "C3732ks",
+   "dto_file": "p000/C3732ks.java",
+   "field_count": 10,
+   "fields": [
+    {
+     "json": "status",
+     "type": "int"
+    },
+    {
+     "json": "pkStartTime",
+     "type": "long"
+    },
+    {
+     "json": "countDown",
+     "type": "int"
+    },
+    {
+     "json": "surplus",
+     "type": "int"
+    },
+    {
+     "json": "challengerPkValue",
+     "type": "int"
+    },
+    {
+     "json": "acceptPkValue",
+     "type": "int"
+    },
+    {
+     "json": "challengerUid",
+     "type": "int"
+    },
+    {
+     "json": "acceptPkUid",
+     "type": "int"
+    },
+    {
+     "json": "challengerSendGiftList",
+     "type": "List<nu1>"
+    },
+    {
+     "json": "acceptPkSendGiftList",
+     "type": "List<nu1>"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "status": 0,
+    "pkStartTime": 0,
+    "countDown": 0,
+    "surplus": 0,
+    "challengerPkValue": 0,
+    "acceptPkValue": 0,
+    "challengerUid": 0,
+    "acceptPkUid": 0,
+    "challengerSendGiftList": [],
+    "acceptPkSendGiftList": []
+   }
+  },
+  "14200": {
+   "callback": "room_level (room level-up)",
+   "handler": "p000/p11.java case 14200 (:1773)",
+   "parse": "inline optInt('level')",
+   "usage": "update room level badge",
+   "fields": [
+    {
+     "json": "level",
+     "type": "int"
+    }
+   ],
+   "example_SCHEMA_DERIVED": {
+    "level": 0
+   }
+  }
+ },
+ "still_runtime_only": "Concrete example payloads and which optional fields are populated per event — capture Tencent V2TIMAdvancedMsgListener.onRecvNewMessage on a device (add to runtime_capture/scripts/frida_zaffa.js)."
+}

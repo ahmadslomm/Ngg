@@ -1,0 +1,925 @@
+{
+ "app": "ZaffaLive",
+ "package": "com.waig.nalo",
+ "note": "Catalog of every REMOTE asset-URL FIELD carried by server DTOs (from decrypted @hq4 keys). These fields hold runtime URLs the client loads; the actual URLs/CDN host are server-delivered and NOT in the APK (confirmed: 0 hardcoded CDN). To download the real assets: capture the catalog endpoints (gift.getGiftList, medal/VIP, activity.getBannerList, room themes) once and read these fields. Bundled (in-APK) assets are in COMPLETE_ASSET_MAP.json.",
+ "delivering_endpoints_and_opcodes": {
+  "gift art": "gift.getGiftList/getCommonGift/getClientGiftTabs ; IM 10600 (l63.svga_url/resource_url)",
+  "vip frames/medals": "medal.* , room.getWealthInfo ; DTO t43 (avatarFrame/vipMedalImg/url_lv1..4)",
+  "banners/activities": "activity.getBannerList , RoomAct.* (banner_url/act_url)",
+  "room themes": "mall.buyTheme/useTheme , room.updateRoomInfo (themeUrl/bgImg)",
+  "rocket/effects": "RocketGift.* , IM 11300 gq3.svga_url",
+  "prizes": "luckyBags/LuckyDraw (prize_image/preview_url/zip_url)"
+ },
+ "asset_fields_by_category": {
+  "animation-pag": [
+   {
+    "field": "page_image",
+    "type": "String",
+    "dtos": [
+     "C2232d",
+     "d",
+     "ri3"
+    ]
+   },
+   {
+    "field": "page_image_new",
+    "type": "String",
+    "dtos": [
+     "C2232d",
+     "d",
+     "ri3"
+    ]
+   }
+  ],
+  "animation-svga": [
+   {
+    "field": "clientSvgaDynamics",
+    "type": "gl3<HashMap<String, InterfaceC5146a.d>, HashMap<String, InterfaceC5146a.g>>",
+    "dtos": [
+     "l63"
+    ]
+   },
+   {
+    "field": "svga_expire",
+    "type": "long",
+    "dtos": [
+     "l63"
+    ]
+   },
+   {
+    "field": "svga_type",
+    "type": "int",
+    "dtos": [
+     "dp5",
+     "gq3",
+     "jl3",
+     "l63",
+     "rx4"
+    ]
+   },
+   {
+    "field": "svga_url",
+    "type": "String",
+    "dtos": [
+     "dp5",
+     "gq3",
+     "jl3",
+     "l63",
+     "rx4"
+    ]
+   }
+  ],
+  "audio": [
+   {
+    "field": "musicId",
+    "type": "int",
+    "dtos": [
+     "b"
+    ]
+   },
+   {
+    "field": "music_id",
+    "type": "int",
+    "dtos": [
+     "C5697rf"
+    ]
+   }
+  ],
+  "avatar/photo": [
+   {
+    "field": "audit_avatar",
+    "type": "int",
+    "dtos": [
+     "bn0"
+    ]
+   },
+   {
+    "field": "avatar",
+    "type": "String",
+    "dtos": [
+     "C0739e",
+     "C0741g",
+     "C0938a",
+     "C2288e2",
+     "C2445et",
+     "C2473ey",
+     "C2475b",
+     "C2560a"
+    ]
+   },
+   {
+    "field": "avatarMe",
+    "type": "String",
+    "dtos": [
+     "z72"
+    ]
+   },
+   {
+    "field": "avatarWaitio",
+    "type": "String",
+    "dtos": [
+     "z72"
+    ]
+   },
+   {
+    "field": "avatar_carton",
+    "type": "String",
+    "dtos": [
+     "C5619a"
+    ]
+   },
+   {
+    "field": "avatar_small",
+    "type": "String",
+    "dtos": [
+     "C5619a",
+     "t43"
+    ]
+   },
+   {
+    "field": "best_friend_avatar",
+    "type": "String",
+    "dtos": [
+     "C5619a",
+     "t43"
+    ]
+   },
+   {
+    "field": "couple_avatar",
+    "type": "String",
+    "dtos": [
+     "C5619a",
+     "t43"
+    ]
+   },
+   {
+    "field": "fromAvatar",
+    "type": "String",
+    "dtos": [
+     "C5697rf"
+    ]
+   },
+   {
+    "field": "momentUserAvatar",
+    "type": "String",
+    "dtos": [
+     "C5761ro"
+    ]
+   },
+   {
+    "field": "photo",
+    "type": "String",
+    "dtos": [
+     "C5697rf",
+     "C7274z4"
+    ]
+   },
+   {
+    "field": "photo_list",
+    "type": "C2756a",
+    "dtos": [
+     "g96"
+    ]
+   },
+   {
+    "field": "photos",
+    "type": "String",
+    "dtos": [
+     "bn0"
+    ]
+   },
+   {
+    "field": "receiverAvatar",
+    "type": "String",
+    "dtos": [
+     "C2474a"
+    ]
+   },
+   {
+    "field": "receiver_avatar",
+    "type": "String",
+    "dtos": [
+     "bi3"
+    ]
+   },
+   {
+    "field": "senderAvatar",
+    "type": "String",
+    "dtos": [
+     "rm5"
+    ]
+   }
+  ],
+  "banner/activity": [
+   {
+    "field": "act_url",
+    "type": "String",
+    "dtos": [
+     "C7355b"
+    ]
+   },
+   {
+    "field": "bannerType",
+    "type": "int",
+    "dtos": [
+     "kr1"
+    ]
+   },
+   {
+    "field": "banner_url",
+    "type": "String",
+    "dtos": [
+     "rx4",
+     "th4"
+    ]
+   },
+   {
+    "field": "specialImage",
+    "type": "String",
+    "dtos": [
+     "jo2"
+    ]
+   },
+   {
+    "field": "special_url",
+    "type": "String",
+    "dtos": [
+     "gq3"
+    ]
+   }
+  ],
+  "gift/prize-art": [
+   {
+    "field": "effectiveGiftBag",
+    "type": "a",
+    "dtos": [
+     "C0629b1"
+    ]
+   },
+   {
+    "field": "prizeImage",
+    "type": "String",
+    "dtos": [
+     "C3393j"
+    ]
+   },
+   {
+    "field": "prize_images",
+    "type": "List<ey3>",
+    "dtos": [
+     "t03"
+    ]
+   },
+   {
+    "field": "subGifts",
+    "type": "List<rx4>",
+    "dtos": [
+     "rx4"
+    ]
+   }
+  ],
+  "image-generic": [
+   {
+    "field": "app_url",
+    "type": "String",
+    "dtos": [
+     "e95"
+    ]
+   },
+   {
+    "field": "bar_label_url",
+    "type": "String",
+    "dtos": [
+     "rx4"
+    ]
+   },
+   {
+    "field": "clientImageRes",
+    "type": "Object",
+    "dtos": [
+     "ri3"
+    ]
+   },
+   {
+    "field": "continuous_url",
+    "type": "String",
+    "dtos": [
+     "l63",
+     "rx4"
+    ]
+   },
+   {
+    "field": "continuous_url2",
+    "type": "String",
+    "dtos": [
+     "rx4"
+    ]
+   },
+   {
+    "field": "country_icon",
+    "type": "String",
+    "dtos": [
+     "ok2"
+    ]
+   },
+   {
+    "field": "cover",
+    "type": "String",
+    "dtos": [
+     "C5639r",
+     "b63"
+    ]
+   },
+   {
+    "field": "currencyIcon",
+    "type": "String",
+    "dtos": [
+     "wz0"
+    ]
+   },
+   {
+    "field": "fromUrl",
+    "type": "String",
+    "dtos": [
+     "C5697rf"
+    ]
+   },
+   {
+    "field": "gameIcon",
+    "type": "String",
+    "dtos": [
+     "lt3",
+     "uv1"
+    ]
+   },
+   {
+    "field": "gameRankImage",
+    "type": "String",
+    "dtos": [
+     "lu1"
+    ]
+   },
+   {
+    "field": "guildTagUrl",
+    "type": "String",
+    "dtos": [
+     "C5619a",
+     "t43"
+    ]
+   },
+   {
+    "field": "icon",
+    "type": "int",
+    "dtos": [
+     "C3418j7",
+     "C6014b",
+     "b",
+     "jw2",
+     "n90",
+     "t82",
+     "zl5"
+    ]
+   },
+   {
+    "field": "iconUrl",
+    "type": "String",
+    "dtos": [
+     "b"
+    ]
+   },
+   {
+    "field": "icon_url",
+    "type": "String",
+    "dtos": [
+     "p75"
+    ]
+   },
+   {
+    "field": "image",
+    "type": "String",
+    "dtos": [
+     "C2232d",
+     "C2251c",
+     "C2474a",
+     "C5543qh",
+     "a",
+     "ak4",
+     "b",
+     "b14"
+    ]
+   },
+   {
+    "field": "images",
+    "type": "String",
+    "dtos": [
+     "b"
+    ]
+   },
+   {
+    "field": "img",
+    "type": "String",
+    "dtos": [
+     "kn4"
+    ]
+   },
+   {
+    "field": "img_url",
+    "type": "String",
+    "dtos": [
+     "C5697rf"
+    ]
+   },
+   {
+    "field": "infoBgImg",
+    "type": "String",
+    "dtos": [
+     "bn0"
+    ]
+   },
+   {
+    "field": "jumpUrl",
+    "type": "String",
+    "dtos": [
+     "pl2"
+    ]
+   },
+   {
+    "field": "jump_url",
+    "type": "String",
+    "dtos": [
+     "ei3",
+     "rx4"
+    ]
+   },
+   {
+    "field": "localImgeRes",
+    "type": "int",
+    "dtos": [
+     "e10"
+    ]
+   },
+   {
+    "field": "local_imga_url",
+    "type": "String",
+    "dtos": [
+     "C7355b"
+    ]
+   },
+   {
+    "field": "payUrl",
+    "type": "String",
+    "dtos": [
+     "cw3"
+    ]
+   },
+   {
+    "field": "pic",
+    "type": "String",
+    "dtos": [
+     "uf3"
+    ]
+   },
+   {
+    "field": "picArray",
+    "type": "List<String>",
+    "dtos": [
+     "C5761ro"
+    ]
+   },
+   {
+    "field": "pic_url",
+    "type": "String",
+    "dtos": [
+     "C2445et",
+     "C3119a",
+     "C5639r",
+     "f86",
+     "ta4"
+    ]
+   },
+   {
+    "field": "preview_url",
+    "type": "String",
+    "dtos": [
+     "rx4"
+    ]
+   },
+   {
+    "field": "privateProtocolUrl",
+    "type": "String",
+    "dtos": [
+     "cw3"
+    ]
+   },
+   {
+    "field": "pushUrl",
+    "type": "String",
+    "dtos": [
+     "cw3"
+    ]
+   },
+   {
+    "field": "reportFileUrl",
+    "type": "String",
+    "dtos": [
+     "cw3"
+    ]
+   },
+   {
+    "field": "reportUrl",
+    "type": "String",
+    "dtos": [
+     "cw3"
+    ]
+   },
+   {
+    "field": "resource_url",
+    "type": "String",
+    "dtos": [
+     "dp5",
+     "kp1",
+     "l63",
+     "rx4"
+    ]
+   },
+   {
+    "field": "ringUrl",
+    "type": "String",
+    "dtos": [
+     "ao0"
+    ]
+   },
+   {
+    "field": "roomImg",
+    "type": "String",
+    "dtos": [
+     "di3"
+    ]
+   },
+   {
+    "field": "room_pic",
+    "type": "String",
+    "dtos": [
+     "yx5"
+    ]
+   },
+   {
+    "field": "rulesUrl",
+    "type": "String",
+    "dtos": [
+     "cw3"
+    ]
+   },
+   {
+    "field": "shareUrl",
+    "type": "String",
+    "dtos": [
+     "cw3"
+    ]
+   },
+   {
+    "field": "share_image",
+    "type": "String",
+    "dtos": [
+     "e95"
+    ]
+   },
+   {
+    "field": "share_url",
+    "type": "String",
+    "dtos": [
+     "e95"
+    ]
+   },
+   {
+    "field": "small_pic_url",
+    "type": "String",
+    "dtos": [
+     "f86"
+    ]
+   },
+   {
+    "field": "songUrl",
+    "type": "String",
+    "dtos": [
+     "C5761ro"
+    ]
+   },
+   {
+    "field": "sub_image",
+    "type": "String",
+    "dtos": [
+     "l63"
+    ]
+   },
+   {
+    "field": "talk_topic",
+    "type": "String",
+    "dtos": [
+     "C2445et",
+     "C3119a"
+    ]
+   },
+   {
+    "field": "topic",
+    "type": "String",
+    "dtos": [
+     "C2445et",
+     "ak4",
+     "b14",
+     "li3"
+    ]
+   },
+   {
+    "field": "topic_name",
+    "type": "String",
+    "dtos": [
+     "C2445et"
+    ]
+   },
+   {
+    "field": "url",
+    "type": "String",
+    "dtos": [
+     "C2232d",
+     "a85",
+     "d",
+     "e10",
+     "gq3",
+     "kp1",
+     "l63",
+     "ri3"
+    ]
+   }
+  ],
+  "resource-bundle": [
+   {
+    "field": "zip_url",
+    "type": "String",
+    "dtos": [
+     "p75"
+    ]
+   }
+  ],
+  "room-theme/bg": [
+   {
+    "field": "bgDrawable",
+    "type": "GradientDrawable",
+    "dtos": [
+     "pl2"
+    ]
+   },
+   {
+    "field": "bgIcon",
+    "type": "String",
+    "dtos": [
+     "pl2"
+    ]
+   },
+   {
+    "field": "bgImg",
+    "type": "String",
+    "dtos": [
+     "pl2",
+     "t82"
+    ]
+   },
+   {
+    "field": "bgRes",
+    "type": "int",
+    "dtos": [
+     "jw2"
+    ]
+   },
+   {
+    "field": "bgResId",
+    "type": "int",
+    "dtos": [
+     "kr1"
+    ]
+   },
+   {
+    "field": "themeDiyJson",
+    "type": "String",
+    "dtos": [
+     "C3119a"
+    ]
+   },
+   {
+    "field": "themeName",
+    "type": "String",
+    "dtos": [
+     "C2445et",
+     "C3119a"
+    ]
+   },
+   {
+    "field": "themeType",
+    "type": "int",
+    "dtos": [
+     "C5697rf",
+     "b14",
+     "li3"
+    ]
+   },
+   {
+    "field": "themeUrl",
+    "type": "String",
+    "dtos": [
+     "C2445et",
+     "C3119a"
+    ]
+   }
+  ],
+  "video": [
+   {
+    "field": "bomb_mp4_zip_1",
+    "type": "String",
+    "dtos": [
+     "hq3"
+    ]
+   },
+   {
+    "field": "bomb_mp4_zip_2",
+    "type": "String",
+    "dtos": [
+     "hq3"
+    ]
+   },
+   {
+    "field": "bomb_mp4_zip_3",
+    "type": "String",
+    "dtos": [
+     "hq3"
+    ]
+   },
+   {
+    "field": "bomb_mp4_zip_4",
+    "type": "String",
+    "dtos": [
+     "hq3"
+    ]
+   },
+   {
+    "field": "bomb_mp4_zip_5",
+    "type": "String",
+    "dtos": [
+     "hq3"
+    ]
+   },
+   {
+    "field": "bomb_mp4_zip_6",
+    "type": "String",
+    "dtos": [
+     "hq3"
+    ]
+   },
+   {
+    "field": "bomb_mp4_zip_7",
+    "type": "String",
+    "dtos": [
+     "hq3"
+    ]
+   },
+   {
+    "field": "video_url",
+    "type": "String",
+    "dtos": [
+     "C5697rf"
+    ]
+   }
+  ],
+  "vip-frame/medal": [
+   {
+    "field": "avatarFrame",
+    "type": "String",
+    "dtos": [
+     "C5619a",
+     "C6060b",
+     "bn0",
+     "t43"
+    ]
+   },
+   {
+    "field": "avatarFrameJson",
+    "type": "String",
+    "dtos": [
+     "C5619a",
+     "C5697rf",
+     "bn0",
+     "t43"
+    ]
+   },
+   {
+    "field": "avatar_frame",
+    "type": "String",
+    "dtos": [
+     "C5697rf"
+    ]
+   },
+   {
+    "field": "carFrame",
+    "type": "String",
+    "dtos": [
+     "C5619a",
+     "bn0",
+     "t43"
+    ]
+   },
+   {
+    "field": "carFrameJson",
+    "type": "String",
+    "dtos": [
+     "C5619a",
+     "bn0",
+     "t43"
+    ]
+   },
+   {
+    "field": "url_lv1",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "url_lv1_gray",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "url_lv1_small",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "url_lv2",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "url_lv2_gray",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "url_lv2_small",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "url_lv3",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "url_lv3_gray",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "url_lv3_small",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "url_lv4",
+    "type": "String",
+    "dtos": [
+     "o63"
+    ]
+   },
+   {
+    "field": "vipMedalImg",
+    "type": "String",
+    "dtos": [
+     "C5619a",
+     "t43"
+    ]
+   },
+   {
+    "field": "wealthFrame",
+    "type": "String",
+    "dtos": [
+     "C5619a"
+    ]
+   }
+  ]
+ }
+}
