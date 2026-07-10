@@ -38,6 +38,12 @@ flutter:
     - assets/brand/
     - assets/room/
     - assets/roomEmoji/
+    # Recovered original H5 room-ecosystem assets (owned) — see ROOM_ASSET_MAPPING.md
+    - assets/room_ext/pk/
+    - assets/room_ext/party/
+    - assets/room_ext/vip/
+    - assets/room_ext/cp/
+    - assets/room_ext/wealth/
     # Restored original SVGA animation assets (owned), by feature
     - assets/anim/svga/bomb/
     - assets/anim/svga/cp/

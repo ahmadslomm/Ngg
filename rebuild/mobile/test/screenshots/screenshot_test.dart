@@ -6,7 +6,11 @@ import 'package:voxa/features/splash/splash_screen.dart';
 import 'package:voxa/features/auth/login_screen.dart';
 import 'package:voxa/features/home/home_screen.dart';
 import 'package:voxa/features/room/models/room_models.dart';
+import 'package:voxa/features/room/models/room_decorations.dart';
 import 'package:voxa/features/room/widgets/room_background.dart';
+import 'package:voxa/features/room/widgets/party_background.dart';
+import 'package:voxa/features/room/widgets/party_type_bar.dart';
+import 'package:voxa/features/room/widgets/pk_result_overlay.dart';
 import 'package:voxa/features/room/widgets/room_controls.dart';
 import 'package:voxa/features/room/widgets/room_header.dart';
 import 'package:voxa/features/room/widgets/seat_tile.dart';
@@ -17,6 +21,21 @@ import 'package:voxa/core/theme/app_spacing.dart';
 // *rebuilt-side* captures referenced by VISUAL_DIFFERENCE_REPORT.md. Text
 // renders in the golden test font, so glyphs differ from a device — layout,
 // spacing, color, and hierarchy are the comparable signal here.
+
+/// Real asset images only paint in a golden once decoded into the image cache.
+/// This forces every `Image` in the tree to finish decoding (via runAsync +
+/// precacheImage) so the recovered PNG/WEBP assets render deterministically —
+/// otherwise a first-use asset captures blank. SVGA (SvgaView) is unaffected.
+Future<void> _settleImages(WidgetTester t) async {
+  await t.runAsync(() async {
+    for (final e in find.byType(Image).evaluate()) {
+      final img = e.widget as Image;
+      await precacheImage(img.image, e);
+    }
+  });
+  // Bounded pump (not pumpAndSettle): a looping SVGA speaking wave never settles.
+  await t.pump(const Duration(milliseconds: 300));
+}
 
 void main() {
   testWidgets('splash', (t) async {
@@ -118,7 +137,17 @@ void main() {
                     crossAxisSpacing: AppSpacing.sm,
                     childAspectRatio: 0.78,
                     children: [
-                      for (final s in seats.skip(1)) SeatTile(seat: s, isHost: false),
+                      for (final s in seats.skip(1))
+                        SeatTile(
+                          seat: s,
+                          isHost: false,
+                          decoration: const {
+                            1: SeatDecoration(vipShieldIndex: 0),
+                            3: SeatDecoration(vipShieldIndex: 2),
+                            5: SeatDecoration(cpFrame: CpFrame.rank1, cpBonded: true),
+                          }[s.position] ??
+                              SeatDecoration.none,
+                        ),
                     ],
                   ),
                 ),
@@ -137,7 +166,80 @@ void main() {
         ),
       ),
     ));
-    await t.pump(const Duration(milliseconds: 300));
+    await _settleImages(t);
     await expectLater(find.byType(MaterialApp), matchesGoldenFile('images/room.png'));
+  });
+
+  testWidgets('room_pk', (t) async {
+    // PK overlay over the throne backdrop, driven by a result-phase PkState —
+    // exercises the recovered win/tie/loss rings + rate panel.
+    const seats = [
+      Seat(position: 0, userId: 'Host', state: SeatState.occupied),
+      Seat(position: 1, userId: 'Lina', state: SeatState.occupied, volume: 200),
+      Seat(position: 2, userId: 'Omar', state: SeatState.occupied),
+      Seat(position: 3, userId: 'Sara', state: SeatState.occupied),
+    ];
+    t.view.physicalSize = const Size(1080, 2340);
+    t.view.devicePixelRatio = 3.0;
+    addTearDown(t.view.reset);
+    await t.pumpWidget(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.dark,
+      home: Scaffold(
+        body: RoomBackground(
+          child: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                const PkResultOverlay(
+                  pk: PkState(
+                    phase: PkPhase.result,
+                    outcome: PkOutcome.win,
+                    redLabel: 'Red',
+                    blueLabel: 'Blue',
+                    redValue: 8200,
+                    blueValue: 3100,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.m),
+                SeatTile(seat: seats[0], isHost: true, label: 'Host'),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ));
+    await _settleImages(t);
+    await expectLater(find.byType(MaterialApp), matchesGoldenFile('images/room_pk.png'));
+  });
+
+  testWidgets('room_party', (t) async {
+    // Party-mode backdrop (recovered gold diamond bg + light mask) with the
+    // recovered party-type theme cards and a host seat.
+    const host = Seat(position: 0, userId: 'Host', state: SeatState.occupied);
+    t.view.physicalSize = const Size(1080, 2340);
+    t.view.devicePixelRatio = 3.0;
+    addTearDown(t.view.reset);
+    await t.pumpWidget(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.dark,
+      home: const Scaffold(
+        body: PartyBackground(
+          child: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                SizedBox(height: AppSpacing.m),
+                PartyTypeBar(selected: PartyTheme.pk),
+                SizedBox(height: AppSpacing.l),
+                SeatTile(seat: host, isHost: true, label: 'Host'),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ));
+    await _settleImages(t);
+    await expectLater(find.byType(MaterialApp), matchesGoldenFile('images/room_party.png'));
   });
 }

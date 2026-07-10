@@ -7,12 +7,18 @@ import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_typography.dart';
 import '../gift/widgets/gift_effect_layer.dart';
 import '../gift/widgets/restored_effects.dart';
+import 'models/room_decorations.dart';
+import 'models/room_display.dart';
 import 'models/room_models.dart';
+import 'room_decoration_mapper.dart';
 import 'room_providers.dart';
+import 'widgets/room_backdrop.dart';
 import 'widgets/room_background.dart';
 import 'widgets/room_controls.dart';
 import 'widgets/room_entry_effect.dart';
 import 'widgets/room_header.dart';
+import 'widgets/party_type_bar.dart';
+import 'widgets/pk_result_overlay.dart';
 import 'widgets/seat_tile.dart';
 import 'widgets/gift_panel.dart';
 
@@ -25,14 +31,27 @@ import 'widgets/gift_panel.dart';
 /// Visual layer only: state comes from RoomController and every action is
 /// delegated to it unchanged (takeSeat / toggleSelfMute / sendGift / leaveRoom).
 class RoomScreen extends ConsumerWidget {
-  const RoomScreen({super.key, required this.roomId});
+  const RoomScreen({super.key, required this.roomId, this.displayOverride});
+
   final String roomId;
+
+  /// Test/preview seam for the recovered decorations. The live router path leaves
+  /// this null and reads [roomDisplayProvider] (default [RoomDisplay.none]), so
+  /// runtime is unchanged until a server-DTO pass fills that provider. The
+  /// controller/state themselves are never touched.
+  final RoomDisplay? displayOverride;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(roomControllerProvider(roomId));
     final controller = ref.read(roomControllerProvider(roomId).notifier);
     final myUid = ref.watch(sessionProvider)?.uid ?? '';
+
+    // Decoration channel — separate from the controller/state (see roomDisplayProvider).
+    final RoomDisplay display = displayOverride ?? ref.watch(roomDisplayProvider(roomId));
+    final skin = display.skin;
+    final pk = display.pk;
+    final seatDecorations = mapSeatDecorations(display);
 
     if (state.connecting) {
       return const Scaffold(
@@ -47,7 +66,8 @@ class RoomScreen extends ConsumerWidget {
     final micMuted = mySeat != null && (mySeat.micMuted || mySeat.micMutedByAdmin);
 
     return Scaffold(
-      body: RoomBackground(
+      body: RoomBackdrop(
+        skin: skin,
         child: SafeArea(
           bottom: false,
           child: Stack(
@@ -71,6 +91,13 @@ class RoomScreen extends ConsumerWidget {
                       decoration: BoxDecoration(color: AppColors.warnRed.withValues(alpha: 0.2), borderRadius: AppRadius.rSm),
                       child: Text(state.error!, style: AppTypography.caption.copyWith(color: AppColors.warnRed)),
                     ),
+                  // Party-mode theme cards (recovered art) — only in the party skin.
+                  if (skin == RoomSkin.party) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    PartyTypeBar(selected: display.partyTheme),
+                  ],
+                  // PK overlay (recovered rings/panel) — inert when pk == none.
+                  PkResultOverlay(pk: pk),
                   const SizedBox(height: AppSpacing.sm),
                   // Host seat (distinct), centered.
                   if (host != null)
@@ -79,6 +106,7 @@ class RoomScreen extends ConsumerWidget {
                       isHost: true,
                       label: host.isOccupied ? 'Host' : 'Host seat',
                       onTap: () => _onSeatTap(controller, host),
+                      decoration: seatDecorations[host.position] ?? SeatDecoration.none,
                     ),
                   const SizedBox(height: AppSpacing.m),
                   // Audience seats — dynamic count from state (mirrors SeatsAdapter).
@@ -93,7 +121,12 @@ class RoomScreen extends ConsumerWidget {
                       childAspectRatio: 0.78,
                       children: [
                         for (final seat in audience)
-                          SeatTile(seat: seat, isHost: false, onTap: () => _onSeatTap(controller, seat)),
+                          SeatTile(
+                            seat: seat,
+                            isHost: false,
+                            onTap: () => _onSeatTap(controller, seat),
+                            decoration: seatDecorations[seat.position] ?? SeatDecoration.none,
+                          ),
                       ],
                     ),
                   ),

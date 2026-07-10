@@ -51,4 +51,63 @@ class AppAssets {
 
   /// DJ level rings lv0..lv3 (SVGA).
   static String djLevel(int lv) => '$_svga/dj/waitio_dj_lv$lv.svga';
+
+  // ---------------------------------------------------------------------------
+  // Recovered H5 room-ecosystem assets (owned) — pulled from act.zaffalive.com
+  // (DOMAIN_ASSET_FORENSIC_REPORT.md). Every path below is a downloaded original;
+  // role/source/evidence for each is in ROOM_ASSET_MAPPING.md. Nothing invented.
+  // ---------------------------------------------------------------------------
+  static const _pk = 'assets/room_ext/pk';
+  static const _party = 'assets/room_ext/party';
+  static const _vip = 'assets/room_ext/vip';
+  static const _cp = 'assets/room_ext/cp';
+  static const _wealth = 'assets/room_ext/wealth';
+
+  // PK — result rings (roles visually verified) + result panels.
+  static const pkResultWin = '$_pk/pk_result_win.png'; // gold "WIN" winged ring
+  static const pkResultTie = '$_pk/pk_result_tie.png'; // bronze "TIE" ring
+  static const pkResultLoss = '$_pk/pk_result_loss.png'; // lose ring
+  static const pkPanelList = '$_pk/pk_panel_list.png';
+  static const pkPanelRate = '$_pk/pk_panel_rate.png';
+
+  // Party — background + light mask + the 5 recovered room-type theme cards.
+  static const partyBg = '$_party/party_bg.png'; // gold diamond party backdrop
+  static const partyMask = '$_party/party_mask.png'; // soft light overlay (partyImgMask)
+  static const partyTypePk = '$_party/party_type_pk.png';
+  static const partyTypeLove = '$_party/party_type_love.png';
+  static const partyTypeCelebrate = '$_party/party_type_celebrate.png';
+  static const partyTypeCelebrateGold = '$_party/party_type_celebrate_gold.png';
+  static const partyTypeWedding = '$_party/party_type_wedding.png';
+
+  // CP (couple) — rank frames usable as couple avatar frames (rank1 verified) + heart link.
+  static const cpFrameRank1 = '$_cp/cp_frame_rank1.png'; // gold winged-heart crown frame
+  static const cpFrameRank2 = '$_cp/cp_frame_rank2.png';
+  static const cpFrameRank3 = '$_cp/cp_frame_rank3.png';
+  static const cpLove = '$_cp/cp_love.png'; // heart bond icon
+
+  /// VIP grade shields (verified heraldic crown+gem badges). The exact
+  /// grade→shield ordering is **UNKNOWN** (leaderboard set, no tier labels), so
+  /// these are exposed as an evidence-preserving set indexed by display order,
+  /// NOT asserted as VIP levels. See ROOM_ASSET_MAPPING.md.
+  static const vipShields = <String>[
+    '$_vip/vip_shield_31ed15.png',
+    '$_vip/vip_shield_5e57ef.png',
+    '$_vip/vip_shield_6c82d9.png',
+    '$_vip/vip_shield_acabda.png',
+    '$_vip/vip_shield_eadd1a.png',
+    '$_vip/vip_shield_fa8c4c.png',
+  ];
+  static const vipMedallions = <String>[
+    '$_vip/vip_medallion_7191ec.png',
+    '$_vip/vip_medallion_a07cba.png',
+    '$_vip/vip_medallion_bf3982.png',
+  ];
+
+  /// Wealth-grade cards (static) + animated emblems (SVGA). Grade→asset mapping
+  /// is **UNKNOWN**; registered ready-to-use, not force-placed.
+  static const wealthCards = <String>[
+    '$_wealth/wealth_card_412034.png',
+    '$_wealth/wealth_card_43be38.png',
+  ];
+  static String wealthEmblem(int i) => '$_wealth/emblem_${i.toString().padLeft(2, '0')}.svga';
 }

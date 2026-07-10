@@ -4,6 +4,31 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Phase 6.5 room-ecosystem integration (recovered H5 decorations)
+
+**Context:** The visual-reconstruction passes restored the room chrome and the recovered H5 room
+assets (PK / party / VIP / CP / wealth). Phase 6.5 **integrates** those assets into the live room
+through a display-only channel — the controller/state stay untouched.
+
+### Added (Flutter client, display layer only)
+- **`models/room_display.dart`** — `SeatDisplay` / `RoomDisplay` DTOs: a decoration channel parallel
+  to `RoomUiState`/`Seat`, never produced by `RoomController`.
+- **`room_decoration_mapper.dart`** — pure, unit-tested mapping (raw grades/ranks → `SeatDecoration`,
+  keyed by seat position). The single, auditable home for the "grade→asset ordering UNKNOWN"
+  decisions (VIP/wealth = display index only, never an asserted tier).
+- **`roomDisplayProvider`** (family) — the integration seam; default `RoomDisplay.none` ⇒ runtime
+  unchanged. A future server-DTO pass fills it with no widget/test changes.
+- Room widgets already built by the visual pass (`party_background`, `party_type_bar`,
+  `pk_result_overlay`, `room_backdrop`, `wealth_badge`) are now wired: `RoomScreen` derives
+  skin / PK / per-seat decorations from the mapper and shows `PartyTypeBar` in the party skin.
+
+### Verification
+- `flutter analyze` clean · `flutter test` **88/88** (+9 mapper tests) · golden screenshots refreshed
+  (splash/login/home/room/room_pk/room_party) · `flutter build apk --release` → **304.3 MB**.
+- Docs: `ROOM_ASSET_MAPPING.md` (per-asset role/evidence + UNKNOWNs), `FINAL_RECONSTRUCTION_REPORT.md`.
+
+---
+
 ## 2026-07-10 — P2 mobile social experience: feed, bottles, medal wall, gift-effect overlays
 
 **Context:** The P1 pass shipped the four `Ngg`-recovered features as backend + realtime only, with the

@@ -3,6 +3,7 @@ import '../../../core/assets/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/widgets/svga_view.dart';
+import '../models/room_decorations.dart';
 import '../models/room_models.dart';
 import 'seat_glyphs.dart';
 
@@ -20,12 +21,18 @@ class SeatTile extends StatelessWidget {
     required this.isHost,
     this.label,
     this.onTap,
+    this.decoration = SeatDecoration.none,
   });
 
   final Seat seat;
   final bool isHost;
   final String? label; // "Host" or display name; avatar art is remote
   final VoidCallback? onTap;
+
+  /// Optional recovered decorations (VIP shield / CP frame / medal). Default
+  /// none → unchanged seat. Populated only by the display layer, never by the
+  /// controller. See [SeatDecoration] and ROOM_ASSET_MAPPING.md.
+  final SeatDecoration decoration;
 
   double get _avatar => isHost ? 60 : 52;
 
@@ -52,6 +59,12 @@ class SeatTile extends StatelessWidget {
                     child: const SvgaView(asset: AppAssets.seatSpeaking, loop: true),
                   ),
                 _avatarCircle(),
+                // Recovered CP (couple) frame — wraps the avatar (transparent centre).
+                if (seat.isOccupied && decoration.cpFrame != null)
+                  IgnorePointer(
+                    child: Image.asset(decoration.cpFrame!.asset,
+                        width: _avatar + 26, height: _avatar + 26, fit: BoxFit.contain),
+                  ),
                 // Mic-status badge, bottom-right.
                 if (seat.isOccupied)
                   Positioned(
@@ -61,6 +74,27 @@ class SeatTile extends StatelessWidget {
                       muted: seat.micMuted || seat.micMutedByAdmin,
                       byAdmin: seat.micMutedByAdmin,
                     ),
+                  ),
+                // Recovered VIP grade shield — bottom-left (grade→shield UNKNOWN).
+                if (seat.isOccupied && decoration.vipShield != null)
+                  Positioned(
+                    left: 0,
+                    bottom: 0,
+                    child: Image.asset(decoration.vipShield!, height: 22, fit: BoxFit.contain),
+                  ),
+                // CP heart bond marker, top-left.
+                if (seat.isOccupied && decoration.cpBonded)
+                  Positioned(
+                    left: 2,
+                    top: 2,
+                    child: Image.asset(AppAssets.cpLove, width: 18, height: 18, fit: BoxFit.contain),
+                  ),
+                // Worn medal (recovered set), top-right.
+                if (seat.isOccupied && decoration.medalAsset != null)
+                  Positioned(
+                    right: 0,
+                    top: 2,
+                    child: Image.asset(decoration.medalAsset!, height: 18, fit: BoxFit.contain),
                   ),
                 // Host crown chip, top-center.
                 if (isHost)
