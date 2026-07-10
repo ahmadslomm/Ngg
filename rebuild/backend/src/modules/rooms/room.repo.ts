@@ -19,6 +19,7 @@ export interface RoomRecord {
   status: number;
   agoraChannel: string;
   type: number; // Room.type (0 = normal voice room; other codes are room skins/modes)
+  mode: number; // Room.mode — surfaced as the recovered `mic_mode` (0 = free, 1 = apply)
 }
 
 export interface RoomRepo {
@@ -51,7 +52,7 @@ export class InMemoryRoomRepo implements RoomRepo {
     const seatCount = input.seatCount ?? 8;
     const rec: RoomRecord = {
       id, ownerId: input.ownerId, name: input.name, seatCount,
-      status: 1, agoraChannel: `room:${id}`, type: 0,
+      status: 1, agoraChannel: `room:${id}`, type: 0, mode: input.mode ?? 0,
     };
     this.rooms.set(id, rec);
     this.states.set(id, { ownerId: input.ownerId, roles: {}, seats: freshSeats(seatCount) });

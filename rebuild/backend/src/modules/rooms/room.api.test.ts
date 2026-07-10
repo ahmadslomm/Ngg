@@ -52,17 +52,19 @@ describe('live-room API (end-to-end through HTTP)', () => {
     expect(ctx.events.some((e) => e.ev === 'room.joined' && e.data.userId === 'u1')).toBe(true);
   });
 
-  it('join + seats expose read-only room meta (room_id / room_type / owner_id)', async () => {
+  it('join + seats expose read-only room meta + getRoomModelConfig layout params', async () => {
     const j = await as(ctx.app, 'u1', 'POST', `/rooms/${roomId}/join`);
     expect(j.body.data.room_id).toBe(roomId);
     expect(j.body.data.room_type).toBe(0); // default normal voice room
     expect(j.body.data.owner_id).toBe('owner');
-    expect(j.body.data.seats).toBeDefined(); // additive: original fields intact
+    expect(j.body.data.seat_count).toBe(8); // real Room.seatCount (dynamic board size)
+    expect(j.body.data.mic_mode).toBe(0);   // Room.mode → mic_mode (0 = free)
+    expect(j.body.data.seats).toHaveLength(8); // additive: original fields intact
 
     const g = await as(ctx.app, 'u1', 'GET', `/rooms/${roomId}/seats`);
     expect(g.body.data.room_id).toBe(roomId);
-    expect(g.body.data.room_type).toBe(0);
-    expect(g.body.data.owner_id).toBe('owner');
+    expect(g.body.data.seat_count).toBe(8);
+    expect(g.body.data.mic_mode).toBe(0);
     // No owner resolver wired in this test app → owner reference omitted (backward compatible).
     expect(g.body.data.owner).toBeUndefined();
   });

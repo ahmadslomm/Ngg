@@ -4,6 +4,39 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Recover getRoomModelConfig → server-driven seat positioning
+
+**Context:** Forensic recovery of the original `room.getRoomModelConfig` model, then
+implemented as server-driven seat layout. Decisive finding: the original has **no static
+seat positions** — a dynamic `KroomSeatsAdapter` + distinct `HostSeatView`, seat count from
+the server; no `MIC_COUNT`/`SEAT_COUNT` constant in 10,985 sources. So server-driven dynamic
+layout *is* the faithful implementation. Full evidence: `ROOM_MODEL_CONFIG_RECOVERY_REPORT.md`.
+
+### Recovered fields
+`mic_mode` (enum **{free, apply}** HIGH from UI strings + `getApplyMicList`; other values
+UNKNOWN), seat count (server-provided), `roomType` (real). `clientMicType` / `template_name` /
+`themeName` / `little_game_type`: **recovered names, values UNKNOWN** (obfuscated / not carried).
+
+### Backend (additive, read-only — no room logic/permissions changed)
+- `RoomRecord` + both repos carry `Room.mode`; `join` + `getSeats` append `seat_count`
+  (Room.seatCount) and `mic_mode` (Room.mode; 0 free · 1 apply). `tsc` 0 · vitest **147/147**.
+
+### Flutter
+- **`RoomModelConfig`** DTO — the recovered model: `seatCount`/`micMode`/`roomType` REAL;
+  `clientMicType`/`templateName`/`themeName`/`littleGameType` null (UNKNOWN, not invented).
+  `MicMode` enum {free, apply, unknown}.
+- **`seat_layout.dart`** — `resolveSeatLayout` splits the distinct host seat from a dynamic
+  audience grid; span = `seatGridColumns(count)` (documented rebuild heuristic; original span
+  is a runtime `GridLayoutManager` value, UNKNOWN statically).
+- `roomModelConfigProvider`; `RoomScreen` grid span now `layout.columns` (was hardcoded 4).
+  Seat count is server/real-count driven; no hardcoded positions. Dynamic architecture kept.
+
+### Verification
+`flutter analyze` clean · `flutter test` **109/109** · golden `room` unchanged ·
+`flutter build apk --release`. Docs: `ROOM_MODEL_CONFIG_RECOVERY_REPORT.md`.
+
+---
+
 ## 2026-07-10 — Expose read-only room meta (room_type / owner_id) + host/skin detection
 
 **Context:** The DTO pass left room skin and host-seat detection UNKNOWN because the room

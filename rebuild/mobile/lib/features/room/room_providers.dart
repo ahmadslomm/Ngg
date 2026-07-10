@@ -5,6 +5,7 @@ import '../../core/voice/agora_voice_engine.dart';
 import '../feature_providers.dart';
 import 'models/room_display.dart';
 import 'models/room_meta.dart';
+import 'models/room_model_config.dart';
 import 'models/room_models.dart';
 import 'room_controller.dart';
 import 'room_display_builder.dart';
@@ -82,4 +83,16 @@ final roomDisplayProvider = Provider.autoDispose.family<RoomDisplay, String>((re
   final profiles = ref.watch(seatProfilesProvider(roomId)).valueOrNull ?? const {};
   final meta = ref.watch(roomMetaProvider(roomId)).valueOrNull ?? RoomMeta.empty;
   return buildRoomDisplay(seats: seats, profiles: profiles, meta: meta);
+});
+
+/// The recovered `getRoomModelConfig` model (seat count / mic mode / room type),
+/// built from the real room meta. Falls back to the live seat-list length for the
+/// board size until (or if) the server supplies `seat_count`, so the board is always
+/// server-driven and never a hardcoded constant.
+final roomModelConfigProvider = Provider.autoDispose.family<RoomModelConfig, String>((ref, roomId) {
+  final liveSeatCount = ref.watch(roomControllerProvider(roomId).select((s) => s.seats.length));
+  final meta = ref.watch(roomMetaProvider(roomId)).valueOrNull;
+  return meta == null
+      ? RoomModelConfig.fallback(liveSeatCount)
+      : RoomModelConfig.fromMeta(meta, liveSeatCount: liveSeatCount);
 });

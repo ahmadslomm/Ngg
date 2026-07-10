@@ -22,10 +22,19 @@ export class RoomService {
   }
 
   // Read-only room metadata attached to seat responses. Additive + backward-compatible:
-  // callers that only read `seats` are unaffected. `room_id`/`room_type`/`owner_id` let
-  // the client resolve the host seat and room skin without a separate endpoint.
+  // callers that only read `seats` are unaffected. These fields let the client resolve
+  // the host seat, room skin, and the recovered getRoomModelConfig layout params
+  // (seat_count / mic_mode) without a separate endpoint.
+  //   seat_count — real Room.seatCount (the dynamic seat board size).
+  //   mic_mode   — Room.mode surfaced as the recovered mic_mode (0 = free, 1 = apply).
   private roomMeta(room: RoomRecord) {
-    return { room_id: room.id, room_type: room.type, owner_id: room.ownerId };
+    return {
+      room_id: room.id,
+      room_type: room.type,
+      owner_id: room.ownerId,
+      seat_count: room.seatCount,
+      mic_mode: room.mode,
+    };
   }
 
   async join(roomId: string, userId: string): Promise<ServiceResult<{ seats: Seat[]; rtcRole: string }>> {

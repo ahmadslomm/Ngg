@@ -9,9 +9,11 @@ import '../gift/widgets/gift_effect_layer.dart';
 import '../gift/widgets/restored_effects.dart';
 import 'models/room_decorations.dart';
 import 'models/room_display.dart';
+import 'models/room_model_config.dart';
 import 'models/room_models.dart';
 import 'room_decoration_mapper.dart';
 import 'room_providers.dart';
+import 'seat_layout.dart';
 import 'widgets/room_backdrop.dart';
 import 'widgets/room_background.dart';
 import 'widgets/room_controls.dart';
@@ -60,11 +62,16 @@ class RoomScreen extends ConsumerWidget {
     }
 
     final seats = state.seats;
-    // Host seat = the owner's seat when the real owner_id resolves it, else the
-    // position-0 stage convention (fallback). Dynamic seat list is preserved.
+    // Server-driven seat layout (recovered getRoomModelConfig): the seat count comes
+    // from the config and the board is laid out dynamically — distinct host seat + an
+    // audience grid whose span derives from the count. No hardcoded positions/columns.
+    final config = displayOverride != null
+        ? RoomModelConfig.fallback(seats.length)
+        : ref.watch(roomModelConfigProvider(roomId));
     final hostPos = display.hostPosition ?? 0;
-    final host = _seatAt(seats, hostPos);
-    final audience = [for (final s in seats) if (s.position != hostPos) s];
+    final layout = resolveSeatLayout(seats: seats, config: config, hostPosition: hostPos);
+    final host = layout.host;
+    final audience = layout.audience;
     final mySeat = _mySeat(seats, myUid);
     final micMuted = mySeat != null && (mySeat.micMuted || mySeat.micMutedByAdmin);
 
@@ -112,11 +119,12 @@ class RoomScreen extends ConsumerWidget {
                       decoration: seatDecorations[host.position] ?? SeatDecoration.none,
                     ),
                   const SizedBox(height: AppSpacing.m),
-                  // Audience seats — dynamic count from state (mirrors SeatsAdapter).
+                  // Audience seats — dynamic count + config-driven span (mirrors the
+                  // original KroomSeatsAdapter; span from seatGridColumns, never hardcoded).
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
                     child: GridView.count(
-                      crossAxisCount: 4,
+                      crossAxisCount: layout.columns,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       mainAxisSpacing: AppSpacing.m,
@@ -156,13 +164,6 @@ class RoomScreen extends ConsumerWidget {
         onMore: () {},
       ),
     );
-  }
-
-  static Seat? _seatAt(List<Seat> seats, int pos) {
-    for (final s in seats) {
-      if (s.position == pos) return s;
-    }
-    return null;
   }
 
   static Seat? _mySeat(List<Seat> seats, String uid) {

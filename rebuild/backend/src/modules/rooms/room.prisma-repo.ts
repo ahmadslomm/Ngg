@@ -33,7 +33,7 @@ export class PrismaRoomRepo implements RoomRepo {
     });
     return {
       id: String(room.id), ownerId: String(room.ownerId), name: room.name,
-      seatCount, status: 1, agoraChannel: `room:${room.id}`, type: room.type,
+      seatCount, status: 1, agoraChannel: `room:${room.id}`, type: room.type, mode: room.mode,
     };
   }
 
@@ -42,7 +42,8 @@ export class PrismaRoomRepo implements RoomRepo {
     if (!r) return null;
     return {
       id: String(r.id), ownerId: String(r.ownerId), name: r.name,
-      seatCount: r.seatCount, status: r.status, agoraChannel: r.agoraChannel ?? `room:${r.id}`, type: r.type,
+      seatCount: r.seatCount, status: r.status, agoraChannel: r.agoraChannel ?? `room:${r.id}`,
+      type: r.type, mode: r.mode,
     };
   }
 

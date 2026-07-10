@@ -24,7 +24,14 @@ class OwnerRef {
 }
 
 class RoomMeta {
-  const RoomMeta({required this.roomId, this.roomType = 0, this.ownerId, this.owner});
+  const RoomMeta({
+    required this.roomId,
+    this.roomType = 0,
+    this.ownerId,
+    this.owner,
+    this.seatCount,
+    this.micModeRaw,
+  });
 
   final String roomId;
 
@@ -38,6 +45,14 @@ class RoomMeta {
   /// Compact owner profile reference, present only when the server resolved it.
   final OwnerRef? owner;
 
+  /// **REAL** `seat_count` (Room.seatCount) — the server-driven seat-board size, the
+  /// recovered `getRoomModelConfig` layout parameter. Null on a pre-update server.
+  final int? seatCount;
+
+  /// **REAL** `mic_mode` (Room.mode) — the recovered mic-mode int (0 = free,
+  /// 1 = apply; see `MicMode`). Null on a pre-update server.
+  final int? micModeRaw;
+
   static const empty = RoomMeta(roomId: '');
 
   factory RoomMeta.fromJson(Map<String, dynamic> j) => RoomMeta(
@@ -45,5 +60,7 @@ class RoomMeta {
         roomType: (j['room_type'] as num?)?.toInt() ?? 0,
         ownerId: j['owner_id'] != null ? '${j['owner_id']}' : null,
         owner: j['owner'] is Map ? OwnerRef.fromJson((j['owner'] as Map).cast<String, dynamic>()) : null,
+        seatCount: (j['seat_count'] as num?)?.toInt(),
+        micModeRaw: (j['mic_mode'] as num?)?.toInt(),
       );
 }
