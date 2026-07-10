@@ -183,6 +183,20 @@ model WalletLedger {
   @@index([refType, refId])
 }
 
+// Public in-room chat message. The original app ran chat through the proprietary
+// Tencent IM SDK (message wire format not statically recoverable); this is the
+// rebuild's own persisted model on the owned realtime gateway. Text-only + a status
+// for moderation hide/delete. See ROOM_CHAT_RECOVERY_REPORT.md.
+model RoomMessage {
+  id        BigInt   @id @default(autoincrement())
+  roomId    BigInt
+  senderId  BigInt
+  text      String   @db.VarChar(500)
+  status    Int      @default(0) // 0 visible, 1 hidden/deleted (moderation)
+  createdAt DateTime @default(now())
+  @@index([roomId, id]) // history: newest-first, id-cursor paginated
+}
+
 model GiftTransaction {
   id          BigInt  @id @default(autoincrement())
   senderId    BigInt

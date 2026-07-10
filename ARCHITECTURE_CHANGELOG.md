@@ -4,6 +4,36 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Phase 9.2 real public room chat (owned gateway)
+
+**Context:** Real in-room chat — REST send + persisted history + realtime broadcast — on the
+rebuild's **owned** Socket.IO gateway. Evidence-first. The original ran chat through **Tencent IM
+SDK 9.0.7657**, whose message wire format / emoji-sticker / @mention / reply protocol are
+**proprietary and not statically recoverable (EXCLUDED)**; the gateway is documented as the "owned
+replacement for the Tencent-IM layer", so chat is a **rebuild-owned** feature built on existing
+patterns. Full detail: `ROOM_CHAT_RECOVERY_REPORT.md`.
+
+**Backend (additive, proven-missing):**
+- Prisma `RoomMessage` (+migration `room_chat`); `chat.service` (send: trim/length/room-live/
+  `isRoomBanned`; history: newest-first id-cursor); `chat.routes` (`POST`/`GET /rooms/:id/chat`,
+  emits `chat.message` via `emitRoomEvent`, per-route rate-limit via existing `@fastify/rate-limit`).
+  No existing route/service/permission changed. tsc 0 · vitest **155/155** (+7).
+
+**Mobile (extends existing RoomController pattern — architecture intact):**
+- `ChatMessage` model; `RoomRepository.sendChat`/`chatHistory`; `RoomUiState.chatMessages` +
+  `_onRealtime` `chat.message` case (`_pushChat`, 200-cap) + `sendChat` (echo-driven, mirrors
+  `sendGift`) + `_loadChatHistory` seeded before `room.join`. `_RoomMessages` → virtualized
+  `ListView.builder`; `onChat` → `_ChatComposer`.
+
+**VERIFIED/UNKNOWN/EXCLUDED:** chat/realtime/history/emoji(unicode)/virtualization/flood(reuse)/
+room-ban permission = BUILT. @mention & reply = **UNKNOWN → not built**. Tencent-IM DTO/sticker,
+`checkWords` word filter, chat-mute enforcement = **EXCLUDED/deferred (not invented)**.
+
+**Verification:** `flutter analyze` clean · `flutter test` **144/144** (+6) · goldens unchanged ·
+`flutter build apk --release` **316.6 MB**.
+
+---
+
 ## 2026-07-10 — Phase 9.1 room user card + permission-aware host tools
 
 **Context:** Replace the room's stubbed occupied-seat tap and empty `onMore` with a real occupant

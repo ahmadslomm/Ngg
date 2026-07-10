@@ -150,7 +150,7 @@ class RoomScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
-                  Expanded(child: _RoomMessages(feed: state.giftFeed)),
+                  Expanded(child: _RoomMessages(messages: state.chatMessages)),
                 ],
               ),
               // Decorative layers — never intercept taps (seats stay live).
@@ -165,7 +165,7 @@ class RoomScreen extends ConsumerWidget {
       bottomNavigationBar: RoomControls(
         amBroadcaster: state.amBroadcaster,
         micMuted: micMuted,
-        onChat: () {},
+        onChat: () => _openChatComposer(context, controller),
         onEmoji: () {},
         onMic: controller.toggleSelfMute,
         onGift: () => _openGiftPanel(context, controller, state),
@@ -238,6 +238,17 @@ class RoomScreen extends ConsumerWidget {
     );
   }
 
+  /// Public chat composer (the chat toolbar button). Sends via the controller; the
+  /// message returns through the realtime `chat.message` echo and appends to the feed.
+  void _openChatComposer(BuildContext context, dynamic controller) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.bgDeep,
+      builder: (_) => _ChatComposer(onSend: (t) => controller.sendChat(t)),
+    );
+  }
+
   /// Gift panel pre-targeted at a single recipient (from the user card).
   void _openGiftPanelFor(BuildContext context, dynamic controller, String uid) {
     showModalBottomSheet(
@@ -265,44 +276,114 @@ class RoomScreen extends ConsumerWidget {
 }
 
 /// Public message / gift stream over the room backdrop.
+/// Public room chat feed. Virtualized via [ListView.builder] with `reverse: true`
+/// (only visible rows build), so a long history scrolls cheaply. Messages are stored
+/// oldest→newest; the reversed index puts the newest at the bottom.
 class _RoomMessages extends StatelessWidget {
-  const _RoomMessages({required this.feed});
-  final List<GiftAnimation> feed;
+  const _RoomMessages({required this.messages});
+  final List<ChatMessage> messages;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-      child: feed.isEmpty
+      child: messages.isEmpty
           ? const Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
                 padding: EdgeInsets.only(bottom: AppSpacing.sm),
-                child: Text('Welcome to the room 👋', style: AppTypography.caption),
+                child: Text('Say hi 👋', style: AppTypography.caption),
               ),
             )
-          : ListView(
+          : ListView.builder(
               reverse: true,
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              children: [
-                for (final g in feed.reversed)
-                  Container(
-                    margin: const EdgeInsets.only(bottom: AppSpacing.xs),
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: AppColors.black.withValues(alpha: 0.28),
-                      borderRadius: AppRadius.rMd,
-                    ),
-                    child: Text.rich(
-                      TextSpan(children: [
-                        TextSpan(text: '${g.senderId} ', style: AppTypography.caption.copyWith(color: AppColors.gold)),
-                        TextSpan(text: 'sent gift ${g.giftId}', style: AppTypography.caption),
-                      ]),
-                    ),
+              itemCount: messages.length,
+              itemBuilder: (_, i) {
+                final m = messages[messages.length - 1 - i]; // newest at the bottom
+                return Container(
+                  margin: const EdgeInsets.only(bottom: AppSpacing.xs),
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: AppColors.black.withValues(alpha: 0.28),
+                    borderRadius: AppRadius.rMd,
                   ),
-              ],
+                  child: Text.rich(
+                    TextSpan(children: [
+                      TextSpan(text: '${m.senderId}: ', style: AppTypography.caption.copyWith(color: AppColors.gold)),
+                      TextSpan(text: m.text, style: AppTypography.caption),
+                    ]),
+                  ),
+                );
+              },
             ),
+    );
+  }
+}
+
+/// Chat composer sheet: a single autofocus text field that sits above the keyboard.
+/// Sends non-empty text and clears; Enter submits without dismissing (send-and-stay).
+class _ChatComposer extends StatefulWidget {
+  const _ChatComposer({required this.onSend});
+  final void Function(String text) onSend;
+
+  @override
+  State<_ChatComposer> createState() => _ChatComposerState();
+}
+
+class _ChatComposerState extends State<_ChatComposer> {
+  final _c = TextEditingController();
+
+  void _send() {
+    final t = _c.text.trim();
+    if (t.isEmpty) return;
+    widget.onSend(t);
+    _c.clear();
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: AppSpacing.m,
+        right: AppSpacing.m,
+        top: AppSpacing.sm,
+        bottom: MediaQuery.of(context).viewInsets.bottom + AppSpacing.sm,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _c,
+              autofocus: true,
+              textInputAction: TextInputAction.send,
+              maxLength: 500,
+              minLines: 1,
+              maxLines: 4,
+              style: AppTypography.body,
+              decoration: const InputDecoration(
+                hintText: 'Message…',
+                counterText: '',
+                border: OutlineInputBorder(),
+                isDense: true,
+              ),
+              onSubmitted: (_) => _send(),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          IconButton(
+            icon: const Icon(Icons.send, color: AppColors.primary),
+            onPressed: _send,
+          ),
+        ],
+      ),
     );
   }
 }

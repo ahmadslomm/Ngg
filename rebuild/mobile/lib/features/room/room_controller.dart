@@ -13,6 +13,7 @@ class RoomUiState {
     this.voiceConnected = false,
     this.rtcRole = 'audience',
     this.giftFeed = const [],
+    this.chatMessages = const [],
     this.error,
   });
 
@@ -22,6 +23,10 @@ class RoomUiState {
   final bool voiceConnected;
   final String rtcRole;
   final List<GiftAnimation> giftFeed;
+
+  /// Public room chat, oldest→newest. Seeded from history on enter, then appended
+  /// live from `chat.message`. Capped so a busy room cannot grow it without bound.
+  final List<ChatMessage> chatMessages;
   final String? error;
 
   bool get amBroadcaster => rtcRole == 'broadcaster';
@@ -32,6 +37,7 @@ class RoomUiState {
     bool? voiceConnected,
     String? rtcRole,
     List<GiftAnimation>? giftFeed,
+    List<ChatMessage>? chatMessages,
     String? error,
   }) =>
       RoomUiState(
@@ -41,6 +47,7 @@ class RoomUiState {
         voiceConnected: voiceConnected ?? this.voiceConnected,
         rtcRole: rtcRole ?? this.rtcRole,
         giftFeed: giftFeed ?? this.giftFeed,
+        chatMessages: chatMessages ?? this.chatMessages,
         error: error,
       );
 }
@@ -75,6 +82,9 @@ class RoomController extends StateNotifier<RoomUiState> {
       state = state.copyWith(seats: joined.seats, rtcRole: joined.rtcRole, connecting: false);
 
       _rtSub = realtime.events.listen(_onRealtime);
+      // Seed chat history before joining the socket room, so no live message is lost /
+      // overwritten (the server sends no room events until room.join below).
+      await _loadChatHistory();
       realtime.joinRoom(roomId);
 
       _voiceSub = voice.events.listen(_onVoice);
@@ -105,8 +115,30 @@ class RoomController extends StateNotifier<RoomUiState> {
           animUrl: e.data['animUrl'] as String?,
         );
         state = state.copyWith(giftFeed: [...state.giftFeed.take(19), anim]);
+      case 'chat.message':
+        _pushChat(ChatMessage.fromJson(e.data));
       case 'user.kicked':
         if ('${e.data['userId']}' == myUid) leaveRoom(kicked: true);
+    }
+  }
+
+  static const int _maxChat = 200;
+
+  void _pushChat(ChatMessage m) {
+    final next = [...state.chatMessages, m];
+    state = state.copyWith(
+      chatMessages: next.length > _maxChat ? next.sublist(next.length - _maxChat) : next,
+    );
+  }
+
+  Future<void> _loadChatHistory() async {
+    try {
+      final history = await repo.chatHistory(roomId);
+      if (!mounted) return;
+      // History is newest-first; reverse to oldest→newest for display order.
+      state = state.copyWith(chatMessages: history.reversed.toList());
+    } catch (_) {
+      // Best-effort: history failure never blocks entry; live chat still works.
     }
   }
 
@@ -201,6 +233,19 @@ class RoomController extends StateNotifier<RoomUiState> {
 
   Future<void> sendGift(String giftId, List<String> recipientIds, {int qty = 1}) =>
       repo.sendGift(roomId: roomId, giftId: giftId, qty: qty, recipientIds: recipientIds);
+
+  /// Send a public chat message. The message echoes back via `chat.message` (the server
+  /// broadcasts to the whole room, sender included), where [_pushChat] appends it — so
+  /// there is no optimistic insert to reconcile. A send failure surfaces on [error].
+  Future<void> sendChat(String text) async {
+    final t = text.trim();
+    if (t.isEmpty) return;
+    try {
+      await repo.sendChat(roomId, t);
+    } catch (e) {
+      state = state.copyWith(error: 'Message not sent');
+    }
+  }
 
   Future<void> leaveRoom({bool kicked = false}) async {
     realtime.leaveRoom(roomId);

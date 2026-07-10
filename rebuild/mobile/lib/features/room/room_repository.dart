@@ -73,6 +73,22 @@ class RoomRepository {
     return ((res.data['data']['items'] as List).cast<Map<String, dynamic>>()).map(Gift.fromJson).toList();
   }
 
+  /// Send a public chat message (`POST /rooms/:id/chat`). Returns the persisted message;
+  /// the server also broadcasts it as `chat.message`, so the sender receives its own echo.
+  Future<ChatMessage> sendChat(String roomId, String text) async {
+    final res = await _api.post('/rooms/$roomId/chat', data: {'text': text});
+    return ChatMessage.fromJson((res.data['data'] as Map).cast<String, dynamic>());
+  }
+
+  /// Newest-first chat history (`GET /rooms/:id/chat`); `before` (message id) pages older.
+  Future<List<ChatMessage>> chatHistory(String roomId, {int? limit, String? before}) async {
+    final res = await _api.get('/rooms/$roomId/chat', query: {
+      if (limit != null) 'page_size': limit,
+      if (before != null) 'before': before,
+    });
+    return ((res.data['data']['items'] as List).cast<Map<String, dynamic>>()).map(ChatMessage.fromJson).toList();
+  }
+
   Future<void> sendGift({
     required String roomId,
     required String giftId,

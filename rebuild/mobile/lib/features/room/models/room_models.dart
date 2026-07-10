@@ -104,6 +104,21 @@ class Gift {
       );
 }
 
+/// A public room chat message. Parses both the REST history shape (`sender_id`,
+/// `created_at`) and the realtime `chat.message` event shape (`senderId`).
+class ChatMessage {
+  const ChatMessage({required this.id, required this.senderId, required this.text});
+  final String id;
+  final String senderId;
+  final String text;
+
+  factory ChatMessage.fromJson(Map<String, dynamic> j) => ChatMessage(
+        id: j['id'].toString(),
+        senderId: (j['sender_id'] ?? j['senderId'] ?? '').toString(),
+        text: j['text'] as String? ?? '',
+      );
+}
+
 /// A gift animation to play in the room overlay.
 class GiftAnimation {
   const GiftAnimation({required this.giftId, required this.senderId, required this.animUrl});
