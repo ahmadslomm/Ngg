@@ -1,4 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'audio/audio_player_engine.dart';
+import 'audio/audio_recorder_engine.dart';
+import 'audio/mic_permission.dart';
+import 'media/media_uploader.dart';
 import 'network/api_client.dart';
 import 'realtime/realtime_client.dart';
 import 'session.dart';
@@ -17,3 +21,23 @@ final realtimeProvider = Provider<RealtimeClient>((ref) {
   ref.onDispose(rt.dispose);
   return rt;
 });
+
+/// The server's event stream, separated from the socket that carries it. Features that
+/// only listen (moments, bottles, gift effects) depend on this rather than on
+/// [RealtimeClient], so they never reach for `joinRoom`/`dispose` — and so a test can
+/// substitute a plain stream instead of standing up a network stack.
+final realtimeEventsProvider = Provider<Stream<RoomEvent>>((ref) => ref.watch(realtimeProvider).events);
+
+/// Object-storage upload for moment images and voice clips. Swap the placeholder for a
+/// signed-URL implementation once a bucket is provisioned — nothing else changes.
+final mediaUploaderProvider = Provider<MediaUploader>((ref) => const PlaceholderMediaUploader());
+
+/// Factories, not singletons: each player/recorder belongs to one controller, which
+/// owns its lifecycle and disposes it.
+final audioPlayerFactoryProvider =
+    Provider<AudioPlayerEngine Function()>((ref) => SimulatedAudioPlayer.new);
+
+final audioRecorderFactoryProvider = Provider<AudioRecorderEngine Function({Duration maxDuration})>(
+  (ref) => ({Duration maxDuration = kMaxBottleDuration}) =>
+      SimulatedAudioRecorder(maxDuration: maxDuration, permissionRequest: requestMicPermission),
+);

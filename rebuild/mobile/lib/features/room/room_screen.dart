@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../gift/widgets/gift_effect_layer.dart';
 import 'models/room_models.dart';
 import 'room_providers.dart';
 import 'widgets/seat_tile.dart';
 import 'widgets/gift_panel.dart';
 
-/// Live room: mic-seat grid + realtime updates + gift board + Agora voice.
+/// Live room: mic-seat grid + realtime updates + gift board + Agora voice, with the
+/// interactive gift-effect layer (combo / lucky / rocket / bomb) painted over the top.
 /// State comes from RoomController (REST actions + realtime events + voice lifecycle).
 class RoomScreen extends ConsumerWidget {
   const RoomScreen({super.key, required this.roomId});
@@ -33,25 +35,31 @@ class RoomScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          if (state.error != null)
-            Container(width: double.infinity, color: Colors.red.shade100, padding: const EdgeInsets.all(8), child: Text(state.error!)),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: GridView.count(
-              crossAxisCount: 4,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 8,
-              children: [
-                for (final seat in state.seats)
-                  SeatTile(seat: seat, onTap: () => _onSeatTap(context, controller, seat)),
-              ],
-            ),
+          Column(
+            children: [
+              if (state.error != null)
+                Container(width: double.infinity, color: Colors.red.shade100, padding: const EdgeInsets.all(8), child: Text(state.error!)),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: GridView.count(
+                  crossAxisCount: 4,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  mainAxisSpacing: 8,
+                  children: [
+                    for (final seat in state.seats)
+                      SeatTile(seat: seat, onTap: () => _onSeatTap(context, controller, seat)),
+                  ],
+                ),
+              ),
+              const Divider(height: 1),
+              Expanded(child: _GiftFeed(feed: state.giftFeed)),
+            ],
           ),
-          const Divider(height: 1),
-          Expanded(child: _GiftFeed(feed: state.giftFeed)),
+          // Never intercepts taps — seats and the gift button stay live mid-animation.
+          Positioned.fill(child: GiftEffectLayer(roomId: roomId)),
         ],
       ),
       bottomNavigationBar: _BottomBar(

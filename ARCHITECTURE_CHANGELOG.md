@@ -4,6 +4,43 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — P2 mobile social experience: feed, bottles, medal wall, gift-effect overlays
+
+**Context:** The P1 pass shipped the four `Ngg`-recovered features as backend + realtime only, with the
+Flutter screens left as honest client-side gaps. P2 closes those gaps — **mobile-only**, additive. No
+backend source, migration, or test was touched; the server, Prisma schema, and all 145 backend tests are
+byte-for-byte unchanged and were re-verified green against the same running instance.
+
+### Added (Flutter client, `rebuild/mobile/lib`)
+- **Moments feature** (`features/moments/`): `MomentsScreen` (feed), `CreateMomentScreen`
+  (text / image / voice post), comments sheet + controller, `moment_card` widget, repository, providers.
+  Consumes the live `/v1/moments/*` API and per-user `moment.like`/`moment.comment` realtime events.
+- **Voice-bottle feature** (`features/bottle/`): `BottleScreen` (pick/discover), `ThrowBottleScreen`
+  (record + cast), reaction bar, controller, repository, models. Uses `/v1/bottles/*` + `bottle.reaction`.
+- **Medals feature** (`features/medals/`): `MedalWallScreen`, `medal_strip`, `animated_medal_badge`,
+  controller, repository, models. Renders the seeded catalogue and adorn (≤6) against `/v1/medals/*`.
+- **Gift-effect overlays** (`features/gift/`): `gift_effect_layer` + `effect_views` render
+  combo / rocket / bomb / lucky animations driven by the room's realtime events; wired into `RoomScreen`.
+- **Profile**: `RelationsScreen` (fans / following tabs), `profile_header` widget, richer `ProfileScreen`.
+- **Core infra** (reused across the above): `core/audio/` (recorder engine, player engine, mic
+  permission, voice-composer controller), `core/media/media_uploader.dart`, `core/widgets/`
+  (`voice_recorder_panel`, `audio_player_bar`), `core/format.dart`, `core/network/api_error.dart`.
+- **Router**: new routes `/moments` (+`/create`), `/bottles` (+`/throw`), `/medals`,
+  `/profile/:uid` (+`/relations`); home nav + provider wiring updated.
+
+### Changed (mobile only, backward-compatible)
+- `home_screen`, `profile_screen`, `room_screen`, `app_router`, `feature_providers`, `providers`
+  extended to surface the new features. Android `gradle.properties` touched (build config only).
+
+### Verification
+- Mobile: `flutter analyze` → **No issues found!** · `flutter test` → **73 passed** (was 2; +71 across
+  format, audio, medal-wall, bottle/moments/gift-effect controllers, badge/effect/screen-smoke widgets).
+- Backend (unchanged, re-verified): `vitest run` → **145/145** · live E2E `e2e_full` **96/96** +
+  `e2e_p1` **23/23** = **119/119** on the running `:8080` instance.
+- `flutter build apk --debug` → debug APK built.
+
+---
+
 ## 2026-07-10 — P1 social-content: moments, voice bottles, medals, gift effects
 
 **Context:** Implemented and verified the four social-content features `ARCHITECTURE_COMPARISON_REPORT.md`

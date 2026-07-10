@@ -1,83 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../feature_providers.dart';
+import 'package:go_router/go_router.dart';
 
-/// My profile: identity + social-graph counters + current CP. Backed by
-/// GET /users/me, /users/me/friends, /couple/me.
+import '../../core/network/api_error.dart';
+import '../../core/session.dart';
+import '../feature_providers.dart';
+import '../medals/models/medal_models.dart';
+import '../moments/moments_screen.dart';
+import 'widgets/profile_header.dart';
+
+/// Adorned medals ride along on the profile payload (`users.service.ts` embeds them),
+/// so no second request is needed to draw the medal strip.
+List<UserMedal> _medalsOf(Map<String, dynamic> profile) =>
+    ((profile['medals'] as List?) ?? const [])
+        .cast<Map<String, dynamic>>()
+        .map(UserMedal.fromJson)
+        .toList();
+
+/// My profile: identity, medals, social counters, CP, and my moments.
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final me = ref.watch(myProfileProvider);
-    final friends = ref.watch(myFriendsProvider);
     final couple = ref.watch(coupleMeProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.go('/home')),
+        actions: [
+          IconButton(
+            tooltip: 'Medals',
+            icon: const Icon(Icons.emoji_events_outlined),
+            onPressed: () => context.push('/medals'),
+          ),
+        ],
+      ),
+      body: me.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => _Error(message: apiErrorMessage(e), onRetry: () => ref.invalidate(myProfileProvider)),
+        data: (profile) {
+          final uid = '${profile['uid']}';
+          return Column(
+            children: [
+              ProfileHeader(
+                profile: profile,
+                medals: _medalsOf(profile),
+                onOpenMedals: () => context.push('/medals'),
+                onOpenRelations: (tab) => context.push('/profile/$uid/relations?tab=$tab'),
+                coupleCard: couple.maybeWhen(
+                  data: (c) => CoupleCard(couple: c),
+                  orElse: () => null,
+                ),
+              ),
+              const _SectionLabel('Moments'),
+              Expanded(child: MomentsFeedView(scopeUid: uid, padding: const EdgeInsets.only(bottom: 16))),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Another user's profile: same identity block, plus follow/unfollow, minus CP
+/// (the backend has no public couple lookup).
+class UserProfileScreen extends ConsumerWidget {
+  const UserProfileScreen({super.key, required this.uid});
+  final String uid;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final myUid = ref.watch(sessionProvider)?.uid;
+    if (uid == myUid) return const ProfileScreen();
+
+    final profile = ref.watch(userProfileProvider(uid));
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(myProfileProvider);
-          ref.invalidate(myFriendsProvider);
-          ref.invalidate(coupleMeProvider);
-        },
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+      body: profile.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => _Error(message: apiErrorMessage(e), onRetry: () => ref.invalidate(userProfileProvider(uid))),
+        data: (p) => Column(
           children: [
-            me.when(
-              loading: () => const Center(child: Padding(padding: EdgeInsets.all(24), child: CircularProgressIndicator())),
-              error: (e, _) => Text('Error: $e'),
-              data: (p) => Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: (p['avatar_url'] != null) ? NetworkImage(p['avatar_url'] as String) : null,
-                    child: (p['avatar_url'] == null) ? const Icon(Icons.person) : null,
-                  ),
-                  title: Text('${p['nick'] ?? ''}'),
-                  subtitle: Text('${p['signature'] ?? ''}\n'
-                      'Charm ${p['charm_level'] ?? 0} · Wealth ${p['wealth_level'] ?? 0} · VIP ${p['vip_level'] ?? 0}'),
-                  isThreeLine: true,
-                ),
-              ),
+            ProfileHeader(
+              profile: p,
+              medals: _medalsOf(p),
+              onOpenMedals: () {},
+              onOpenRelations: (tab) => context.push('/profile/$uid/relations?tab=$tab'),
+              trailing: _FollowButton(uid: uid, following: p['is_following'] == true),
             ),
-            const SizedBox(height: 8),
-            me.maybeWhen(
-              data: (p) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _Stat(label: 'Fans', value: '${p['fans_count'] ?? 0}'),
-                  _Stat(label: 'Following', value: '${p['following_count'] ?? 0}'),
-                ],
-              ),
-              orElse: () => const SizedBox.shrink(),
-            ),
-            const SizedBox(height: 16),
-            couple.when(
-              loading: () => const SizedBox.shrink(),
-              error: (e, _) => const SizedBox.shrink(),
-              data: (c) => Card(
-                child: ListTile(
-                  leading: const Icon(Icons.favorite, color: Colors.pink),
-                  title: Text(c['paired'] == true ? 'CP with ${c['partner']?['nick'] ?? c['couple']?['partner_uid']}' : 'No CP yet'),
-                  subtitle: c['paired'] == true ? Text('Level ${c['couple']?['cp_level']} · sweet ${c['couple']?['sweet_value']}') : null,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text('Friends', style: TextStyle(fontWeight: FontWeight.bold)),
-            friends.when(
-              loading: () => const SizedBox.shrink(),
-              error: (e, _) => Text('Error: $e'),
-              data: (list) => list.isEmpty
-                  ? const Padding(padding: EdgeInsets.all(8), child: Text('No friends yet'))
-                  : Column(
-                      children: [
-                        for (final f in list)
-                          ListTile(
-                            leading: const CircleAvatar(child: Icon(Icons.person)),
-                            title: Text('${f['nick'] ?? f['uid']}'),
-                          ),
-                      ],
-                    ),
-            ),
+            const _SectionLabel('Moments'),
+            Expanded(child: MomentsFeedView(scopeUid: uid, padding: const EdgeInsets.only(bottom: 16))),
           ],
         ),
       ),
@@ -85,15 +100,88 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-class _Stat extends StatelessWidget {
-  const _Stat({required this.label, required this.value});
-  final String label;
-  final String value;
+class _FollowButton extends ConsumerStatefulWidget {
+  const _FollowButton({required this.uid, required this.following});
+  final String uid;
+  final bool following;
+
   @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          Text(value, style: Theme.of(context).textTheme.titleLarge),
-          Text(label, style: Theme.of(context).textTheme.bodySmall),
-        ],
+  ConsumerState<_FollowButton> createState() => _FollowButtonState();
+}
+
+class _FollowButtonState extends ConsumerState<_FollowButton> {
+  late bool _following = widget.following;
+  bool _busy = false;
+
+  Future<void> _toggle() async {
+    setState(() => _busy = true);
+    final messenger = ScaffoldMessenger.of(context);
+    final want = !_following;
+    try {
+      final repo = ref.read(socialRepoProvider);
+      if (want) {
+        await repo.follow(widget.uid);
+      } else {
+        await repo.unfollow(widget.uid);
+      }
+      if (!mounted) return;
+      setState(() {
+        _following = want;
+        _busy = false;
+      });
+      ref.invalidate(userProfileProvider(widget.uid));
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _busy = false);
+      messenger.showSnackBar(SnackBar(content: Text(apiErrorMessage(e))));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_busy) {
+      return const Padding(
+        padding: EdgeInsets.all(12),
+        child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+      );
+    }
+    return _following
+        ? OutlinedButton(onPressed: _toggle, child: const Text('Following'))
+        : FilledButton(onPressed: _toggle, child: const Text('Follow'));
+  }
+}
+
+class _SectionLabel extends StatelessWidget {
+  const _SectionLabel(this.text);
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+        child: Row(
+          children: [
+            Text(text, style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+            const SizedBox(width: 12),
+            const Expanded(child: Divider()),
+          ],
+        ),
+      );
+}
+
+class _Error extends StatelessWidget {
+  const _Error({required this.message, required this.onRetry});
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(message),
+            const SizedBox(height: 12),
+            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+          ],
+        ),
       );
 }

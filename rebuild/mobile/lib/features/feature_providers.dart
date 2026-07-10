@@ -24,3 +24,13 @@ final charmRankProvider = FutureProvider((ref) => ref.watch(rankingRepoProvider)
 final myProfileProvider = FutureProvider((ref) => ref.watch(socialRepoProvider).me());
 final myFriendsProvider = FutureProvider((ref) => ref.watch(socialRepoProvider).friends());
 final coupleMeProvider = FutureProvider((ref) => ref.watch(coupleRepoProvider).me());
+
+/// Any user's public profile (viewer-relative follow flags + adorned medals).
+final userProfileProvider = FutureProvider.autoDispose.family<Map<String, dynamic>, String>(
+    (ref, uid) => ref.watch(socialRepoProvider).profile(uid));
+
+final followersProvider = FutureProvider.autoDispose.family<List<dynamic>, String>(
+    (ref, uid) => ref.watch(socialRepoProvider).followers(uid));
+
+final followingProvider = FutureProvider.autoDispose.family<List<dynamic>, String>(
+    (ref, uid) => ref.watch(socialRepoProvider).following(uid));

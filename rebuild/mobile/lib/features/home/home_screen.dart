@@ -13,6 +13,16 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Rooms'),
           actions: [
+            IconButton(
+              tooltip: 'Moments',
+              onPressed: () => context.go('/moments'),
+              icon: const Icon(Icons.dynamic_feed),
+            ),
+            IconButton(
+              tooltip: 'Voice bottles',
+              onPressed: () => context.go('/bottles'),
+              icon: const Icon(Icons.local_drink),
+            ),
             IconButton(onPressed: () => context.go('/wallet'), icon: const Icon(Icons.account_balance_wallet)),
             IconButton(onPressed: () => context.go('/vip'), icon: const Icon(Icons.workspace_premium)),
             IconButton(onPressed: () => context.go('/rankings'), icon: const Icon(Icons.leaderboard)),

@@ -1,14 +1,44 @@
 # FINAL_REBUILD_STATUS.md — voxa rebuild, honest status
 
 > Truthful end-of-pass report: what was **actually executed and verified**, what is **written but not yet run against infra**, and what remains. No green-washing.
-> **Latest pass (architecture integration from `ahmadslomm/Ngg`):** compared our rebuild to a forensic
-> recovery of the same original app and integrated the missing **social-identity layer** — Users/Profiles,
-> Follow/Social-graph, and Couple/CP — as additive modules, preserving every existing vertical. See
-> `ARCHITECTURE_COMPARISON_REPORT.md` and `ARCHITECTURE_CHANGELOG.md`.
+> **Latest pass (P2 mobile social experience):** built the Flutter clients for the four P1
+> social-content features (Moments feed, Voice bottles, Medal wall, in-room gift-effect animations) plus a
+> fans/following screen and shared audio/media infra — **mobile-only, additive**; no backend source, schema,
+> or test was touched. See `ARCHITECTURE_CHANGELOG.md` (§ P2) and § 0-ZZZ below.
 
 ---
 
-## 0-ZZ. P1 SOCIAL-CONTENT PASS (this pass) — Implemented · Tested · Running
+## 0-ZZZ. P2 MOBILE SOCIAL EXPERIENCE PASS (this pass) — Implemented · Tested · APK built
+
+The four P1 features shipped last pass as **backend + realtime only**; their Flutter screens were the
+honest client-side gap. P2 closes it — **mobile-only and additive**. No backend file, Prisma migration, or
+backend test was modified; the server, schema, and all 145 backend tests are unchanged and were
+re-verified green against the same running `:8080` instance.
+
+| Feature | Mobile client added | Screens / routes | Tests |
+|---|---|---|---|
+| **Moments** (feed) | feed list, composer (text/image/voice), comments sheet, `moment_card`, controllers, repo, providers | `/moments`, `/moments/create` | 9 controller |
+| **Voice bottle** | pick/discover screen, throw+record screen, reaction bar, controller, repo, models | `/bottles`, `/bottles/throw` | 8 controller |
+| **Medals / badges** | `MedalWallScreen`, medal strip, animated badge, controller, repo | `/medals` | 7 + 6 badge widget |
+| **Gift effects** | `GiftEffectLayer` + `effect_views` (combo/rocket/bomb/lucky) driven by room realtime, wired into `RoomScreen` | in-room overlay | 9 controller + 7 effect widget |
+| **Relations** | `RelationsScreen` (fans/following tabs), `profile_header` widget, richer `ProfileScreen` | `/profile/:uid`, `.../relations` | (smoke) |
+| **Shared infra** | `core/audio/` (recorder/player/mic-permission/voice-composer), `core/media/media_uploader`, `core/widgets/` (recorder panel, player bar), `core/format`, `core/network/api_error` | — | 11 audio + 7 format + 7 smoke |
+
+**Verification this pass (all commands actually run):**
+- Mobile: `flutter analyze` → **No issues found!** · `flutter test` → **73 passed** (was 2; +71) ·
+  `flutter build apk --debug` → **`build/app/outputs/flutter-apk/app-debug.apk` (240 MB)**.
+- Backend (unchanged, re-verified on the live server): `vitest run` → **145/145 (21 files)** ·
+  `node scripts/e2e_full.mjs` → **96/96** · `node scripts/e2e_p1.mjs` → **23/23** — **live total 119/119**.
+
+**Honest boundaries of this pass:** screens are analyze-clean and unit/widget-tested with mocked
+repositories; **on-device runtime is not exercised here** (no emulator/Agora account/real device on this
+VPS). Voice record/playback uses an engine abstraction; the concrete plugin path needs a device to confirm.
+Deferred items unchanged from P1: PK battles (design-only), real OAuth/receipt verify, push worker,
+admin/moderator React UIs.
+
+---
+
+## 0-ZZ. P1 SOCIAL-CONTENT PASS (prior pass) — Implemented · Tested · Running
 
 Four `Ngg`-recovered features that were **honestly deferred** last pass are now built as additive,
 non-invasive modules. No preserved vertical's internals were modified; the gift economy's atomic
