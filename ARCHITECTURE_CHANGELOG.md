@@ -4,6 +4,34 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Expose read-only room meta (room_type / owner_id) + host/skin detection
+
+**Context:** The DTO pass left room skin and host-seat detection UNKNOWN because the room
+API returned only `{ seats, rtcRole }`. This adds the missing **read-only** fields — an
+additive, backward-compatible API change; no room logic or permissions touched.
+
+### Backend (additive only)
+- `RoomRecord` gains `type`; `getRoom`/`createRoom` carry `Room.type` through both repos.
+- `room.service.ts` `join` + `getSeats` append `{ room_id, room_type, owner_id }`.
+- `room.routes.ts` gains an optional injected `OwnerProfileLookup` (same DI style as
+  `RoomBanCheck`) → adds a compact `owner` reference; omitted when unwired (tests).
+- `server.ts` wires the resolver to `usersService.getProfile(null, ownerId)` (no follow work).
+- Backward compatible: callers reading only `seats` are unaffected. `tsc` 0 · vitest **147/147**.
+
+### Flutter
+- `RoomMeta` DTO (`room_id`/`room_type`/`owner_id`/`owner`); `RoomRepository.roomMeta` +
+  `roomMetaProvider`.
+- `buildRoomDisplay` now takes `meta`: **host seat** = owner's seat (from `owner_id`),
+  **skin** = `roomSkinForType(room_type)` (0 throne · 1 party rebuild convention; other → throne).
+- `RoomDisplay` gains `ownerId` + `hostPosition`; `RoomScreen` host slot = `hostPosition ?? 0`
+  (dynamic seats preserved). PK and CP remain UNKNOWN.
+
+### Verification
+`flutter analyze` clean · `flutter test` **100/100** · golden `room` unchanged ·
+`flutter build apk --release` → **304.4 MB**. Docs: `SERVER_ROOM_DTO_MAPPING_REPORT.md`.
+
+---
+
 ## 2026-07-10 — Real server data → RoomDisplay (DTO mapping layer)
 
 **Context:** Phase 6.5 wired the decoration widgets to a `roomDisplayProvider` that still

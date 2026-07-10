@@ -1,4 +1,5 @@
 import '../../core/network/api_client.dart';
+import 'models/room_meta.dart';
 import 'models/room_models.dart';
 
 /// REST calls for the live-room vertical. Mirrors backend routes in API_DESIGN.md.
@@ -8,6 +9,14 @@ class RoomRepository {
 
   Future<List<Seat>> _seats(dynamic data) =>
       Future.value(((data['seats'] as List).cast<Map<String, dynamic>>()).map(Seat.fromJson).toList());
+
+  /// Read-only room metadata (`room_id` / `room_type` / `owner_id` / `owner`) from
+  /// `GET /rooms/:id/seats`. Additive fields; a server that predates them yields
+  /// [RoomMeta.empty]-like defaults.
+  Future<RoomMeta> roomMeta(String roomId) async {
+    final res = await _api.get('/rooms/$roomId/seats');
+    return RoomMeta.fromJson((res.data['data'] as Map).cast<String, dynamic>());
+  }
 
   Future<({List<Seat> seats, String rtcRole})> join(String roomId) async {
     final res = await _api.post('/rooms/$roomId/join');

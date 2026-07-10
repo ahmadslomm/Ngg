@@ -8,6 +8,13 @@ import type { RoomService } from './room.service.js';
 // infra-agnostic — in-memory tests pass a no-op, prod wires the Prisma-backed check.
 export type RoomBanCheck = (userId: string, roomId: string) => boolean | Promise<boolean>;
 
+// Injected, optional owner-profile resolver (same DI style as RoomBanCheck) so the
+// room module never imports the users module. When provided, seat responses carry a
+// compact `owner` reference; when absent (tests), the field is simply omitted —
+// backward compatible either way.
+export type OwnerProfileLookup = (ownerId: string) => Promise<OwnerRef | null>;
+export interface OwnerRef { uid: string; nick?: string | null; avatar_url?: string | null; avatar_frame_url?: string | null }
+
 const ERROR_STATUS: Record<string, number> = {
   room_unavailable: 404, not_allowed: 403, only_owner: 403, insufficient_role: 403,
   cannot_kick_owner: 403, cannot_change_owner: 403, cannot_grant_owner: 400, admin_muted: 403,
@@ -20,9 +27,17 @@ function fail(reply: any, error: string) {
 }
 
 // Factory: routes are bound to an injected service (Prisma-backed in prod, in-memory in tests).
-export function roomRoutes(service: RoomService, isBanned: RoomBanCheck = () => false) {
+export function roomRoutes(service: RoomService, isBanned: RoomBanCheck = () => false, ownerProfile?: OwnerProfileLookup) {
   return async function (app: FastifyInstance) {
     const uid = (req: any) => String(req.user.id);
+
+    // Attach a compact owner reference to a seat-response payload when a resolver is
+    // wired and the owner has a profile. Best-effort: never blocks or fails the response.
+    const withOwner = async (data: any) => {
+      if (!ownerProfile || !data?.owner_id) return data;
+      const owner = await ownerProfile(String(data.owner_id)).catch(() => null);
+      return owner ? { ...data, owner } : data;
+    };
 
     app.post('/rooms', { preHandler: [app.authenticate] }, async (req) => {
       const body = z.object({ name: z.string().min(1).max(64), seat_count: z.number().int().min(1).max(20).optional() }).parse(req.body);
@@ -33,7 +48,7 @@ export function roomRoutes(service: RoomService, isBanned: RoomBanCheck = () => 
     app.get('/rooms/:id/seats', async (req, reply) => {
       const r = await service.getSeats((req.params as any).id);
       if (!r.ok) return fail(reply, r.error!);
-      return { code: 0, message: 'ok', data: r.data };
+      return { code: 0, message: 'ok', data: await withOwner(r.data) };
     });
 
     app.post('/rooms/:id/join', { preHandler: [app.authenticate] }, async (req, reply) => {
@@ -41,7 +56,7 @@ export function roomRoutes(service: RoomService, isBanned: RoomBanCheck = () => 
       if (await isBanned(uid(req), roomId)) return fail(reply, 'room_banned');
       const r = await service.join(roomId, uid(req));
       if (!r.ok) return fail(reply, r.error!);
-      return { code: 0, message: 'ok', data: r.data };
+      return { code: 0, message: 'ok', data: await withOwner(r.data) };
     });
 
     app.post('/rooms/:id/leave', { preHandler: [app.authenticate] }, async (req, reply) => {

@@ -21,6 +21,13 @@ export class RoomService {
     return this.repo.createRoom(input);
   }
 
+  // Read-only room metadata attached to seat responses. Additive + backward-compatible:
+  // callers that only read `seats` are unaffected. `room_id`/`room_type`/`owner_id` let
+  // the client resolve the host seat and room skin without a separate endpoint.
+  private roomMeta(room: RoomRecord) {
+    return { room_id: room.id, room_type: room.type, owner_id: room.ownerId };
+  }
+
   async join(roomId: string, userId: string): Promise<ServiceResult<{ seats: Seat[]; rtcRole: string }>> {
     const room = await this.repo.getRoom(roomId);
     if (!room || room.status !== 1) return { ok: false, error: 'room_unavailable' };
@@ -28,7 +35,7 @@ export class RoomService {
     if (!state) return { ok: false, error: 'room_unavailable' };
     await this.repo.addMember(roomId, userId, state.ownerId === userId ? Role.Owner : Role.Listener);
     await this.emit(this.channel(roomId), { ev: 'room.joined', data: { userId } });
-    return { ok: true, data: { seats: state.seats, rtcRole: computeRtcRole(state.seats, userId) } };
+    return { ok: true, data: { seats: state.seats, rtcRole: computeRtcRole(state.seats, userId), ...this.roomMeta(room) } };
   }
 
   async leave(roomId: string, userId: string): Promise<ServiceResult> {
@@ -91,8 +98,8 @@ export class RoomService {
   }
 
   async getSeats(roomId: string): Promise<ServiceResult<{ seats: Seat[] }>> {
-    const state = await this.repo.getRoomState(roomId);
-    if (!state) return { ok: false, error: 'room_unavailable' };
-    return { ok: true, data: { seats: state.seats } };
+    const [room, state] = await Promise.all([this.repo.getRoom(roomId), this.repo.getRoomState(roomId)]);
+    if (!room || !state) return { ok: false, error: 'room_unavailable' };
+    return { ok: true, data: { seats: state.seats, ...this.roomMeta(room) } };
   }
 }

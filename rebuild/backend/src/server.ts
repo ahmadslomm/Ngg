@@ -25,6 +25,7 @@ import { moderationService } from './modules/moderation/moderation.service.js';
 import { adminRoutes } from './modules/admin/admin.routes.js';
 import { adminAuthRoutes } from './modules/admin/admin.auth.js';
 import { userRoutes } from './modules/users/users.routes.js';
+import { usersService } from './modules/users/users.service.js';
 import { coupleRoutes } from './modules/couple/couple.routes.js';
 import { momentRoutes } from './modules/moments/moment.routes.js';
 import { bottleRoutes } from './modules/bottle/bottle.routes.js';
@@ -138,8 +139,17 @@ async function build() {
     await configRoutes(v1);
     await authRoutes(v1);
     await giftRoutes(v1);
-    await roomRoutes(roomService, (userId, roomId) =>
-      moderationService.isRoomBanned(BigInt(userId), BigInt(roomId)),
+    await roomRoutes(
+      roomService,
+      (userId, roomId) => moderationService.isRoomBanned(BigInt(userId), BigInt(roomId)),
+      // Compact owner reference for seat responses (read-only; best-effort). Uses the
+      // public-profile path with a null viewer, so no follow/relationship work runs.
+      async (ownerId) => {
+        try {
+          const p: any = await usersService.getProfile(null, BigInt(ownerId));
+          return { uid: String(p.uid), nick: p.nick, avatar_url: p.avatar_url, avatar_frame_url: p.avatar_frame_url };
+        } catch { return null; }
+      },
     )(v1);
     await walletRoutes(v1);
     await vipRoutes(v1);

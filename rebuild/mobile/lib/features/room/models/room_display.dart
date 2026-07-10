@@ -77,19 +77,30 @@ class SeatDisplay {
 }
 
 /// Room-level display state: which backdrop, an optional highlighted party
-/// theme, PK overlay state, and the per-seat display attributes.
+/// theme, PK overlay state, the real owner id + resolved host seat, and the
+/// per-seat display attributes.
 class RoomDisplay {
   const RoomDisplay({
     this.skin = RoomSkin.throne,
     this.partyTheme,
     this.pk = PkState.none,
     this.seats = const [],
+    this.ownerId,
+    this.hostPosition,
   });
 
   final RoomSkin skin;
   final PartyTheme? partyTheme;
   final PkState pk;
   final List<SeatDisplay> seats;
+
+  /// **REAL** — the room owner's user id (`owner_id`), or null if unknown.
+  final String? ownerId;
+
+  /// **REAL** — the seat position the owner occupies, or null when the owner is
+  /// not seated / unknown. Lets the UI mark the actual host seat instead of
+  /// assuming position 0.
+  final int? hostPosition;
 
   /// The neutral default: throne backdrop, no PK, no seat decorations — i.e. the
   /// room exactly as it rendered before this layer existed.
@@ -100,11 +111,15 @@ class RoomDisplay {
     PartyTheme? partyTheme,
     PkState? pk,
     List<SeatDisplay>? seats,
+    String? ownerId,
+    int? hostPosition,
   }) =>
       RoomDisplay(
         skin: skin ?? this.skin,
         partyTheme: partyTheme ?? this.partyTheme,
         pk: pk ?? this.pk,
         seats: seats ?? this.seats,
+        ownerId: ownerId ?? this.ownerId,
+        hostPosition: hostPosition ?? this.hostPosition,
       );
 }

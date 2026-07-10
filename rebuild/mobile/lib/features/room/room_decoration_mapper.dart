@@ -29,6 +29,20 @@ int? wealthCardIndexForGrade(int grade) {
   return (grade - 1) % AppAssets.wealthCards.length;
 }
 
+/// Real `room_type` → the room backdrop skin.
+///
+/// This is the **rebuild's own forward convention** (we now own this backend), not a
+/// recovered original code table: `0` = normal voice room (throne), `1` = party. Any
+/// other non-zero code is UNKNOWN and falls back to throne — no invention. Rooms only
+/// enter party mode once their `type` is actually set server-side; today every room is
+/// `type == 0`, so the default is unchanged. See `SERVER_ROOM_DTO_MAPPING_REPORT.md`.
+const int kRoomTypeParty = 1;
+
+RoomSkin roomSkinForType(int roomType) => switch (roomType) {
+      kRoomTypeParty => RoomSkin.party,
+      _ => RoomSkin.throne,
+    };
+
 /// Couple rank 1..3 → the matching recovered CP frame, or null outside 1..3.
 CpFrame? cpFrameForRank(int rank) => switch (rank) {
       1 => CpFrame.rank1,

@@ -60,8 +60,11 @@ class RoomScreen extends ConsumerWidget {
     }
 
     final seats = state.seats;
-    final host = _seatAt(seats, 0);
-    final audience = [for (final s in seats) if (s.position != 0) s];
+    // Host seat = the owner's seat when the real owner_id resolves it, else the
+    // position-0 stage convention (fallback). Dynamic seat list is preserved.
+    final hostPos = display.hostPosition ?? 0;
+    final host = _seatAt(seats, hostPos);
+    final audience = [for (final s in seats) if (s.position != hostPos) s];
     final mySeat = _mySeat(seats, myUid);
     final micMuted = mySeat != null && (mySeat.micMuted || mySeat.micMutedByAdmin);
 

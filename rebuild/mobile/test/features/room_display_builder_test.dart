@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:voxa/features/room/models/room_decorations.dart';
 import 'package:voxa/features/room/models/room_display.dart';
+import 'package:voxa/features/room/models/room_meta.dart';
 import 'package:voxa/features/room/models/room_models.dart';
 import 'package:voxa/features/room/room_decoration_mapper.dart';
 import 'package:voxa/features/room/room_display_builder.dart';
@@ -48,17 +49,65 @@ void main() {
       expect(u1.wornMedalUrl, 'https://cdn/medal_a.png'); // first adorned medal
     });
 
-    test('room-level UNKNOWNs stay neutral (skin throne, PK none)', () {
+    test('with no meta: neutral defaults (throne, PK none, host fallback null)', () {
       final display = buildRoomDisplay(
         seats: [occupied(0, 'host')],
         profiles: {'host': profile(frame: 'https://cdn/f.png')},
       );
       expect(display.skin, RoomSkin.throne);
       expect(display.pk, PkState.none);
+      expect(display.ownerId, isNull);
+      expect(display.hostPosition, isNull); // no owner_id → resolved by RoomScreen fallback
       // Recovered/override-only fields are never set from real data.
       expect(display.seats.single.vipGrade, 0);
       expect(display.seats.single.cpRank, 0);
       expect(display.seats.single.cpBonded, isFalse);
+    });
+
+    test('real owner_id resolves the host seat (owner not on position 0)', () {
+      final display = buildRoomDisplay(
+        seats: [occupied(0, 'u1'), occupied(3, 'boss'), empty(4)],
+        profiles: {'u1': profile(), 'boss': profile(vip: 2)},
+        meta: const RoomMeta(roomId: '9', roomType: 0, ownerId: 'boss'),
+      );
+      expect(display.ownerId, 'boss');
+      expect(display.hostPosition, 3); // the owner's actual seat, not position 0
+    });
+
+    test('owner present but not seated → hostPosition null (RoomScreen falls back to 0)', () {
+      final display = buildRoomDisplay(
+        seats: [occupied(0, 'u1')],
+        profiles: {'u1': profile()},
+        meta: const RoomMeta(roomId: '9', ownerId: 'boss'), // boss not on a seat
+      );
+      expect(display.ownerId, 'boss');
+      expect(display.hostPosition, isNull);
+    });
+
+    test('room_type drives the skin (0 throne · 1 party); PK/CP stay UNKNOWN', () {
+      final throne = buildRoomDisplay(
+        seats: [occupied(0, 'u1')],
+        profiles: {'u1': profile()},
+        meta: const RoomMeta(roomId: '9', roomType: 0),
+      );
+      expect(throne.skin, RoomSkin.throne);
+
+      final party = buildRoomDisplay(
+        seats: [occupied(0, 'u1')],
+        profiles: {'u1': profile()},
+        meta: const RoomMeta(roomId: '9', roomType: kRoomTypeParty),
+      );
+      expect(party.skin, RoomSkin.party);
+      expect(party.pk, PkState.none); // PK unchanged (no subsystem)
+      expect(party.partyTheme, isNull); // which theme card is UNKNOWN
+
+      // An unknown non-zero type is a safe throne fallback (no invention).
+      final unknown = buildRoomDisplay(
+        seats: [occupied(0, 'u1')],
+        profiles: {'u1': profile()},
+        meta: const RoomMeta(roomId: '9', roomType: 7),
+      );
+      expect(unknown.skin, RoomSkin.throne);
     });
 
     test('a seat whose profile has not hydrated yet gets no decoration', () {
@@ -100,6 +149,37 @@ void main() {
         ]),
         'https://cdn/m.png',
       );
+    });
+  });
+
+  group('RoomMeta.fromJson', () {
+    test('parses the new read-only room fields, tolerating absence', () {
+      final full = RoomMeta.fromJson({
+        'room_id': '42',
+        'room_type': 1,
+        'owner_id': '7',
+        'owner': {'uid': '7', 'nick': 'Boss', 'avatar_url': 'a.png', 'avatar_frame_url': 'f.png'},
+        'seats': const [],
+      });
+      expect(full.roomId, '42');
+      expect(full.roomType, 1);
+      expect(full.ownerId, '7');
+      expect(full.owner!.nick, 'Boss');
+      expect(full.owner!.avatarFrameUrl, 'f.png');
+
+      // A server response without the additive fields degrades to neutral defaults.
+      final legacy = RoomMeta.fromJson({'seats': const []});
+      expect(legacy.roomType, 0);
+      expect(legacy.ownerId, isNull);
+      expect(legacy.owner, isNull);
+    });
+  });
+
+  group('roomSkinForType', () {
+    test('0 throne, 1 party, other UNKNOWN → throne', () {
+      expect(roomSkinForType(0), RoomSkin.throne);
+      expect(roomSkinForType(kRoomTypeParty), RoomSkin.party);
+      expect(roomSkinForType(99), RoomSkin.throne);
     });
   });
 

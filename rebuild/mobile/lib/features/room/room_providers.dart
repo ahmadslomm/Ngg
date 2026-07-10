@@ -4,6 +4,7 @@ import '../../core/session.dart';
 import '../../core/voice/agora_voice_engine.dart';
 import '../feature_providers.dart';
 import 'models/room_display.dart';
+import 'models/room_meta.dart';
 import 'models/room_models.dart';
 import 'room_controller.dart';
 import 'room_display_builder.dart';
@@ -56,17 +57,29 @@ final seatProfilesProvider =
   return {for (final e in entries) if (e != null) e.key: e.value};
 });
 
+/// Read-only room metadata (`room_id` / `room_type` / `owner_id` / `owner`), newly
+/// exposed by the room API. Fetched once per room; drives host-seat detection and the
+/// room skin. Best-effort — an error yields [RoomMeta.empty] (neutral throne default).
+final roomMetaProvider = FutureProvider.autoDispose.family<RoomMeta, String>((ref, roomId) async {
+  try {
+    return await RoomRepository(ref.watch(apiClientProvider)).roomMeta(roomId);
+  } catch (_) {
+    return RoomMeta.empty;
+  }
+});
+
 /// The room's display-decoration channel, derived from **real** server data and
 /// kept separate from [roomControllerProvider] so the live controller/state are
-/// untouched. It combines the live seat list with the hydrated seat profiles via
-/// `buildRoomDisplay`.
+/// untouched. It combines the live seat list, the hydrated seat profiles, and the
+/// room metadata via `buildRoomDisplay`.
 ///
-/// Until profiles resolve (and for anything the server does not expose — room skin
-/// `type`, PK, CP-for-others), it yields the neutral shape: throne backdrop, no PK,
-/// no seat decorations — i.e. the room exactly as before. See
+/// Until data resolves (and for anything the server does not expose — PK,
+/// CP-for-others, per-room party theme), it yields the neutral shape: throne
+/// backdrop, no PK, no seat decorations — i.e. the room exactly as before. See
 /// `SERVER_ROOM_DTO_MAPPING_REPORT.md` for the field-by-field mapping and UNKNOWNs.
 final roomDisplayProvider = Provider.autoDispose.family<RoomDisplay, String>((ref, roomId) {
   final seats = ref.watch(roomControllerProvider(roomId).select((s) => s.seats));
   final profiles = ref.watch(seatProfilesProvider(roomId)).valueOrNull ?? const {};
-  return buildRoomDisplay(seats: seats, profiles: profiles);
+  final meta = ref.watch(roomMetaProvider(roomId)).valueOrNull ?? RoomMeta.empty;
+  return buildRoomDisplay(seats: seats, profiles: profiles, meta: meta);
 });

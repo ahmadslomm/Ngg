@@ -18,6 +18,7 @@ export interface RoomRecord {
   seatCount: number;
   status: number;
   agoraChannel: string;
+  type: number; // Room.type (0 = normal voice room; other codes are room skins/modes)
 }
 
 export interface RoomRepo {
@@ -50,7 +51,7 @@ export class InMemoryRoomRepo implements RoomRepo {
     const seatCount = input.seatCount ?? 8;
     const rec: RoomRecord = {
       id, ownerId: input.ownerId, name: input.name, seatCount,
-      status: 1, agoraChannel: `room:${id}`,
+      status: 1, agoraChannel: `room:${id}`, type: 0,
     };
     this.rooms.set(id, rec);
     this.states.set(id, { ownerId: input.ownerId, roles: {}, seats: freshSeats(seatCount) });

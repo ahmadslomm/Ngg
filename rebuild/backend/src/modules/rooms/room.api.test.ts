@@ -52,6 +52,38 @@ describe('live-room API (end-to-end through HTTP)', () => {
     expect(ctx.events.some((e) => e.ev === 'room.joined' && e.data.userId === 'u1')).toBe(true);
   });
 
+  it('join + seats expose read-only room meta (room_id / room_type / owner_id)', async () => {
+    const j = await as(ctx.app, 'u1', 'POST', `/rooms/${roomId}/join`);
+    expect(j.body.data.room_id).toBe(roomId);
+    expect(j.body.data.room_type).toBe(0); // default normal voice room
+    expect(j.body.data.owner_id).toBe('owner');
+    expect(j.body.data.seats).toBeDefined(); // additive: original fields intact
+
+    const g = await as(ctx.app, 'u1', 'GET', `/rooms/${roomId}/seats`);
+    expect(g.body.data.room_id).toBe(roomId);
+    expect(g.body.data.room_type).toBe(0);
+    expect(g.body.data.owner_id).toBe('owner');
+    // No owner resolver wired in this test app → owner reference omitted (backward compatible).
+    expect(g.body.data.owner).toBeUndefined();
+  });
+
+  it('attaches a compact owner reference when a resolver is wired', async () => {
+    const app = Fastify();
+    const repo = new InMemoryRoomRepo();
+    const service = new RoomService(repo, () => {});
+    app.decorate('authenticate', async (req: any, reply: any) => {
+      const u = req.headers['x-test-uid'];
+      if (!u) return reply.code(401).send({ code: 4010, message: 'unauthorized' });
+      req.user = { id: u };
+    });
+    app.register(roomRoutes(service, () => false, async (ownerId) => ({ uid: ownerId, nick: 'Owner One', avatar_url: 'a.png' })));
+    await app.ready();
+    const made = await as(app, 'owner', 'POST', '/rooms', { name: 'R' });
+    const rid = made.body.data.room_id;
+    const g = await as(app, 'u1', 'GET', `/rooms/${rid}/seats`);
+    expect(g.body.data.owner).toEqual({ uid: 'owner', nick: 'Owner One', avatar_url: 'a.png' });
+  });
+
   it('take seat -> occupied + seat.update event; GET reflects it', async () => {
     await as(ctx.app, 'u1', 'POST', `/rooms/${roomId}/join`);
     const t = await as(ctx.app, 'u1', 'POST', `/rooms/${roomId}/seats/2/take`);

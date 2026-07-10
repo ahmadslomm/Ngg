@@ -1,6 +1,8 @@
 import 'models/room_display.dart';
 import 'models/room_decorations.dart';
+import 'models/room_meta.dart';
 import 'models/room_models.dart';
+import 'room_decoration_mapper.dart';
 
 /// Builds a [RoomDisplay] from the **real** server data available to the client:
 /// the live seat list (from `POST /rooms/:id/join` · `GET /rooms/:id/seats`) plus a
@@ -12,22 +14,26 @@ import 'models/room_models.dart';
 ///
 /// What is real here, and what is deliberately left off:
 ///  * **Seats / states / host** — real. The dynamic seat list is preserved verbatim;
-///    host is the position-0 convention (the server does not expose `ownerId` on the
-///    room response, so host≡owner is UNKNOWN and not asserted here).
+///    the host seat is now resolved from the real `owner_id` (matched to a seat), with
+///    the position-0 convention only as a fallback when the owner is not seated/unknown.
+///  * **Room skin** — from the real `room_type` via `roomSkinForType` (0 throne · 1 party).
 ///  * **Per-seat avatar frame / worn medal** — real, from the profile.
 ///  * **VIP / wealth level** — real values carried through informationally; NOT turned
 ///    into recovered shield/card art (level→art ordering is UNKNOWN).
-///  * **Room skin (type) / PK / CP-for-others** — UNKNOWN to the client (room `type` is
-///    not exposed; the backend has no PK; there is no public couple lookup). Left at
-///    the neutral defaults: [RoomSkin.throne], [PkState.none], no CP decoration.
+///  * **PK / CP-for-others / party theme** — UNKNOWN (no PK subsystem; no public couple
+///    lookup; no per-room party-theme field). Left at neutral defaults.
 RoomDisplay buildRoomDisplay({
   required List<Seat> seats,
   required Map<String, Map<String, dynamic>> profiles,
+  RoomMeta meta = RoomMeta.empty,
 }) {
   final seatDisplays = <SeatDisplay>[];
+  int? hostPosition;
   for (final s in seats) {
     final uid = s.userId;
     if (!s.isOccupied || uid == null) continue;
+    // Real host detection: the seat held by the room owner.
+    if (meta.ownerId != null && uid == meta.ownerId) hostPosition = s.position;
     final p = profiles[uid];
     if (p == null) continue; // profile not hydrated yet → no decoration for this seat
     seatDisplays.add(SeatDisplay(
@@ -40,11 +46,13 @@ RoomDisplay buildRoomDisplay({
     ));
   }
   return RoomDisplay(
-    // room `type` is not returned by any client room endpoint → UNKNOWN → throne.
-    skin: RoomSkin.throne,
+    // Real room_type → skin (0 throne · 1 party; other codes UNKNOWN → throne).
+    skin: roomSkinForType(meta.roomType),
     // no PK subsystem exists in this backend → UNKNOWN → none.
     pk: PkState.none,
     seats: seatDisplays,
+    ownerId: meta.ownerId,
+    hostPosition: hostPosition,
   );
 }
 
