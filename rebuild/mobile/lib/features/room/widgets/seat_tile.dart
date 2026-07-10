@@ -60,12 +60,13 @@ class SeatTile extends StatelessWidget {
                     child: const SvgaView(asset: AppAssets.seatSpeaking, loop: true),
                   ),
                 _avatarCircle(),
-                // REAL avatar frame (server `avatar_frame_url`) — wraps the avatar.
-                // Silently absent if the URL is null or fails to load.
-                if (seat.isOccupied && decoration.avatarFrameUrl != null)
+                // REAL avatar frame — the user's chosen `avatar_frame_url`, else their
+                // real VIP-tier frame (`vip_frame_url`). Both are real server URLs;
+                // silently absent if null or fails to load.
+                if (seat.isOccupied && decoration.effectiveFrameUrl != null)
                   IgnorePointer(
                     child: CachedNetworkImage(
-                      imageUrl: decoration.avatarFrameUrl!,
+                      imageUrl: decoration.effectiveFrameUrl!,
                       width: _avatar + 26,
                       height: _avatar + 26,
                       fit: BoxFit.contain,
@@ -89,8 +90,22 @@ class SeatTile extends StatelessWidget {
                       byAdmin: seat.micMutedByAdmin,
                     ),
                   ),
-                // Recovered VIP grade shield — bottom-left (grade→shield UNKNOWN).
-                if (seat.isOccupied && decoration.vipShield != null)
+                // VIP badge — bottom-left. Prefer the REAL per-tier badge
+                // (`vip_badge_url`, remote); fall back to the recovered shield asset
+                // (display-only ordering) only when there is no real badge.
+                if (seat.isOccupied && decoration.vipBadgeUrl != null)
+                  Positioned(
+                    left: 0,
+                    bottom: 0,
+                    child: CachedNetworkImage(
+                      imageUrl: decoration.vipBadgeUrl!,
+                      height: 22,
+                      fit: BoxFit.contain,
+                      errorWidget: (_, __, ___) => const SizedBox.shrink(),
+                      placeholder: (_, __) => const SizedBox.shrink(),
+                    ),
+                  )
+                else if (seat.isOccupied && decoration.vipShield != null)
                   Positioned(
                     left: 0,
                     bottom: 0,

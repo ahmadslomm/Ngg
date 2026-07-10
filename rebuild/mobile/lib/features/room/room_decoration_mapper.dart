@@ -54,14 +54,19 @@ CpFrame? cpFrameForRank(int rank) => switch (rank) {
 /// One seat's raw attributes → its [SeatDecoration]. Returns [SeatDecoration.none]
 /// when nothing applies, so undecorated seats stay pixel-identical to before.
 ///
-/// The real fields ([SeatDisplay.avatarFrameUrl] / [SeatDisplay.wornMedalUrl]) pass
-/// straight through; the recovered/override fields go through the display-only
-/// grade→art helpers above.
+/// The real fields ([SeatDisplay.avatarFrameUrl], the per-tier [SeatDisplay.vipFrameUrl]
+/// / [SeatDisplay.vipBadgeUrl], and [SeatDisplay.wornMedalUrl]) pass straight through.
+/// The recovered/override fields ([SeatDisplay.vipGrade]) still go through the
+/// display-only grade→art helpers, but only feed [SeatDecoration.vipShieldIndex] as a
+/// fallback when there is no real [SeatDisplay.vipBadgeUrl] — the real VIP badge wins.
 SeatDecoration mapSeatDecoration(SeatDisplay d) {
   final decoration = SeatDecoration(
     avatarFrameUrl: d.avatarFrameUrl,
+    vipFrameUrl: d.vipFrameUrl,
+    vipBadgeUrl: d.vipBadgeUrl,
     wornMedalUrl: d.wornMedalUrl,
-    vipShieldIndex: vipShieldIndexForGrade(d.vipGrade),
+    // Real VIP badge supersedes the display-only shield guess.
+    vipShieldIndex: d.vipBadgeUrl != null ? null : vipShieldIndexForGrade(d.vipGrade),
     cpFrame: cpFrameForRank(d.cpRank),
     cpBonded: d.cpBonded,
     medalAsset: d.medalAsset,

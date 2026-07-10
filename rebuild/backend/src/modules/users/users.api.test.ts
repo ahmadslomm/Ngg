@@ -29,6 +29,33 @@ describe('Users & social graph', () => {
     expect(r.body.data.gender).toBe(1);
   });
 
+  it('profile carries the real per-tier VIP frame/badge; null for non-VIP (never fabricated)', async () => {
+    // Non-VIP: the fields are present but null — no invented art.
+    const plain = await makeUser();
+    const r0 = await inject(app, plain, 'GET', '/users/me');
+    expect(r0.body.data.vip_frame_url).toBeNull();
+    expect(r0.body.data.vip_badge_url).toBeNull();
+
+    // A user on a real VIP tier gets that tier's real seeded frame/badge URLs.
+    const LVL = 8801;
+    await prisma.vipLevel.upsert({
+      where: { level: LVL },
+      update: { frameUrl: 'vipframe.png', badgeUrl: 'vipbadge.png' },
+      create: { level: LVL, name: 'TestVipDeco', priceCoins: 1000n, durationDays: 30, frameUrl: 'vipframe.png', badgeUrl: 'vipbadge.png' },
+    });
+    const vip = await makeUser();
+    await prisma.profile.update({ where: { userId: vip }, data: { vipLevel: LVL } });
+    const r1 = await inject(app, vip, 'GET', '/users/me');
+    expect(r1.body.data.vip_frame_url).toBe('vipframe.png');
+    expect(r1.body.data.vip_badge_url).toBe('vipbadge.png');
+
+    // Another viewer sees the same real art on the public profile.
+    const viewer = await makeUser();
+    const r2 = await inject(app, viewer, 'GET', `/users/${vip}`);
+    expect(r2.body.data.vip_frame_url).toBe('vipframe.png');
+    expect(r2.body.data.vip_badge_url).toBe('vipbadge.png');
+  });
+
   it('GET /users/:id shows viewer-relative flags', async () => {
     const a = await makeUser();
     const b = await makeUser();

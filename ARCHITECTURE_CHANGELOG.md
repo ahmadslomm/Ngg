@@ -4,6 +4,41 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Recover user decoration/identity → real per-tier VIP frame/badge
+
+**Context:** The per-user decoration layer (avatar frames, VIP frames, wealth levels, medals,
+badges, titles). Decisive finding: the original's VIP-shield / wealth-card / medal **grade→art
+ordering** lives behind authed `medal.*` / `room.getWealthInfo` / `room.*Rank` JSON-RPC and was
+never captured (UNKNOWN). Rather than reconstruct that ordering, we render the **real art our own
+backend already stores**. Full evidence: `USER_DECORATION_RECOVERY_REPORT.md`.
+
+### Recovered / wired
+Avatar frame `avatar_frame_url` (REAL, prior phase). **VIP frame/badge now REAL** —
+`VipLevel.frameUrl`/`badgeUrl` keyed by `Profile.vipLevel`, replacing the old display-only
+`vipShieldIndexForGrade` guess. Medals/badges REAL via adorned `medals[]` (`icon_url` + category).
+Wealth level: **number REAL, art UNKNOWN** (no art table) → informational only. Titles: **absent**
+(no model / no forensic asset set) → not invented.
+
+### Backend (additive, read-only — no logic/permission change)
+- `vipService.levelArt(level)` → real `{frame_url, badge_url}` for a tier (null for non-VIP).
+- `getMyProfile` + `getProfile` add `vip_frame_url` / `vip_badge_url` (null for non-VIP),
+  fetched in parallel with adorned medals. `tsc` 0 · vitest **148/148** (+1).
+
+### Flutter
+- `SeatDisplay` + `SeatDecoration` gain REAL `vipFrameUrl`/`vipBadgeUrl`; `effectiveFrameUrl`
+  = `avatar_frame_url ?? vip_frame_url` (a rendering choice between two real URLs, not an ordering).
+- `mapSeatDecoration` passes them through; the real VIP badge **supersedes** the display-only
+  shield guess (guess only when no real badge — override/preview path).
+- `SeatTile` renders the real frame + real VIP badge (recovered shield asset only as fallback).
+- Decoration channel still parallel to controller/state — never writes to it.
+
+### Verification
+`flutter analyze` clean · `flutter test` **120/120** (+4) · goldens `room`/`room_pk`/`room_party`
+unchanged (default seats carry no VIP art). `flutter build apk --release`. Docs:
+`USER_DECORATION_RECOVERY_REPORT.md`.
+
+---
+
 ## 2026-07-10 — Recover room theme config + runtime assets → real per-room background
 
 **Context:** Forensic recovery of the original room **theme configuration** and **runtime

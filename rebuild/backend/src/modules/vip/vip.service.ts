@@ -63,6 +63,16 @@ export class VipService {
     return prisma.vipHistory.findMany({ where: { userId }, orderBy: { startedAt: 'desc' }, take: 50 });
   }
 
+  // Read-only art for a denormalized VIP tier (Profile.vipLevel) — the real per-level
+  // frame/badge URLs seeded on VipLevel. Returns null for tier 0 or an unknown level,
+  // so callers never fabricate art for a user with no VIP. Used to decorate profiles.
+  async levelArt(level: number): Promise<{ name: string; frame_url: string | null; badge_url: string | null } | null> {
+    if (!level || level <= 0) return null;
+    const plan = await prisma.vipLevel.findUnique({ where: { level } });
+    if (!plan) return null;
+    return { name: plan.name, frame_url: plan.frameUrl ?? null, badge_url: plan.badgeUrl ?? null };
+  }
+
   // Maintenance: reset denormalized vipLevel for users whose VIP has lapsed.
   async expireSweep(): Promise<number> {
     const stale = await prisma.profile.findMany({ where: { vipLevel: { gt: 0 } }, select: { userId: true } });

@@ -17,20 +17,25 @@ import 'room_decorations.dart';
 /// `Seat.position`). Two provenances, kept distinct on purpose:
 ///
 ///  * **REAL** — hydrated at runtime from `GET /users/:id`
-///    (`SERVER_ROOM_DTO_MAPPING_REPORT.md`): [avatarFrameUrl], [wornMedalUrl],
-///    plus the informational [vipLevel] / [wealthLevel]. These are the user's
-///    actual server values and are safe to render faithfully.
+///    (`USER_DECORATION_RECOVERY_REPORT.md`): [avatarFrameUrl], [vipFrameUrl],
+///    [vipBadgeUrl], [wornMedalUrl], plus the informational [vipLevel] /
+///    [wealthLevel]. These are the user's actual server values (the VIP art comes
+///    from the real per-tier `VipLevel` row) and are safe to render faithfully.
 ///  * **RECOVERED / OVERRIDE-ONLY** — [vipGrade], [cpRank], [cpBonded],
 ///    [wealthGrade], [medalAsset] select the recovered original assets whose
-///    grade→art ordering is **UNKNOWN**. The runtime builder never sets these
-///    (they stay 0/off); they exist for previews/tests only, so a display-only
-///    guess is never presented as the user's real badge.
+///    grade→art ordering is **UNKNOWN** (the original tables live behind authed
+///    `medal.*` / `room.getWealthInfo` JSON-RPC, never captured). The runtime
+///    builder never sets these (they stay 0/off); they exist for previews/tests
+///    only, superseded by the REAL fields above, so a display-only guess is never
+///    presented as the user's real badge.
 class SeatDisplay {
   const SeatDisplay({
     required this.position,
     this.vipLevel = 0,
     this.wealthLevel = 0,
     this.avatarFrameUrl,
+    this.vipFrameUrl,
+    this.vipBadgeUrl,
     this.wornMedalUrl,
     this.vipGrade = 0,
     this.cpRank = 0,
@@ -52,6 +57,15 @@ class SeatDisplay {
 
   /// Real `avatar_frame_url` — the user's actual chosen avatar frame (remote).
   final String? avatarFrameUrl;
+
+  /// Real `vip_frame_url` — the frame art of the user's current VIP tier
+  /// (`VipLevel.frameUrl` for `vip_level`; null for non-VIP). A real per-tier
+  /// URL — replaces the old display-only shield-index guess.
+  final String? vipFrameUrl;
+
+  /// Real `vip_badge_url` — the small badge art of the user's VIP tier
+  /// (`VipLevel.badgeUrl`; null for non-VIP).
+  final String? vipBadgeUrl;
 
   /// Real worn-medal icon (remote) — the first adorned medal from `medals[]`.
   final String? wornMedalUrl;

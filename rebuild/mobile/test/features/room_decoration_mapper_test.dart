@@ -74,6 +74,38 @@ void main() {
       expect(d.cpBonded, isTrue);
       expect(d.vipShield, isNull);
     });
+
+    test('real per-tier VIP frame/badge pass through and the badge wins over the guess', () {
+      final d = mapSeatDecoration(const SeatDisplay(
+        position: 1,
+        vipFrameUrl: 'https://cdn/vipframe.png',
+        vipBadgeUrl: 'https://cdn/vipbadge.png',
+        vipGrade: 2, // display-only guess present…
+      ));
+      expect(d.vipFrameUrl, 'https://cdn/vipframe.png');
+      expect(d.vipBadgeUrl, 'https://cdn/vipbadge.png');
+      // …but the real badge supersedes it, so no shield-index guess is emitted.
+      expect(d.vipShieldIndex, isNull);
+      expect(d.vipShield, isNull);
+    });
+
+    test('effectiveFrameUrl prefers the chosen avatar frame, else the VIP frame', () {
+      final chosen = mapSeatDecoration(const SeatDisplay(
+        position: 1,
+        avatarFrameUrl: 'https://cdn/mine.png',
+        vipFrameUrl: 'https://cdn/vip.png',
+      ));
+      expect(chosen.effectiveFrameUrl, 'https://cdn/mine.png');
+
+      final vipOnly = mapSeatDecoration(const SeatDisplay(position: 1, vipFrameUrl: 'https://cdn/vip.png'));
+      expect(vipOnly.effectiveFrameUrl, 'https://cdn/vip.png');
+    });
+
+    test('without a real badge, the display-only shield guess still applies (override path)', () {
+      final d = mapSeatDecoration(const SeatDisplay(position: 1, vipGrade: 2));
+      expect(d.vipBadgeUrl, isNull);
+      expect(d.vipShieldIndex, 1);
+    });
   });
 
   group('mapSeatDecorations', () {

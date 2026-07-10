@@ -6,6 +6,7 @@ import { serializableTx } from '../../lib/tx.js';
 import { AppError } from '../../lib/errors.js';
 import { moderationService } from '../moderation/moderation.service.js';
 import { medalService } from '../medals/medal.service.js';
+import { vipService } from '../vip/vip.service.js';
 import { emitToUser } from '../../realtime/gateway.js';
 
 const FOLLOW = 1;
@@ -47,15 +48,29 @@ export class UsersService {
     return p;
   }
 
+  // Enrich a serialized profile with the real per-tier VIP frame/badge URLs
+  // (Profile.vipLevel → VipLevel art). Null for non-VIP users — never fabricated.
+  private async withVipArt(base: ReturnType<typeof serializeProfile>, vipLevel: number) {
+    const art = await vipService.levelArt(vipLevel);
+    return { ...base, vip_frame_url: art?.frame_url ?? null, vip_badge_url: art?.badge_url ?? null };
+  }
+
   async getMyProfile(userId: bigint) {
     const p = await this.requireProfile(userId);
-    return { ...serializeProfile(p), medals: await medalService.adornedMedals(userId) };
+    const [medals, base] = await Promise.all([
+      medalService.adornedMedals(userId),
+      this.withVipArt(serializeProfile(p), p.vipLevel),
+    ]);
+    return { ...base, medals };
   }
 
   // Public profile with viewer-relative relationship flags + adorned medals/badges.
   async getProfile(viewerId: bigint | null, targetId: bigint) {
     const p = await this.requireProfile(targetId);
-    const [base, medals] = [serializeProfile(p), await medalService.adornedMedals(targetId)];
+    const [medals, base] = await Promise.all([
+      medalService.adornedMedals(targetId),
+      this.withVipArt(serializeProfile(p), p.vipLevel),
+    ]);
     const withMedals = { ...base, medals };
     if (viewerId == null || viewerId === targetId) {
       return { ...withMedals, is_self: viewerId === targetId };

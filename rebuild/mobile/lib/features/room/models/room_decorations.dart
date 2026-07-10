@@ -98,6 +98,8 @@ enum CpFrame {
 class SeatDecoration {
   const SeatDecoration({
     this.avatarFrameUrl,
+    this.vipFrameUrl,
+    this.vipBadgeUrl,
     this.wornMedalUrl,
     this.vipShieldIndex,
     this.cpFrame,
@@ -109,13 +111,24 @@ class SeatDecoration {
   /// silently absent if the URL is null or fails to load.
   final String? avatarFrameUrl;
 
+  /// **REAL** — the user's VIP-tier frame (`vip_frame_url`, remote). Used as the
+  /// frame slot when the user hasn't chosen an explicit [avatarFrameUrl].
+  final String? vipFrameUrl;
+
+  /// **REAL** — the user's VIP-tier badge (`vip_badge_url`, remote). Small chip.
+  final String? vipBadgeUrl;
+
   /// **REAL** — the user's first adorned medal icon (remote).
   final String? wornMedalUrl;
 
   /// Index into [AppAssets.vipShields]. The grade→shield mapping is UNKNOWN, so
   /// this is a display index only — never asserted as a VIP level, and never set
-  /// from the real `vip_level` at runtime.
+  /// from the real `vip_level` at runtime. Superseded by the real [vipBadgeUrl].
   final int? vipShieldIndex;
+
+  /// The frame to paint around the avatar: the user's chosen [avatarFrameUrl],
+  /// else their real VIP-tier frame. Both are real server URLs — never invented.
+  String? get effectiveFrameUrl => avatarFrameUrl ?? vipFrameUrl;
 
   /// Recovered CP (couple) avatar frame, if this seat is in a couple.
   final CpFrame? cpFrame;
@@ -130,6 +143,8 @@ class SeatDecoration {
 
   bool get isEmpty =>
       avatarFrameUrl == null &&
+      vipFrameUrl == null &&
+      vipBadgeUrl == null &&
       wornMedalUrl == null &&
       vipShieldIndex == null &&
       cpFrame == null &&

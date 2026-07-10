@@ -14,12 +14,16 @@ Map<String, dynamic> profile({
   int vip = 0,
   int wealth = 0,
   String? frame,
+  String? vipFrame,
+  String? vipBadge,
   List<Map<String, dynamic>>? medals,
 }) =>
     {
       'vip_level': vip,
       'wealth_level': wealth,
       'avatar_frame_url': frame,
+      'vip_frame_url': vipFrame,
+      'vip_badge_url': vipBadge,
       'medals': medals,
     };
 
@@ -47,6 +51,23 @@ void main() {
       final u1 = display.seats.firstWhere((s) => s.position == 1);
       expect(u1.wealthLevel, 5);
       expect(u1.wornMedalUrl, 'https://cdn/medal_a.png'); // first adorned medal
+    });
+
+    test('hydrates the real per-tier VIP frame/badge from the profile', () {
+      final display = buildRoomDisplay(
+        seats: [occupied(0, 'vip')],
+        profiles: {
+          'vip': profile(vip: 8, vipFrame: 'https://cdn/vipframe.png', vipBadge: 'https://cdn/vipbadge.png'),
+        },
+      );
+      final s = display.seats.single;
+      expect(s.vipLevel, 8);
+      expect(s.vipFrameUrl, 'https://cdn/vipframe.png');
+      expect(s.vipBadgeUrl, 'https://cdn/vipbadge.png');
+      // A non-VIP profile leaves them null (never fabricated).
+      final plain = buildRoomDisplay(seats: [occupied(0, 'u')], profiles: {'u': profile()});
+      expect(plain.seats.single.vipFrameUrl, isNull);
+      expect(plain.seats.single.vipBadgeUrl, isNull);
     });
 
     test('with no meta: neutral defaults (throne, PK none, host fallback null)', () {
