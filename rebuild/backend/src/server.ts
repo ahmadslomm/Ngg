@@ -30,6 +30,7 @@ import { usersService } from './modules/users/users.service.js';
 import { coupleRoutes } from './modules/couple/couple.routes.js';
 import { momentRoutes } from './modules/moments/moment.routes.js';
 import { chatRoutes } from './modules/chat/chat.routes.js';
+import { dmRoutes } from './modules/dm/dm.routes.js';
 import { bottleRoutes } from './modules/bottle/bottle.routes.js';
 import { medalRoutes, adminMedalRoutes } from './modules/medals/medal.routes.js';
 
@@ -163,6 +164,7 @@ async function build() {
     await momentRoutes(v1);
     await chatRoutes(v1);
     await discoveryRoutes(v1);
+    await dmRoutes(v1);
     await bottleRoutes(v1);
     await medalRoutes(v1);
     await adminMedalRoutes(v1);

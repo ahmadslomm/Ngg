@@ -191,7 +191,8 @@ class RoomScreen extends ConsumerWidget {
         roomId: roomId,
         position: seat.position,
         onSendGift: (uid) => _openGiftPanelFor(context, controller, uid),
-        onViewProfile: (uid) => context.push('/profile/$uid'),
+        onViewProfile: (uid) => context.push('/profile/'),
+        onMessage: (uid) => context.push('/dm/$uid'),
       );
       return;
     }
@@ -228,7 +229,8 @@ class RoomScreen extends ConsumerWidget {
                     roomId: roomId,
                     position: s.position,
                     onSendGift: (uid) => _openGiftPanelFor(context, controller, uid),
-                    onViewProfile: (uid) => context.push('/profile/$uid'),
+                    onViewProfile: (uid) => context.push('/profile/'),
+        onMessage: (uid) => context.push('/dm/$uid'),
                   );
                 },
               ),

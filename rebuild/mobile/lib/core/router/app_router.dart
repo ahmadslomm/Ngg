@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/bottle/bottle_screen.dart';
+import '../../features/dm/dm_chat_screen.dart';
 import '../../features/bottle/throw_bottle_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/medals/medal_wall_screen.dart';
@@ -60,6 +61,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/room/:id',
       builder: (_, s) => RoomScreen(roomId: s.pathParameters['id']!),
+    ),
+    GoRoute(
+      path: '/dm/:uid',
+      builder: (_, s) => DmChatScreen(otherUid: s.pathParameters['uid']!, title: s.extra as String?),
     ),
   ],
   // TODO: auth redirect guard once session provider is wired.

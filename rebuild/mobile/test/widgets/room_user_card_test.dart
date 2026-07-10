@@ -61,6 +61,7 @@ Widget _host({
           position: position,
           onSendGift: (_) {},
           onViewProfile: (_) {},
+          onMessage: (_) {},
         ),
       ),
     ),

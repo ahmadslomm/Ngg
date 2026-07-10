@@ -3,9 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voxa/core/network/api_client.dart';
+import 'package:voxa/core/providers.dart';
+import 'package:voxa/core/realtime/realtime_client.dart';
 import 'package:voxa/core/theme/app_theme.dart';
 import 'package:voxa/features/splash/splash_screen.dart';
 import 'package:voxa/features/auth/login_screen.dart';
+import 'package:voxa/features/dm/dm_models.dart';
+import 'package:voxa/features/dm/dm_providers.dart';
+import 'package:voxa/features/dm/dm_repository.dart';
 import 'package:voxa/features/home/home_screen.dart';
 import 'package:voxa/features/home/room_discovery.dart';
 import 'package:voxa/features/room/models/room_card.dart';
@@ -94,7 +99,13 @@ void main() {
     t.view.devicePixelRatio = 3.0;
     addTearDown(t.view.reset);
     await t.pumpWidget(ProviderScope(
-      overrides: [roomRepositoryProvider.overrideWithValue(_GoldenRooms())],
+      overrides: [
+        roomRepositoryProvider.overrideWithValue(_GoldenRooms()),
+        dmRepoProvider.overrideWithValue(_GoldenDm()),
+        // Plain stream instead of a live socket — the DM unread badge watches the realtime
+        // events, and a real connect() would leave socket.io reconnect timers pending.
+        realtimeEventsProvider.overrideWithValue(const Stream<RoomEvent>.empty()),
+      ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.dark,
@@ -102,6 +113,7 @@ void main() {
       ),
     ));
     await t.pump(const Duration(milliseconds: 300));
+    await _settleImages(t); // decode the header logo asset so it renders deterministically
     await expectLater(find.byType(MaterialApp), matchesGoldenFile('images/home.png'));
   });
 
@@ -266,4 +278,14 @@ class _GoldenRooms extends RoomRepository {
       RoomCard(roomId: '4', name: 'Night Chat', roomType: 0, seatCount: 8, onlineCount: 22, isLocked: false, host: RoomHost(uid: '13', nick: 'Yusuf')),
     ];
   }
+}
+
+// No-network DM repo for the `home` golden — the nav badge reads the unread total,
+// which would otherwise fire a real request and leave a pending timeout timer.
+class _GoldenDm extends DmRepository {
+  _GoldenDm() : super(ApiClient());
+  @override
+  Future<int> unreadTotal() async => 0;
+  @override
+  Future<List<Conversation>> conversations({int page = 1, int pageSize = 20}) async => const [];
 }

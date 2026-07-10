@@ -183,6 +183,39 @@ model WalletLedger {
   @@index([refType, refId])
 }
 
+// 1:1 private message + conversation. The original ran DM through Tencent IM (wire
+// protocol EXCLUDED); this is the rebuild's own model on the owned gateway. The
+// conversation-list shape (unread_count, last body, other user) mirrors the recovered
+// `waitio_session` fields. Text-only (media/voice/read-receipts = UNKNOWN, not built).
+// See PRIVATE_IM_RECOVERY_REPORT.md.
+model DmConversation {
+  id           BigInt    @id @default(autoincrement())
+  userLow      BigInt    // canonical pair: min(uidA, uidB)
+  userHigh     BigInt    // max(uidA, uidB)
+  lastMessageId BigInt?
+  lastText     String?   @db.VarChar(500) // last-message preview (waitio_session.body)
+  lastSenderId BigInt?
+  lastAt       DateTime?
+  readLow      BigInt?   // last message id read by userLow (powers unread_count)
+  readHigh     BigInt?   // last message id read by userHigh
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  @@unique([userLow, userHigh])
+  @@index([userLow, lastAt])
+  @@index([userHigh, lastAt])
+}
+
+model DmMessage {
+  id             BigInt   @id @default(autoincrement())
+  conversationId BigInt
+  senderId       BigInt
+  recipientId    BigInt
+  text           String   @db.VarChar(500)
+  status         Int      @default(0) // 0 visible, 1 deleted
+  createdAt      DateTime @default(now())
+  @@index([conversationId, id])
+}
+
 // Public in-room chat message. The original app ran chat through the proprietary
 // Tencent IM SDK (message wire format not statically recoverable); this is the
 // rebuild's own persisted model on the owned realtime gateway. Text-only + a status

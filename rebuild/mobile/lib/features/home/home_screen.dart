@@ -8,6 +8,8 @@ import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_typography.dart';
 import '../../core/widgets/brand_background.dart';
+import '../dm/conversations_screen.dart';
+import '../dm/dm_providers.dart';
 import '../moments/moments_screen.dart';
 import '../profile/profile_screen.dart';
 import '../room/models/room_card.dart';
@@ -46,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 2:
         return const MomentsScreen();
       case 3:
-        return const _PlaceholderTab(title: 'Messages', icon: Icons.chat_bubble_rounded);
+        return const ConversationsScreen();
       default:
         return const ProfileScreen();
     }
@@ -81,14 +83,17 @@ class _TabDef {
   final IconData icon;
 }
 
-class _BrandNavBar extends StatelessWidget {
+class _BrandNavBar extends ConsumerWidget {
   const _BrandNavBar({required this.index, required this.tabs, required this.onTap});
   final int index;
   final List<_TabDef> tabs;
   final ValueChanged<int> onTap;
 
+  static const int _messagesTab = 3;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final unread = ref.watch(dmUnreadProvider); // real DM unread total (getIMNum)
     return Container(
       decoration: BoxDecoration(
         color: AppColors.bgDeep,
@@ -108,10 +113,10 @@ class _BrandNavBar extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          tabs[i].icon,
-                          size: 24,
-                          color: i == index ? AppColors.primary : AppColors.onDark50,
+                        _NavIcon(
+                          icon: tabs[i].icon,
+                          active: i == index,
+                          badge: i == _messagesTab ? unread : 0,
                         ),
                         const SizedBox(height: 2),
                         Text(
@@ -129,6 +134,37 @@ class _BrandNavBar extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// A nav icon with an optional unread badge (used for the Messages tab).
+class _NavIcon extends StatelessWidget {
+  const _NavIcon({required this.icon, required this.active, this.badge = 0});
+  final IconData icon;
+  final bool active;
+  final int badge;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = active ? AppColors.primary : AppColors.onDark50;
+    if (badge <= 0) return Icon(icon, size: 24, color: color);
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Icon(icon, size: 24, color: color),
+        Positioned(
+          right: -6,
+          top: -4,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+            constraints: const BoxConstraints(minWidth: 15),
+            decoration: const BoxDecoration(color: AppColors.warnRed, borderRadius: BorderRadius.all(Radius.circular(8))),
+            child: Text(badge > 99 ? '99+' : '$badge',
+                textAlign: TextAlign.center, style: AppTypography.micro.copyWith(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 9)),
+          ),
+        ),
+      ],
     );
   }
 }

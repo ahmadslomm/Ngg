@@ -4,6 +4,48 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Phase 9.4 private messaging / 1:1 DM (owned gateway, `emitToUser`)
+
+**Context:** Verified one-to-one private messaging — REST send + persisted conversation/message
+history + realtime per-user delivery + unread counters — on the rebuild's **owned** Socket.IO
+gateway. Evidence-first. The original ran DM through **Tencent IMSDK 9.0.7657**, whose C2C message
+DTO / conversation-sync / encryption / read-receipt / typing wire format are **proprietary and not
+statically recoverable (EXCLUDED)**; the gateway is the "owned replacement for the Tencent-IM
+layer", so DM is a **rebuild-owned** feature. The recovered `waitio_session` table (§A.6) drives
+only the conversation-list **fields** (other user, unread_count, last-message preview, last time,
+nick, avatar), not the wire. `UsersRoamMsg.getIMNum` anchors the unread total. Full detail:
+`PRIVATE_IM_RECOVERY_REPORT.md`.
+
+**Backend (additive, proven-missing — DM was a 🔴 zero-file gap):**
+- Prisma `DmConversation` (canonical `userLow`/`userHigh` pair + `@@unique`; `lastText/lastSenderId/
+  lastAt` preview; `readLow/readHigh` per-side read pointers) + `DmMessage` (+migration
+  `20260710215421_private_dm`); `dm.service` (send: self/empty/length/`isBlocked` both-ways →
+  upsert+append+preview; conversations: recent-first + batched profiles + unread past read-pointer;
+  history: newest-first id-cursor; markRead; unreadTotal = `getIMNum` role); `dm.routes`
+  (`GET /dm/unread`, `GET /dm`, `POST /dm/:uid` emits **`dm.message` via `emitToUser`** + per-route
+  rate-limit, `GET /dm/:uid`, `POST /dm/:uid/read`). No existing route/service/permission changed.
+  tsc 0 · vitest **167/167** (+7).
+
+**Mobile (rides the shared socket — architecture intact):**
+- `DmMessage`/`Conversation` models (`waitio_session` shape; presence `online`/`in_room` omitted =
+  UNKNOWN); `DmRepository`; `DmChatController` (seed history, mark read, filter `dm.message` to this
+  pair, dedupe, 200-cap), `dmConversationsProvider`, `DmUnreadController` — all on the existing
+  `realtimeEventsProvider`, **no new connection**.
+- Messages tab → real `ConversationsScreen`; `/dm/:uid` chat screen (virtualized bubbles + composer);
+  nav-bar unread badge (`_NavIcon` + `dmUnreadProvider`); **Message** shortcut on the room user card.
+
+**VERIFIED:** 1:1 send · conversation list · chat screen · realtime `dm.message` (`emitToUser`) ·
+history + `before` cursor · pagination · per-conversation + total unread (`getIMNum`) · read-pointer
+(unread only) · block both-ways (reuse `isBlocked`) · unicode emoji. **UNKNOWN → not built:**
+sender-facing read receipts, typing, delivery status, image/voice/file, presence, quick-chat presets.
+**EXCLUDED:** Tencent IMSDK C2C DTO / sync / encryption.
+
+**Verification:** `flutter analyze` clean · `flutter test` **154/154** (+5; home golden updated for the
+unread badge, made deterministic via `_settleImages` + plain realtime-stream override; room goldens
+unchanged) · `flutter build apk --release` **316.7 MB** (sha256 `1ed2cbd4…70aabbf`).
+
+---
+
 ## 2026-07-10 — Phase 9.3 real room discovery (`GET /rooms`)
 
 **Context:** Replace the fake home grid with real, paginated room discovery from real

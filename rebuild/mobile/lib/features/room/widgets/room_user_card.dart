@@ -33,12 +33,14 @@ class RoomUserCard extends ConsumerStatefulWidget {
     required this.position,
     required this.onSendGift,
     required this.onViewProfile,
+    required this.onMessage,
   });
 
   final String roomId;
   final int position;
   final void Function(String uid) onSendGift;
   final void Function(String uid) onViewProfile;
+  final void Function(String uid) onMessage;
 
   static Future<void> show(
     BuildContext context, {
@@ -46,6 +48,7 @@ class RoomUserCard extends ConsumerStatefulWidget {
     required int position,
     required void Function(String uid) onSendGift,
     required void Function(String uid) onViewProfile,
+    required void Function(String uid) onMessage,
   }) {
     return showModalBottomSheet<void>(
       context: context,
@@ -56,6 +59,7 @@ class RoomUserCard extends ConsumerStatefulWidget {
         position: position,
         onSendGift: onSendGift,
         onViewProfile: onViewProfile,
+        onMessage: onMessage,
       ),
     );
   }
@@ -211,10 +215,15 @@ class _RoomUserCardState extends ConsumerState<RoomUserCard> {
   Widget _primaryActions(RoomCardActions a, String uid, bool isSelf) {
     return Row(
       children: [
-        if (a.canFollow)
+        if (a.canFollow) ...[
           Expanded(child: _btn(_following == true ? 'Following' : 'Follow', _following == true ? Icons.check : Icons.person_add_alt, _busy ? null : () => _toggleFollow(uid))),
-        if (a.canFollow) const SizedBox(width: AppSpacing.sm),
+          const SizedBox(width: AppSpacing.sm),
+        ],
         Expanded(child: _btn('Profile', Icons.account_circle_outlined, () { Navigator.of(context).maybePop(); widget.onViewProfile(uid); })),
+        if (!isSelf) ...[
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(child: _btn('Message', Icons.chat_bubble_outline, () { Navigator.of(context).maybePop(); widget.onMessage(uid); })),
+        ],
         if (a.canGift) ...[
           const SizedBox(width: AppSpacing.sm),
           Expanded(child: _btn('Gift', Icons.card_giftcard, () { Navigator.of(context).maybePop(); widget.onSendGift(uid); }, filled: true)),
