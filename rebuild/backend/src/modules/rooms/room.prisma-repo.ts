@@ -113,10 +113,20 @@ export class PrismaRoomRepo implements RoomRepo {
       update: {},
       create: { roomId: id, userId: BigInt(userId), role },
     });
+    await this.syncOnlineCount(id);
   }
 
   async removeMember(roomId: string, userId: string): Promise<void> {
-    await prisma.roomMember.deleteMany({ where: { roomId: BigInt(roomId), userId: BigInt(userId) } });
+    const id = BigInt(roomId);
+    await prisma.roomMember.deleteMany({ where: { roomId: id, userId: BigInt(userId) } });
+    await this.syncOnlineCount(id);
+  }
+
+  // Keep the denormalized Room.onlineCount exact against the real RoomMember set, so
+  // discovery can order/display a truthful count without an aggregate per query.
+  private async syncOnlineCount(roomId: bigint): Promise<void> {
+    const n = await prisma.roomMember.count({ where: { roomId } });
+    await prisma.room.update({ where: { id: roomId }, data: { onlineCount: n } });
   }
 
   async setStatus(roomId: string, status: number): Promise<void> {

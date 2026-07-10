@@ -14,6 +14,7 @@ import { authRoutes } from './modules/auth/auth.routes.js';
 import { configRoutes } from './modules/config/config.routes.js';
 import { giftRoutes } from './modules/gifts/gift.routes.js';
 import { roomRoutes } from './modules/rooms/room.routes.js';
+import { discoveryRoutes } from './modules/rooms/discovery.routes.js';
 import { RoomService } from './modules/rooms/room.service.js';
 import { PrismaRoomRepo } from './modules/rooms/room.prisma-repo.js';
 import { walletRoutes } from './modules/wallet/wallet.routes.js';
@@ -161,6 +162,7 @@ async function build() {
     await coupleRoutes(v1);
     await momentRoutes(v1);
     await chatRoutes(v1);
+    await discoveryRoutes(v1);
     await bottleRoutes(v1);
     await medalRoutes(v1);
     await adminMedalRoutes(v1);

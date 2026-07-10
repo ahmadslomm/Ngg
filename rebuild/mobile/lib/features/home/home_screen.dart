@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/assets/app_assets.dart';
@@ -8,6 +10,8 @@ import '../../core/theme/app_typography.dart';
 import '../../core/widgets/brand_background.dart';
 import '../moments/moments_screen.dart';
 import '../profile/profile_screen.dart';
+import '../room/models/room_card.dart';
+import 'room_discovery.dart';
 
 /// Main shell — the original's five-tab bottom navigation, whose tabs are named
 /// exactly by the bundled `pag/home/waitio_tab_{home,live,dynamic,msg,mine}.pag`
@@ -129,17 +133,21 @@ class _BrandNavBar extends StatelessWidget {
   }
 }
 
-/// Home tab — branded room discovery. Segmented header (Hot / Near / Following /
-/// Games) over a 2-up room grid, matching the original's home structure.
-class _HomeTab extends StatefulWidget {
+/// Home tab — real room discovery. A segmented header over a paginated 2-up grid of
+/// live rooms from `GET /rooms`. Every card is real backend data; there are no
+/// placeholders. Segments map to real queries (see [room_discovery.dart]):
+/// Popular = online-count desc · New = recency · Following = followed owners ·
+/// Nearby = viewer's country. (The original's `hot_value` ranking is UNKNOWN and is
+/// NOT reproduced; "Games" was a mini-game category — EXCLUDED as proprietary.)
+class _HomeTab extends ConsumerStatefulWidget {
   const _HomeTab();
   @override
-  State<_HomeTab> createState() => _HomeTabState();
+  ConsumerState<_HomeTab> createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<_HomeTab> {
+class _HomeTabState extends ConsumerState<_HomeTab> {
   int _seg = 0;
-  static const _segs = ['Hot', 'Near', 'Following', 'Games'];
+  static const _segs = ['Popular', 'New', 'Following', 'Nearby'];
 
   @override
   Widget build(BuildContext context) {
@@ -165,18 +173,221 @@ class _HomeTabState extends State<_HomeTab> {
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
-            Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.screenH, AppSpacing.sm, AppSpacing.screenH, AppSpacing.xxxl * 2),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: AppSpacing.m,
-                  crossAxisSpacing: AppSpacing.m,
-                  childAspectRatio: 0.82,
+            Expanded(child: _body()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _body() {
+    switch (_seg) {
+      case 0:
+        return const _RoomGrid(key: ValueKey('popular'), filter: (sort: 'popular', country: null, following: false));
+      case 1:
+        return const _RoomGrid(key: ValueKey('new'), filter: (sort: 'new', country: null, following: false));
+      case 2:
+        return const _RoomGrid(key: ValueKey('following'), filter: (sort: 'popular', country: null, following: true));
+      default:
+        return const _NearbyGrid();
+    }
+  }
+}
+
+/// Nearby resolves the viewer's real country first; without one it shows an honest prompt
+/// instead of a fabricated list.
+class _NearbyGrid extends ConsumerWidget {
+  const _NearbyGrid();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(viewerCountryProvider).when(
+          loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+          error: (_, __) => const _DiscoveryMessage('Could not load your region'),
+          data: (c) => c == null
+              ? const _DiscoveryMessage('Set your country in your profile to see nearby rooms')
+              : _RoomGrid(key: ValueKey('nearby-$c'), filter: (sort: 'popular', country: c, following: false)),
+        );
+  }
+}
+
+/// Paginated, pull-to-refresh grid of real rooms for one [DiscoveryFilter].
+class _RoomGrid extends ConsumerStatefulWidget {
+  const _RoomGrid({super.key, required this.filter});
+  final DiscoveryFilter filter;
+  @override
+  ConsumerState<_RoomGrid> createState() => _RoomGridState();
+}
+
+class _RoomGridState extends ConsumerState<_RoomGrid> {
+  final _sc = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _sc.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_sc.position.pixels >= _sc.position.maxScrollExtent - 400) {
+      ref.read(roomDiscoveryProvider(widget.filter).notifier).loadMore();
+    }
+  }
+
+  @override
+  void dispose() {
+    _sc.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final st = ref.watch(roomDiscoveryProvider(widget.filter));
+    if (st.loading && st.items.isEmpty) {
+      return const Center(child: CircularProgressIndicator(color: AppColors.primary));
+    }
+    if (st.error != null && st.items.isEmpty) {
+      return _DiscoveryMessage('Could not load rooms',
+          onRetry: () => ref.read(roomDiscoveryProvider(widget.filter).notifier).refresh());
+    }
+
+    return RefreshIndicator(
+      onRefresh: () => ref.read(roomDiscoveryProvider(widget.filter).notifier).refresh(),
+      child: st.items.isEmpty
+          ? ListView(children: const [SizedBox(height: 160), _DiscoveryMessage('No live rooms here yet')])
+          : GridView.builder(
+              controller: _sc,
+              padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.screenH, AppSpacing.sm, AppSpacing.screenH, AppSpacing.xxxl * 2),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: AppSpacing.m,
+                crossAxisSpacing: AppSpacing.m,
+                childAspectRatio: 0.82,
+              ),
+              itemCount: st.items.length + (st.hasMore ? 1 : 0),
+              itemBuilder: (_, i) {
+                if (i >= st.items.length) {
+                  return const Center(child: Padding(padding: EdgeInsets.all(AppSpacing.m), child: CircularProgressIndicator(color: AppColors.primary)));
+                }
+                return _RealRoomCard(room: st.items[i]);
+              },
+            ),
+    );
+  }
+}
+
+class _DiscoveryMessage extends StatelessWidget {
+  const _DiscoveryMessage(this.text, {this.onRetry});
+  final String text;
+  final VoidCallback? onRetry;
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(text, textAlign: TextAlign.center, style: AppTypography.caption.copyWith(color: AppColors.onDark50)),
+          if (onRetry != null) ...[
+            const SizedBox(height: AppSpacing.sm),
+            TextButton(onPressed: onRetry, child: const Text('Retry')),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// A real discovery room card: real cover, name, host, live member count, party/lock/VIP
+/// indicators. Tapping opens the real room by its real id.
+class _RealRoomCard extends StatelessWidget {
+  const _RealRoomCard({required this.room});
+  final RoomCard room;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.go('/room/${room.roomId}'),
+      child: ClipRRect(
+        borderRadius: AppRadius.rLg,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Real cover, else a brand gradient (never a fabricated image).
+            if (room.coverUrl != null)
+              CachedNetworkImage(
+                imageUrl: room.coverUrl!,
+                fit: BoxFit.cover,
+                errorWidget: (_, __, ___) => const _CoverFallback(),
+                placeholder: (_, __) => const _CoverFallback(),
+              )
+            else
+              const _CoverFallback(),
+            // Legibility scrim for the bottom text.
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Color(0xCC000000)],
                 ),
-                itemCount: 8,
-                itemBuilder: (_, i) => _RoomCard(index: _seg * 10 + i),
+              ),
+            ),
+            // Top-left: live member count (real).
+            Positioned(
+              left: AppSpacing.sm,
+              top: AppSpacing.sm,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 3),
+                decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.45), borderRadius: AppRadius.rSm),
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  const Icon(Icons.people_alt_rounded, size: 12, color: Colors.white),
+                  const SizedBox(width: 3),
+                  Text('${room.onlineCount}', style: AppTypography.micro.copyWith(color: Colors.white)),
+                ]),
+              ),
+            ),
+            // Top-right: party + lock indicators (real Room.type / is_locked).
+            Positioned(
+              right: AppSpacing.sm,
+              top: AppSpacing.sm,
+              child: Row(children: [
+                if (room.isParty) _tag('Party', AppColors.primary),
+                if (room.isLocked) ...[
+                  const SizedBox(width: 4),
+                  Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.45), borderRadius: AppRadius.rSm),
+                    child: const Icon(Icons.lock_rounded, size: 12, color: Colors.white),
+                  ),
+                ],
+              ]),
+            ),
+            // Bottom: name + host.
+            Positioned(
+              left: AppSpacing.sm,
+              right: AppSpacing.sm,
+              bottom: AppSpacing.sm,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(room.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTypography.bodyStrong),
+                  const SizedBox(height: 3),
+                  if (room.host case final h?)
+                    Row(children: [
+                      CircleAvatar(
+                        radius: 8,
+                        backgroundColor: AppColors.bgElevated,
+                        backgroundImage: h.avatarUrl != null ? CachedNetworkImageProvider(h.avatarUrl!) : null,
+                        child: h.avatarUrl == null ? const Icon(Icons.person, size: 10, color: AppColors.onDark50) : null,
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(child: Text(h.nick, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTypography.micro)),
+                      if (h.isVip) ...[
+                        const SizedBox(width: 4),
+                        _tag('VIP', AppColors.gold),
+                      ],
+                    ]),
+                ],
               ),
             ),
           ],
@@ -184,6 +395,26 @@ class _HomeTabState extends State<_HomeTab> {
       ),
     );
   }
+
+  Widget _tag(String text, Color color) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+        decoration: BoxDecoration(color: color.withValues(alpha: 0.9), borderRadius: AppRadius.rSm),
+        child: Text(text, style: AppTypography.micro.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
+      );
+}
+
+class _CoverFallback extends StatelessWidget {
+  const _CoverFallback();
+  @override
+  Widget build(BuildContext context) => const DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF3A2B57), AppColors.bgDeep],
+          ),
+        ),
+      );
 }
 
 class _Header extends StatelessWidget {
@@ -252,65 +483,6 @@ class _SegChip extends StatelessWidget {
             color: active ? Colors.white : AppColors.onDark70,
             fontWeight: active ? FontWeight.w700 : FontWeight.w500,
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _RoomCard extends StatelessWidget {
-  const _RoomCard({required this.index});
-  final int index;
-  @override
-  Widget build(BuildContext context) {
-    // Deterministic brand-tinted cover per card (real covers load from room API).
-    final hue = (index * 37) % 360;
-    final cover = HSLColor.fromAHSL(1, hue.toDouble(), 0.5, 0.35).toColor();
-    return GestureDetector(
-      onTap: () => context.go('/room/$index'),
-      child: ClipRRect(
-        borderRadius: AppRadius.rLg,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [cover, AppColors.bgDeep],
-                ),
-              ),
-            ),
-            Positioned(
-              left: AppSpacing.sm,
-              top: AppSpacing.sm,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 3),
-                decoration: const BoxDecoration(color: AppColors.warnRed, borderRadius: AppRadius.rSm),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.headphones_rounded, size: 12, color: Colors.white),
-                  const SizedBox(width: 3),
-                  Text('${120 + index * 7}', style: AppTypography.micro.copyWith(color: Colors.white)),
-                ]),
-              ),
-            ),
-            Positioned(
-              left: AppSpacing.sm,
-              right: AppSpacing.sm,
-              bottom: AppSpacing.sm,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Room ${index + 1}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTypography.bodyStrong),
-                  const Text('Chat · Music · Fun', style: AppTypography.caption),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import '../../core/network/api_client.dart';
+import 'models/room_card.dart';
 import 'models/room_meta.dart';
 import 'models/room_models.dart';
 
@@ -66,6 +67,26 @@ class RoomRepository {
   Future<RtcToken> rtcToken(String roomId) async {
     final res = await _api.get('/auth/rtc-token', query: {'room': roomId});
     return RtcToken.fromJson(res.data['data'] as Map<String, dynamic>);
+  }
+
+  /// Room discovery (`GET /rooms`). `sort` = popular|new (real orderings, not the
+  /// original's UNKNOWN hot_value); `country` filters by Room.countryCode; `following`
+  /// limits to rooms whose owner the viewer follows. Offset paginated.
+  Future<List<RoomCard>> discover({
+    required String sort,
+    String? country,
+    bool following = false,
+    int page = 1,
+    int pageSize = 20,
+  }) async {
+    final res = await _api.get('/rooms', query: {
+      'sort': sort,
+      'page': page,
+      'page_size': pageSize,
+      if (country != null) 'country': country,
+      if (following) 'following': '1',
+    });
+    return ((res.data['data']['items'] as List).cast<Map<String, dynamic>>()).map(RoomCard.fromJson).toList();
   }
 
   Future<List<Gift>> gifts() async {

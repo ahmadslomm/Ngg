@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:voxa/core/network/api_client.dart';
 import 'package:voxa/core/theme/app_theme.dart';
 import 'package:voxa/features/splash/splash_screen.dart';
 import 'package:voxa/features/auth/login_screen.dart';
 import 'package:voxa/features/home/home_screen.dart';
+import 'package:voxa/features/home/room_discovery.dart';
+import 'package:voxa/features/room/models/room_card.dart';
+import 'package:voxa/features/room/room_repository.dart';
 import 'package:voxa/features/room/models/room_models.dart';
 import 'package:voxa/features/room/models/room_decorations.dart';
 import 'package:voxa/features/room/widgets/room_background.dart';
@@ -88,10 +93,13 @@ void main() {
     t.view.physicalSize = const Size(1080, 2340);
     t.view.devicePixelRatio = 3.0;
     addTearDown(t.view.reset);
-    await t.pumpWidget(MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark,
-      routerConfig: router,
+    await t.pumpWidget(ProviderScope(
+      overrides: [roomRepositoryProvider.overrideWithValue(_GoldenRooms())],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.dark,
+        routerConfig: router,
+      ),
     ));
     await t.pump(const Duration(milliseconds: 300));
     await expectLater(find.byType(MaterialApp), matchesGoldenFile('images/home.png'));
@@ -242,4 +250,20 @@ void main() {
     await _settleImages(t);
     await expectLater(find.byType(MaterialApp), matchesGoldenFile('images/room_party.png'));
   });
+}
+
+// Deterministic discovery data for the `home` golden — no network, null covers/avatars
+// (so no remote fetch), with party / lock / VIP variety.
+class _GoldenRooms extends RoomRepository {
+  _GoldenRooms() : super(ApiClient());
+  @override
+  Future<List<RoomCard>> discover({required String sort, String? country, bool following = false, int page = 1, int pageSize = 20}) async {
+    if (page != 1) return const [];
+    return const [
+      RoomCard(roomId: '1', name: 'Golden Lounge', roomType: 0, seatCount: 8, onlineCount: 128, isLocked: false, host: RoomHost(uid: '10', nick: 'Layla', vipLevel: 3)),
+      RoomCard(roomId: '2', name: 'Party Palace', roomType: 1, seatCount: 12, onlineCount: 76, isLocked: false, host: RoomHost(uid: '11', nick: 'Omar')),
+      RoomCard(roomId: '3', name: 'Private VIP', roomType: 0, seatCount: 8, onlineCount: 41, isLocked: true, host: RoomHost(uid: '12', nick: 'Sara', vipLevel: 7)),
+      RoomCard(roomId: '4', name: 'Night Chat', roomType: 0, seatCount: 8, onlineCount: 22, isLocked: false, host: RoomHost(uid: '13', nick: 'Yusuf')),
+    ];
+  }
 }

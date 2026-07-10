@@ -4,6 +4,38 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Phase 9.3 real room discovery (`GET /rooms`)
+
+**Context:** Replace the fake home grid with real, paginated room discovery from real
+Room/Profile fields. Evidence-first. Two decisive findings: `Room.onlineCount` was a **dead
+field** (setter never called) — so the truthful count is `count(RoomMember)`; and there is **no
+`hot_value`** and the original ranking formula is unrecoverable — so ranking is not reproduced,
+only transparent real orderings. Mini-game categories EXCLUDED. Full detail:
+`ROOM_DISCOVERY_RECOVERY_REPORT.md`.
+
+**Backend (additive):**
+- **Activated `Room.onlineCount`**: `PrismaRoomRepo.add/removeMember` recompute it =
+  `count(RoomMember)` (localized to real infra; service + in-memory repo unchanged).
+- `discovery.service` (`status=1`; optional country / followed-owner filters; orderBy
+  onlineCount|createdAt desc; batched host profiles, real fields) + `discovery.routes` `GET /rooms`.
+  No existing route/service/permission changed. tsc 0 · vitest **160/160** (+5).
+
+**Mobile (placeholders deleted):**
+- `RoomCard`/`RoomHost` models; `RoomRepository.discover`; `RoomDiscoveryController` (offset
+  pagination, `hasMore` = full page); `roomRepositoryProvider` (injectable); `viewerCountryProvider`.
+- Home rewritten: real **Popular / New / Following / Nearby** segments over a paginated grid
+  (infinite scroll + pull-to-refresh); `_RealRoomCard` (real cover/name/host/online-count +
+  Party/lock/VIP) → real `/room/:id`. Fake `_RoomCard` + `Hot/Near/Following/Games` removed.
+
+**VERIFIED:** discovery/listing/pagination/live-status/online-count(made real)/host/cover/VIP/
+Party/Popular/New/Following/Nearby. **UNKNOWN → not built:** hot_value formula, recommend, search,
+official, current-speakers, live-auto-update. **EXCLUDED:** mini-game categories, PK badge.
+
+**Verification:** `flutter analyze` clean · `flutter test` **149/149** (+5, home golden regenerated) ·
+`flutter build apk --release` **316.7 MB**.
+
+---
+
 ## 2026-07-10 — Phase 9.2 real public room chat (owned gateway)
 
 **Context:** Real in-room chat — REST send + persisted history + realtime broadcast — on the
