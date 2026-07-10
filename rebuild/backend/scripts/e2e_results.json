@@ -1,0 +1,502 @@
+{
+  "run": "1783660039667-548819",
+  "base": "http://127.0.0.1:8080/v1",
+  "at": "2026-07-10T05:07:20.884Z",
+  "ids": {
+    "A": "275",
+    "B": "276",
+    "C": "277",
+    "roomId": "24",
+    "agencyId": "44"
+  },
+  "total": 81,
+  "passed": 81,
+  "results": [
+    {
+      "group": "1. Registration",
+      "name": "user A registers → 200 + token + uid",
+      "pass": true,
+      "evidence": "uid=275"
+    },
+    {
+      "group": "1. Registration",
+      "name": "user B registers → 200 + token + uid",
+      "pass": true,
+      "evidence": "uid=276"
+    },
+    {
+      "group": "1. Registration",
+      "name": "user C registers → 200 + token + uid",
+      "pass": true,
+      "evidence": "uid=277"
+    },
+    {
+      "group": "1. Registration",
+      "name": "A and B are distinct users",
+      "pass": true,
+      "evidence": "275 != 276"
+    },
+    {
+      "group": "2. Login",
+      "name": "re-login existing A → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "2. Login",
+      "name": "re-login returns SAME uid (login, not new user)",
+      "pass": true,
+      "evidence": "275 == 275"
+    },
+    {
+      "group": "2. Login",
+      "name": "re-login issues a valid JWT access token",
+      "pass": true,
+      "evidence": "jwt segments=3"
+    },
+    {
+      "group": "3. Room creation",
+      "name": "A creates room → 200 + room_id",
+      "pass": true,
+      "evidence": "room_id=24"
+    },
+    {
+      "group": "3. Room creation",
+      "name": "room returns agora channel",
+      "pass": true,
+      "evidence": "channel=room:24"
+    },
+    {
+      "group": "3. Room creation",
+      "name": "room seat_count = 8",
+      "pass": true,
+      "evidence": "seat_count=8"
+    },
+    {
+      "group": "4. Second user joins",
+      "name": "B joins room → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "4. Second user joins",
+      "name": "join returns rtc role",
+      "pass": true,
+      "evidence": "rtcRole=audience"
+    },
+    {
+      "group": "4. Second user joins",
+      "name": "A joins own room → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "5. Seat operations",
+      "name": "A takes seat 0 → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "5. Seat operations",
+      "name": "B takes seat 1 → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "5. Seat operations",
+      "name": "seat 0 occupied by A",
+      "pass": true,
+      "evidence": "seat0.userId=275"
+    },
+    {
+      "group": "5. Seat operations",
+      "name": "seat 1 occupied by B",
+      "pass": true,
+      "evidence": "seat1.userId=276"
+    },
+    {
+      "group": "5. Seat operations",
+      "name": "B switches to seat 3 → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "5. Seat operations",
+      "name": "B now on seat 3, seat 1 empty",
+      "pass": true,
+      "evidence": "seat3=276"
+    },
+    {
+      "group": "5. Seat operations",
+      "name": "B cannot take A's occupied seat 0 → rejected",
+      "pass": true,
+      "evidence": "status=409 msg=seat_taken"
+    },
+    {
+      "group": "6. Microphone permissions",
+      "name": "B self-mutes own seat → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "6. Microphone permissions",
+      "name": "seat shows micMuted (self) = true",
+      "pass": true,
+      "evidence": "micMuted=true"
+    },
+    {
+      "group": "6. Microphone permissions",
+      "name": "B self-unmutes → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "6. Microphone permissions",
+      "name": "owner A force-mutes B → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "6. Microphone permissions",
+      "name": "seat shows micMutedByAdmin = true",
+      "pass": true,
+      "evidence": "byAdmin=true"
+    },
+    {
+      "group": "6. Microphone permissions",
+      "name": "B CANNOT self-clear a force-mute → 403 admin_muted",
+      "pass": true,
+      "evidence": "status=403 msg=admin_muted"
+    },
+    {
+      "group": "6. Microphone permissions",
+      "name": "owner A clears force-mute → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "6. Microphone permissions",
+      "name": "non-staff B cannot force-mute A's seat → rejected",
+      "pass": true,
+      "evidence": "status=403 msg=not_allowed"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "recharge order created",
+      "pass": true,
+      "evidence": "order=22"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "verify grants coins → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "wallet coins increased by grant (330)",
+      "pass": true,
+      "evidence": "0 -> 330"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "admin login → admin_token",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "admin coin adjust +100000 → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "wallet reflects admin adjust",
+      "pass": true,
+      "evidence": "330 -> 100330"
+    },
+    {
+      "group": "8. Gift sending",
+      "name": "A sends gift to B in room → 200",
+      "pass": true,
+      "evidence": "status=200 tx=19"
+    },
+    {
+      "group": "8. Gift sending",
+      "name": "response reports coins_after",
+      "pass": true,
+      "evidence": "coins_after=100329"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "sender A coins debited by gift cost (1)",
+      "pass": true,
+      "evidence": "100330 -> 100329"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "recipient B beans increased",
+      "pass": true,
+      "evidence": "0 -> 1"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "A ledger has recharge + gift rows",
+      "pass": true,
+      "evidence": "rows=3"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "B income records the gift",
+      "pass": true,
+      "evidence": "records=1"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "A wallet reconciles (balance == ledger sum)",
+      "pass": true,
+      "evidence": "{\"ok\":true,\"checks\":{\"coins\":{\"wallet\":\"100329\",\"ledger\":\"100329\"},\"beans\":{\"wallet\":\"0\",\"ledger\":\"0\"},\"vipCoins\":{\"wallet\":\"0\",\"ledger\":\"0\"}}}"
+    },
+    {
+      "group": "7. Wallet balance updates",
+      "name": "B wallet reconciles",
+      "pass": true,
+      "evidence": "{\"ok\":true,\"checks\":{\"coins\":{\"wallet\":\"0\",\"ledger\":\"0\"},\"beans\":{\"wallet\":\"1\",\"ledger\":\"1\"},\"vipCoins\":{\"wallet\":\"0\",\"ledger\":\"0\"}}}"
+    },
+    {
+      "group": "9. VIP purchase",
+      "name": "A purchases VIP level 1 → 200",
+      "pass": true,
+      "evidence": "status=200 body={\"level\":1,\"expiresAt\":\"2026-08-09T05:07:20.026Z\",\"coinsAfter\":\"99329\",\"historyId\":\"40\"}"
+    },
+    {
+      "group": "9. VIP purchase",
+      "name": "VIP debits coins by plan price (1000)",
+      "pass": true,
+      "evidence": "100329 -> 99329"
+    },
+    {
+      "group": "9. VIP purchase",
+      "name": "GET /vip/me shows active VIP",
+      "pass": true,
+      "evidence": "active=true level=1"
+    },
+    {
+      "group": "9. VIP purchase",
+      "name": "VIP has expiry set",
+      "pass": true,
+      "evidence": "expires_at=2026-08-09T05:07:20.026Z"
+    },
+    {
+      "group": "10. Ranking updates",
+      "name": "A appears on Wealthy board with score>0",
+      "pass": true,
+      "evidence": "entry={\"rank\":4,\"subject_id\":\"275\",\"score\":1}"
+    },
+    {
+      "group": "10. Ranking updates",
+      "name": "B appears on Charm board with score>0",
+      "pass": true,
+      "evidence": "entry={\"rank\":4,\"subject_id\":\"276\",\"score\":1}"
+    },
+    {
+      "group": "10. Ranking updates",
+      "name": "Room board has entries",
+      "pass": true,
+      "evidence": "rows=5"
+    },
+    {
+      "group": "10. Ranking updates",
+      "name": "GET /rankings/me returns A rank",
+      "pass": true,
+      "evidence": "rank={\"rank\":4,\"score\":1}"
+    },
+    {
+      "group": "11. Agency operations",
+      "name": "A creates agency → 200",
+      "pass": true,
+      "evidence": "agency=44"
+    },
+    {
+      "group": "11. Agency operations",
+      "name": "A (President) invites B → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "11. Agency operations",
+      "name": "B sees pending invite",
+      "pass": true,
+      "evidence": "invites=1"
+    },
+    {
+      "group": "11. Agency operations",
+      "name": "B accepts invite → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "11. Agency operations",
+      "name": "B is now an agency member",
+      "pass": true,
+      "evidence": "members=2"
+    },
+    {
+      "group": "11. Agency operations",
+      "name": "A promotes B to BD → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "11. Agency operations",
+      "name": "agency statistics → 200",
+      "pass": true,
+      "evidence": "status=200 body={\"total_commission\":\"0\",\"records\":0,\"members\":2,\"hosts\":0}"
+    },
+    {
+      "group": "11. Agency operations",
+      "name": "host report → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "11. Agency operations",
+      "name": "A removes B from agency → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "admin suspends C → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "suspended C is blocked (403 account_suspended)",
+      "pass": true,
+      "evidence": "status=403 msg=account_suspended"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "admin unsuspends C → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "C can access again after unsuspend",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "A blocks B → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "blocked list contains B",
+      "pass": true,
+      "evidence": "list=[{\"id\":\"9\",\"userId\":\"275\",\"targetId\":\"276\",\"type\":2,\"createdAt\":\"2026-07-10T05:07:20.102Z\"}]"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "A unblocks B → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "owner A bans C from room → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "banned C cannot join room → 403 room_banned",
+      "pass": true,
+      "evidence": "status=403 msg=room_banned"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "unban lifts the ban → C can join",
+      "pass": true,
+      "evidence": "unban=200 join=200"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "A reports B → 200",
+      "pass": true,
+      "evidence": "status=200 id=19"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "admin sees the report",
+      "pass": true,
+      "evidence": "reports=19"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "admin handles report → 200",
+      "pass": true,
+      "evidence": "status=200"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "moderation/audit logs recorded",
+      "pass": true,
+      "evidence": "logs=20"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "admin endpoint rejects no token → 401",
+      "pass": true,
+      "evidence": "status=401"
+    },
+    {
+      "group": "12. Moderation & Admin",
+      "name": "admin endpoint rejects user token → 4010",
+      "pass": true,
+      "evidence": "status=401 code=4010"
+    },
+    {
+      "group": "13. WebSocket synchronization",
+      "name": "B websocket connects (JWT auth)",
+      "pass": true,
+      "evidence": "connected"
+    },
+    {
+      "group": "13. WebSocket synchronization",
+      "name": "received gift.received over websocket",
+      "pass": true,
+      "evidence": "ev={\"giftId\":\"1\",\"qty\":1,\"senderId\":\"275\",\"recipientIds\":[\"276\"],\"unitPrice\":1,\"tot"
+    },
+    {
+      "group": "13. WebSocket synchronization",
+      "name": "events carry monotonic seq",
+      "pass": true,
+      "evidence": "seq=14"
+    },
+    {
+      "group": "13. WebSocket synchronization",
+      "name": "received rank.update over websocket",
+      "pass": true,
+      "evidence": "ev=true"
+    },
+    {
+      "group": "13. WebSocket synchronization",
+      "name": "received seat.update over websocket",
+      "pass": true,
+      "evidence": "ev={\"position\":0,\"userId\":null,\"state\":0}"
+    },
+    {
+      "group": "13. WebSocket synchronization",
+      "name": "websocket rejects missing token → unauthorized",
+      "pass": true,
+      "evidence": "err=unauthorized"
+    }
+  ]
+}

@@ -3,9 +3,15 @@ import { z } from 'zod';
 import { Role } from './seat-state.js';
 import type { RoomService } from './room.service.js';
 
+// Injected guard: returns true if the user is banned from the room. Kept as a
+// dependency (not a direct moderation import) so the route factory stays
+// infra-agnostic — in-memory tests pass a no-op, prod wires the Prisma-backed check.
+export type RoomBanCheck = (userId: string, roomId: string) => boolean | Promise<boolean>;
+
 const ERROR_STATUS: Record<string, number> = {
   room_unavailable: 404, not_allowed: 403, only_owner: 403, insufficient_role: 403,
   cannot_kick_owner: 403, cannot_change_owner: 403, cannot_grant_owner: 400, admin_muted: 403,
+  room_banned: 403,
   seat_locked: 409, seat_taken: 409, already_seated: 409, seat_empty: 409, not_locked: 409, not_seated: 409,
   seat_not_found: 404,
 };
@@ -14,7 +20,7 @@ function fail(reply: any, error: string) {
 }
 
 // Factory: routes are bound to an injected service (Prisma-backed in prod, in-memory in tests).
-export function roomRoutes(service: RoomService) {
+export function roomRoutes(service: RoomService, isBanned: RoomBanCheck = () => false) {
   return async function (app: FastifyInstance) {
     const uid = (req: any) => String(req.user.id);
 
@@ -31,7 +37,9 @@ export function roomRoutes(service: RoomService) {
     });
 
     app.post('/rooms/:id/join', { preHandler: [app.authenticate] }, async (req, reply) => {
-      const r = await service.join((req.params as any).id, uid(req));
+      const roomId = (req.params as any).id;
+      if (await isBanned(uid(req), roomId)) return fail(reply, 'room_banned');
+      const r = await service.join(roomId, uid(req));
       if (!r.ok) return fail(reply, r.error!);
       return { code: 0, message: 'ok', data: r.data };
     });

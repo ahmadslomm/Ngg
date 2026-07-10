@@ -85,7 +85,9 @@ async function build() {
     await configRoutes(v1);
     await authRoutes(v1);
     await giftRoutes(v1);
-    await roomRoutes(roomService)(v1);
+    await roomRoutes(roomService, (userId, roomId) =>
+      moderationService.isRoomBanned(BigInt(userId), BigInt(roomId)),
+    )(v1);
     await walletRoutes(v1);
     await vipRoutes(v1);
     await rankingRoutes(v1);
