@@ -4,6 +4,33 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Phase 9.1 room user card + permission-aware host tools
+
+**Context:** Replace the room's stubbed occupied-seat tap and empty `onMore` with a real occupant
+**user card** and **host tools**, wired only to backend capabilities that already exist. **No backend
+change · RoomController unchanged · no permission invented.** Full detail: `ROOM_USERCARD_HOSTTOOLS_REPORT.md`.
+
+**Permission model (VERIFIED vs UNKNOWN):** the client proves **owner** status (`owner_id` is on
+join/seats) and the target's forced-mute state; the owner out-ranks everyone in `seat-state.ts`, so
+owner-gated host tools are guaranteed server-valid. **Admin (non-owner staff) status is UNKNOWN
+client-side** (the `roles` map isn't exposed) → host tools shown to the owner only; documented, not
+invented (closing it needs an additive backend field — deferred).
+
+**Flutter (additive, modular, data-driven):**
+- `room_user_card_actions.dart` — pure, tested `computeRoomCardActions` (the owner-subset decisions);
+  `RoomModAction` closed to the exact backend transitions.
+- `widgets/room_user_card.dart` — modal card: real profile (avatar + recovered VIP frame/badge +
+  medals) + Profile/Follow/Gift + owner-only Host tools (mute/unmute · remove seat · lock · kick ·
+  set/remove admin). Actions hit existing endpoints; results flow through RoomController's existing
+  `seat.update`/`mic.update`/`user.kicked` handlers.
+- `room_repository.dart` +`kick`/`setRole` (thin wrappers over existing routes).
+- `room_screen.dart` — seat-tap → card; `onMore` → members sheet → card; single-recipient gift panel.
+
+**Verification:** `flutter analyze` clean · `flutter test` **138/138** (+9) · goldens unchanged ·
+backend **148/148** (untouched) · `flutter build apk --release` **316.6 MB**.
+
+---
+
 ## 2026-07-10 — Phase 9.0 forensic gap audit (audit only — no code/architecture change)
 
 **Context:** Complete forensic audit of the remaining unrecovered room ecosystem — every VERIFIED

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/session.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
@@ -24,6 +25,7 @@ import 'widgets/party_type_bar.dart';
 import 'widgets/pk_result_overlay.dart';
 import 'widgets/seat_tile.dart';
 import 'widgets/gift_panel.dart';
+import 'widgets/room_user_card.dart';
 
 /// Live room, reconstructed to the original ZaffaLive chrome (see
 /// ORIGINAL_ROOM_FORENSIC_EVIDENCE.md): throne backdrop, host cover + online
@@ -121,7 +123,7 @@ class RoomScreen extends ConsumerWidget {
                       seat: host,
                       isHost: true,
                       label: host.isOccupied ? 'Host' : 'Host seat',
-                      onTap: () => _onSeatTap(controller, host),
+                      onTap: () => _onSeatTap(context, controller, host),
                       decoration: seatDecorations[host.position] ?? SeatDecoration.none,
                     ),
                   const SizedBox(height: AppSpacing.m),
@@ -141,7 +143,7 @@ class RoomScreen extends ConsumerWidget {
                           SeatTile(
                             seat: seat,
                             isHost: false,
-                            onTap: () => _onSeatTap(controller, seat),
+                            onTap: () => _onSeatTap(context, controller, seat),
                             decoration: seatDecorations[seat.position] ?? SeatDecoration.none,
                           ),
                       ],
@@ -167,7 +169,7 @@ class RoomScreen extends ConsumerWidget {
         onEmoji: () {},
         onMic: controller.toggleSelfMute,
         onGift: () => _openGiftPanel(context, controller, state),
-        onMore: () {},
+        onMore: () => _openMembers(context, controller, state.seats),
       ),
     );
   }
@@ -180,10 +182,71 @@ class RoomScreen extends ConsumerWidget {
     return null;
   }
 
-  Future<void> _onSeatTap(dynamic controller, Seat seat) async {
+  Future<void> _onSeatTap(BuildContext context, dynamic controller, Seat seat) async {
     if (seat.state == SeatState.locked) return;
-    if (seat.isOccupied) return; // occupied → user card (future); no action for now
+    if (seat.isOccupied) {
+      // Occupied → the real occupant card (profile · follow · gift · owner host tools).
+      await RoomUserCard.show(
+        context,
+        roomId: roomId,
+        position: seat.position,
+        onSendGift: (uid) => _openGiftPanelFor(context, controller, uid),
+        onViewProfile: (uid) => context.push('/profile/$uid'),
+      );
+      return;
+    }
     await controller.takeSeat(seat.position);
+  }
+
+  /// Members list (host-menu entry): every occupant → their user card.
+  void _openMembers(BuildContext context, dynamic controller, List<Seat> seats) {
+    final occupants = [for (final s in seats) if (s.isOccupied) s];
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.bgDeep,
+      builder: (_) => SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpacing.m, AppSpacing.sm, AppSpacing.m, AppSpacing.sm),
+              child: Text('Room members (${occupants.length})',
+                  style: AppTypography.caption.copyWith(color: AppColors.onDark50)),
+            ),
+            for (final s in occupants)
+              ListTile(
+                dense: true,
+                leading: const Icon(Icons.person, color: AppColors.onDark50),
+                title: Text(s.userId ?? '', style: AppTypography.caption),
+                subtitle: Text('Seat ${s.position + 1}', style: AppTypography.micro.copyWith(color: AppColors.onDark50)),
+                trailing: const Icon(Icons.chevron_right, color: AppColors.onDarkFaint),
+                onTap: () {
+                  Navigator.of(context).maybePop();
+                  RoomUserCard.show(
+                    context,
+                    roomId: roomId,
+                    position: s.position,
+                    onSendGift: (uid) => _openGiftPanelFor(context, controller, uid),
+                    onViewProfile: (uid) => context.push('/profile/$uid'),
+                  );
+                },
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Gift panel pre-targeted at a single recipient (from the user card).
+  void _openGiftPanelFor(BuildContext context, dynamic controller, String uid) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.bgDeep,
+      builder: (_) => GiftPanel(
+        onSend: (gift, qty) => controller.sendGift(gift.id, [uid], qty: qty),
+      ),
+    );
   }
 
   void _openGiftPanel(BuildContext context, dynamic controller, dynamic state) {

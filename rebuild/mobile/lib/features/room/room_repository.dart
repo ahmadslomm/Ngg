@@ -53,6 +53,16 @@ class RoomRepository {
   Future<void> setLock(String roomId, int pos, bool locked) =>
       _api.post('/rooms/$roomId/seats/$pos/lock', data: {'locked': locked});
 
+  /// Host/admin kicks a user from the room (frees any seat they hold). Server enforces
+  /// the permission rules (`POST /rooms/:id/kick`). Additive wrapper over an existing route.
+  Future<void> kick(String roomId, String userId) =>
+      _api.post('/rooms/$roomId/kick', data: {'user_id': userId});
+
+  /// Owner-only role change: `0` Listener · `1` Admin (`2` Owner is immutable server-side).
+  /// Maps to the existing `POST /rooms/:id/roles`; the server is authoritative on permission.
+  Future<void> setRole(String roomId, String userId, int role) =>
+      _api.post('/rooms/$roomId/roles', data: {'user_id': userId, 'role': role});
+
   Future<RtcToken> rtcToken(String roomId) async {
     final res = await _api.get('/auth/rtc-token', query: {'room': roomId});
     return RtcToken.fromJson(res.data['data'] as Map<String, dynamic>);
