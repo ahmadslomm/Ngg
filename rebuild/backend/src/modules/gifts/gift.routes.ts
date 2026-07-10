@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { prisma } from '../../lib/prisma.js';
 import { sendGift, AppError } from './gift.service.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
+import { rankingService, Board } from '../ranking/ranking.service.js';
 
 const sendGiftSchema = z.object({
   gift_id: z.coerce.bigint(),
@@ -37,6 +38,17 @@ export async function giftRoutes(app: FastifyInstance) {
         idempotencyKey,
       });
       if (result.event.room) emitRoomEvent(result.event.room, result.event);
+
+      // Feed ranking boards (best-effort; never blocks the gift response).
+      const total = Number(result.totalCoins);
+      const perRecipient = Number(result.perRecipientBeans);
+      rankingService.addScore(Board.Wealthy, senderId, total).catch(() => {});
+      for (const rid of body.recipient_ids) rankingService.addScore(Board.Charm, rid, perRecipient).catch(() => {});
+      if (body.room_id != null) {
+        rankingService.addScore(Board.Room, body.room_id, total).catch(() => {});
+        emitRoomEvent(`room:${body.room_id}`, { ev: 'rank.update', data: { boards: [Board.Charm, Board.Wealthy, Board.Room] } });
+      }
+
       return {
         code: 0, message: 'ok',
         data: {
