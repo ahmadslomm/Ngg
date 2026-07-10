@@ -4,6 +4,24 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Phase 8.5 runtime verification (validation only — no code/architecture change)
+
+**Context:** Runtime & forensic validation of every recovered system. **No features, no architecture
+change** — nothing testable failed. Full detail: `RUNTIME_VALIDATION_REPORT.md`.
+
+**Verified at runtime (in the runtimes available here — no device/emulator/Agora):** backend
+**148/148** vitest on live Postgres+Redis + prior live-WebSocket E2E logs (room join, gift send →
+coins debit → `gift.received`, seat/rank events, wallet reconcile); mobile **129/129** widget tests
+(room display, VIP frame/badge, medals, avatar frames, theme/backdrop, gift effects SVGA+PAG
+renderer dispatch, combo/lucky/rocket/bomb, error/fallback paths); goldens `room`/`room_pk`/`room_party`
+visually inspected (throne bg, seat decorations, VIP shields, CP frame, PK win+lose rings, party
+bg/mask/cards); APK forensics (`libpag.so` ×3 ABIs, 68 `.pag`, 92 `.svga`, PK/party assets shipped).
+
+**Result:** 0 FAIL. On-device metrics (FPS/GPU/native-PAG memory/Agora) marked **UNKNOWN — not
+FAIL** (no device here). Runtime-proven perf guards: overlay queue cap (6) + per-effect TTL expiry.
+
+---
+
 ## 2026-07-10 — Add the libpag runtime → PAG renderer on GiftEffectLayer
 
 **Context:** Evidence-first PAG phase. The original app rendered `.pag` natively via **libpag**
