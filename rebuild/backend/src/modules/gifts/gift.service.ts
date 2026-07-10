@@ -12,6 +12,7 @@ export interface SendGiftInput {
   qty: number;
   recipientIds: bigint[];
   idempotencyKey?: string;
+  luckyRand?: number; // test seam for deterministic lucky rolls
 }
 
 export interface SendGiftResult {
@@ -19,8 +20,29 @@ export interface SendGiftResult {
   totalCoins: bigint;
   senderCoinsAfter: bigint;
   perRecipientBeans: bigint;
+  giftCategory: number;
   event: GiftReceivedEvent;
+  lucky?: LuckyWin; // present only for lucky-category gifts
 }
+
+export interface LuckyWin {
+  multiplier: number;
+  coinsWon: bigint;
+}
+
+// A lucky gift's reward table: weighted multipliers of the amount spent. Pure + testable.
+export interface LuckyConfig { table: { multiplier: number; weight: number }[] }
+
+export function rollLucky(cfg: LuckyConfig, rand: number = Math.random()): number {
+  const table = (cfg?.table ?? []).filter((e) => e.weight > 0);
+  if (table.length === 0) return 0;
+  const total = table.reduce((s, e) => s + e.weight, 0);
+  let x = Math.min(Math.max(rand, 0), 0.9999999) * total;
+  for (const e of table) { if (x < e.weight) return e.multiplier; x -= e.weight; }
+  return table[table.length - 1].multiplier;
+}
+
+const LUCKY_CATEGORY = 2;
 
 export interface GiftReceivedEvent {
   ev: 'gift.received';
@@ -32,7 +54,7 @@ export interface GiftReceivedEvent {
   };
 }
 
-const LEDGER = { GIFT_SEND: 1, GIFT_RECV: 2 } as const;
+const LEDGER = { GIFT_SEND: 1, GIFT_RECV: 2, LUCKY_WIN: 8 } as const;
 const CURRENCY = { COINS: 0, BEANS: 1 } as const;
 
 // Charm gained by receiver and wealth gained by sender per coin spent.
@@ -102,6 +124,28 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
       });
     }
 
+    // Lucky gift: roll a weighted multiplier and credit the winnings back to the sender —
+    // atomically, in the same transaction, with its own ledger row. Normal gifts skip this.
+    let lucky: LuckyWin | undefined;
+    let finalCoins = senderCoinsAfter;
+    if (gift.category === LUCKY_CATEGORY && gift.luckyConfig) {
+      const multiplier = rollLucky(gift.luckyConfig as unknown as LuckyConfig, input.luckyRand);
+      if (multiplier > 0) {
+        const coinsWon = (totalCoins * BigInt(Math.round(multiplier * 100))) / 100n;
+        finalCoins = senderCoinsAfter + coinsWon;
+        await tx.wallet.update({ where: { userId: senderId }, data: { coins: finalCoins, version: { increment: 1 } } });
+        await tx.walletLedger.create({
+          data: {
+            userId: senderId, currency: CURRENCY.COINS, delta: coinsWon,
+            balanceAfter: finalCoins, reason: LEDGER.LUCKY_WIN, refType: 'gift_lucky', refId: giftId,
+          },
+        });
+        lucky = { multiplier, coinsWon };
+      } else {
+        lucky = { multiplier: 0, coinsWon: 0n };
+      }
+    }
+
     const txn = await tx.giftTransaction.create({
       data: {
         senderId, roomId: roomId ?? null, giftId, qty, unitPrice, totalCoins,
@@ -120,8 +164,8 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
     };
 
     return {
-      transactionId: txn.id, totalCoins, senderCoinsAfter,
-      perRecipientBeans: perRecipientCoins, event,
+      transactionId: txn.id, totalCoins, senderCoinsAfter: finalCoins,
+      perRecipientBeans: perRecipientCoins, giftCategory: gift.category, event, lucky,
     };
   });
 }

@@ -8,7 +8,41 @@
 
 ---
 
-## 0-Z. ARCHITECTURE-INTEGRATION PASS (this pass) — Implemented · Tested · Running
+## 0-ZZ. P1 SOCIAL-CONTENT PASS (this pass) — Implemented · Tested · Running
+
+Four `Ngg`-recovered features that were **honestly deferred** last pass are now built as additive,
+non-invasive modules. No preserved vertical's internals were modified; the gift economy's atomic
+`sendGift` remained the single source of truth (the lucky payout was added **inside** its existing
+transaction with its own ledger row; combo/rocket/bomb are best-effort Redis effects that can never
+affect a committed gift).
+
+| Feature | Implemented | Tested (real DB/Redis) | Running (live :8080) | Notes |
+|---|---|---|---|---|
+| **Moments** (feed) | create (text/image/voice), idempotent like, comment, feed/user/detail, Redis view-dedupe, like/comment notifications | ✅ 5 API | ✅ create→feed→like(count=1)→comment(count=1)→non-author delete **403**→author delete→**404** live | `Moment`/`MomentLike`/`MomentComment` |
+| **Voice bottle** | throw, random pick (excludes own), one-per-user updatable reaction, author feed, reaction notifications | ✅ 5 API | ✅ throw→mine→react→pick(not-own) live | `VoiceBottle`/`BottleReaction` |
+| **Medals / badges** | seeded catalogue, idempotent award, adorn (≤6), derived VIP/host/ranker sync, admin grant-by-code; auto-`first_gift`; embedded in profile | ✅ 5 API | ✅ gift→auto-award→adorn→public-profile shows it; admin grant (idempotent) live | `Medal`/`UserMedal` |
+| **Gift effects** | atomic in-txn **lucky** payout (weighted `rollLucky`, ledgered `LuckyWin`) + Redis **combo**/**rocket**/**bomb** progress, room-scoped events | ✅ 7 (pure `rollLucky` + live lucky/combo/rocket/bomb) | ✅ combo≥2→`gift.combo`, `rocket.update`, lucky ×3→`gift.lucky` (coins_won 300, ledgered), 90k bomb→`bomb.explode` live | economy untouched; effects best-effort |
+
+**Verification this pass (all commands actually run):**
+- **DB migration:** `prisma migrate status` → *up to date*; migration `20260710060932_p1_social_content` applied; **7 P1 tables** present (38 total); `prisma validate` clean; `prisma generate` + `seed` (7-medal catalogue upserted) OK.
+- `npx tsc --noEmit` → **exit 0** (whole backend, incl. new tests).
+- `npx vitest run` → **145 passed (21 files)** — up from 123 (+22: 5 moments API, 5 bottle API, 5 medals API, 7 gift-effects). **Zero regressions.**
+- Live server on **:8080** healthy; existing full E2E `node scripts/e2e_full.mjs` → **96/96** (regression, P1 code wired in). New `node scripts/e2e_p1.mjs` → **23/23** — moments, bottle, medals, and all four realtime gift-effect events asserted against the running server. **Live total: 119/119.**
+- Mobile: `flutter analyze` → **No issues found!** · `flutter test` → **2/2** · `flutter build apk --debug` → **app-debug.apk (271 MB)**. (Mobile unchanged this pass — P1 is backend + realtime; the feed/bottle/medal-wall/effect screens are the remaining client work.)
+
+**One honest finding (pre-existing, not P1-introduced, not fixed):** the shared `replyError` maps only
+`AppError`; a Zod **schema** validation failure is rethrown and surfaces as **5xx** (not 4xx) — uniformly
+across all 17 modules. P1 service-level guards (`empty_text`, `no_voice`, `not_author`, `medal_not_owned`,
+etc.) return correct 4xx. Changing `replyError` would alter the HTTP contract for every module, so it was
+left as-is and the two affected tests assert the real contract (bad input is rejected, status ≥ 400).
+
+**Honest boundaries of this pass:** PK battles remain design-only; real OAuth/receipt verification,
+a notification push worker, the admin/moderator React UIs, and **mobile screens for the four new P1
+modules** are not built. Everything claimed "Running" was hit on the live server.
+
+---
+
+## 0-Z. ARCHITECTURE-INTEGRATION PASS (prior pass) — Implemented · Tested · Running
 
 The `Ngg` repo is a **forensic recovery** (decompiled reference + design docs), not runnable code, so
 "integration" meant adopting its recovered **feature designs** — no original code/strings/secrets/assets

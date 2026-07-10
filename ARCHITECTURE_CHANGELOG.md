@@ -4,6 +4,52 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — P1 social-content: moments, voice bottles, medals, gift effects
+
+**Context:** Implemented and verified the four social-content features `ARCHITECTURE_COMPARISON_REPORT.md`
+listed as honest gaps. All additive; no preserved vertical's internals were modified. No original code,
+strings, secrets, or assets copied.
+
+### Added (additive-only)
+- **Moments module** (`modules/moments/`): `POST /v1/moments`, `GET /v1/moments/feed`,
+  `GET /v1/users/:id/moments`, `GET|DELETE /v1/moments/:id`, `POST|DELETE /v1/moments/:id/like`,
+  `POST|GET /v1/moments/:id/comments`. Text/image/voice posts; idempotent likes; comments; Redis-backed
+  unique view dedupe; author-only delete (soft, `status=2`); like/comment notifications via the per-user
+  channel. Models `Moment`/`MomentLike`/`MomentComment`.
+- **Voice-bottle module** (`modules/bottle/`): `POST /v1/bottles`, `GET /v1/bottles/pick` (random,
+  excludes own), `GET /v1/bottles/mine`, `POST|DELETE /v1/bottles/:id/react`. One updatable reaction
+  per user; reaction notifications. Models `VoiceBottle`/`BottleReaction`.
+- **Medals module** (`modules/medals/`): `GET /v1/medals`, `GET /v1/medals/me`,
+  `GET /v1/users/:id/medals`, `POST|DELETE /v1/medals/:id/adorn`, admin `POST /v1/admin/medals/award`.
+  Idempotent award-by-code, adorn cap (≤6), derived VIP/host/ranker badge sync, auto-`first_gift` on
+  gift send; adorned medals embedded in own+public profile (`users.service`). Models `Medal`/`UserMedal`
+  + seeded 7-medal catalogue.
+- **Gift effects** (`modules/gifts/gift-effects.service.ts` + `gift.service`/`gift.routes`): a weighted
+  **lucky** payout computed and credited **inside** the existing atomic `sendGift` transaction with a new
+  `LedgerReason.LuckyWin(8)` row (economy invariant preserved); Redis-backed **combo** (streak window),
+  **rocket** (room progress→launch), and **bomb** (hidden-fuse pool→explode) as best-effort, room-scoped
+  effects that never touch the committed gift. New realtime events: `gift.combo`, `rocket.update/launch`,
+  `bomb.tick/explode`, `gift.lucky`. Top-gifter `Board.Gift` now fed on send.
+- **DB migration** `20260710060932_p1_social_content`: 7 tables (Moment, MomentLike, MomentComment,
+  VoiceBottle, BottleReaction, Medal, UserMedal) + indexes/FKs. Seed made idempotent (count-guarded
+  gifts/vip/products; medal catalogue upserted by `code`).
+
+### Boundaries / notes
+- Backend + realtime only; **no mobile screens** for these four modules yet (feed/bottle/medal-wall/
+  effect animations are the remaining client work).
+- Pre-existing (not introduced here): Zod schema-validation failures surface as 5xx via the shared
+  `replyError` (which maps only `AppError`); left unchanged to avoid altering the contract of all 17
+  modules. Service-level P1 guards return correct 4xx.
+
+### Verification
+- DB: migration applied (7 P1 tables, 38 total); `prisma validate` clean; generate + seed OK.
+- Backend: **145/145** tests (was 123; +22: 5 moments, 5 bottle, 5 medals, 7 gift-effects) · `tsc` exit 0.
+- Live E2E: **96/96** regression (`e2e_full.mjs`) + **23/23** new (`e2e_p1.mjs`) = **119/119** on :8080,
+  including all four gift-effect events and a ledgered ×3 lucky win.
+- Mobile: `flutter analyze` clean · `flutter test` 2/2 · **debug APK builds** (271 MB) — unchanged this pass.
+
+---
+
 ## 2026-07-10 — Architecture integration from `ahmadslomm/Ngg`
 
 **Context:** Compared our production rebuild against the `ahmadslomm/Ngg` repository (a forensic

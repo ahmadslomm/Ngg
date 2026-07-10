@@ -5,6 +5,8 @@ import { sendGift, AppError } from './gift.service.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
 import { rankingService, Board } from '../ranking/ranking.service.js';
 import { coupleService } from '../couple/couple.service.js';
+import { bumpCombo, addRocketProgress, addBombPool } from './gift-effects.service.js';
+import { medalService, MEDAL_CODES } from '../medals/medal.service.js';
 
 const sendGiftSchema = z.object({
   gift_id: z.coerce.bigint(),
@@ -39,19 +41,42 @@ export async function giftRoutes(app: FastifyInstance) {
         idempotencyKey,
       });
       if (result.event.room) emitRoomEvent(result.event.room, result.event);
+      const giftCategory = result.giftCategory;
 
       // Feed ranking boards (best-effort; never blocks the gift response).
       const total = Number(result.totalCoins);
       const perRecipient = Number(result.perRecipientBeans);
       rankingService.addScore(Board.Wealthy, senderId, total).catch(() => {});
+      rankingService.addScore(Board.Gift, senderId, total).catch(() => {}); // top-gifter leaderboard
+      medalService.award(senderId, MEDAL_CODES.FIRST_GIFT).catch(() => {}); // achievement (idempotent)
       for (const rid of body.recipient_ids) {
         rankingService.addScore(Board.Charm, rid, perRecipient).catch(() => {});
         // Gifting a CP partner deepens intimacy (no-op unless they are an active couple).
         coupleService.addIntimacy(senderId, rid, BigInt(result.perRecipientBeans)).catch(() => {});
       }
+
+      // Lucky win animation (from the atomic sendGift result).
+      if (result.lucky && result.lucky.multiplier > 0 && result.event.room) {
+        emitRoomEvent(result.event.room, { ev: 'gift.lucky', data: { senderId: String(senderId), multiplier: result.lucky.multiplier, coinsWon: String(result.lucky.coinsWon), giftId: String(body.gift_id) } });
+      }
+
+      // Interactive effects (combo / rocket / bomb) — best-effort, room-scoped.
       if (body.room_id != null) {
+        const roomChan = `room:${body.room_id}`;
         rankingService.addScore(Board.Room, body.room_id, total).catch(() => {});
-        emitRoomEvent(`room:${body.room_id}`, { ev: 'rank.update', data: { boards: [Board.Charm, Board.Wealthy, Board.Room] } });
+        emitRoomEvent(roomChan, { ev: 'rank.update', data: { boards: [Board.Charm, Board.Wealthy, Board.Room, Board.Gift] } });
+        bumpCombo(senderId, body.gift_id, body.room_id).then((c) => {
+          if (c.count >= 2) emitRoomEvent(roomChan, { ev: 'gift.combo', data: { senderId: String(senderId), giftId: String(body.gift_id), combo: c.count, comboId: c.comboId } });
+        }).catch(() => {});
+        addRocketProgress(body.room_id, total).then((r) => {
+          emitRoomEvent(roomChan, { ev: r.launched ? 'rocket.launch' : 'rocket.update', data: { progress: r.progress, threshold: r.threshold } });
+        }).catch(() => {});
+        if (giftCategory === 4 /* bomb */) {
+          addBombPool(body.room_id, total).then((bm) => {
+            if (bm.exploded) emitRoomEvent(roomChan, { ev: 'bomb.explode', data: { pool: bm.pool, triggeredBy: String(senderId) } });
+            else emitRoomEvent(roomChan, { ev: 'bomb.tick', data: { pool: bm.pool } });
+          }).catch(() => {});
+        }
       }
 
       return {
@@ -60,6 +85,7 @@ export async function giftRoutes(app: FastifyInstance) {
           transaction_id: String(result.transactionId),
           total_coins: String(result.totalCoins),
           coins_after: String(result.senderCoinsAfter),
+          lucky: result.lucky ? { multiplier: result.lucky.multiplier, coins_won: String(result.lucky.coinsWon) } : undefined,
         },
       };
     } catch (e) {

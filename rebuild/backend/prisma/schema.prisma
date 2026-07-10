@@ -464,3 +464,99 @@ model Couple {
   @@index([bUserId, status])
   @@index([status, sweetValue])
 }
+
+// ---------- Content: Moments (feed) ----------
+// A user post: text, images (mediaUrls JSON array), and/or a short voice clip. Media is
+// referenced by URL (owner-provisioned object storage); the API accepts already-uploaded URLs.
+model Moment {
+  id           BigInt   @id @default(autoincrement())
+  authorId     BigInt
+  type         Int      @default(0) // 0 text, 1 image, 2 voice
+  text         String?  @db.VarChar(1000)
+  mediaUrls    Json?    // string[] image urls
+  voiceUrl     String?
+  voiceSeconds Int      @default(0)
+  likeCount    Int      @default(0)
+  commentCount Int      @default(0)
+  viewCount    Int      @default(0)
+  status       Int      @default(0) // 0 visible, 1 hidden, 2 deleted
+  createdAt    DateTime @default(now())
+  likes        MomentLike[]
+  comments     MomentComment[]
+  @@index([status, createdAt])
+  @@index([authorId, status, createdAt])
+}
+
+model MomentLike {
+  momentId  BigInt
+  userId    BigInt
+  createdAt DateTime @default(now())
+  moment    Moment   @relation(fields: [momentId], references: [id])
+  @@id([momentId, userId])
+  @@index([userId])
+}
+
+model MomentComment {
+  id        BigInt   @id @default(autoincrement())
+  momentId  BigInt
+  userId    BigInt
+  text      String   @db.VarChar(500)
+  createdAt DateTime @default(now())
+  moment    Moment   @relation(fields: [momentId], references: [id])
+  @@index([momentId, createdAt])
+}
+
+// ---------- Content: Voice bottle ----------
+// A short anonymous-ish audio "message in a bottle" thrown to the pool and picked up by
+// random discovery. Reactions are one-per-user.
+model VoiceBottle {
+  id            BigInt   @id @default(autoincrement())
+  authorId      BigInt
+  voiceUrl      String
+  voiceSeconds  Int      @default(0)
+  caption       String?  @db.VarChar(140)
+  status        Int      @default(0) // 0 active, 1 closed, 2 removed
+  pickedCount   Int      @default(0)
+  reactionCount Int      @default(0)
+  createdAt     DateTime @default(now())
+  reactions     BottleReaction[]
+  @@index([status, createdAt])
+  @@index([authorId, createdAt])
+}
+
+model BottleReaction {
+  bottleId  BigInt
+  userId    BigInt
+  type      Int      @default(0) // 0 like, 1 heart, 2 laugh, 3 wow
+  createdAt DateTime @default(now())
+  bottle    VoiceBottle @relation(fields: [bottleId], references: [id])
+  @@id([bottleId, userId])
+  @@index([userId])
+}
+
+// ---------- Achievements: Medals & Badges ----------
+// Catalogue of awardable medals/badges. category groups them for profile display.
+model Medal {
+  id          BigInt   @id @default(autoincrement())
+  code        String   @unique @db.VarChar(48) // stable machine key (e.g. "first_gift")
+  name        String   @db.VarChar(64)
+  category    Int      @default(0) // 0 achievement, 1 vip, 2 host, 3 ranking, 4 event
+  tier        Int      @default(1)
+  iconUrl     String?
+  description String?  @db.VarChar(255)
+  sort        Int      @default(0)
+  enabled     Boolean  @default(true)
+  userMedals  UserMedal[]
+}
+
+model UserMedal {
+  id        BigInt    @id @default(autoincrement())
+  userId    BigInt
+  medalId   BigInt
+  adorned   Boolean   @default(false) // displayed on profile
+  awardedAt DateTime  @default(now())
+  expiresAt DateTime? // null = permanent
+  medal     Medal     @relation(fields: [medalId], references: [id])
+  @@unique([userId, medalId])
+  @@index([userId, adorned])
+}

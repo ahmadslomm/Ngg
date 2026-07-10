@@ -26,6 +26,9 @@ import { adminRoutes } from './modules/admin/admin.routes.js';
 import { adminAuthRoutes } from './modules/admin/admin.auth.js';
 import { userRoutes } from './modules/users/users.routes.js';
 import { coupleRoutes } from './modules/couple/couple.routes.js';
+import { momentRoutes } from './modules/moments/moment.routes.js';
+import { bottleRoutes } from './modules/bottle/bottle.routes.js';
+import { medalRoutes, adminMedalRoutes } from './modules/medals/medal.routes.js';
 
 declare module 'fastify' {
   interface FastifyInstance { authenticate: any; authenticateAdmin: any }
@@ -145,6 +148,10 @@ async function build() {
     await moderationRoutes(v1);
     await userRoutes(v1);
     await coupleRoutes(v1);
+    await momentRoutes(v1);
+    await bottleRoutes(v1);
+    await medalRoutes(v1);
+    await adminMedalRoutes(v1);
     await adminAuthRoutes(v1);
     await adminRoutes(v1);
   }, { prefix: '/v1' });

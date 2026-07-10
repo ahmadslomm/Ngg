@@ -5,6 +5,7 @@ import { prisma } from '../../lib/prisma.js';
 import { serializableTx } from '../../lib/tx.js';
 import { AppError } from '../../lib/errors.js';
 import { moderationService } from '../moderation/moderation.service.js';
+import { medalService } from '../medals/medal.service.js';
 import { emitToUser } from '../../realtime/gateway.js';
 
 const FOLLOW = 1;
@@ -47,21 +48,23 @@ export class UsersService {
   }
 
   async getMyProfile(userId: bigint) {
-    return serializeProfile(await this.requireProfile(userId));
+    const p = await this.requireProfile(userId);
+    return { ...serializeProfile(p), medals: await medalService.adornedMedals(userId) };
   }
 
-  // Public profile with viewer-relative relationship flags.
+  // Public profile with viewer-relative relationship flags + adorned medals/badges.
   async getProfile(viewerId: bigint | null, targetId: bigint) {
     const p = await this.requireProfile(targetId);
-    const base = serializeProfile(p);
+    const [base, medals] = [serializeProfile(p), await medalService.adornedMedals(targetId)];
+    const withMedals = { ...base, medals };
     if (viewerId == null || viewerId === targetId) {
-      return { ...base, is_self: viewerId === targetId };
+      return { ...withMedals, is_self: viewerId === targetId };
     }
     const [iFollow, followsMe] = await Promise.all([
       this.isFollowing(viewerId, targetId),
       this.isFollowing(targetId, viewerId),
     ]);
-    return { ...base, is_self: false, is_following: iFollow, is_followed_by: followsMe, is_friend: iFollow && followsMe };
+    return { ...withMedals, is_self: false, is_following: iFollow, is_followed_by: followsMe, is_friend: iFollow && followsMe };
   }
 
   async updateProfile(userId: bigint, patch: ProfilePatch) {

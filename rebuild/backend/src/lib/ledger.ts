@@ -15,4 +15,5 @@ export enum LedgerReason {
   AdminAdjust = 5,
   VipPurchase = 6,
   Commission = 7,
+  LuckyWin = 8, // coins returned by a lucky gift's random payout
 }
