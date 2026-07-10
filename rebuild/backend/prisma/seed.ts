@@ -1,12 +1,22 @@
 // Seeds the minimal catalogues many screens no-op without: gifts, VIP tiers, products,
 // and initial settings. All art URLs are PLACEHOLDER slots — replace with your own CDN.
 import { PrismaClient } from '@prisma/client';
+import argon2 from 'argon2';
 const prisma = new PrismaClient();
 
 async function main() {
   await prisma.setting.upsert({
     where: { key: 'feature_flags' }, update: {},
     create: { key: 'feature_flags', value: { enableLuckyBox: true, isCoinsMerchant: true, enableShare: true, enablePk: true } },
+  });
+
+  // Back-office admin (dev credentials — change in production).
+  const adminUser = process.env.ADMIN_USER ?? 'root';
+  const adminPass = process.env.ADMIN_PASS ?? 'admin123';
+  const hash = await argon2.hash(adminPass);
+  await prisma.adminUser.upsert({
+    where: { username: adminUser }, update: { passwordHash: hash },
+    create: { username: adminUser, passwordHash: hash, role: 2, enabled: true },
   });
 
   const gifts = [

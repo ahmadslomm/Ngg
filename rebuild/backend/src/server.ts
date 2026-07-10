@@ -12,9 +12,17 @@ import { giftRoutes } from './modules/gifts/gift.routes.js';
 import { roomRoutes } from './modules/rooms/room.routes.js';
 import { RoomService } from './modules/rooms/room.service.js';
 import { PrismaRoomRepo } from './modules/rooms/room.prisma-repo.js';
+import { walletRoutes } from './modules/wallet/wallet.routes.js';
+import { vipRoutes } from './modules/vip/vip.routes.js';
+import { rankingRoutes } from './modules/ranking/ranking.routes.js';
+import { agencyRoutes } from './modules/agency/agency.routes.js';
+import { moderationRoutes } from './modules/moderation/moderation.routes.js';
+import { moderationService } from './modules/moderation/moderation.service.js';
+import { adminRoutes } from './modules/admin/admin.routes.js';
+import { adminAuthRoutes } from './modules/admin/admin.auth.js';
 
 declare module 'fastify' {
-  interface FastifyInstance { authenticate: any }
+  interface FastifyInstance { authenticate: any; authenticateAdmin: any }
 }
 declare module '@fastify/jwt' {
   interface FastifyJWT { user: { id: bigint } }
@@ -34,13 +42,27 @@ async function build() {
   await app.register(jwt, { secret: env.JWT_ACCESS_SECRET });
   await app.register(rateLimit, { max: 300, timeWindow: '1 minute', redis });
 
-  // Auth decorator — resolves req.user from JWT.
+  // Auth decorator — resolves req.user from JWT and blocks suspended accounts.
   app.decorate('authenticate', async (req: any, reply: any) => {
+    let id: bigint;
     try {
       const payload = await req.jwtVerify();
-      req.user = { id: BigInt(payload.id) };
+      id = BigInt(payload.id);
     } catch {
       return reply.code(401).send({ code: 4010, message: 'unauthorized' });
+    }
+    if (await moderationService.isSuspended(id)) return reply.code(403).send({ code: 4030, message: 'account_suspended' });
+    req.user = { id };
+  });
+
+  // Admin auth decorator — requires an `adm` claim (from /admin/auth/login).
+  app.decorate('authenticateAdmin', async (req: any, reply: any) => {
+    try {
+      const payload = await req.jwtVerify();
+      if (!payload.adm) throw new Error('not_admin');
+      req.admin = { id: BigInt(payload.adm) };
+    } catch {
+      return reply.code(401).send({ code: 4010, message: 'admin_unauthorized' });
     }
   });
 
@@ -64,7 +86,13 @@ async function build() {
     await authRoutes(v1);
     await giftRoutes(v1);
     await roomRoutes(roomService)(v1);
-    // TODO: users, wallet, vip, ranking, agency, moderation, admin
+    await walletRoutes(v1);
+    await vipRoutes(v1);
+    await rankingRoutes(v1);
+    await agencyRoutes(v1);
+    await moderationRoutes(v1);
+    await adminAuthRoutes(v1);
+    await adminRoutes(v1);
   }, { prefix: '/v1' });
 
   return app;
