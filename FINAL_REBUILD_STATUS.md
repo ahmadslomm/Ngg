@@ -1,11 +1,41 @@
 # FINAL_REBUILD_STATUS.md — voxa rebuild, honest status
 
 > Truthful end-of-pass report: what was **actually executed and verified**, what is **written but not yet run against infra**, and what remains. No green-washing.
-> **Latest pass:** live-room vertical (backend end-to-end + tests + mobile feature).
+> **Latest pass:** make it runnable — backend now **boots and passes a full REST + WebSocket end-to-end smoke test against real Postgres + Redis**.
 
 ---
 
-## 1. Executed & verified — live-room pass (this pass)
+## 0. RUNNABLE STATUS (live this pass)
+
+Infra: **no Docker in this environment** → used the equivalent native services: **PostgreSQL 16** (systemd) + **Redis** (both running). Documented as the compose-equivalent.
+
+| Milestone | How verified | Result |
+|---|---|---|
+| Backend deps installed | `npm install` | ✅ exit 0 |
+| DB created + migrated | `prisma migrate dev` → 22 tables | ✅ |
+| DB seeded | `npm run seed` (5 gifts, 3 VIP, 3 products, flags) | ✅ |
+| **Backend boots** | `tsx src/server.ts` → `GET /health` | ✅ `{code:0,status:ok}` on :8080 |
+| **REST endpoints** | `scripts/verify_e2e.mjs` (config, login, rooms, seats, gifts, rtc-token) | ✅ |
+| **WebSocket** | live socket.io client joins room, receives `gift.received` w/ monotonic seq | ✅ |
+| **Login works** | `POST /v1/auth/login` → JWT access+refresh+uid | ✅ |
+| **Room creation** | `POST /v1/rooms` → room_id + agora channel | ✅ |
+| **Room joining** | `POST /v1/rooms/:id/join` → seats + rtc role | ✅ |
+| **Voice-join token** | `GET /v1/auth/rtc-token` → Agora token, uid==app uid | ✅ (dev token; real media needs a real Agora account) |
+| **Gift sending** | `POST /v1/gifts/send` → debit + beans credit + ledger + realtime event | ✅ |
+| End-to-end smoke | `node scripts/verify_e2e.mjs` | ✅ **20/20 passed** |
+| Unit/integration suite | `vitest run` | ✅ **43/43 passed** |
+| Full typecheck | `tsc --noEmit` | ✅ exit 0 |
+
+**Bugs found & fixed while making it run:**
+1. `z.coerce.boolean()` parsed `SIGN_ENFORCED=false` as **true** (non-empty string) → server wrongly required signatures. Fixed with an explicit string→boolean preprocess in `lib/env.ts`.
+2. No-body POSTs (`join`/`leave`/`take-seat`) with `content-type: application/json` hit Fastify's `FST_ERR_CTP_EMPTY_JSON_BODY`. Added an empty-body-tolerant JSON content-type parser in `server.ts`.
+3. Prisma shadow-DB needed `CREATEDB` on the app role (dev) — granted.
+
+**Backend = a working application** (not just architecture): boots, serves, persists, broadcasts.
+
+---
+
+## 1. Executed & verified — live-room pass (prior)
 
 | Check | Command | Result |
 |---|---|---|

@@ -23,6 +23,13 @@ declare module '@fastify/jwt' {
 async function build() {
   const app = Fastify({ logger: { level: env.NODE_ENV === 'test' ? 'silent' : 'info' } });
 
+  // Tolerate empty JSON bodies on no-body POSTs (join/leave/take-seat, etc.) — a client
+  // that sets content-type: application/json without a body otherwise gets a 400.
+  app.addContentTypeParser('application/json', { parseAs: 'string' }, (_req, body, done) => {
+    if (!body || (body as string).trim() === '') return done(null, {});
+    try { done(null, JSON.parse(body as string)); } catch (err) { done(err as Error, undefined); }
+  });
+
   await app.register(cors, { origin: isProd ? [] : true });
   await app.register(jwt, { secret: env.JWT_ACCESS_SECRET });
   await app.register(rateLimit, { max: 300, timeWindow: '1 minute', redis });
