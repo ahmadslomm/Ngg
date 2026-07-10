@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../gift/widgets/gift_effect_layer.dart';
+import '../gift/widgets/restored_effects.dart';
 import 'models/room_models.dart';
 import 'room_providers.dart';
 import 'widgets/seat_tile.dart';
@@ -59,7 +60,9 @@ class RoomScreen extends ConsumerWidget {
             ],
           ),
           // Never intercepts taps — seats and the gift button stay live mid-animation.
-          Positioned.fill(child: GiftEffectLayer(roomId: roomId)),
+          Positioned.fill(
+            child: GiftEffectLayer(roomId: roomId, registry: restoredGiftEffectRegistry),
+          ),
         ],
       ),
       bottomNavigationBar: _BottomBar(

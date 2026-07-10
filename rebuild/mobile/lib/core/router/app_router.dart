@@ -11,6 +11,7 @@ import '../../features/profile/profile_screen.dart';
 import '../../features/profile/relations_screen.dart';
 import '../../features/ranking/ranking_screen.dart';
 import '../../features/room/room_screen.dart';
+import '../../features/splash/splash_screen.dart';
 import '../../features/vip/vip_screen.dart';
 import '../../features/wallet/wallet_screen.dart';
 
@@ -19,8 +20,9 @@ import '../../features/wallet/wallet_screen.dart';
 /// `/moments/create` and `/bottles/throw` are pushed (not `go`) because they return the
 /// created item to the caller, which prepends it without waiting for a refetch.
 final appRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/splash',
   routes: [
+    GoRoute(path: '/splash', builder: (_, __) => const SplashScreen()),
     GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
     GoRoute(path: '/home', builder: (_, __) => const HomeScreen()),
     GoRoute(path: '/wallet', builder: (_, __) => const WalletScreen()),

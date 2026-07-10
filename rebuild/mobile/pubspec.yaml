@@ -22,7 +22,7 @@ dependencies:
   cached_network_image: ^3.3.1
   agora_rtc_engine: ^6.3.2      # voice — uses YOUR Agora app id
   permission_handler: ^11.3.1   # runtime mic permission (required for capture on Android 6+)
-  # svgaplayer_flutter / pag: add when licensed animation assets are supplied
+  svgaplayer_flutter: ^2.2.0    # renders the restored original .svga gift/room/effect assets (owned)
 
 dev_dependencies:
   flutter_test:
@@ -35,5 +35,35 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/
-    - assets/anim/          # placeholder slots — fill with your own licensed art
+    - assets/brand/
+    - assets/roomEmoji/
+    # Restored original SVGA animation assets (owned), by feature
+    - assets/anim/svga/bomb/
+    - assets/anim/svga/cp/
+    - assets/anim/svga/dj/
+    - assets/anim/svga/dynamic/
+    - assets/anim/svga/friend/
+    - assets/anim/svga/gift/
+    - assets/anim/svga/guide/
+    - assets/anim/svga/home/
+    - assets/anim/svga/hosttag/
+    - assets/anim/svga/kroom/
+    - assets/anim/svga/live/
+    - assets/anim/svga/login/
+    - assets/anim/svga/medal/
+    - assets/anim/svga/rocket/
+    - assets/anim/svga/userspace/
+    - assets/anim/svga/yinbo/
+    # Restored original PAG assets (owned), by feature
+    - assets/anim/pag/bomb/
+    - assets/anim/pag/cp/
+    - assets/anim/pag/gift/
+    - assets/anim/pag/home/
+    - assets/anim/pag/kroom/
+    - assets/anim/pag/loading/
+    - assets/anim/pag/lucky/
+    - assets/anim/pag/main/
+    - assets/anim/pag/rank/
+    - assets/anim/pag/topbanner/
+    - assets/anim/pag/userspace/
+    - assets/anim/pag/yinbo/
