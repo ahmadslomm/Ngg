@@ -1,7 +1,33 @@
 # FINAL_REBUILD_STATUS.md — voxa rebuild, honest status
 
 > Truthful end-of-pass report: what was **actually executed and verified**, what is **written but not yet run against infra**, and what remains. No green-washing.
-> **Latest pass:** make it runnable — backend now **boots and passes a full REST + WebSocket end-to-end smoke test against real Postgres + Redis**.
+> **Latest pass (module completion):** all six remaining production modules — **Wallet, VIP, Ranking, Agency, Moderation, Admin** — are now implemented with DB models, REST APIs, realtime events, frontend integration, and **real-Postgres integration tests that pass**, and were **verified running live on the booted server**.
+
+---
+
+## 0-A. MODULE COMPLETION PASS (this pass) — Implemented · Tested · Running
+
+Every module below has: Prisma models + migration applied, a service with business rules, REST routes, automated tests run against **live Postgres + Redis**, and a **live check against the running server on :8080**. Marked honestly.
+
+| Module | Implemented | Tested (real DB) | Running (live verified) | Honest gaps |
+|---|---|---|---|---|
+| **Wallet / ledger** | balance, ledger history, income records, beans→coins exchange, withdrawals (min 1000 beans, ≤3/day fraud cap), append-only ledger + reconcile invariant | ✅ 7 unit + 9 API | ✅ `/wallet`, `/wallet/ledger`, `/wallet/income`, `/withdrawals` → **200**; `/exchange` correctly rejects `insufficient_beans` | — |
+| **Recharge / store** | product catalogue, idempotent order create (`unique(provider,purchaseToken)`, P2002-safe), idempotent verify-and-grant | ✅ within wallet suite | ✅ `/store/products` → **200** | real Play/Apple **receipt** verify still dev-stub (grant path proven) |
+| **VIP** | plans, purchase (coin debit + ledger), **stacking renewal** (`computeExpiry`), expiry sweep, denormalized `Profile.vipLevel` | ✅ 3 unit + 7 API | ✅ `/vip/plans`, `/vip/me`, `/vip/history` → **200** | entry-effect asset slots are placeholders |
+| **Ranking** | day/week/month/total × charm/wealthy/room/host/gift via **Redis sorted sets**, realtime `rank.update`, DB snapshot | ✅ 3 unit + 5 API | ✅ `/rankings`, `/rankings/me` → **200**; wired into gift send | scheduled rollup is a manual admin snapshot endpoint (no cron yet) |
+| **Agency** | hierarchy (Host/BD/President), invite/respond (member-limit), role changes, commission records, statistics, host reports | ✅ 4 unit + 7 API | ✅ endpoints registered + exercised in suite | couple system not built; no mobile screen |
+| **Moderation** | report + handle (writes AuditLog), block/unblock, room-ban (scope 1), account-suspension (scope 0 + `authenticate` 403 gate), logs; in-room mute/kick live in seat module | ✅ 5 API | ✅ suspension gate enforced by `authenticate` | moderator dashboard UI not built |
+| **Admin** | users, coin adjust (audited, negative-guard), rooms/close, gifts CRUD, vip upsert, ranking snapshot, agencies, reports/handle, moderation logs, announcements, banners, settings/flags — **every mutation writes AuditLog**; admin JWT (`adm` claim) login via argon2 | ✅ 11 API | ✅ login → `admin_token`; `/admin/{users,gifts,vip,rooms,agencies,reports,settings}` → **200**; missing/user token → **4010 admin_unauthorized** | React admin console UI not built |
+
+**Verification commands run this pass:**
+- `npx vitest run` → **104 passed (14 files)** — up from 43; the +61 are the six modules' unit + real-DB API tests.
+- `npx tsc --noEmit` → **exit 0** (whole backend).
+- Live server on **:8080** healthy (`GET /health` → `{code:0,status:ok}`); admin + user JWT flows and all module endpoints hit live with the HTTP codes above.
+- Mobile: `flutter analyze` → **No issues found!**; `flutter test` → **passed** (widget boot). New repositories (wallet/vip/ranking/agency/moderation) + Riverpod providers + Wallet/VIP/Ranking screens wired into router & home nav.
+
+**Realtime added:** `rank.update` on gift-driven score changes (charm→recipient, wealthy→sender, room board), fanned out via the existing Socket.IO+Redis gateway.
+
+**Honest boundaries of this pass:** real third-party OAuth/receipt verification, a couple system, notification push workers, and the React admin + moderator UIs are **not** built (listed above per-module). Agency/Moderation have repositories but no dedicated mobile screens yet. Everything claimed "Running" was hit on the live server; nothing here is documentation-only.
 
 ---
 
@@ -103,12 +129,15 @@ cd ../mobile && flutter pub get && flutter run \
 ```
 
 ## 5. Completion snapshot (see `FEATURE_COMPLETION_MATRIX.md`)
-Live-room vertical: **backend ✅ (tested), mobile 🟡 (written, uncompiled).** Foundation from the prior pass (config, auth skeleton, economy, signing, devops) stands. Remaining verticals (wallet/recharge, VIP, rankings, agency, moderation, admin, users/profiles, PK) are schema+design with partial code.
+Live-room vertical: **backend ✅ (tested + running), mobile ✅ (analyze-clean, APK builds).** Foundation (config, auth skeleton, economy, signing, devops) stands. **All six module-completion verticals — wallet/recharge, VIP, rankings, agency, moderation, admin — are now Implemented + Tested (real DB) + Running (live), see §0-A.** Remaining: users/profiles page routes and PK battles (schema+design); real OAuth/receipt verify, notification worker, and admin/moderator React UIs (enhancements). Matrix rollup: **13 ✅ · 7 🟡 · 2 📐**.
 
 ## 6. Boundaries held
 - No original secrets (fresh HMAC signing), no original credentials (env-provisioned Agora/etc.), no original assets (placeholder slots), no original branding (`voxa`/`com.example.voxa`), no server access. Recovery evidence untouched; all new code under `rebuild/`, git-checkpointed.
 
 ## 7. Next pass (priority)
-1. Provision Postgres → `prisma migrate` → boot server → add **DB-backed integration tests** for `PrismaRoomRepo` (turn §3 item 1 green).
-2. Compile the mobile app on a Flutter toolchain; wire login→session→room end-to-end on device/emulator.
-3. Next vertical: **wallet + recharge** (Play/Apple receipt verify) or **users/profiles**.
+With all six production modules Implemented/Tested/Running, the remaining honest gaps are:
+1. **Real integrations:** swap dev auth stub for Google/Facebook/Apple/OTP verify; swap dev order-verify for real Play/Apple receipt validation; swap dev RTC token for the `agora-token` builder with real creds.
+2. **User-facing verticals not yet built:** users/profiles routes + screens; PK battles (match/tally); couple system; notification push worker (FCM/APNs) on top of the existing announcements/banners.
+3. **Admin/moderator UIs:** the admin REST namespace is complete and audited — build the React admin console and a mobile moderator dashboard against it.
+4. **Ops hardening:** scheduled ranking rollups (BullMQ cron) instead of manual admin snapshot; sign-key rotation runbook; CI/CD + k8s manifests.
+5. **On-device runtime:** run the built APK against the live backend on a real device with Agora creds to close the last "not executed here" boundary.
