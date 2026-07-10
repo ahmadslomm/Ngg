@@ -14,6 +14,7 @@ class AppAssets {
   static const _pag = 'assets/anim/pag';
 
   // Brand / bootstrap
+  static const logo = 'assets/brand/zaffa_logo.png'; // real app mascot (lion) launcher icon
   static const defaultAvatar = 'assets/brand/waitio_avatar_default_logo.png';
   static const loadingPag = '$_pag/loading/waitio_common_loading.pag';
   static const mainTopBgPag = '$_pag/main/waitio_main_top_bg.pag';

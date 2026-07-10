@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/assets/app_assets.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_typography.dart';
@@ -192,7 +193,18 @@ class _Header extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(AppSpacing.screenH, AppSpacing.m, AppSpacing.sm, AppSpacing.m),
       child: Row(
         children: [
-          Text('ZaffaLive', style: AppTypography.titleL.copyWith(color: AppColors.primary)),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+            child: Image.asset(AppAssets.logo, width: 28, height: 28, fit: BoxFit.cover),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Flexible(
+            child: Text(
+              'ZaffaLive',
+              overflow: TextOverflow.ellipsis,
+              style: AppTypography.titleL.copyWith(color: AppColors.primary),
+            ),
+          ),
           const Spacer(),
           _IconPill(icon: Icons.account_balance_wallet_rounded, onTap: () => context.go('/wallet')),
           _IconPill(icon: Icons.workspace_premium_rounded, onTap: () => context.go('/vip')),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/assets/app_assets.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_radius.dart';
@@ -63,13 +64,13 @@ class _Logo extends StatelessWidget {
       width: 96,
       height: 96,
       decoration: BoxDecoration(
-        gradient: AppColors.ctaGradient,
         borderRadius: BorderRadius.circular(AppRadius.xxl),
         boxShadow: [
           BoxShadow(color: AppColors.primary.withValues(alpha: 0.45), blurRadius: 32, spreadRadius: 2),
         ],
       ),
-      child: const Icon(Icons.spatial_audio_off_rounded, size: 48, color: Colors.white),
+      clipBehavior: Clip.antiAlias,
+      child: Image.asset(AppAssets.logo, width: 96, height: 96, fit: BoxFit.cover),
     );
   }
 }
