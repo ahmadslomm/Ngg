@@ -11,6 +11,7 @@ import 'models/room_decorations.dart';
 import 'models/room_display.dart';
 import 'models/room_model_config.dart';
 import 'models/room_models.dart';
+import 'models/room_theme_config.dart';
 import 'room_decoration_mapper.dart';
 import 'room_providers.dart';
 import 'seat_layout.dart';
@@ -55,6 +56,10 @@ class RoomScreen extends ConsumerWidget {
     final pk = display.pk;
     final seatDecorations = mapSeatDecorations(display);
 
+    // Theme / runtime-asset config: real per-room background (cover_url) + recovered
+    // bundled entry/speaking effects. Overrides use the neutral default (skin bg).
+    final theme = displayOverride != null ? RoomThemeConfig.none : ref.watch(roomThemeConfigProvider(roomId));
+
     if (state.connecting) {
       return const Scaffold(
         body: RoomBackground(child: Center(child: CircularProgressIndicator(color: AppColors.primary))),
@@ -78,6 +83,7 @@ class RoomScreen extends ConsumerWidget {
     return Scaffold(
       body: RoomBackdrop(
         skin: skin,
+        backgroundUrl: theme.backgroundUrl,
         child: SafeArea(
           bottom: false,
           child: Stack(
@@ -149,7 +155,7 @@ class RoomScreen extends ConsumerWidget {
               Positioned.fill(
                 child: GiftEffectLayer(roomId: roomId, registry: restoredGiftEffectRegistry),
               ),
-              const Positioned.fill(child: RoomEntryEffect()),
+              Positioned.fill(child: RoomEntryEffect(asset: theme.entryEffectAsset)),
             ],
           ),
         ),

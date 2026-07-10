@@ -31,6 +31,7 @@ class RoomMeta {
     this.owner,
     this.seatCount,
     this.micModeRaw,
+    this.coverUrl,
   });
 
   final String roomId;
@@ -53,6 +54,11 @@ class RoomMeta {
   /// 1 = apply; see `MicMode`). Null on a pre-update server.
   final int? micModeRaw;
 
+  /// **REAL** `cover_url` (Room.coverUrl) — the per-room background image, the
+  /// available equivalent of the original's runtime `bgImg`/`themeUrl` DTO URL.
+  /// Null → the client falls back to the recovered skin default backdrop.
+  final String? coverUrl;
+
   static const empty = RoomMeta(roomId: '');
 
   factory RoomMeta.fromJson(Map<String, dynamic> j) => RoomMeta(
@@ -62,5 +68,8 @@ class RoomMeta {
         owner: j['owner'] is Map ? OwnerRef.fromJson((j['owner'] as Map).cast<String, dynamic>()) : null,
         seatCount: (j['seat_count'] as num?)?.toInt(),
         micModeRaw: (j['mic_mode'] as num?)?.toInt(),
+        coverUrl: (j['cover_url'] is String && (j['cover_url'] as String).isNotEmpty)
+            ? j['cover_url'] as String
+            : null,
       );
 }

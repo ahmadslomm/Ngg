@@ -59,6 +59,7 @@ describe('live-room API (end-to-end through HTTP)', () => {
     expect(j.body.data.owner_id).toBe('owner');
     expect(j.body.data.seat_count).toBe(8); // real Room.seatCount (dynamic board size)
     expect(j.body.data.mic_mode).toBe(0);   // Room.mode → mic_mode (0 = free)
+    expect(j.body.data.cover_url).toBeNull(); // no per-room background set → skin default
     expect(j.body.data.seats).toHaveLength(8); // additive: original fields intact
 
     const g = await as(ctx.app, 'u1', 'GET', `/rooms/${roomId}/seats`);

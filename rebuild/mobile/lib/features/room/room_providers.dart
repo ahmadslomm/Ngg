@@ -7,6 +7,7 @@ import 'models/room_display.dart';
 import 'models/room_meta.dart';
 import 'models/room_model_config.dart';
 import 'models/room_models.dart';
+import 'models/room_theme_config.dart';
 import 'room_controller.dart';
 import 'room_display_builder.dart';
 import 'room_repository.dart';
@@ -95,4 +96,13 @@ final roomModelConfigProvider = Provider.autoDispose.family<RoomModelConfig, Str
   return meta == null
       ? RoomModelConfig.fallback(liveSeatCount)
       : RoomModelConfig.fromMeta(meta, liveSeatCount: liveSeatCount);
+});
+
+/// The recovered room theme / runtime-asset config (per-room background + bundled
+/// entry/speaking effects), built from the real room meta. Falls back to
+/// [RoomThemeConfig.none] (recovered skin default + bundled effects) until meta loads
+/// or when the server has no per-room background.
+final roomThemeConfigProvider = Provider.autoDispose.family<RoomThemeConfig, String>((ref, roomId) {
+  final meta = ref.watch(roomMetaProvider(roomId)).valueOrNull;
+  return meta == null ? RoomThemeConfig.none : RoomThemeConfig.fromMeta(meta);
 });

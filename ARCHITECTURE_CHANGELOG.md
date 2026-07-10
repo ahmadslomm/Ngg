@@ -4,6 +4,40 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Recover room theme config + runtime assets → real per-room background
+
+**Context:** Forensic recovery of the original room **theme configuration** and **runtime
+visual assets** (`themeName`, `themeUrl`/`bgImg`, seat-decoration config, entry/speaking
+effects), then connected to the room renderer. Decisive finding: the original's per-room
+background is a **runtime server URL on a vendor CDN** and was never statically captured, so
+we surface our backend's real `Room.coverUrl` as the available `bgImg`/`themeUrl` equivalent
+and never fabricate a per-room URL. Full evidence: `ROOM_THEME_RECOVERY_REPORT.md`.
+
+### Recovered fields
+Entry effect `waitio_jinchang.svga` + speaking `waitio_self_voice.svga` (**REAL** bundled
+originals, wired). `themeName` / per-room `themeUrl`/`bgImg`/`partyImg` / worn-frame
+`avatarFrameJson`/`url_lv1..4`/`svga_url`: **recovered names, values UNKNOWN** (runtime CDN /
+obfuscated) — never invented.
+
+### Backend (additive, read-only — no room logic/permissions changed)
+- `RoomRecord` + both repos carry `Room.coverUrl`; `join` + `getSeats` append `cover_url`
+  (the available per-room background). `tsc` 0 · vitest **147/147** (room API asserts `cover_url`).
+
+### Flutter
+- **`RoomThemeConfig`** DTO — `backgroundUrl` REAL (`cover_url`); `themeName` null (UNKNOWN);
+  `entryEffectAsset`/`speakingEffectAsset` = recovered bundled defaults (config-overridable).
+- **`RoomBackdrop`** rewritten — renders the real `backgroundUrl` (`CachedNetworkImage`) under
+  the legibility scrim; null/failed URL falls back to the recovered skin default so the room
+  is never blank. **`RoomEntryEffect`** now takes its SVGA from `theme.entryEffectAsset`.
+- `roomThemeConfigProvider`; `RoomScreen` wires `theme.backgroundUrl` + `theme.entryEffectAsset`.
+  Decoration/theme channel stays parallel to the controller/state — never writes to it.
+
+### Verification
+`flutter analyze` clean · `flutter test` **116/116** (`room_theme_config_test.dart` +7) ·
+golden `room` unchanged · `flutter build apk --release`. Docs: `ROOM_THEME_RECOVERY_REPORT.md`.
+
+---
+
 ## 2026-07-10 — Recover getRoomModelConfig → server-driven seat positioning
 
 **Context:** Forensic recovery of the original `room.getRoomModelConfig` model, then

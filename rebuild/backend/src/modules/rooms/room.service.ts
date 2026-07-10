@@ -27,6 +27,8 @@ export class RoomService {
   // (seat_count / mic_mode) without a separate endpoint.
   //   seat_count — real Room.seatCount (the dynamic seat board size).
   //   mic_mode   — Room.mode surfaced as the recovered mic_mode (0 = free, 1 = apply).
+  //   cover_url  — real Room.coverUrl, the per-room background (recovered `bgImg`/`themeUrl`);
+  //                null → the client uses the recovered skin default backdrop.
   private roomMeta(room: RoomRecord) {
     return {
       room_id: room.id,
@@ -34,6 +36,7 @@ export class RoomService {
       owner_id: room.ownerId,
       seat_count: room.seatCount,
       mic_mode: room.mode,
+      cover_url: room.coverUrl,
     };
   }
 
