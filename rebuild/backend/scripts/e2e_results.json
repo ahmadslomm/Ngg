@@ -1,13 +1,13 @@
 {
-  "run": "1783675861701-500805",
+  "run": "1783678092776-848652",
   "base": "http://127.0.0.1:8080/v1",
-  "at": "2026-07-10T09:31:03.435Z",
+  "at": "2026-07-10T10:08:14.416Z",
   "ids": {
-    "A": "1214",
-    "B": "1215",
-    "C": "1216",
-    "roomId": "45",
-    "agencyId": "139"
+    "A": "1322",
+    "B": "1323",
+    "C": "1324",
+    "roomId": "48",
+    "agencyId": "148"
   },
   "total": 96,
   "passed": 96,
@@ -16,25 +16,25 @@
       "group": "1. Registration",
       "name": "user A registers → 200 + token + uid",
       "pass": true,
-      "evidence": "uid=1214"
+      "evidence": "uid=1322"
     },
     {
       "group": "1. Registration",
       "name": "user B registers → 200 + token + uid",
       "pass": true,
-      "evidence": "uid=1215"
+      "evidence": "uid=1323"
     },
     {
       "group": "1. Registration",
       "name": "user C registers → 200 + token + uid",
       "pass": true,
-      "evidence": "uid=1216"
+      "evidence": "uid=1324"
     },
     {
       "group": "1. Registration",
       "name": "A and B are distinct users",
       "pass": true,
-      "evidence": "1214 != 1215"
+      "evidence": "1322 != 1323"
     },
     {
       "group": "2. Login",
@@ -46,7 +46,7 @@
       "group": "2. Login",
       "name": "re-login returns SAME uid (login, not new user)",
       "pass": true,
-      "evidence": "1214 == 1214"
+      "evidence": "1322 == 1322"
     },
     {
       "group": "2. Login",
@@ -58,13 +58,13 @@
       "group": "3. Room creation",
       "name": "A creates room → 200 + room_id",
       "pass": true,
-      "evidence": "room_id=45"
+      "evidence": "room_id=48"
     },
     {
       "group": "3. Room creation",
       "name": "room returns agora channel",
       "pass": true,
-      "evidence": "channel=room:45"
+      "evidence": "channel=room:48"
     },
     {
       "group": "3. Room creation",
@@ -106,13 +106,13 @@
       "group": "5. Seat operations",
       "name": "seat 0 occupied by A",
       "pass": true,
-      "evidence": "seat0.userId=1214"
+      "evidence": "seat0.userId=1322"
     },
     {
       "group": "5. Seat operations",
       "name": "seat 1 occupied by B",
       "pass": true,
-      "evidence": "seat1.userId=1215"
+      "evidence": "seat1.userId=1323"
     },
     {
       "group": "5. Seat operations",
@@ -124,7 +124,7 @@
       "group": "5. Seat operations",
       "name": "B now on seat 3, seat 1 empty",
       "pass": true,
-      "evidence": "seat3=1215"
+      "evidence": "seat3=1323"
     },
     {
       "group": "5. Seat operations",
@@ -184,7 +184,7 @@
       "group": "7. Wallet balance updates",
       "name": "recharge order created",
       "pass": true,
-      "evidence": "order=62"
+      "evidence": "order=66"
     },
     {
       "group": "7. Wallet balance updates",
@@ -220,7 +220,7 @@
       "group": "8. Gift sending",
       "name": "A sends gift to B in room → 200",
       "pass": true,
-      "evidence": "status=200 tx=70"
+      "evidence": "status=200 tx=81"
     },
     {
       "group": "8. Gift sending",
@@ -268,7 +268,7 @@
       "group": "9. VIP purchase",
       "name": "A purchases VIP level 1 → 200",
       "pass": true,
-      "evidence": "status=200 body={\"level\":1,\"expiresAt\":\"2026-08-09T09:31:02.188Z\",\"coinsAfter\":\"99329\",\"historyId\":\"113\"}"
+      "evidence": "status=200 body={\"level\":1,\"expiresAt\":\"2026-08-09T10:08:13.226Z\",\"coinsAfter\":\"99329\",\"historyId\":\"120\"}"
     },
     {
       "group": "9. VIP purchase",
@@ -286,37 +286,37 @@
       "group": "9. VIP purchase",
       "name": "VIP has expiry set",
       "pass": true,
-      "evidence": "expires_at=2026-08-09T09:31:02.188Z"
+      "evidence": "expires_at=2026-08-09T10:08:13.226Z"
     },
     {
       "group": "10. Ranking updates",
       "name": "A appears on Wealthy board with score>0",
       "pass": true,
-      "evidence": "entry={\"rank\":15,\"subject_id\":\"1214\",\"score\":1}"
+      "evidence": "entry={\"rank\":16,\"subject_id\":\"1322\",\"score\":1}"
     },
     {
       "group": "10. Ranking updates",
       "name": "B appears on Charm board with score>0",
       "pass": true,
-      "evidence": "entry={\"rank\":3,\"subject_id\":\"1215\",\"score\":1}"
+      "evidence": "entry={\"rank\":3,\"subject_id\":\"1323\",\"score\":1}"
     },
     {
       "group": "10. Ranking updates",
       "name": "Room board has entries",
       "pass": true,
-      "evidence": "rows=15"
+      "evidence": "rows=17"
     },
     {
       "group": "10. Ranking updates",
       "name": "GET /rankings/me returns A rank",
       "pass": true,
-      "evidence": "rank={\"rank\":15,\"score\":1}"
+      "evidence": "rank={\"rank\":16,\"score\":1}"
     },
     {
       "group": "11. Agency operations",
       "name": "A creates agency → 200",
       "pass": true,
-      "evidence": "agency=139"
+      "evidence": "agency=148"
     },
     {
       "group": "11. Agency operations",
@@ -400,7 +400,7 @@
       "group": "12. Moderation & Admin",
       "name": "blocked list contains B",
       "pass": true,
-      "evidence": "list=[{\"id\":\"99\",\"userId\":\"1214\",\"targetId\":\"1215\",\"type\":2,\"createdAt\":\"2026-07-10T09:31:02.287Z\"}]"
+      "evidence": "list=[{\"id\":\"111\",\"userId\":\"1322\",\"targetId\":\"1323\",\"type\":2,\"createdAt\":\"2026-07-10T10:08:13.307Z\"}]"
     },
     {
       "group": "12. Moderation & Admin",
@@ -430,7 +430,7 @@
       "group": "12. Moderation & Admin",
       "name": "A reports B → 200",
       "pass": true,
-      "evidence": "status=200 id=59"
+      "evidence": "status=200 id=63"
     },
     {
       "group": "12. Moderation & Admin",
@@ -472,7 +472,7 @@
       "group": "13. WebSocket synchronization",
       "name": "received gift.received over websocket",
       "pass": true,
-      "evidence": "ev={\"giftId\":\"1\",\"qty\":1,\"senderId\":\"1214\",\"recipientIds\":[\"1215\"],\"unitPrice\":1,\"t"
+      "evidence": "ev={\"giftId\":\"1\",\"qty\":1,\"senderId\":\"1322\",\"recipientIds\":[\"1323\"],\"unitPrice\":1,\"t"
     },
     {
       "group": "13. WebSocket synchronization",
@@ -502,13 +502,13 @@
       "group": "14. Social (profile/follow/couple)",
       "name": "GET /users/me returns own profile",
       "pass": true,
-      "evidence": "uid=1214"
+      "evidence": "uid=1322"
     },
     {
       "group": "14. Social (profile/follow/couple)",
       "name": "PATCH /users/me updates profile",
       "pass": true,
-      "evidence": "sig=e2e-1783675861701-500805"
+      "evidence": "sig=e2e-1783678092776-848652"
     },
     {
       "group": "14. Social (profile/follow/couple)",
@@ -568,7 +568,7 @@
       "group": "14. Social (profile/follow/couple)",
       "name": "A is paired with B",
       "pass": true,
-      "evidence": "partner=1215"
+      "evidence": "partner=1323"
     },
     {
       "group": "14. Social (profile/follow/couple)",
@@ -580,7 +580,7 @@
       "group": "14. Social (profile/follow/couple)",
       "name": "couple appears on CP rank",
       "pass": true,
-      "evidence": "rows=25"
+      "evidence": "rows=28"
     },
     {
       "group": "14. Social (profile/follow/couple)",

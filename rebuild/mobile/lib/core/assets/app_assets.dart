@@ -16,6 +16,12 @@ class AppAssets {
   // Brand / bootstrap
   static const logo = 'assets/brand/zaffa_logo.png'; // real app mascot (lion) launcher icon
   static const defaultAvatar = 'assets/brand/waitio_avatar_default_logo.png';
+
+  // Room chrome (recovered originals)
+  static const roomBgDefault = 'assets/room/room_bg_default.webp'; // purple "ZAFFA" throne backdrop
+  static const roomEntry = '$_svga/kroom/waitio_jinchang.svga'; // 入场 entry effect
+  static const seatSpeaking = '$_svga/yinbo/waitio_self_voice.svga'; // speaking voice wave
+  static const cpSeat = '$_svga/kroom/waitio_cp_in_seat.svga';
   static const loadingPag = '$_pag/loading/waitio_common_loading.pag';
   static const mainTopBgPag = '$_pag/main/waitio_main_top_bg.pag';
 

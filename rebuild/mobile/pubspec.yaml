@@ -36,6 +36,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/brand/
+    - assets/room/
     - assets/roomEmoji/
     # Restored original SVGA animation assets (owned), by feature
     - assets/anim/svga/bomb/
