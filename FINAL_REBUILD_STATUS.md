@@ -33,6 +33,18 @@ Infra: **no Docker in this environment** → used the equivalent native services
 
 **Backend = a working application** (not just architecture): boots, serves, persists, broadcasts.
 
+### Mobile — builds & analyzes clean (Flutter 3.29.3 + Android SDK 36, already on host)
+
+| Milestone | How verified | Result |
+|---|---|---|
+| Flutter deps installed | `flutter pub get` | ✅ 115 packages |
+| **Zero analyzer errors** | `flutter analyze` | ✅ "No issues found!" (fixed 1 unused-field warning) |
+| Android project generated | `flutter create --platforms=android` | ✅ |
+| **APK builds** | `flutter build apk --debug` | ✅ `app-debug.apk` (250 MB, valid Android package, 144s) |
+| App boots (widget runtime) | `flutter test` | ✅ 2/2 — boots to login, navigates to Home |
+
+**On-device runtime boundary (honest):** the login→room→**voice**→gift flow *through the Flutter UI on a device* was **not** executed here — there is **no Android emulator/device in this environment, and no real Agora account** (voice media needs a real app id + certificate). What *is* proven: the client **builds to an installable APK**, the widget tree **boots without runtime error**, and the **backend implements and passes every one of those flows** (20/20 e2e). The app is ready to run against the live backend once installed on a device with your Agora creds.
+
 ---
 
 ## 1. Executed & verified — live-room pass (prior)

@@ -8,7 +8,6 @@ import 'voice_engine.dart';
 class AgoraVoiceEngine implements VoiceEngine {
   late final RtcEngine _engine;
   final _controller = StreamController<VoiceEvent>.broadcast();
-  bool _broadcaster = false;
 
   @override
   Stream<VoiceEvent> get events => _controller.stream;
@@ -46,7 +45,6 @@ class AgoraVoiceEngine implements VoiceEngine {
     required int uid,
     required bool asBroadcaster,
   }) async {
-    _broadcaster = asBroadcaster;
     await _engine.joinChannel(
       token: token,
       channelId: channel,
@@ -67,7 +65,6 @@ class AgoraVoiceEngine implements VoiceEngine {
 
   @override
   Future<void> setBroadcaster(bool broadcaster) async {
-    _broadcaster = broadcaster;
     await _engine.updateChannelMediaOptions(_options(broadcaster));
   }
 
