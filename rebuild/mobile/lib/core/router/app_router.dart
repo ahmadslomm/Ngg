@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/room/room_screen.dart';
+import '../../features/wallet/wallet_screen.dart';
+import '../../features/vip/vip_screen.dart';
+import '../../features/ranking/ranking_screen.dart';
 
 /// Declarative navigation. Deep links: /room/:id, /profile/:uid.
 final appRouter = GoRouter(
@@ -10,6 +13,9 @@ final appRouter = GoRouter(
   routes: [
     GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
     GoRoute(path: '/home', builder: (_, __) => const HomeScreen()),
+    GoRoute(path: '/wallet', builder: (_, __) => const WalletScreen()),
+    GoRoute(path: '/vip', builder: (_, __) => const VipScreen()),
+    GoRoute(path: '/rankings', builder: (_, __) => const RankingScreen()),
     GoRoute(
       path: '/room/:id',
       builder: (_, s) => RoomScreen(roomId: s.pathParameters['id']!),
