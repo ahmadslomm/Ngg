@@ -1,13 +1,13 @@
 {
-  "run": "1783660039667-548819",
+  "run": "1783661728461-340583",
   "base": "http://127.0.0.1:8080/v1",
-  "at": "2026-07-10T05:07:20.884Z",
+  "at": "2026-07-10T05:35:29.750Z",
   "ids": {
-    "A": "275",
-    "B": "276",
-    "C": "277",
-    "roomId": "24",
-    "agencyId": "44"
+    "A": "331",
+    "B": "332",
+    "C": "333",
+    "roomId": "27",
+    "agencyId": "54"
   },
   "total": 81,
   "passed": 81,
@@ -16,25 +16,25 @@
       "group": "1. Registration",
       "name": "user A registers → 200 + token + uid",
       "pass": true,
-      "evidence": "uid=275"
+      "evidence": "uid=331"
     },
     {
       "group": "1. Registration",
       "name": "user B registers → 200 + token + uid",
       "pass": true,
-      "evidence": "uid=276"
+      "evidence": "uid=332"
     },
     {
       "group": "1. Registration",
       "name": "user C registers → 200 + token + uid",
       "pass": true,
-      "evidence": "uid=277"
+      "evidence": "uid=333"
     },
     {
       "group": "1. Registration",
       "name": "A and B are distinct users",
       "pass": true,
-      "evidence": "275 != 276"
+      "evidence": "331 != 332"
     },
     {
       "group": "2. Login",
@@ -46,7 +46,7 @@
       "group": "2. Login",
       "name": "re-login returns SAME uid (login, not new user)",
       "pass": true,
-      "evidence": "275 == 275"
+      "evidence": "331 == 331"
     },
     {
       "group": "2. Login",
@@ -58,13 +58,13 @@
       "group": "3. Room creation",
       "name": "A creates room → 200 + room_id",
       "pass": true,
-      "evidence": "room_id=24"
+      "evidence": "room_id=27"
     },
     {
       "group": "3. Room creation",
       "name": "room returns agora channel",
       "pass": true,
-      "evidence": "channel=room:24"
+      "evidence": "channel=room:27"
     },
     {
       "group": "3. Room creation",
@@ -106,13 +106,13 @@
       "group": "5. Seat operations",
       "name": "seat 0 occupied by A",
       "pass": true,
-      "evidence": "seat0.userId=275"
+      "evidence": "seat0.userId=331"
     },
     {
       "group": "5. Seat operations",
       "name": "seat 1 occupied by B",
       "pass": true,
-      "evidence": "seat1.userId=276"
+      "evidence": "seat1.userId=332"
     },
     {
       "group": "5. Seat operations",
@@ -124,7 +124,7 @@
       "group": "5. Seat operations",
       "name": "B now on seat 3, seat 1 empty",
       "pass": true,
-      "evidence": "seat3=276"
+      "evidence": "seat3=332"
     },
     {
       "group": "5. Seat operations",
@@ -184,7 +184,7 @@
       "group": "7. Wallet balance updates",
       "name": "recharge order created",
       "pass": true,
-      "evidence": "order=22"
+      "evidence": "order=27"
     },
     {
       "group": "7. Wallet balance updates",
@@ -220,7 +220,7 @@
       "group": "8. Gift sending",
       "name": "A sends gift to B in room → 200",
       "pass": true,
-      "evidence": "status=200 tx=19"
+      "evidence": "status=200 tx=23"
     },
     {
       "group": "8. Gift sending",
@@ -268,7 +268,7 @@
       "group": "9. VIP purchase",
       "name": "A purchases VIP level 1 → 200",
       "pass": true,
-      "evidence": "status=200 body={\"level\":1,\"expiresAt\":\"2026-08-09T05:07:20.026Z\",\"coinsAfter\":\"99329\",\"historyId\":\"40\"}"
+      "evidence": "status=200 body={\"level\":1,\"expiresAt\":\"2026-08-09T05:35:28.866Z\",\"coinsAfter\":\"99329\",\"historyId\":\"48\"}"
     },
     {
       "group": "9. VIP purchase",
@@ -286,37 +286,37 @@
       "group": "9. VIP purchase",
       "name": "VIP has expiry set",
       "pass": true,
-      "evidence": "expires_at=2026-08-09T05:07:20.026Z"
+      "evidence": "expires_at=2026-08-09T05:35:28.866Z"
     },
     {
       "group": "10. Ranking updates",
       "name": "A appears on Wealthy board with score>0",
       "pass": true,
-      "evidence": "entry={\"rank\":4,\"subject_id\":\"275\",\"score\":1}"
+      "evidence": "entry={\"rank\":6,\"subject_id\":\"331\",\"score\":1}"
     },
     {
       "group": "10. Ranking updates",
       "name": "B appears on Charm board with score>0",
       "pass": true,
-      "evidence": "entry={\"rank\":4,\"subject_id\":\"276\",\"score\":1}"
+      "evidence": "entry={\"rank\":4,\"subject_id\":\"332\",\"score\":1}"
     },
     {
       "group": "10. Ranking updates",
       "name": "Room board has entries",
       "pass": true,
-      "evidence": "rows=5"
+      "evidence": "rows=7"
     },
     {
       "group": "10. Ranking updates",
       "name": "GET /rankings/me returns A rank",
       "pass": true,
-      "evidence": "rank={\"rank\":4,\"score\":1}"
+      "evidence": "rank={\"rank\":6,\"score\":1}"
     },
     {
       "group": "11. Agency operations",
       "name": "A creates agency → 200",
       "pass": true,
-      "evidence": "agency=44"
+      "evidence": "agency=54"
     },
     {
       "group": "11. Agency operations",
@@ -400,7 +400,7 @@
       "group": "12. Moderation & Admin",
       "name": "blocked list contains B",
       "pass": true,
-      "evidence": "list=[{\"id\":\"9\",\"userId\":\"275\",\"targetId\":\"276\",\"type\":2,\"createdAt\":\"2026-07-10T05:07:20.102Z\"}]"
+      "evidence": "list=[{\"id\":\"12\",\"userId\":\"331\",\"targetId\":\"332\",\"type\":2,\"createdAt\":\"2026-07-10T05:35:28.949Z\"}]"
     },
     {
       "group": "12. Moderation & Admin",
@@ -430,13 +430,13 @@
       "group": "12. Moderation & Admin",
       "name": "A reports B → 200",
       "pass": true,
-      "evidence": "status=200 id=19"
+      "evidence": "status=200 id=24"
     },
     {
       "group": "12. Moderation & Admin",
       "name": "admin sees the report",
       "pass": true,
-      "evidence": "reports=19"
+      "evidence": "reports=20"
     },
     {
       "group": "12. Moderation & Admin",
@@ -472,7 +472,7 @@
       "group": "13. WebSocket synchronization",
       "name": "received gift.received over websocket",
       "pass": true,
-      "evidence": "ev={\"giftId\":\"1\",\"qty\":1,\"senderId\":\"275\",\"recipientIds\":[\"276\"],\"unitPrice\":1,\"tot"
+      "evidence": "ev={\"giftId\":\"1\",\"qty\":1,\"senderId\":\"331\",\"recipientIds\":[\"332\"],\"unitPrice\":1,\"tot"
     },
     {
       "group": "13. WebSocket synchronization",

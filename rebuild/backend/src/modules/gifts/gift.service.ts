@@ -3,8 +3,7 @@
 // send gift => sender coins-, each receiver beans+ & charm+, sender wealthExp+.
 // Server is authoritative on price; the client-sent amount is ignored.
 // The whole thing is ONE serializable transaction that also writes append-only ledger rows.
-import { prisma } from '../../lib/prisma.js';
-import { Prisma } from '@prisma/client';
+import { serializableTx } from '../../lib/tx.js';
 
 export interface SendGiftInput {
   senderId: bigint;
@@ -46,7 +45,7 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
   if (qty <= 0) throw new AppError('invalid_qty');
   if (recipientIds.length === 0) throw new AppError('no_recipients');
 
-  return prisma.$transaction(async (tx) => {
+  return serializableTx(async (tx) => {
     // Idempotency: if this key already produced a ledger row, replay is a no-op error the API maps to 200.
     if (input.idempotencyKey) {
       const existing = await tx.walletLedger.findUnique({ where: { idempotencyKey: input.idempotencyKey } });
@@ -124,7 +123,7 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
       transactionId: txn.id, totalCoins, senderCoinsAfter,
       perRecipientBeans: perRecipientCoins, event,
     };
-  }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+  });
 }
 
 export class AppError extends Error {

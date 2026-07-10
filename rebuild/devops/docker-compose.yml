@@ -1,33 +1,47 @@
+# Local/dev-equivalent stack. For production, run Postgres and Redis as managed services
+# (with backups/HA — see PRODUCTION_DEPLOYMENT_GUIDE.md) and set strong secrets via env.
 services:
   postgres:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: voxa
-      POSTGRES_PASSWORD: voxa
-      POSTGRES_DB: voxa
+      POSTGRES_USER: ${POSTGRES_USER:-voxa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set a strong POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-voxa}
     ports: ["5432:5432"]
     volumes: ["pgdata:/var/lib/postgresql/data"]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U voxa"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-voxa}"]
       interval: 5s
       timeout: 3s
       retries: 10
 
   redis:
     image: redis:7-alpine
-    ports: ["6379:6379"]
-    command: ["redis-server", "--appendonly", "yes"]
+    restart: unless-stopped
+    # Require a password and persist with AOF (the money ledger's Redis-side state — nonces,
+    # rankings, presence — should survive a restart).
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:?set a strong REDIS_PASSWORD}"]
     volumes: ["redisdata:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   backend:
     build:
       context: ../backend
       dockerfile: ../devops/Dockerfile
+    restart: unless-stopped          # crash recovery: relaunch on non-zero exit
     env_file: ../backend/.env
     depends_on:
       postgres: { condition: service_healthy }
-      redis: { condition: service_started }
+      redis: { condition: service_healthy }
     ports: ["8080:8080"]
+    # Migrations should run as a ONE-OFF job, not on every replica start (racy). For a
+    # single-instance dev stack this is fine; in prod run `prisma migrate deploy` separately
+    # (see the deployment guide) and start the server with just `node dist/server.js`.
     command: sh -c "npx prisma migrate deploy && node dist/server.js"
 
 volumes:

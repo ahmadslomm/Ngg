@@ -1,8 +1,8 @@
 // VIP / nobility module — plans, purchase (coins), levels/badges/frames/privileges,
 // expiration, renewal. Current tier is denormalized onto Profile.vipLevel and swept
 // when it lapses.
-import { Prisma } from '@prisma/client';
 import { prisma } from '../../lib/prisma.js';
+import { serializableTx } from '../../lib/tx.js';
 import { AppError } from '../../lib/errors.js';
 import { Currency, LedgerReason } from '../../lib/ledger.js';
 
@@ -22,7 +22,7 @@ export class VipService {
   async purchase(userId: bigint, level: number, opts: { source?: number; orderId?: bigint } = {}) {
     const plan = await prisma.vipLevel.findUnique({ where: { level } });
     if (!plan) throw new AppError('vip_plan_not_found', 404);
-    return prisma.$transaction(async (tx) => {
+    return serializableTx(async (tx) => {
       const w = await tx.wallet.upsert({ where: { userId }, update: {}, create: { userId } });
       if (w.coins < plan.priceCoins) throw new AppError('insufficient_coins', 400);
       const coinsAfter = w.coins - plan.priceCoins;
@@ -39,7 +39,7 @@ export class VipService {
       const activeTop = await tx.vipHistory.findFirst({ where: { userId, expiresAt: { gt: new Date() } }, orderBy: { level: 'desc' } });
       await tx.profile.update({ where: { userId }, data: { vipLevel: activeTop?.level ?? level } });
       return { level, expiresAt, coinsAfter, historyId: hist.id };
-    }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+    });
   }
 
   async renew(userId: bigint) {

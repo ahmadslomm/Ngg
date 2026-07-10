@@ -43,7 +43,10 @@ class ApiClient {
     final nonce = _nonce();
     final bodyStr = options.data == null ? '' : jsonEncode(options.data);
     final bodyHash = sha256.convert(utf8.encode(bodyStr)).toString();
-    final path = Uri.parse(options.path).path;
+    // Must match the server's canonical path, which is the FULL request path incl. the
+    // `/v1` base-URL prefix (req.url on the backend). options.uri resolves against baseUrl;
+    // options.path alone would omit `/v1` and every signature would fail server-side.
+    final path = options.uri.path;
     final canonical = [options.method, path, ts, nonce, bodyHash].join('\n');
     final sign = Hmac(sha256, utf8.encode(AppConfig.signSecret))
         .convert(utf8.encode(canonical))

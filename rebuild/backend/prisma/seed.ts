@@ -10,9 +10,16 @@ async function main() {
     create: { key: 'feature_flags', value: { enableLuckyBox: true, isCoinsMerchant: true, enableShare: true, enablePk: true } },
   });
 
-  // Back-office admin (dev credentials — change in production).
+  // Back-office admin. In production the credentials MUST be supplied via env and MUST NOT
+  // be the weak dev default — otherwise seeding a prod DB installs a known-password
+  // superadmin (a trivial account-takeover backdoor). Fail closed instead.
+  const isProd = process.env.NODE_ENV === 'production';
+  const WEAK = new Set(['admin123', 'password', 'changeme', 'root', '123456']);
   const adminUser = process.env.ADMIN_USER ?? 'root';
   const adminPass = process.env.ADMIN_PASS ?? 'admin123';
+  if (isProd && (!process.env.ADMIN_PASS || WEAK.has(adminPass) || adminPass.length < 12)) {
+    throw new Error('Refusing to seed admin in production: set ADMIN_PASS to a strong (≥12 char, non-default) value.');
+  }
   const hash = await argon2.hash(adminPass);
   await prisma.adminUser.upsert({
     where: { username: adminUser }, update: { passwordHash: hash },

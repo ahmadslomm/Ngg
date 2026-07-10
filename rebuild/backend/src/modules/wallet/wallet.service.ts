@@ -3,6 +3,7 @@
 // happen inside serializable transactions that also write append-only ledger rows.
 import { Prisma } from '@prisma/client';
 import { prisma } from '../../lib/prisma.js';
+import { serializableTx } from '../../lib/tx.js';
 import { AppError } from '../../lib/errors.js';
 import { Currency, LedgerReason } from '../../lib/ledger.js';
 
@@ -94,7 +95,7 @@ export class WalletService {
     if (!product) throw new AppError('product_unavailable', 404);
     const grant = product.coins + product.bonusCoins;
 
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await serializableTx(async (tx) => {
       // Guard against a concurrent double-grant: only proceed if still pending.
       const upd = await tx.order.updateMany({ where: { id: orderId, status: 0 }, data: { status: 2, coinsGranted: grant, verifiedAt: new Date() } });
       if (upd.count === 0) throw new AppError('order_not_pending', 409);
@@ -105,7 +106,7 @@ export class WalletService {
         data: { userId, currency: Currency.Coins, delta: grant, balanceAfter: coinsAfter, reason: LedgerReason.Recharge, refType: 'order', refId: orderId },
       });
       return { coinsAfter };
-    }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+    });
 
     return { granted: true, coinsGranted: grant, coinsAfter: result.coinsAfter };
   }
@@ -114,7 +115,7 @@ export class WalletService {
   async exchange(userId: bigint, beansAmount: bigint) {
     if (beansAmount <= 0n) throw new AppError('invalid_amount', 400);
     const coins = coinsFromBeans(beansAmount);
-    return prisma.$transaction(async (tx) => {
+    return serializableTx(async (tx) => {
       const w = await tx.wallet.upsert({ where: { userId }, update: {}, create: { userId } });
       if (w.beans < beansAmount) throw new AppError('insufficient_beans', 400);
       const beansAfter = w.beans - beansAmount;
@@ -123,12 +124,12 @@ export class WalletService {
       await tx.walletLedger.create({ data: { userId, currency: Currency.Beans, delta: -beansAmount, balanceAfter: beansAfter, reason: LedgerReason.Exchange, refType: 'exchange' } });
       await tx.walletLedger.create({ data: { userId, currency: Currency.Coins, delta: coins, balanceAfter: coinsAfter, reason: LedgerReason.Exchange, refType: 'exchange' } });
       return { beansAfter, coinsAfter, coinsGained: coins };
-    }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+    });
   }
 
   async createWithdrawal(userId: bigint, input: { amount: bigint; method: string; account: string }) {
     const todayCount = await prisma.withdrawalRequest.count({ where: { userId, createdAt: { gte: startOfToday() } } });
-    return prisma.$transaction(async (tx) => {
+    return serializableTx(async (tx) => {
       const w = await tx.wallet.upsert({ where: { userId }, update: {}, create: { userId } });
       assertWithdrawal(input.amount, w.beans, todayCount); // fraud guards
       const beansAfter = w.beans - input.amount;
@@ -136,7 +137,7 @@ export class WalletService {
       await tx.walletLedger.create({ data: { userId, currency: Currency.Beans, delta: -input.amount, balanceAfter: beansAfter, reason: LedgerReason.Withdraw, refType: 'withdrawal' } });
       const req = await tx.withdrawalRequest.create({ data: { userId, amount: input.amount, method: input.method, account: input.account, status: 0 } });
       return { request: req, beansAfter };
-    }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+    });
   }
 
   async listWithdrawals(userId: bigint) {

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'voice_engine.dart';
 
 /// Agora implementation of [VoiceEngine]. Mirrors the recovered ChannelMediaOptions
@@ -14,6 +15,9 @@ class AgoraVoiceEngine implements VoiceEngine {
 
   @override
   Future<void> init(String appId) async {
+    // Mic capture requires a runtime grant on Android 6+/iOS. Request before enabling
+    // audio; a denied grant means the user joins as audience-only (no publish).
+    await Permission.microphone.request();
     _engine = createAgoraRtcEngine();
     await _engine.initialize(RtcEngineContext(appId: appId));
     _engine.registerEventHandler(RtcEngineEventHandler(

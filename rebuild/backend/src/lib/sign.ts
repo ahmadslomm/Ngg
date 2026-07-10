@@ -34,7 +34,10 @@ export async function verifySignature(req: FastifyRequest): Promise<SignResult> 
   const fresh = await redis.set(`sign:nonce:${nonce}`, '1', 'PX', env.SIGN_SKEW_MS, 'NX');
   if (fresh === null) return { ok: false, reason: 'nonce_replay' };
 
-  const bodyHash = sha256(typeof req.body === 'string' ? req.body : JSON.stringify(req.body ?? ''));
+  // Hash the RAW received body (captured by the content-type parser), not a
+  // re-serialization — Dart's jsonEncode and Node's JSON.stringify differ in key order
+  // and whitespace, so re-serializing would never match the client's hash.
+  const bodyHash = sha256(req.rawBody ?? '');
   const canonical = [req.method, req.url.split('?')[0], ts, nonce, bodyHash].join('\n');
 
   const secrets = [env.APP_SIGN_SECRET_CURRENT, env.APP_SIGN_SECRET_PREVIOUS].filter(Boolean);

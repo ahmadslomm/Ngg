@@ -1,58 +1,70 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../config/app_config.dart';
 
-/// Realtime client — owned event protocol (replaces the 147-opcode IM layer).
-/// Envelope: {ev, room, seq, ts, data}. Auto-reconnects with backoff and resumes
-/// from the last seen seq.
+/// Realtime client — speaks the backend's Socket.IO gateway protocol
+/// (backend/src/realtime/gateway.ts): authenticates via handshake `auth.token`, emits
+/// `room.join` / `room.leave` / `heartbeat` with a plain roomId, and receives every
+/// server broadcast on the `event` channel with envelope `{ev, room, seq, ts, data}`.
+/// Socket.IO handles reconnection/backoff; we de-dupe on the per-room monotonic `seq`.
 class RealtimeClient {
   RealtimeClient(this._token);
   final String _token;
 
-  WebSocketChannel? _channel;
+  io.Socket? _socket;
   final _controller = StreamController<RoomEvent>.broadcast();
   int _lastSeq = 0;
-  int _backoffMs = 500;
-  Timer? _reconnectTimer;
+  final Set<String> _joined = {};
 
   Stream<RoomEvent> get events => _controller.stream;
 
   void connect() {
-    final uri = Uri.parse('${AppConfig.realtimeUrl}/?token=$_token&since=$_lastSeq');
-    _channel = WebSocketChannel.connect(uri);
-    _channel!.stream.listen(
-      _onData,
-      onDone: _scheduleReconnect,
-      onError: (_) => _scheduleReconnect(),
-      cancelOnError: true,
+    if (_socket != null) return;
+    final socket = io.io(
+      AppConfig.realtimeUrl,
+      io.OptionBuilder()
+          .setTransports(['websocket'])
+          .setAuth({'token': _token})
+          .enableReconnection()
+          .setReconnectionDelay(500)
+          .setReconnectionDelayMax(15000)
+          .build(),
     );
-    _backoffMs = 500; // reset on successful connect attempt
+    // On (re)connect, re-join any rooms so state resumes after a drop.
+    socket.onConnect((_) {
+      for (final r in _joined) {
+        socket.emit('room.join', r);
+      }
+    });
+    socket.on('event', _onEvent);
+    _socket = socket;
+    socket.connect();
   }
 
-  void _onData(dynamic raw) {
-    final map = jsonDecode(raw as String) as Map<String, dynamic>;
+  void _onEvent(dynamic raw) {
+    if (raw is! Map) return;
+    final map = Map<String, dynamic>.from(raw);
     final seq = (map['seq'] as num?)?.toInt() ?? 0;
-    if (seq > 0 && seq <= _lastSeq) return; // dedupe
+    if (seq > 0 && seq <= _lastSeq) return; // dedupe replays after reconnect
     if (seq > 0) _lastSeq = seq;
     _controller.add(RoomEvent.fromJson(map));
   }
 
-  void joinRoom(String roomId) => _send({'op': 'room.join', 'room': roomId});
-  void leaveRoom(String roomId) => _send({'op': 'room.leave', 'room': roomId});
-  void heartbeat(String roomId) => _send({'op': 'heartbeat', 'room': roomId});
-
-  void _send(Map<String, dynamic> msg) => _channel?.sink.add(jsonEncode(msg));
-
-  void _scheduleReconnect() {
-    _reconnectTimer?.cancel();
-    _reconnectTimer = Timer(Duration(milliseconds: _backoffMs), connect);
-    _backoffMs = (_backoffMs * 2).clamp(500, 15000);
+  void joinRoom(String roomId) {
+    _joined.add(roomId);
+    _socket?.emit('room.join', roomId);
   }
 
+  void leaveRoom(String roomId) {
+    _joined.remove(roomId);
+    _socket?.emit('room.leave', roomId);
+  }
+
+  void heartbeat(String roomId) => _socket?.emit('heartbeat', roomId);
+
   void dispose() {
-    _reconnectTimer?.cancel();
-    _channel?.sink.close();
+    _socket?.dispose();
+    _socket = null;
     _controller.close();
   }
 }
@@ -68,6 +80,6 @@ class RoomEvent {
         ev: j['ev'] as String,
         room: j['room'] as String?,
         seq: (j['seq'] as num?)?.toInt(),
-        data: (j['data'] as Map<String, dynamic>? ) ?? const {},
+        data: (j['data'] as Map?)?.cast<String, dynamic>() ?? const {},
       );
 }

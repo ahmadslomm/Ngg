@@ -3,6 +3,7 @@
 // Every mutation writes an AuditLog row.
 import { Prisma } from '@prisma/client';
 import { prisma } from '../../lib/prisma.js';
+import { serializableTx } from '../../lib/tx.js';
 import { AppError } from '../../lib/errors.js';
 import { Currency, LedgerReason } from '../../lib/ledger.js';
 import { moderationService } from '../moderation/moderation.service.js';
@@ -33,14 +34,14 @@ export class AdminService {
 
   // ----- wallet: coin adjustment (audited, ledgered) -----
   async adjustCoins(adminId: bigint, userId: bigint, delta: bigint, reason: string) {
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await serializableTx(async (tx) => {
       const w = await tx.wallet.upsert({ where: { userId }, update: {}, create: { userId } });
       const after = w.coins + delta;
       if (after < 0n) throw new AppError('would_go_negative', 400);
       await tx.wallet.update({ where: { userId }, data: { coins: after } });
       await tx.walletLedger.create({ data: { userId, currency: Currency.Coins, delta, balanceAfter: after, reason: LedgerReason.AdminAdjust, refType: 'admin' } });
       return after;
-    }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+    });
     await audit(adminId, 'wallet.adjust', 'user', userId, null, { delta: String(delta), reason });
     return { coinsAfter: result };
   }

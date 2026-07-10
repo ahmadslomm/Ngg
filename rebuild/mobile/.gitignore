@@ -8,3 +8,8 @@ android/.gradle/
 *.iml
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Release signing secrets
+android/key.properties
+*.jks
+*.keystore

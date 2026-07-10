@@ -5,12 +5,16 @@ import { z } from 'zod';
 import { createHash } from 'node:crypto';
 import { prisma } from '../../lib/prisma.js';
 import { issueRtcToken } from '../../lib/agora.js';
+import { env, isProd } from '../../lib/env.js';
+import { AppError } from '../../lib/errors.js';
+import { moderationService } from '../moderation/moderation.service.js';
 
 const loginSchema = z.object({
   type: z.enum(['google', 'facebook', 'apple', 'phone']),
   credential: z.string().min(1),
   nick: z.string().max(64).optional(),
 });
+const refreshSchema = z.object({ refresh_token: z.string().min(1) });
 
 export async function authRoutes(app: FastifyInstance) {
   app.post('/auth/login', async (req) => {
@@ -38,9 +42,23 @@ export async function authRoutes(app: FastifyInstance) {
       userId = user.id;
     }
 
-    const access = app.jwt.sign({ id: String(userId) }, { expiresIn: '15m' });
-    const refresh = app.jwt.sign({ id: String(userId), t: 'r' }, { expiresIn: '30d' });
-    return { code: 0, message: 'ok', data: { access_token: access, refresh_token: refresh, uid: String(userId) } };
+    return { code: 0, message: 'ok', data: { ...issueTokens(app, userId), uid: String(userId) } };
+  });
+
+  // Refresh — the client depends on this to keep sessions alive past the 15-min access TTL.
+  // Rotates the access token; verifies the refresh token's signature and `t:'r'` marker.
+  app.post('/auth/refresh', async (req, reply) => {
+    const { refresh_token } = refreshSchema.parse(req.body);
+    let userId: bigint;
+    try {
+      const payload = app.jwt.verify(refresh_token) as any;
+      if (payload.t !== 'r' || !payload.id) throw new Error('not_a_refresh_token');
+      userId = BigInt(payload.id);
+    } catch {
+      return reply.code(401).send({ code: 4010, message: 'invalid_refresh_token' });
+    }
+    if (await moderationService.isSuspended(userId)) return reply.code(403).send({ code: 4030, message: 'account_suspended' });
+    return { code: 0, message: 'ok', data: { ...issueTokens(app, userId), uid: String(userId) } };
   });
 
   app.get('/auth/rtc-token', { preHandler: [app.authenticate] }, async (req) => {
@@ -55,9 +73,20 @@ export async function authRoutes(app: FastifyInstance) {
   });
 }
 
+function issueTokens(app: FastifyInstance, userId: bigint) {
+  const access = app.jwt.sign({ id: String(userId) }, { expiresIn: env.JWT_ACCESS_TTL });
+  const refresh = app.jwt.sign({ id: String(userId), t: 'r' }, { expiresIn: env.JWT_REFRESH_TTL });
+  return { access_token: access, refresh_token: refresh };
+}
+
 async function verifyProvider(type: string, credential: string): Promise<string> {
-  // DEV STUB: real impl validates the provider token/OTP and returns the provider's stable
-  // user id. Here we derive a collision-free id from the FULL credential — a previous
-  // slice(0,24) truncation collided for credentials sharing a 12-byte prefix.
+  // FAIL CLOSED IN PRODUCTION. This dev stub accepts ANY credential as a valid identity —
+  // acceptable only for local/testing. A production build must verify the provider token
+  // (Google/Facebook/Apple SDK) or OTP before this returns. Shipping the open stub would
+  // let anyone authenticate as anyone, so we refuse unless explicitly overridden (and env
+  // already forbids the override when NODE_ENV=production).
+  if (isProd && !env.ALLOW_INSECURE_DEV_AUTH) {
+    throw new AppError('provider_verification_not_configured', 501);
+  }
   return createHash('sha256').update(`${type}:${credential}`).digest('hex');
 }
