@@ -344,3 +344,101 @@ model AuditLog {
   @@index([actorAdminId, createdAt])
   @@index([targetType, targetId])
 }
+
+// ---------- Wallet: withdrawals ----------
+model WithdrawalRequest {
+  id          BigInt   @id @default(autoincrement())
+  userId      BigInt
+  amount      BigInt   // beans requested to withdraw
+  method      String   @db.VarChar(32) // bank | paypal | ...
+  account     String   @db.VarChar(255) // payout account (encrypt in prod)
+  status      Int      @default(0) // 0 pending,1 approved,2 rejected,3 paid
+  reason      String?  @db.VarChar(255)
+  createdAt   DateTime @default(now())
+  processedAt DateTime?
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+// ---------- Moderation ----------
+model Report {
+  id         BigInt   @id @default(autoincrement())
+  reporterId BigInt
+  targetType String   @db.VarChar(16) // user | room | moment
+  targetId   BigInt
+  reason     String   @db.VarChar(64)
+  detail     String?
+  status     Int      @default(0) // 0 open,1 reviewing,2 resolved,3 dismissed
+  handledBy  BigInt?
+  createdAt  DateTime @default(now())
+  handledAt  DateTime?
+  @@index([status, createdAt])
+  @@index([targetType, targetId])
+}
+
+model Ban {
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt
+  scope     Int      // 0 account-suspend, 1 room-ban, 2 room-mute
+  roomId    BigInt?
+  reason    String?  @db.VarChar(255)
+  byAdminId BigInt?
+  byUserId  BigInt?
+  active    Boolean  @default(true)
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([userId, scope, active])
+  @@index([roomId, scope, active])
+}
+
+// ---------- Agency ----------
+model AgencyInvite {
+  id        BigInt   @id @default(autoincrement())
+  agencyId  BigInt
+  inviterId BigInt
+  inviteeId BigInt
+  role      Int      @default(0)
+  status    Int      @default(0) // 0 pending,1 accepted,2 declined
+  createdAt DateTime @default(now())
+  @@index([inviteeId, status])
+  @@unique([agencyId, inviteeId])
+}
+
+model CommissionRecord {
+  id         BigInt   @id @default(autoincrement())
+  agencyId   BigInt
+  hostId     BigInt
+  sourceType Int      // 0 gift, 1 recharge
+  baseAmount BigInt
+  rateBps    Int      // basis points (e.g. 1000 = 10%)
+  amount     BigInt   // computed commission
+  periodKey  String   @db.VarChar(16)
+  createdAt  DateTime @default(now())
+  @@index([agencyId, periodKey])
+  @@index([hostId, periodKey])
+}
+
+// ---------- Admin content ----------
+model Banner {
+  id       BigInt   @id @default(autoincrement())
+  title    String   @db.VarChar(128)
+  imageUrl String
+  linkUrl  String?
+  position String   @default("home") @db.VarChar(32)
+  sort     Int      @default(0)
+  enabled  Boolean  @default(true)
+  startsAt DateTime?
+  endsAt   DateTime?
+  createdAt DateTime @default(now())
+  @@index([position, enabled, sort])
+}
+
+model Announcement {
+  id        BigInt   @id @default(autoincrement())
+  title     String   @db.VarChar(128)
+  body      String
+  audience  String   @default("all") @db.VarChar(16)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  @@index([active, createdAt])
+}
