@@ -4,6 +4,26 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Phase 11 release-candidate audit (verification only)
+
+**Context:** Full RC audit across security, infrastructure, mobile release, and economy
+(`RELEASE_CANDIDATE_AUDIT_REPORT.md`). Verification-only; one **critical production blocker** was
+found and fixed in place, everything else documented.
+
+**Fix (B1 — critical payment blocker):** `verifyReceipt` accepted any non-empty purchase token and
+had **no production fail-closed guard** (unlike auth/Agora) — a prod build would grant coins for a
+forged receipt. Now `verifyReceipt` throws `receipt_verification_not_configured` (501) in
+production until a real Google Play / Apple verifier is wired (`wallet.service.ts`). Dev/test
+behaviour unchanged; backend **175/175**, `tsc` 0.
+
+**Release recommendation: NO (conditional).** Remaining launch blockers are provisioning/packaging,
+not code: B2 real application id (drop `com.example.*`), B3 ship an App Bundle + R8/shrink (the
+universal ~316 MB APK exceeds Play limits), B4 build with real `--dart-define`s. High config items:
+`SIGN_ENFORCED` prod boot guard, encrypt withdrawal accounts, auth/money rate limits, separate
+revocable refresh secret. Code/architecture readiness ~90; overall (launch) readiness **82/100**.
+
+---
+
 ## 2026-07-10 — Phase 10 production stabilization (verified fixes from CODE_REVIEW_REPORT)
 
 **Context:** Fix ONLY the verified Critical/High/Medium (+ cheap Low) findings from the code

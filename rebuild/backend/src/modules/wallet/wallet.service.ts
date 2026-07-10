@@ -5,6 +5,7 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '../../lib/prisma.js';
 import { serializableTx } from '../../lib/tx.js';
 import { AppError } from '../../lib/errors.js';
+import { isProd } from '../../lib/env.js';
 import { Currency, LedgerReason } from '../../lib/ledger.js';
 
 // Configurable economy constants (defaults; overridable via `settings` later).
@@ -24,9 +25,16 @@ export function assertWithdrawal(amount: bigint, walletBeans: bigint, todayCount
   if (todayCount >= MAX_WITHDRAWALS_PER_DAY) throw new AppError('withdrawal_daily_limit', 429);
 }
 
-// Stub for provider receipt verification (Google Play / Apple). Real impl calls the
-// provider API; here we accept a non-empty token (never a silent auto-grant with none).
+// Provider receipt verification (Google Play / Apple). The real implementation calls the
+// provider API to confirm the purchase token is genuine and unconsumed.
+//
+// FAIL CLOSED IN PRODUCTION (RC blocker B1): the dev stub below accepts ANY non-empty token,
+// which in production would grant coins for a forged receipt. Until a real verifier is wired,
+// a production build refuses to grant rather than mint free coins — mirroring the auth
+// verifyProvider and Agora certificate fail-closed guards. Fill in the provider calls, then
+// drop this guard.
 async function verifyReceipt(provider: number, token: string): Promise<boolean> {
+  if (isProd) throw new AppError('receipt_verification_not_configured', 501);
   return typeof token === 'string' && token.length > 0;
 }
 
