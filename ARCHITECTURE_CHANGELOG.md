@@ -4,6 +4,31 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Phase 9.0 forensic gap audit (audit only — no code/architecture change)
+
+**Context:** Complete forensic audit of the remaining unrecovered room ecosystem — every VERIFIED
+gap between the original app and the current rebuild, each with two-sided evidence (original had it +
+rebuild lacks it) and a confidence level. **No code written** (audit-before-implement rule).
+Full detail: `ROOM_ECOSYSTEM_GAP_AUDIT.md`.
+
+**Headline verified gaps (🔴):** in-room public chat · private DM/IM · in-room emoji · room
+heartbeat/presence · online-user list · in-room contribution rank · **room list/discovery API** ·
+**PK engine** (overlay exists, no match/tally) · gift backpack · in-room **host menu** ·
+occupied-seat **user card** · **room settings** · profile **album** · cosmetic **mall** · **VIP grand
+entrance** · **search** · **tasks/check-in**. **🟡 PARTIAL:** agency/wallet/ranking mobile UI breadth
+(backends done, UI thin). **⚫ STUB:** notifications, settings. **⛔ EXCLUDE:** mini-games/JoyPlay,
+lucky box/number/draw games, FaceUnity/KTV. **❓ UNKNOWN (not invented):** draw-gift coords, per-gift
+art values, profile visitors.
+
+**Recommended next (highest value-per-risk):** occupied-seat user card + host menu, and
+agency/wallet/ranking UI breadth — both light up **already-verified backends** with **no backend
+change and no new assets** (pure UI wiring behind existing stubs).
+
+**Verification:** `flutter analyze` clean. Tests/APK unchanged from Phase 8.5 (zero code change) —
+not rebuilt to avoid reproducing identical green results.
+
+---
+
 ## 2026-07-10 — Phase 8.5 runtime verification (validation only — no code/architecture change)
 
 **Context:** Runtime & forensic validation of every recovered system. **No features, no architecture
