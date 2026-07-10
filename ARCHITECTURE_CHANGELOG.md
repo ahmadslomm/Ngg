@@ -4,6 +4,32 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Add the libpag runtime → PAG renderer on GiftEffectLayer
+
+**Context:** Evidence-first PAG phase. The original app rendered `.pag` natively via **libpag**
+(decisive: the decompiled tree carries the whole `org.libpag` SDK — `PAGImageView` used 103×).
+68 source `.pag` files (format v1) audited and feature-mapped. We integrate the same engine as a
+**new renderer** on the existing `GiftEffectLayer`, next to SVGA, with silent fallback. Full detail:
+`PAG_RUNTIME_RECOVERY_REPORT.md`.
+
+**Backend:** untouched. `gift.received` contract unchanged. SVGA pipeline unchanged.
+
+**Flutter:**
+- **Vendored** the Tencent `pag`/libpag plugin to `third_party/pag/` (git-tracked path dependency)
+  and minimally patched it for modern Flutter/AGP 8 (namespace, compileSdk 34, Kotlin jvmTarget 1.8,
+  removed Flutter **v1-embedding** code `FlutterNativeView`/`Registrar`, widened Dart SDK bound).
+  Native libpag itself unmodified; every edit marked `[VENDOR PATCH]`. `third_party/**` excluded from analyze.
+- `GiftReceivedEffect` gains its resolved `format`; the controller now pushes an overlay for **SVGA or
+  PAG** (only `unknown`/empty stay silent → text feed remains). Registry dispatches by format:
+  SVGA→`SvgaView.network`, PAG→`PAGView.network` (libpag), else nothing.
+- Bundled bomb/combo `.pag` deliberately **not** auto-mapped (no evidenced pool→level table; not invented).
+
+**Verification:** `flutter analyze` clean · `flutter test` **129/129** · goldens unchanged ·
+`flutter build apk --release` **316.4 MB** (+12 MB; `lib/{arm64-v8a,armeabi-v7a,x86_64}/libpag.so`
+confirmed in the APK). PAG playback is on-device (host tests → silent fallback).
+
+---
+
 ## 2026-07-10 — Connect gift effects to the real catalog (`gift.received` → overlay)
 
 **Context:** §8 of `GIFT_SYSTEM_RECOVERY_REPORT.md`. The per-gift catalog animation

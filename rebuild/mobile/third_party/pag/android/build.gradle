@@ -1,0 +1,52 @@
+// Vendored copy of `pag` 1.0.7 (Tencent libpag). Patched for modern Flutter / AGP 8:
+//  * `namespace` added (AGP 8 requires it; upstream declared it only in the manifest).
+//  * compileSdk 30 → 34 (upstream 30 predates android:attr/lStar, API 31 → resource link error).
+//  * Kotlin jvmTarget pinned to 1.8 to match Java (upstream mismatch → AGP 8 hard-fails).
+//  * dead jcenter()/buildToolsVersion removed.
+// See PAG_RUNTIME_RECOVERY_REPORT.md for the full rationale. Native libpag itself is unmodified.
+group 'com.example.flutter_pag_plugin'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace 'com.example.flutter_pag_plugin'
+    compileSdkVersion 34
+
+    defaultConfig {
+        minSdkVersion 19
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+
+dependencies {
+    implementation "com.tencent.tav:libpag:4.3.68"
+    implementation 'com.jakewharton:disklrucache:2.0.2'
+}

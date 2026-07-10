@@ -23,6 +23,10 @@ dependencies:
   agora_rtc_engine: ^6.3.2      # voice — uses YOUR Agora app id
   permission_handler: ^11.3.1   # runtime mic permission (required for capture on Android 6+)
   svgaplayer_flutter: ^2.2.0    # renders the restored original .svga gift/room/effect assets (owned)
+  pag:                          # Tencent libpag (com.tencent.tav:libpag) — the engine the ORIGINAL app
+    path: third_party/pag       # used for .pag effects (org.libpag in the decompiled APK). VENDORED &
+                                # patched: upstream 1.0.7 references Flutter's removed v1 embedding and
+                                # pre-AGP-8 build config. See third_party/pag + PAG_RUNTIME_RECOVERY_REPORT.md
 
 dev_dependencies:
   flutter_test:

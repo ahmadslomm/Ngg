@@ -34,7 +34,7 @@ void main() {
   });
 
   group('gift.received (real per-gift catalog animation)', () {
-    test('a resolved-SVGA anim_url plays as an overlay', () async {
+    test('a resolved-SVGA anim_url plays as an SVGA overlay', () async {
       events.add(event(
         'gift.received',
         {'giftId': '9', 'senderId': '5', 'animUrl': 'https://cdn/gifts/rose.svga', 'animType': 0},
@@ -46,16 +46,19 @@ void main() {
       expect(fx.giftId, '9');
       expect(fx.senderId, '5');
       expect(fx.animUrl, 'https://cdn/gifts/rose.svga');
+      expect(fx.format, GiftAnimFormat.svga);
     });
 
-    test('a PAG anim_url fails silently — no overlay (text feed remains the fallback)', () async {
+    test('a PAG anim_url now plays as a PAG overlay (libpag), carrying its format', () async {
       events.add(event(
         'gift.received',
         {'giftId': '9', 'senderId': '5', 'animUrl': 'https://cdn/gifts/rose.pag', 'animType': 1},
         room: 'room:7',
       ));
       await settle();
-      expect(controller.state.overlays, isEmpty);
+      final fx = controller.state.overlays.single as GiftReceivedEffect;
+      expect(fx.animUrl, 'https://cdn/gifts/rose.pag');
+      expect(fx.format, GiftAnimFormat.pag);
     });
 
     test('an unknown anim_type with no extension fails silently', () async {

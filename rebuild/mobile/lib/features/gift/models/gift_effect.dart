@@ -46,21 +46,27 @@ GiftAnimFormat resolveGiftAnimFormat(String url, int animType) {
 }
 
 /// `gift.received` — the basic per-gift animation from the real catalog. Carries the
-/// gift's remote SVGA [animUrl]; only ever constructed for a resolved-SVGA source (PAG /
-/// unknown are dropped upstream so the text feed remains). Plays once, then expires.
+/// gift's remote [animUrl] and its resolved [format] (SVGA or PAG — both real renderers).
+/// Only constructed for a playable format; an `unknown`/empty source is dropped upstream so
+/// the text feed remains. Plays once, then expires.
 class GiftReceivedEffect extends GiftEffect {
   const GiftReceivedEffect({
     required super.id,
     required this.giftId,
     required this.senderId,
     required this.animUrl,
+    required this.format,
   }) : super(ttl: const Duration(seconds: 3));
 
   final String giftId;
   final String senderId;
 
-  /// Remote `.svga` URL (real catalog `anim_url`), already resolved to a playable format.
+  /// Remote animation URL (real catalog `anim_url`).
   final String animUrl;
+
+  /// The resolved format ([GiftAnimFormat.svga] or [GiftAnimFormat.pag]); selects the
+  /// renderer. Never [GiftAnimFormat.unknown] — the controller drops those before construction.
+  final GiftAnimFormat format;
 }
 
 /// `gift.combo` — the same sender repeating the same gift inside the 8s server window.

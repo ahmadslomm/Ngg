@@ -51,17 +51,20 @@ class GiftEffectController extends StateNotifier<GiftEffectsState> {
     switch (e.ev) {
       case 'gift.received':
         // Basic per-gift animation from the real catalog (Gift.anim_url on the wire).
-        // Only a resolved-SVGA source plays as an overlay; a null/PAG/unknown source
-        // fails silently — the room controller's text feed is the unconditional fallback.
+        // SVGA and PAG both play as overlays (each via its own renderer); only a
+        // null/empty or UNKNOWN-format source fails silently — the room controller's
+        // text feed is the unconditional fallback in that case.
         final animUrl = e.data['animUrl'] as String?;
         if (animUrl == null || animUrl.isEmpty) break;
         final animType = (e.data['animType'] as num?)?.toInt() ?? kGiftAnimTypeSvga;
-        if (resolveGiftAnimFormat(animUrl, animType) != GiftAnimFormat.svga) break;
+        final format = resolveGiftAnimFormat(animUrl, animType);
+        if (format == GiftAnimFormat.unknown) break; // unknown → silent, keep text feed
         _push(GiftReceivedEffect(
           id: 'gift-${e.data['giftId']}-${e.seq ?? DateTime.now().microsecondsSinceEpoch}',
           giftId: '${e.data['giftId']}',
           senderId: '${e.data['senderId']}',
           animUrl: animUrl,
+          format: format,
         ));
       case 'gift.combo':
         _push(ComboEffect(
