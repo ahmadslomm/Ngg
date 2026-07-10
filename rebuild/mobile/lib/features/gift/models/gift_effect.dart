@@ -19,6 +19,50 @@ sealed class GiftEffect {
   final Duration ttl;
 }
 
+/// The animation format of a per-gift `anim_url`. `svga` plays now (svgaplayer);
+/// `pag` needs the native libpag runtime (not yet added); `unknown` is anything we
+/// cannot classify — both non-`svga` cases fail silently and leave the text feed.
+enum GiftAnimFormat { svga, pag, unknown }
+
+/// Rebuild-owned `anim_type` convention — we own the backend `Gift.anim_type` field
+/// (default 0); this is **NOT** a claim about the original's uncaptured `svga_type`
+/// code table. Convention: `0 = SVGA`, `1 = PAG`. Any other value is UNKNOWN.
+const int kGiftAnimTypeSvga = 0;
+const int kGiftAnimTypePag = 1;
+
+/// Resolve a per-gift animation's real format. The asset's own file **extension is
+/// authoritative** (real, not inferred); only when the URL carries no `.svga`/`.pag`
+/// suffix do we fall back to the rebuild's documented [kGiftAnimTypeSvga]/[kGiftAnimTypePag]
+/// convention. Everything else is [GiftAnimFormat.unknown] — never guessed into a format.
+GiftAnimFormat resolveGiftAnimFormat(String url, int animType) {
+  final u = url.toLowerCase();
+  if (u.endsWith('.svga')) return GiftAnimFormat.svga;
+  if (u.endsWith('.pag')) return GiftAnimFormat.pag;
+  return switch (animType) {
+    kGiftAnimTypeSvga => GiftAnimFormat.svga,
+    kGiftAnimTypePag => GiftAnimFormat.pag,
+    _ => GiftAnimFormat.unknown,
+  };
+}
+
+/// `gift.received` — the basic per-gift animation from the real catalog. Carries the
+/// gift's remote SVGA [animUrl]; only ever constructed for a resolved-SVGA source (PAG /
+/// unknown are dropped upstream so the text feed remains). Plays once, then expires.
+class GiftReceivedEffect extends GiftEffect {
+  const GiftReceivedEffect({
+    required super.id,
+    required this.giftId,
+    required this.senderId,
+    required this.animUrl,
+  }) : super(ttl: const Duration(seconds: 3));
+
+  final String giftId;
+  final String senderId;
+
+  /// Remote `.svga` URL (real catalog `anim_url`), already resolved to a playable format.
+  final String animUrl;
+}
+
 /// `gift.combo` — the same sender repeating the same gift inside the 8s server window.
 class ComboEffect extends GiftEffect {
   const ComboEffect({

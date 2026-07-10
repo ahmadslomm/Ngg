@@ -33,6 +33,49 @@ void main() {
     expect(controller.state.overlays, isEmpty);
   });
 
+  group('gift.received (real per-gift catalog animation)', () {
+    test('a resolved-SVGA anim_url plays as an overlay', () async {
+      events.add(event(
+        'gift.received',
+        {'giftId': '9', 'senderId': '5', 'animUrl': 'https://cdn/gifts/rose.svga', 'animType': 0},
+        room: 'room:7',
+        seq: 1,
+      ));
+      await settle();
+      final fx = controller.state.overlays.single as GiftReceivedEffect;
+      expect(fx.giftId, '9');
+      expect(fx.senderId, '5');
+      expect(fx.animUrl, 'https://cdn/gifts/rose.svga');
+    });
+
+    test('a PAG anim_url fails silently — no overlay (text feed remains the fallback)', () async {
+      events.add(event(
+        'gift.received',
+        {'giftId': '9', 'senderId': '5', 'animUrl': 'https://cdn/gifts/rose.pag', 'animType': 1},
+        room: 'room:7',
+      ));
+      await settle();
+      expect(controller.state.overlays, isEmpty);
+    });
+
+    test('an unknown anim_type with no extension fails silently', () async {
+      events.add(event(
+        'gift.received',
+        {'giftId': '9', 'senderId': '5', 'animUrl': 'https://cdn/gifts/rose', 'animType': 7},
+        room: 'room:7',
+      ));
+      await settle();
+      expect(controller.state.overlays, isEmpty);
+    });
+
+    test('a null/empty anim_url produces no overlay', () async {
+      events.add(event('gift.received', {'giftId': '9', 'senderId': '5', 'animUrl': null}, room: 'room:7'));
+      events.add(event('gift.received', {'giftId': '9', 'senderId': '5', 'animUrl': ''}, room: 'room:7'));
+      await settle();
+      expect(controller.state.overlays, isEmpty);
+    });
+  });
+
   test('gift.combo coalesces a streak into one badge carrying the latest count', () async {
     events.add(event('gift.combo', {'comboId': 'c1', 'senderId': '5', 'giftId': '9', 'combo': 2}, room: 'room:7'));
     events.add(event('gift.combo', {'comboId': 'c1', 'senderId': '5', 'giftId': '9', 'combo': 3}, room: 'room:7'));

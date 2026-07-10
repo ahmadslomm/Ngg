@@ -69,12 +69,28 @@ class RtcToken {
 }
 
 class Gift {
-  const Gift({required this.id, required this.name, required this.priceCoins, this.iconUrl, this.animUrl});
+  const Gift({
+    required this.id,
+    required this.name,
+    required this.priceCoins,
+    this.iconUrl,
+    this.animUrl,
+    this.category = 0,
+    this.animType = 0,
+    this.comboEnabled = false,
+  });
   final String id;
   final String name;
   final int priceCoins;
   final String? iconUrl;
   final String? animUrl;
+
+  /// Real catalog fields (previously dropped): `category` (0 normal · 1 vip · 2 lucky ·
+  /// 3 rocket · 4 bomb · 5 backpack), the animation-format `anim_type`, and whether the
+  /// gift streaks (`combo_enabled`). Now carried so the effect layer can classify the art.
+  final int category;
+  final int animType;
+  final bool comboEnabled;
 
   factory Gift.fromJson(Map<String, dynamic> j) => Gift(
         id: j['id'].toString(),
@@ -82,6 +98,9 @@ class Gift {
         priceCoins: (j['price_coins'] as num).toInt(),
         iconUrl: j['icon_url'] as String?,
         animUrl: j['anim_url'] as String?,
+        category: (j['category'] as num?)?.toInt() ?? 0,
+        animType: (j['anim_type'] as num?)?.toInt() ?? 0,
+        comboEnabled: j['combo_enabled'] as bool? ?? false,
       );
 }
 

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:svgaplayer_flutter/svgaplayer_flutter.dart';
 
-/// Plays a restored original `.svga` asset (gift effects, room entry, medals,
-/// CP, host tags). Handles decode, autoplay/loop, and clean disposal, and fires
-/// [onFinished] when a non-looping effect completes (so callers can pop the
-/// overlay). Renders nothing if the asset fails to decode, so a missing effect
-/// never breaks the screen.
+/// Plays a `.svga` animation. Two sources, same lifecycle:
+///  * [SvgaView] — a **bundled** restored original asset (gift effects, room entry,
+///    medals, CP, host tags), decoded via `decodeFromAssets`.
+///  * [SvgaView.network] — a **remote** `.svga` URL (a real per-gift catalog
+///    `anim_url`), decoded via `decodeFromURL`.
+///
+/// Handles decode, autoplay/loop, and clean disposal, and fires [onFinished] when a
+/// non-looping effect completes (so callers can pop the overlay). Renders nothing if
+/// the source fails to decode, so a missing/broken effect never breaks the screen.
 class SvgaView extends StatefulWidget {
   const SvgaView({
     super.key,
@@ -13,9 +17,20 @@ class SvgaView extends StatefulWidget {
     this.loop = false,
     this.fit = BoxFit.contain,
     this.onFinished,
-  });
+  }) : isNetwork = false;
+
+  /// Plays a remote `.svga` from [url] (a per-gift catalog `anim_url`).
+  const SvgaView.network(
+    String url, {
+    super.key,
+    this.loop = false,
+    this.fit = BoxFit.contain,
+    this.onFinished,
+  })  : asset = url,
+        isNetwork = true;
 
   final String asset;
+  final bool isNetwork;
   final bool loop;
   final BoxFit fit;
   final VoidCallback? onFinished;
@@ -37,7 +52,9 @@ class _SvgaViewState extends State<SvgaView> with SingleTickerProviderStateMixin
 
   Future<void> _load() async {
     try {
-      final video = await SVGAParser.shared.decodeFromAssets(widget.asset);
+      final video = widget.isNetwork
+          ? await SVGAParser.shared.decodeFromURL(widget.asset)
+          : await SVGAParser.shared.decodeFromAssets(widget.asset);
       if (!mounted) return;
       _controller!
         ..videoItem = video

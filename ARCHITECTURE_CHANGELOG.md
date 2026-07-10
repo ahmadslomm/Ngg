@@ -4,6 +4,32 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Connect gift effects to the real catalog (`gift.received` → overlay)
+
+**Context:** §8 of `GIFT_SYSTEM_RECOVERY_REPORT.md`. The per-gift catalog animation
+(`gift.received.animUrl`/`anim_type`, from `Gift.animUrl`) previously showed only as a text line;
+it now also plays as a room overlay when it resolves to a playable SVGA. Evidence report first
+(`GIFT_SYSTEM_RECOVERY_REPORT.md`), then this presentation-only wiring. Full detail:
+`GIFT_EFFECT_INTEGRATION_REPORT.md`.
+
+**Backend:** untouched — no logic, no gift-sending flow, no realtime contract change
+(`gift.received` already carried `animUrl`/`animType`/`comboEnabled`). Stays **148/148**.
+
+**Flutter (all additive, presentation-only):**
+- `SvgaView.network(url)` — decodes a **remote** `.svga` (`decodeFromURL`); silent on failure.
+- `GiftReceivedEffect` + `resolveGiftAnimFormat(url, animType)` + `GiftAnimFormat{svga,pag,unknown}`.
+  Format = **file extension first** (authoritative), else the rebuild-owned `anim_type` convention
+  (`0=SVGA·1=PAG`; documented, not the original's uncaptured `svga_type` table), else UNKNOWN.
+- `GiftEffectController` handles `gift.received`: pushes an overlay **only** for resolved-SVGA;
+  PAG/unknown/null fail silently → the text feed remains the fallback.
+- `restoredGiftEffectRegistry` renders it via a remote-SVGA burst; combo/lucky/rocket/bomb unchanged.
+- `Gift` DTO now carries real `category`/`anim_type`/`combo_enabled` (were dropped).
+
+**Verification:** `flutter analyze` clean · `flutter test` **127/127** (+7) · goldens unchanged ·
+`flutter build apk --release`. No per-gift CDN URLs invented (seeded null); PAG deferred (no libpag).
+
+---
+
 ## 2026-07-10 — Recover user decoration/identity → real per-tier VIP frame/badge
 
 **Context:** The per-user decoration layer (avatar frames, VIP frames, wealth levels, medals,
