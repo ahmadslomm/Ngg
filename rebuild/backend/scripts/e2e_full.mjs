@@ -315,6 +315,48 @@ async function main() {
     check('B websocket connects (JWT auth)', false, `error=${e.message}`);
   }
 
+  // ================= 14. SOCIAL: profile / follow / couple =================
+  G('14. Social (profile/follow/couple)');
+  // profile
+  const meProf = await api('GET', '/users/me', { token: A.token });
+  check('GET /users/me returns own profile', meProf.status === 200 && data(meProf)?.uid === A.uid, `uid=${data(meProf)?.uid}`);
+  const upd = await api('PATCH', '/users/me', { token: A.token, body: { signature: `e2e-${RUN}`, gender: 1 } });
+  check('PATCH /users/me updates profile', upd.status === 200 && data(upd)?.signature === `e2e-${RUN}`, `sig=${data(upd)?.signature}`);
+  // follow A→B then B→A (mutual = friend)
+  const follow1 = await api('POST', `/users/${B.uid}/follow`, { token: A.token });
+  check('A follows B → 200', follow1.status === 200 && data(follow1)?.following === true, `following=${data(follow1)?.following}`);
+  const profB = await api('GET', `/users/${B.uid}`, { token: A.token });
+  check('viewer-relative is_following=true', data(profB)?.is_following === true, `is_following=${data(profB)?.is_following}`);
+  const follow2 = await api('POST', `/users/${A.uid}/follow`, { token: B.token });
+  check('mutual follow makes friends', data(follow2)?.is_friend === true, `is_friend=${data(follow2)?.is_friend}`);
+  const friends = data(await api('GET', '/users/me/friends', { token: A.token }));
+  const friendsArr = Array.isArray(friends) ? friends : (friends.items || []);
+  check('friends list contains B', friendsArr.some((f) => f.uid === B.uid), `friends=${friendsArr.length}`);
+  const bFollowers = data(await api('GET', `/users/${B.uid}/followers`, { token: A.token }));
+  check('B followers list contains A', (Array.isArray(bFollowers) ? bFollowers : []).some((u) => u.uid === A.uid), `n=${(bFollowers || []).length}`);
+  const unfollow = await api('DELETE', `/users/${B.uid}/follow`, { token: A.token });
+  check('A unfollows B → following=false', unfollow.status === 200 && data(unfollow)?.following === false, `following=${data(unfollow)?.following}`);
+
+  // couple: propose A→B, B accepts, gift deepens intimacy
+  const propose = await api('POST', '/couple/propose', { token: A.token, body: { target_id: B.uid } });
+  check('A proposes couple to B → pending', propose.status === 200 && data(propose)?.status === 0, `status=${data(propose)?.status}`);
+  const cInvites = data(await api('GET', '/couple/invites', { token: B.token }));
+  check('B sees couple invite', (Array.isArray(cInvites) ? cInvites : []).some((i) => i.proposer_uid === A.uid), `invites=${(cInvites || []).length}`);
+  const accept = await api('POST', '/couple/respond', { token: B.token, body: { from_id: A.uid, accept: true } });
+  check('B accepts → couple active', accept.status === 200 && data(accept)?.status === 1, `status=${data(accept)?.status}`);
+  const coupleMe = data(await api('GET', '/couple/me', { token: A.token }));
+  check('A is paired with B', coupleMe?.paired === true && coupleMe?.couple?.partner_uid === B.uid, `partner=${coupleMe?.couple?.partner_uid}`);
+  // gifting the partner grows sweet_value (non-invasive intimacy hook)
+  const sweetBefore = Number(coupleMe?.couple?.sweet_value ?? 0);
+  await api('POST', '/gifts/send', { token: A.token, body: { gift_id: gift.id, qty: 1, room_id: roomId, recipient_ids: [B.uid] } });
+  await wait(200);
+  const coupleAfter = data(await api('GET', '/couple/me', { token: A.token }));
+  check('gifting CP partner increases sweet_value', Number(coupleAfter?.couple?.sweet_value ?? 0) > sweetBefore, `${sweetBefore} -> ${coupleAfter?.couple?.sweet_value}`);
+  const cpRank = data(await api('GET', '/couple/rank'));
+  check('couple appears on CP rank', (Array.isArray(cpRank) ? cpRank : []).some((r) => r.partner_uid || r.a_uid), `rows=${(cpRank || []).length}`);
+  const breakup = await api('DELETE', '/couple', { token: A.token });
+  check('A breaks up → 200', breakup.status === 200, `status=${breakup.status}`);
+
   // ================= SUMMARY =================
   const total = results.length;
   const passed = results.filter((r) => r.pass).length;

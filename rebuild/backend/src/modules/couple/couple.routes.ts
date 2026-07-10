@@ -1,0 +1,38 @@
+import type { FastifyInstance } from 'fastify';
+import { z } from 'zod';
+import { ok, serialize, replyError } from '../../lib/errors.js';
+import { coupleService } from './couple.service.js';
+
+const uid = (req: any) => req.user.id as bigint;
+
+export async function coupleRoutes(app: FastifyInstance) {
+  app.get('/couple/me', { preHandler: [app.authenticate] }, async (req) =>
+    ok(serialize(await coupleService.getMine(uid(req)))));
+
+  app.get('/couple/invites', { preHandler: [app.authenticate] }, async (req) =>
+    ok(serialize(await coupleService.listInvites(uid(req)))));
+
+  app.get('/couple/rank', async (req) => {
+    const limit = Number((req.query as any)?.limit) || 50;
+    return ok(serialize(await coupleService.rank(limit)));
+  });
+
+  app.post('/couple/propose', { preHandler: [app.authenticate] }, async (req, reply) => {
+    try {
+      const b = z.object({ target_id: z.coerce.bigint() }).parse(req.body);
+      return ok(serialize(await coupleService.propose(uid(req), b.target_id)));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.post('/couple/respond', { preHandler: [app.authenticate] }, async (req, reply) => {
+    try {
+      const b = z.object({ from_id: z.coerce.bigint(), accept: z.boolean() }).parse(req.body);
+      return ok(serialize(await coupleService.respond(uid(req), b.from_id, b.accept)));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.delete('/couple', { preHandler: [app.authenticate] }, async (req, reply) => {
+    try { return ok(serialize(await coupleService.breakup(uid(req)))); }
+    catch (e) { return replyError(reply, e); }
+  });
+}

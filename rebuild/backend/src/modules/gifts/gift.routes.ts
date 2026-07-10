@@ -4,6 +4,7 @@ import { prisma } from '../../lib/prisma.js';
 import { sendGift, AppError } from './gift.service.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
 import { rankingService, Board } from '../ranking/ranking.service.js';
+import { coupleService } from '../couple/couple.service.js';
 
 const sendGiftSchema = z.object({
   gift_id: z.coerce.bigint(),
@@ -43,7 +44,11 @@ export async function giftRoutes(app: FastifyInstance) {
       const total = Number(result.totalCoins);
       const perRecipient = Number(result.perRecipientBeans);
       rankingService.addScore(Board.Wealthy, senderId, total).catch(() => {});
-      for (const rid of body.recipient_ids) rankingService.addScore(Board.Charm, rid, perRecipient).catch(() => {});
+      for (const rid of body.recipient_ids) {
+        rankingService.addScore(Board.Charm, rid, perRecipient).catch(() => {});
+        // Gifting a CP partner deepens intimacy (no-op unless they are an active couple).
+        coupleService.addIntimacy(senderId, rid, BigInt(result.perRecipientBeans)).catch(() => {});
+      }
       if (body.room_id != null) {
         rankingService.addScore(Board.Room, body.room_id, total).catch(() => {});
         emitRoomEvent(`room:${body.room_id}`, { ev: 'rank.update', data: { boards: [Board.Charm, Board.Wealthy, Board.Room] } });

@@ -22,7 +22,9 @@ if (hasReleaseKeystore) {
 android {
     namespace = "com.example.voxa"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Pinned to the highest NDK required by any plugin (sqflite_android); NDKs are
+    // backward-compatible, so this satisfies every dependency and keeps release builds stable.
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

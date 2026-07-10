@@ -442,3 +442,25 @@ model Announcement {
   createdAt DateTime @default(now())
   @@index([active, createdAt])
 }
+
+// ---------- Social: couple / CP (best-friend) ----------
+// A mutual pairing between two users with an intimacy score (sweetValue). Modeled with an
+// ordered (aUserId < bUserId) unique pair so at most one active couple can exist per unordered
+// pair, and a partial-unique guard (one ACTIVE couple per user) is enforced in the service layer.
+model Couple {
+  id         BigInt   @id @default(autoincrement())
+  aUserId    BigInt   // always the smaller user id
+  bUserId    BigInt   // always the larger user id
+  status     Int      @default(0) // 0 pending, 1 active, 2 broken
+  proposerId BigInt   // who proposed (for pending-response auth)
+  sweetValue BigInt   @default(0) // intimacy; grows when partners gift each other
+  ringUrl    String?
+  cpLevel    Int      @default(0) // derived from sweetValue thresholds
+  establishedAt DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@unique([aUserId, bUserId])
+  @@index([aUserId, status])
+  @@index([bUserId, status])
+  @@index([status, sweetValue])
+}

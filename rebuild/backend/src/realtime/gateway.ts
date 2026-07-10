@@ -24,6 +24,9 @@ export function initRealtime(httpServer: HttpServer, verifyToken: (t: string) =>
 
   io.on('connection', (socket) => {
     const uid = (socket.data as any).uid as bigint;
+    // Personal channel: direct, non-room notifications (follow, couple invite, etc.) are
+    // fanned out here via emitToUser(). Cluster-safe through the Redis adapter.
+    void socket.join(`user:${uid}`);
 
     socket.on('room.join', async (roomId: string) => {
       const room = `room:${roomId}`;

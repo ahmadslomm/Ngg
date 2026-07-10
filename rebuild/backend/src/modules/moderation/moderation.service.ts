@@ -7,6 +7,7 @@ import { AppError } from '../../lib/errors.js';
 export enum BanScope { Account = 0, Room = 1, Mute = 2 }
 export enum ReportStatus { Open = 0, Reviewing = 1, Resolved = 2, Dismissed = 3 }
 const RELATION_BLOCK = 2;
+const RELATION_FOLLOW = 1;
 
 async function writeLog(action: string, actorAdminId: bigint | null, targetType: string, targetId: bigint, meta?: unknown) {
   await prisma.auditLog.create({
@@ -42,9 +43,20 @@ export class ModerationService {
   // ----- blacklist (user block) -----
   async blockUser(userId: bigint, targetId: bigint) {
     if (userId === targetId) throw new AppError('cannot_block_self', 400);
-    await prisma.userRelation.upsert({
-      where: { userId_targetId_type: { userId, targetId, type: RELATION_BLOCK } },
-      update: {}, create: { userId, targetId, type: RELATION_BLOCK },
+    await prisma.$transaction(async (tx) => {
+      await tx.userRelation.upsert({
+        where: { userId_targetId_type: { userId, targetId, type: RELATION_BLOCK } },
+        update: {}, create: { userId, targetId, type: RELATION_BLOCK },
+      });
+      // Blocking severs any follow relationship in both directions, keeping the
+      // denormalized Profile counters correct.
+      for (const [a, b] of [[userId, targetId], [targetId, userId]] as const) {
+        const removed = await tx.userRelation.deleteMany({ where: { userId: a, targetId: b, type: RELATION_FOLLOW } });
+        if (removed.count > 0) {
+          await tx.profile.update({ where: { userId: a }, data: { followingCount: { decrement: 1 } } });
+          await tx.profile.update({ where: { userId: b }, data: { fansCount: { decrement: 1 } } });
+        }
+      }
     });
     return { ok: true };
   }

@@ -1,7 +1,40 @@
 # FINAL_REBUILD_STATUS.md — voxa rebuild, honest status
 
 > Truthful end-of-pass report: what was **actually executed and verified**, what is **written but not yet run against infra**, and what remains. No green-washing.
-> **Latest pass (module completion):** all six remaining production modules — **Wallet, VIP, Ranking, Agency, Moderation, Admin** — are now implemented with DB models, REST APIs, realtime events, frontend integration, and **real-Postgres integration tests that pass**, and were **verified running live on the booted server**.
+> **Latest pass (architecture integration from `ahmadslomm/Ngg`):** compared our rebuild to a forensic
+> recovery of the same original app and integrated the missing **social-identity layer** — Users/Profiles,
+> Follow/Social-graph, and Couple/CP — as additive modules, preserving every existing vertical. See
+> `ARCHITECTURE_COMPARISON_REPORT.md` and `ARCHITECTURE_CHANGELOG.md`.
+
+---
+
+## 0-Z. ARCHITECTURE-INTEGRATION PASS (this pass) — Implemented · Tested · Running
+
+The `Ngg` repo is a **forensic recovery** (decompiled reference + design docs), not runnable code, so
+"integration" meant adopting its recovered **feature designs** — no original code/strings/secrets/assets
+copied. Three additive modules closed the biggest gap vs. a world-class social-audio app; **no preserved
+vertical's internals were modified.**
+
+| Feature | Implemented | Tested (real DB) | Running (live :8080) | Notes |
+|---|---|---|---|---|
+| **Users / Profiles** | own/public profile + edit (`/v1/users/me`, `/v1/users/:id`) on existing `Profile` | ✅ 9 API | ✅ `GET /users/me`, `PATCH`, `GET /users/:id` → 200 | viewer-relative flags |
+| **Social graph (follow/fans/friends)** | follow/unfollow, followers/following, mutual **friends**, counters, `follow.new`; block auto-unfollows | ✅ (in users suite) | ✅ follow→mutual→friend, unfollow live | reuses `UserRelation` type 1 |
+| **Couple / CP** | propose/respond/breakup, intimacy `sweetValue`→`cpLevel`, CP rank, gift-intimacy hook | ✅ 3 unit + 7 API | ✅ propose→accept→gift-raises-sweet→break live | new `Couple` model + migration |
+| **Per-user realtime channel** | sockets join `user:{id}`; `emitToUser` now delivers | ✅ (realtime suite green) | ✅ | enables follow/couple pushes |
+
+**Verification this pass:**
+- `npx vitest run` → **123 passed (17 files)** (was 104; +9 users API, +7 couple API, +3 couple unit).
+- `npx tsc --noEmit` → exit 0.
+- Live E2E `node scripts/e2e_full.mjs` → **96/96** (was 81; +15 social checks, incl. a live gift that
+  raised a couple's `sweet_value`).
+- Mobile: `flutter analyze` clean · `flutter test` pass · **debug APK builds** (271 MB) with pinned NDK.
+- **Preserved & re-verified:** Wallet, VIP, Ranking, Agency, Moderation, Admin, Rooms, Seats, Realtime,
+  Agora — all tests green, no regression; the two economy-adjacent touch points (block auto-unfollow,
+  gift→intimacy hook) are additive and left `gift.service`/its tests untouched.
+
+**Honest deferred (from the comparison, not silently dropped):** Medals, Moments/voice-bottle feed,
+PK battles, lucky/bomb/rocket gift variants, paid 1:1 call billing. Excluded (proprietary): room
+mini-games (3rd-party SDK/`.so`), FaceUnity beauty, KTV, licensed animation assets.
 
 ---
 

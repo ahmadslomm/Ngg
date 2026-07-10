@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
             IconButton(onPressed: () => context.go('/wallet'), icon: const Icon(Icons.account_balance_wallet)),
             IconButton(onPressed: () => context.go('/vip'), icon: const Icon(Icons.workspace_premium)),
             IconButton(onPressed: () => context.go('/rankings'), icon: const Icon(Icons.leaderboard)),
+            IconButton(onPressed: () => context.go('/profile'), icon: const Icon(Icons.person)),
           ],
           bottom: const TabBar(tabs: [
             Tab(text: 'Hot'),
