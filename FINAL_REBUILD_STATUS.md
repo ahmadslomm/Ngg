@@ -30,6 +30,7 @@ Infra: **no Docker in this environment** → used the equivalent native services
 1. `z.coerce.boolean()` parsed `SIGN_ENFORCED=false` as **true** (non-empty string) → server wrongly required signatures. Fixed with an explicit string→boolean preprocess in `lib/env.ts`.
 2. No-body POSTs (`join`/`leave`/`take-seat`) with `content-type: application/json` hit Fastify's `FST_ERR_CTP_EMPTY_JSON_BODY`. Added an empty-body-tolerant JSON content-type parser in `server.ts`.
 3. Prisma shadow-DB needed `CREATEDB` on the app role (dev) — granted.
+4. Dev auth stub `verifyProvider` truncated the credential hash to 12 bytes → distinct credentials sharing a 12-char prefix collapsed to the **same user** (surfaced as a "beans not credited" false alarm; the economy was correct — beans accumulated on the shared user). Fixed to hash the full credential (SHA-256).
 
 **Backend = a working application** (not just architecture): boots, serves, persists, broadcasts.
 

@@ -2,6 +2,7 @@
 // The RTC-token endpoint mints an Agora token with the server's own credentials.
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
+import { createHash } from 'node:crypto';
 import { prisma } from '../../lib/prisma.js';
 import { issueRtcToken } from '../../lib/agora.js';
 
@@ -55,6 +56,8 @@ export async function authRoutes(app: FastifyInstance) {
 }
 
 async function verifyProvider(type: string, credential: string): Promise<string> {
-  // Placeholder: real impl validates the token/OTP and returns the provider's stable user id.
-  return `${type}_${Buffer.from(credential).toString('hex').slice(0, 24)}`;
+  // DEV STUB: real impl validates the provider token/OTP and returns the provider's stable
+  // user id. Here we derive a collision-free id from the FULL credential — a previous
+  // slice(0,24) truncation collided for credentials sharing a 12-byte prefix.
+  return createHash('sha256').update(`${type}:${credential}`).digest('hex');
 }
