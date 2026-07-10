@@ -44,15 +44,21 @@ export class DmService {
     if (await moderationService.isBlocked(recipientId, senderId)) throw new AppError('blocked_by_target', 403);
 
     const { low, high } = pair(senderId, recipientId);
-    const convo = await prisma.dmConversation.upsert({
-      where: { userLow_userHigh: { userLow: low, userHigh: high } },
-      update: {},
-      create: { userLow: low, userHigh: high },
-    });
-    const msg = await prisma.dmMessage.create({ data: { conversationId: convo.id, senderId, recipientId, text } });
-    await prisma.dmConversation.update({
-      where: { id: convo.id },
-      data: { lastMessageId: msg.id, lastText: text, lastSenderId: senderId, lastAt: msg.createdAt },
+    // Atomic (M2): upsert the conversation, append the message, and advance the preview in one
+    // transaction — otherwise a failure between the append and the preview-update would persist
+    // a message with lastMessageId still null, hiding it from the conversation list + unread.
+    const msg = await prisma.$transaction(async (tx) => {
+      const convo = await tx.dmConversation.upsert({
+        where: { userLow_userHigh: { userLow: low, userHigh: high } },
+        update: {},
+        create: { userLow: low, userHigh: high },
+      });
+      const m = await tx.dmMessage.create({ data: { conversationId: convo.id, senderId, recipientId, text } });
+      await tx.dmConversation.update({
+        where: { id: convo.id },
+        data: { lastMessageId: m.id, lastText: text, lastSenderId: senderId, lastAt: m.createdAt },
+      });
+      return m;
     });
     return msgDTO(msg);
   }
@@ -70,13 +76,11 @@ export class DmService {
     const profiles = otherIds.length ? await prisma.profile.findMany({ where: { userId: { in: otherIds } } }) : [];
     const byId = new Map(profiles.map((p) => [String(p.userId), p]));
 
-    const items = await Promise.all(convos.map(async (c): Promise<ConversationDTO> => {
-      const isLow = c.userLow === userId;
-      const otherId = isLow ? c.userHigh : c.userLow;
-      const readPtr = isLow ? c.readLow : c.readHigh;
-      const unread = await prisma.dmMessage.count({
-        where: { conversationId: c.id, senderId: otherId, ...(readPtr ? { id: { gt: readPtr } } : {}) },
-      });
+    // Unread per conversation in ONE grouped query (M3: was one count per conversation).
+    const unreadByConvo = await this.unreadByConversation(userId, convos);
+
+    const items: ConversationDTO[] = convos.map((c) => {
+      const otherId = c.userLow === userId ? c.userHigh : c.userLow;
       const p = byId.get(String(otherId));
       return {
         conversation_id: String(c.id),
@@ -84,9 +88,9 @@ export class DmService {
         last_text: c.lastText ?? null,
         last_sender_id: c.lastSenderId ? String(c.lastSenderId) : null,
         last_at: c.lastAt ?? null,
-        unread_count: unread,
+        unread_count: unreadByConvo.get(String(c.id)) ?? 0,
       };
-    }));
+    });
     return { items, page, page_size: pageSize };
   }
 
@@ -116,21 +120,44 @@ export class DmService {
     return { ok: true };
   }
 
-  // Total unread across all conversations (recovered UsersRoamMsg.getIMNum).
+  // Total unread across all conversations (recovered UsersRoamMsg.getIMNum). One count query
+  // (M3: was one per conversation).
   async unreadTotal(userId: bigint): Promise<number> {
     const convos = await prisma.dmConversation.findMany({
       where: { OR: [{ userLow: userId }, { userHigh: userId }], lastMessageId: { not: null } },
+      select: { id: true, userLow: true, userHigh: true, readLow: true, readHigh: true },
     });
-    let total = 0;
-    for (const c of convos) {
-      const isLow = c.userLow === userId;
-      const otherId = isLow ? c.userHigh : c.userLow;
-      const readPtr = isLow ? c.readLow : c.readHigh;
-      total += await prisma.dmMessage.count({
-        where: { conversationId: c.id, senderId: otherId, ...(readPtr ? { id: { gt: readPtr } } : {}) },
-      });
-    }
-    return total;
+    const clauses = convos.map((c) => this.unreadClause(userId, c));
+    if (clauses.length === 0) return 0;
+    return prisma.dmMessage.count({ where: { OR: clauses } });
+  }
+
+  // Prisma filter for a single conversation's unread messages: from the OTHER party, newer than
+  // this user's per-conversation read pointer, still visible (status 0). conversationId is fixed
+  // so an OR of these across conversations never bleeds between them.
+  private unreadClause(
+    userId: bigint,
+    c: { id: bigint; userLow: bigint; userHigh: bigint; readLow: bigint | null; readHigh: bigint | null },
+  ) {
+    const isLow = c.userLow === userId;
+    const otherId = isLow ? c.userHigh : c.userLow;
+    const readPtr = isLow ? c.readLow : c.readHigh;
+    return { conversationId: c.id, senderId: otherId, status: 0, ...(readPtr ? { id: { gt: readPtr } } : {}) };
+  }
+
+  // Unread count grouped by conversation, in a single query.
+  private async unreadByConversation(
+    userId: bigint,
+    convos: { id: bigint; userLow: bigint; userHigh: bigint; readLow: bigint | null; readHigh: bigint | null }[],
+  ): Promise<Map<string, number>> {
+    const clauses = convos.map((c) => this.unreadClause(userId, c));
+    if (clauses.length === 0) return new Map();
+    const grouped = await prisma.dmMessage.groupBy({
+      by: ['conversationId'],
+      where: { OR: clauses },
+      _count: { _all: true },
+    });
+    return new Map(grouped.map((g) => [String(g.conversationId), g._count._all]));
   }
 }
 

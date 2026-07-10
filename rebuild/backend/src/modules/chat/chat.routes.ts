@@ -1,7 +1,8 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { ok, replyError, pageArgs } from '../../lib/errors.js';
+import { ok, replyError, pageArgs, AppError } from '../../lib/errors.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
+import { moderationService } from '../moderation/moderation.service.js';
 import { chatService } from './chat.service.js';
 
 const uid = (req: any) => req.user.id as bigint;
@@ -36,11 +37,18 @@ export async function chatRoutes(app: FastifyInstance) {
   );
 
   // Newest-first history; `before` (message id) pages older messages for scroll-up.
-  app.get('/rooms/:id/chat', { preHandler: [app.authenticate] }, async (req) => {
-    const q = req.query as any;
-    const { pageSize } = pageArgs(q); // reuse the shared page-size clamp as the limit
-    const before = q.before ? BigInt(q.before) : undefined;
-    const items = await chatService.history(BigInt((req.params as any).id), { limit: pageSize, before });
-    return ok({ items });
+  // Authorization (H2): a room-banned user cannot read history either — mirrors the send gate.
+  app.get('/rooms/:id/chat', { preHandler: [app.authenticate] }, async (req, reply) => {
+    try {
+      const roomId = BigInt((req.params as any).id);
+      if (await moderationService.isRoomBanned(uid(req), roomId)) throw new AppError('room_banned', 403);
+      const q = req.query as any;
+      const { pageSize } = pageArgs(q); // reuse the shared page-size clamp as the limit
+      const before = q.before ? BigInt(q.before) : undefined;
+      const items = await chatService.history(roomId, { limit: pageSize, before });
+      return ok({ items });
+    } catch (e) {
+      return replyError(reply, e);
+    }
   });
 }

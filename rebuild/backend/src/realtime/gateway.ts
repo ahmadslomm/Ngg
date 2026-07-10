@@ -10,7 +10,22 @@ let io: IOServer | null = null;
 
 export interface RtEnvelope { ev: string; room?: string; seq?: number; ts?: number; data: unknown }
 
-export function initRealtime(httpServer: HttpServer, verifyToken: (t: string) => Promise<bigint | null>) {
+// Injected policy/cleanup hooks (DI, same style as verifyToken) so the gateway never imports
+// the moderation/room modules directly.
+export interface RealtimeHooks {
+  // Returns false to refuse a socket-level room subscription (banned/suspended/etc.). When
+  // omitted, joins are allowed (used by isolated gateway tests).
+  authorizeJoin?: (uid: bigint, roomId: string) => Promise<boolean>;
+  // Called for each room a socket was in when it drops uncleanly (app killed / network loss),
+  // so server-side membership + onlineCount don't ghost. Best-effort.
+  onRoomLeave?: (uid: bigint, roomId: string) => Promise<void>;
+}
+
+export function initRealtime(
+  httpServer: HttpServer,
+  verifyToken: (t: string) => Promise<bigint | null>,
+  hooks: RealtimeHooks = {},
+) {
   io = new IOServer(httpServer, { cors: { origin: false } });
   io.adapter(createAdapter(pubClient, subClient));
 
@@ -29,7 +44,12 @@ export function initRealtime(httpServer: HttpServer, verifyToken: (t: string) =>
     void socket.join(`user:${uid}`);
 
     socket.on('room.join', async (roomId: string) => {
-      const room = `room:${roomId}`;
+      const rid = String(roomId);
+      // Authorization (H2): a banned/suspended user must not receive a room's live broadcasts
+      // (chat/gifts). Deny silently — the REST /rooms/:id/join already returns 403, so a
+      // legitimate client never reaches here for a room it can't enter.
+      if (hooks.authorizeJoin && !(await hooks.authorizeJoin(uid, rid))) return;
+      const room = `room:${rid}`;
       await socket.join(room);
       await redis.zadd(`${room}:presence`, Date.now(), String(uid)); // presence heartbeat set
       socket.to(room).emit('event', { ev: 'room.joined', room, ts: Date.now(), data: { uid: String(uid) } });
@@ -46,16 +66,35 @@ export function initRealtime(httpServer: HttpServer, verifyToken: (t: string) =>
     socket.on('heartbeat', async (roomId: string) => {
       await redis.zadd(`room:${roomId}:presence`, Date.now(), String(uid));
     });
+
+    // Unclean drop (app killed / network loss): release the socket's room memberships so
+    // server-side membership + onlineCount don't ghost (M1). `disconnecting` fires while
+    // socket.rooms is still populated. A clean navigation already left via REST, so this is
+    // idempotent (removeMember is a deleteMany). Presence entries are pruned here too.
+    socket.on('disconnecting', async () => {
+      for (const r of socket.rooms) {
+        if (!r.startsWith('room:')) continue; // skip the personal `user:<uid>` + own socket id
+        const roomId = r.slice('room:'.length);
+        await redis.zrem(`${r}:presence`, String(uid)).catch(() => {});
+        if (hooks.onRoomLeave) await hooks.onRoomLeave(uid, roomId).catch(() => {});
+      }
+    });
   });
 
   return io;
 }
 
 // Called by REST services after a committed mutation, with a per-room monotonic seq.
+// Best-effort broadcast (L1): a Redis hiccup must never reject into a fire-and-forget caller
+// (gift/chat routes) as an unhandled rejection — the money/state change already committed.
 export async function emitRoomEvent(room: string, env: RtEnvelope) {
   if (!io) return;
-  const seq = await redis.incr(`${room}:seq`);
-  io.to(room).emit('event', { ...env, room, seq, ts: env.ts ?? Date.now() });
+  try {
+    const seq = await redis.incr(`${room}:seq`);
+    io.to(room).emit('event', { ...env, room, seq, ts: env.ts ?? Date.now() });
+  } catch {
+    /* dropped broadcast is a lost animation/update, never a lost mutation */
+  }
 }
 
 export function emitToUser(userId: bigint, env: RtEnvelope) {

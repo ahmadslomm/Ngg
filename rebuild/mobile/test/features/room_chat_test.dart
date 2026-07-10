@@ -37,14 +37,18 @@ class _FakeRealtime extends RealtimeClient {
 }
 
 class _FakeRepo extends RoomRepository {
-  _FakeRepo({this.history = const []}) : super(ApiClient());
+  _FakeRepo({this.history = const [], this.olderPages = const {}}) : super(ApiClient());
   final List<ChatMessage> history;
+  final Map<String, List<ChatMessage>> olderPages; // before-id → newest-first older page
   final List<String> sent = [];
 
   @override
   Future<({List<Seat> seats, String rtcRole})> join(String roomId) async => (seats: <Seat>[], rtcRole: 'audience');
   @override
-  Future<List<ChatMessage>> chatHistory(String roomId, {int? limit, String? before}) async => history;
+  Future<void> leave(String roomId) async {} // offline: dispose()'s best-effort leave must not hit Dio
+  @override
+  Future<List<ChatMessage>> chatHistory(String roomId, {int? limit, String? before}) async =>
+      before == null ? history : (olderPages[before] ?? const []);
   @override
   Future<RtcToken> rtcToken(String roomId) async => const RtcToken(appId: '', channel: 'c', uid: 1, token: 't');
   @override
@@ -121,6 +125,30 @@ void main() {
       await Future<void>.delayed(Duration.zero);
       expect(c.state.chatMessages.length, 200); // _maxChat cap
       expect(c.state.chatMessages.last.text, 'm204'); // newest kept
+    });
+
+    test('loadOlderChat pages older messages via the before cursor and stops at an empty page (M5)', () async {
+      final rt2 = _FakeRealtime();
+      final repo2 = _FakeRepo(
+        history: const [ChatMessage(id: '5', senderId: 'U', text: 'm5'), ChatMessage(id: '4', senderId: 'U', text: 'm4')],
+        olderPages: {
+          '4': const [ChatMessage(id: '3', senderId: 'U', text: 'm3'), ChatMessage(id: '2', senderId: 'U', text: 'm2')],
+        },
+      );
+      final c2 = RoomController(repo: repo2, realtime: rt2, voice: _FakeVoice(), roomId: 'r1', myUid: 'ME', agoraAppId: '');
+      addTearDown(() {
+        c2.dispose();
+        rt2.dispose();
+      });
+
+      await c2.enter();
+      expect(c2.state.chatMessages.map((m) => m.id).toList(), ['4', '5']); // first page, oldest→newest
+
+      await c2.loadOlderChat();
+      expect(c2.state.chatMessages.map((m) => m.id).toList(), ['2', '3', '4', '5']); // older prepended
+
+      await c2.loadOlderChat(); // before '2' → empty page → stops, no change
+      expect(c2.state.chatMessages.map((m) => m.id).toList(), ['2', '3', '4', '5']);
     });
   });
 }

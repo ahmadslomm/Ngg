@@ -22,11 +22,19 @@ class _FakeVoice implements VoiceEngine {
   dynamic noSuchMethod(Invocation invocation) async {}
 }
 
+/// A repo that never touches the network — dispose()'s best-effort room leave must not fire a
+/// real request in the widget test (testWidgets enforces no pending timers).
+class _SilentRepo extends RoomRepository {
+  _SilentRepo() : super(ApiClient());
+  @override
+  Future<void> leave(String roomId) async {}
+}
+
 /// A RoomController seeded with fixed seats; never touches the network (enter() is a no-op).
 class _FakeRoomController extends RoomController {
   _FakeRoomController(List<Seat> seats)
       : super(
-          repo: RoomRepository(ApiClient()),
+          repo: _SilentRepo(),
           realtime: RealtimeClient(''),
           voice: _FakeVoice(),
           roomId: 'r1',

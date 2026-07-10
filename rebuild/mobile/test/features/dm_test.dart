@@ -26,6 +26,20 @@ class _FakeDmRepo extends DmRepository {
   }
 }
 
+/// Paging fake for the `before` id-cursor (M5): first page newest-first [5,4]; older(before:4)=[3,2]; then empty.
+class _PagingDmRepo extends DmRepository {
+  _PagingDmRepo() : super(ApiClient());
+  @override
+  Future<List<DmMessage>> history(String otherUid, {int? limit, String? before}) async {
+    if (before == null) return [_m('5'), _m('4')];
+    if (before == '4') return [_m('3'), _m('2')];
+    return [];
+  }
+  @override
+  Future<void> markRead(String otherUid) async {}
+  static DmMessage _m(String id) => DmMessage(id: id, senderId: 'OTHER', recipientId: 'ME', text: 'm$id');
+}
+
 RoomEvent dm(String id, String sender, String recip, String text) =>
     RoomEvent(ev: 'dm.message', data: {'id': id, 'senderId': sender, 'recipientId': recip, 'text': text});
 
@@ -100,6 +114,26 @@ void main() {
       events.add(dm('3', 'OTHER', 'ME', 'once'));
       await settle();
       expect(c.state.messages.where((m) => m.id == '3').length, 1);
+    });
+  });
+
+  group('DmChatController pagination (M5)', () {
+    test('loadOlder pages older messages via the before cursor and stops at an empty page', () async {
+      final events = StreamController<RoomEvent>.broadcast();
+      final c = DmChatController(repo: _PagingDmRepo(), events: events.stream, myUid: 'ME', otherUid: 'OTHER');
+      addTearDown(() {
+        c.dispose();
+        events.close();
+      });
+
+      await settle();
+      expect(c.state.messages.map((m) => m.id).toList(), ['4', '5']); // first page, oldest→newest
+
+      await c.loadOlder();
+      expect(c.state.messages.map((m) => m.id).toList(), ['2', '3', '4', '5']); // older prepended
+
+      await c.loadOlder(); // before '2' → empty → stops, no change
+      expect(c.state.messages.map((m) => m.id).toList(), ['2', '3', '4', '5']);
     });
   });
 }

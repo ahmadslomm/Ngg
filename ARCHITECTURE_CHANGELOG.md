@@ -4,6 +4,49 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Phase 10 production stabilization (verified fixes from CODE_REVIEW_REPORT)
+
+**Context:** Fix ONLY the verified Critical/High/Medium (+ cheap Low) findings from the code
+review, in strict priority order. No features, no UI/API redesign, all backward compatible.
+Production readiness **68 → 92**. Full detail: `PRODUCTION_STABILIZATION_REPORT.md`.
+
+**Realtime correctness & lifecycle:**
+- **C1** `RealtimeClient` de-dupes realtime `seq` **per room** (`Map<String,int>`) — the server's
+  `${room}:seq` is per-room, so a global counter dropped a different room's lower-seq events.
+- **H1** `RoomController.dispose()` now leaves the room (socket `leaveRoom` + best-effort REST
+  `leave`, idempotent `_left` guard) so Back/swipe/pop no longer accumulate room subscriptions or
+  ghost membership.
+- **M6** `RoomController._onRealtime` ignores events whose `room` isn't the active room.
+- **M1** gateway `disconnecting` handler releases the socket's room memberships via an injected
+  `onRoomLeave` → `roomService.leave` (re-syncs `onlineCount`); presence pruned.
+
+**Security / authorization:**
+- **H2** gateway `initRealtime` takes a `hooks.authorizeJoin`; `room.join` refuses a
+  suspended/room-banned user; `GET /rooms/:id/chat` now 403s a room-banned reader (mirrors send).
+
+**Backend data/perf (additive, backward compatible):**
+- **M2** `DmService.send` is one `prisma.$transaction` (conversation + message + preview).
+- **M3** unread counting collapsed to a single grouped/count query (was N+1 per conversation).
+- **M4/L4** composite indexes `Room(status,onlineCount,id)`, `Room(status,createdAt,id)`,
+  `DmMessage(conversationId,senderId,id)` — migration `20260710230044_stabilization_indexes`.
+- **M7** `/auth/rtc-token` role derives from **seat occupancy** (matches `computeRtcRole`), not
+  `RoomMember.role`.
+- **L1** `emitRoomEvent` is best-effort (try/catch) — a Redis hiccup can't become an unhandled
+  rejection. **L6** gift recipient charm uses `updateMany` (no-op on missing Profile) so a gift
+  never aborts on it.
+
+**Mobile completeness:**
+- **M5** chat/DM scroll-up pagination wired to the existing `before` cursor
+  (`DmChatController.loadOlder`, `RoomController.loadOlderChat` + reverse-scroll listeners).
+
+**Verification:** `flutter analyze` clean · Flutter **162/162** (+8) · backend `tsc` 0 · vitest
+**175/175** (+8: chat-read-auth, gateway deny + disconnect + 15-room stress, onlineCount
+consistency, DM multi-convo unread, 2× rtc-token seat role) · `flutter build apk --release`
+**316.7 MB** (sha256 `14cb0cac…2336d9`). New tests: `realtime_client_test.dart`,
+`room_lifecycle_test.dart`, `online-count.test.ts`, `rtc-token.api.test.ts` + extensions.
+
+---
+
 ## 2026-07-10 — Phase 9.4 private messaging / 1:1 DM (owned gateway, `emitToUser`)
 
 **Context:** Verified one-to-one private messaging — REST send + persisted conversation/message

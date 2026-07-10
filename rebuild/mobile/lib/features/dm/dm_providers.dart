@@ -39,6 +39,8 @@ class DmChatController extends StateNotifier<DmChatState> {
   final String otherUid;
   static const int _maxMessages = 200;
   StreamSubscription<RoomEvent>? _sub;
+  bool _loadingOlder = false;
+  bool _hasMoreOlder = true;
 
   Future<void> _load() async {
     try {
@@ -49,6 +51,28 @@ class DmChatController extends StateNotifier<DmChatState> {
     } catch (e) {
       if (!mounted) return;
       state = state.copyWith(loading: false, error: e);
+    }
+  }
+
+  /// Pages older messages for scroll-up, using the recovered `before` id-cursor. Prepends the
+  /// strictly-older page (no overlap with loaded messages, so no de-dupe needed). Idempotent
+  /// while a fetch is in flight and stops once the server returns an empty page.
+  Future<void> loadOlder() async {
+    if (_loadingOlder || !_hasMoreOlder || state.messages.isEmpty) return;
+    _loadingOlder = true;
+    try {
+      final oldestId = state.messages.first.id; // messages are oldest→newest
+      final older = await repo.history(otherUid, before: oldestId);
+      if (!mounted) return;
+      if (older.isEmpty) {
+        _hasMoreOlder = false;
+      } else {
+        state = state.copyWith(messages: [...older.reversed, ...state.messages]); // newest-first → prepend chrono
+      }
+    } catch (_) {
+      // best-effort: leave _hasMoreOlder so another scroll can retry
+    } finally {
+      _loadingOlder = false;
     }
   }
 

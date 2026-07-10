@@ -110,6 +110,10 @@ model Room {
   @@index([status, countryCode])
   @@index([ownerId])
   @@index([mode])
+  // Discovery feed orderings (M4): live rooms sorted by online count / recency. Postgres scans
+  // these backward for the DESC orders, avoiding a full in-memory sort of all live rooms.
+  @@index([status, onlineCount, id])
+  @@index([status, createdAt, id])
 }
 
 model RoomMember {
@@ -213,7 +217,8 @@ model DmMessage {
   text           String   @db.VarChar(500)
   status         Int      @default(0) // 0 visible, 1 deleted
   createdAt      DateTime @default(now())
-  @@index([conversationId, id])
+  @@index([conversationId, id]) // history: newest-first, id-cursor paginated
+  @@index([conversationId, senderId, id]) // unread count: other party's messages past a cursor (L4)
 }
 
 // Public in-room chat message. The original app ran chat through the proprietary

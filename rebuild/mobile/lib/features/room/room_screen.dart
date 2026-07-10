@@ -150,7 +150,7 @@ class RoomScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
-                  Expanded(child: _RoomMessages(messages: state.chatMessages)),
+                  Expanded(child: _RoomMessages(messages: state.chatMessages, onLoadOlder: controller.loadOlderChat)),
                 ],
               ),
               // Decorative layers — never intercept taps (seats stay live).
@@ -281,12 +281,40 @@ class RoomScreen extends ConsumerWidget {
 /// Public room chat feed. Virtualized via [ListView.builder] with `reverse: true`
 /// (only visible rows build), so a long history scrolls cheaply. Messages are stored
 /// oldest→newest; the reversed index puts the newest at the bottom.
-class _RoomMessages extends StatelessWidget {
-  const _RoomMessages({required this.messages});
+class _RoomMessages extends StatefulWidget {
+  const _RoomMessages({required this.messages, this.onLoadOlder});
   final List<ChatMessage> messages;
+  final VoidCallback? onLoadOlder;
+
+  @override
+  State<_RoomMessages> createState() => _RoomMessagesState();
+}
+
+class _RoomMessagesState extends State<_RoomMessages> {
+  final _scroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scroll.addListener(_onScroll);
+  }
+
+  // Reversed list: scrolling UP toward older messages approaches maxScrollExtent.
+  void _onScroll() {
+    if (_scroll.position.pixels >= _scroll.position.maxScrollExtent - 200) {
+      widget.onLoadOlder?.call();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final messages = widget.messages;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
@@ -299,6 +327,7 @@ class _RoomMessages extends StatelessWidget {
               ),
             )
           : ListView.builder(
+              controller: _scroll,
               reverse: true,
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               itemCount: messages.length,

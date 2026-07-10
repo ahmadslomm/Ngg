@@ -75,6 +75,22 @@ describe('Room chat', () => {
     expect(r.body.message).toBe('room_banned');
   });
 
+  it('a room-banned user cannot READ history either (H2 privacy)', async () => {
+    const owner = await makeUser();
+    const banned = await makeUser();
+    const rid = await liveRoom(owner);
+    await inject(app, owner, 'POST', `/rooms/${rid}/chat`, { text: 'secret' });
+    await prisma.ban.create({ data: { userId: banned, scope: BanScope.Room, roomId: rid, active: true } });
+
+    const r = await inject(app, banned, 'GET', `/rooms/${rid}/chat`);
+    expect(r.status).toBe(403);
+    expect(r.body.message).toBe('room_banned');
+    // A non-banned user still reads normally.
+    const ok = await inject(app, owner, 'GET', `/rooms/${rid}/chat`);
+    expect(ok.status).toBe(200);
+    expect(ok.body.data.items.map((m: any) => m.text)).toContain('secret');
+  });
+
   it('chat requires authentication', async () => {
     const owner = await makeUser();
     const rid = await liveRoom(owner);

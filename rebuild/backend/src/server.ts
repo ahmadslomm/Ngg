@@ -178,15 +178,34 @@ async function build() {
 async function main() {
   const app = await build();
   await app.listen({ port: env.PORT, host: '0.0.0.0' });
+  // Room service instance for the realtime disconnect hook (M1). Stateless — same repo + emit
+  // wiring as the REST-facing one in build(); a second instance is harmless.
+  const roomService = new RoomService(
+    new PrismaRoomRepo(),
+    (room, e) => emitRoomEvent(room, { ev: e.ev, data: e.data }),
+  );
   // Attach realtime to the same HTTP server. Token is VERIFIED (signature-checked),
   // not merely decoded — decoding trusts a forgeable payload. Refresh tokens are refused.
-  const io = initRealtime(app.server, async (token) => {
-    try {
-      const payload = app.jwt.verify(token) as any;
-      if (!payload?.id || payload.t === 'r') return null;
-      return BigInt(payload.id);
-    } catch { return null; }
-  });
+  const io = initRealtime(
+    app.server,
+    async (token) => {
+      try {
+        const payload = app.jwt.verify(token) as any;
+        if (!payload?.id || payload.t === 'r') return null;
+        return BigInt(payload.id);
+      } catch { return null; }
+    },
+    {
+      // H2: refuse a socket room subscription for a suspended or room-banned user.
+      authorizeJoin: async (uid, roomId) => {
+        if (await moderationService.isSuspended(uid)) return false;
+        return !(await moderationService.isRoomBanned(uid, BigInt(roomId)));
+      },
+      // M1: on an unclean drop, release the socket's room memberships so onlineCount
+      // doesn't ghost. Same authoritative path as a clean REST leave.
+      onRoomLeave: (uid, roomId) => roomService.leave(roomId, String(uid)).then(() => {}),
+    },
+  );
   app.log.info(`voxa backend on :${env.PORT}`);
 
   // --- Graceful shutdown & crash recovery ---

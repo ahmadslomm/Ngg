@@ -75,6 +75,9 @@ class RoomController extends StateNotifier<RoomUiState> {
 
   StreamSubscription<RoomEvent>? _rtSub;
   StreamSubscription<VoiceEvent>? _voiceSub;
+  // Guards the room-leave path so it runs exactly once, whether triggered by the close
+  // button, a kick, or provider auto-dispose (Back / swipe / programmatic pop).
+  bool _left = false;
 
   Future<void> enter() async {
     try {
@@ -103,6 +106,10 @@ class RoomController extends StateNotifier<RoomUiState> {
 
   // ---------- realtime application ----------
   void _onRealtime(RoomEvent e) {
+    // Only apply events for THIS room (M6). The shared socket may still carry another room's
+    // events transiently; all room events (seat/mic/gift/chat/user.kicked) are emitted with
+    // `room` set, so a mismatch is ignored. Any future room-less notification falls through.
+    if (e.room != null && e.room != 'room:$roomId') return;
     switch (e.ev) {
       case 'seat.update':
         _applySeat(e.data, mic: false);
@@ -139,6 +146,30 @@ class RoomController extends StateNotifier<RoomUiState> {
       state = state.copyWith(chatMessages: history.reversed.toList());
     } catch (_) {
       // Best-effort: history failure never blocks entry; live chat still works.
+    }
+  }
+
+  bool _loadingOlderChat = false;
+  bool _hasMoreOlderChat = true;
+
+  /// Pages older chat for scroll-up via the `before` id-cursor. Prepends the strictly-older
+  /// page (no overlap → no de-dupe). Idempotent while in flight; stops on an empty page.
+  Future<void> loadOlderChat() async {
+    if (_loadingOlderChat || !_hasMoreOlderChat || state.chatMessages.isEmpty) return;
+    _loadingOlderChat = true;
+    try {
+      final oldestId = state.chatMessages.first.id; // oldest→newest
+      final older = await repo.chatHistory(roomId, before: oldestId);
+      if (!mounted) return;
+      if (older.isEmpty) {
+        _hasMoreOlderChat = false;
+      } else {
+        state = state.copyWith(chatMessages: [...older.reversed, ...state.chatMessages]);
+      }
+    } catch (_) {
+      // best-effort; a later scroll can retry
+    } finally {
+      _loadingOlderChat = false;
     }
   }
 
@@ -248,6 +279,8 @@ class RoomController extends StateNotifier<RoomUiState> {
   }
 
   Future<void> leaveRoom({bool kicked = false}) async {
+    if (_left) return; // idempotent — close button, kick, and dispose all funnel here
+    _left = true;
     realtime.leaveRoom(roomId);
     await voice.leaveChannel();
     if (!kicked) await repo.leave(roomId);
@@ -255,6 +288,16 @@ class RoomController extends StateNotifier<RoomUiState> {
 
   @override
   void dispose() {
+    // Ensure the room is always left, even when the screen is popped via the Back button /
+    // edge-swipe / programmatic pop (which auto-disposes this provider without going through
+    // the close button). Otherwise the shared socket stays subscribed to the room and the
+    // server-side member never clears (inflating onlineCount). Best-effort: the controller is
+    // going away, so the REST leave is fire-and-forget.
+    if (!_left) {
+      _left = true;
+      realtime.leaveRoom(roomId);
+      repo.leave(roomId).catchError((_) {});
+    }
     _rtSub?.cancel();
     _voiceSub?.cancel();
     voice.dispose();

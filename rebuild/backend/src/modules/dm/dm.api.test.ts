@@ -53,6 +53,35 @@ describe('Private messaging (DM)', () => {
     expect(convo.unread_count).toBe(0);
   });
 
+  it('M3: unread is correct across multiple conversations (single-query grouping)', async () => {
+    const me = await makeUser();
+    const x = await makeUser({ nick: 'X' });
+    const y = await makeUser({ nick: 'Y' });
+    const z = await makeUser({ nick: 'Z' });
+    await inject(app, x, 'POST', `/dm/${me}`, { text: 'x1' });
+    await inject(app, x, 'POST', `/dm/${me}`, { text: 'x2' });
+    await inject(app, y, 'POST', `/dm/${me}`, { text: 'y1' });
+    for (const t of ['z1', 'z2', 'z3']) await inject(app, z, 'POST', `/dm/${me}`, { text: t });
+
+    // Total across all conversations (getIMNum) — one count query.
+    expect((await inject(app, me, 'GET', '/dm/unread')).body.data.unread).toBe(6);
+
+    // Per-conversation unread — one grouped query.
+    const list = await inject(app, me, 'GET', '/dm');
+    const by = new Map<string, number>(list.body.data.items.map((c: any) => [c.other?.uid, c.unread_count]));
+    expect(by.get(String(x))).toBe(2);
+    expect(by.get(String(y))).toBe(1);
+    expect(by.get(String(z))).toBe(3);
+
+    // Reading one conversation clears only that one.
+    await inject(app, me, 'POST', `/dm/${z}/read`);
+    expect((await inject(app, me, 'GET', '/dm/unread')).body.data.unread).toBe(3);
+    const list2 = await inject(app, me, 'GET', '/dm');
+    const by2 = new Map<string, number>(list2.body.data.items.map((c: any) => [c.other?.uid, c.unread_count]));
+    expect(by2.get(String(z))).toBe(0);
+    expect(by2.get(String(x))).toBe(2);
+  });
+
   it('history is newest-first and pages older messages via `before`', async () => {
     const a = await makeUser();
     const b = await makeUser();

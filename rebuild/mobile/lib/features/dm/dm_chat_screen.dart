@@ -23,6 +23,20 @@ class DmChatScreen extends ConsumerStatefulWidget {
 
 class _DmChatScreenState extends ConsumerState<DmChatScreen> {
   final _input = TextEditingController();
+  final _scroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scroll.addListener(_onScroll);
+  }
+
+  // The list is reversed, so scrolling UP toward older messages approaches maxScrollExtent.
+  void _onScroll() {
+    if (_scroll.position.pixels >= _scroll.position.maxScrollExtent - 300) {
+      ref.read(dmChatProvider(widget.otherUid).notifier).loadOlder();
+    }
+  }
 
   void _send() {
     final t = _input.text.trim();
@@ -33,6 +47,7 @@ class _DmChatScreenState extends ConsumerState<DmChatScreen> {
 
   @override
   void dispose() {
+    _scroll.dispose();
     _input.dispose();
     super.dispose();
   }
@@ -53,6 +68,7 @@ class _DmChatScreenState extends ConsumerState<DmChatScreen> {
                     : st.messages.isEmpty
                         ? Center(child: Text('Say hello 👋', style: AppTypography.caption.copyWith(color: AppColors.onDark50)))
                         : ListView.builder(
+                            controller: _scroll,
                             reverse: true,
                             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.sm),
                             itemCount: st.messages.length,

@@ -64,10 +64,13 @@ export async function authRoutes(app: FastifyInstance) {
   app.get('/auth/rtc-token', { preHandler: [app.authenticate] }, async (req) => {
     const roomId = (req.query as any).room as string;
     const uid = req.user.id as bigint;
-    const member = roomId
-      ? await prisma.roomMember.findUnique({ where: { roomId_userId: { roomId: BigInt(roomId), userId: uid } } })
+    // Publish role follows SEAT occupancy (M7) — matching computeRtcRole and the client's own
+    // publish decision — not RoomMember.role. A seated non-admin speaker must receive a
+    // broadcaster token; an admin-muted seat and everyone in the audience get an audience token.
+    const seat = roomId
+      ? await prisma.seat.findFirst({ where: { roomId: BigInt(roomId), userId: uid, state: 1 } })
       : null;
-    const role = member && member.role >= 1 ? 'broadcaster' : 'audience';
+    const role = seat && !seat.micMutedByAdmin ? 'broadcaster' : 'audience';
     const token = issueRtcToken({ channel: `room:${roomId}`, uid: Number(uid), role });
     return { code: 0, message: 'ok', data: token };
   });

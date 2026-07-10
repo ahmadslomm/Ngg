@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../config/app_config.dart';
 
@@ -13,7 +14,10 @@ class RealtimeClient {
 
   io.Socket? _socket;
   final _controller = StreamController<RoomEvent>.broadcast();
-  int _lastSeq = 0;
+  // The server increments `${room}:seq` independently PER ROOM, so de-dupe must be tracked
+  // per room. A single global counter would drop a legitimate lower-seq event belonging to a
+  // different room once the socket carries more than one room's events.
+  final Map<String, int> _lastSeqByRoom = {};
   final Set<String> _joined = {};
 
   Stream<RoomEvent> get events => _controller.stream;
@@ -44,11 +48,21 @@ class RealtimeClient {
   void _onEvent(dynamic raw) {
     if (raw is! Map) return;
     final map = Map<String, dynamic>.from(raw);
+    final room = map['room'] as String?;
     final seq = (map['seq'] as num?)?.toInt() ?? 0;
-    if (seq > 0 && seq <= _lastSeq) return; // dedupe replays after reconnect
-    if (seq > 0) _lastSeq = seq;
+    // Per-room de-dupe of replays after a reconnect. Events without a room or seq (e.g. the
+    // per-user DM channel via emitToUser, which carries no seq) always pass through.
+    if (room != null && seq > 0) {
+      final last = _lastSeqByRoom[room] ?? 0;
+      if (seq <= last) return; // duplicate/replay within this room
+      _lastSeqByRoom[room] = seq;
+    }
     _controller.add(RoomEvent.fromJson(map));
   }
+
+  /// Test seam: feed a raw envelope through the exact de-dupe/dispatch path the socket uses.
+  @visibleForTesting
+  void debugIngest(Map<String, dynamic> raw) => _onEvent(raw);
 
   void joinRoom(String roomId) {
     _joined.add(roomId);

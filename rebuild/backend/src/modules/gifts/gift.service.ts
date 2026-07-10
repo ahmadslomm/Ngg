@@ -118,7 +118,9 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
           balanceAfter: beansAfter, reason: LEDGER.GIFT_RECV, refType: 'gift', refId: giftId,
         },
       });
-      await tx.profile.update({
+      // updateMany (not update) so a recipient without a Profile row no-ops instead of aborting
+      // the whole gift transaction (L6). Wallet is already upserted above; charm is best-effort.
+      await tx.profile.updateMany({
         where: { userId: rid },
         data: { charmExp: { increment: perRecipientCoins * CHARM_PER_COIN } },
       });

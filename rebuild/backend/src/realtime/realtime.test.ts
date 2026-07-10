@@ -54,4 +54,70 @@ describe('realtime gateway (live WebSocket round-trip)', () => {
     await new Promise<void>((r) => server.close(() => r()));
     http.close();
   });
+
+  it('H2: denies a room subscription when authorizeJoin returns false (no broadcasts leak)', async () => {
+    const http = createServer();
+    const server = initRealtime(http, async (t) => (t ? 7n : null), { authorizeJoin: async () => false });
+    const port = await listen(http);
+    const client = Client(`http://localhost:${port}`, { auth: { token: 'x' }, transports: ['websocket'] });
+
+    const received: any[] = [];
+    client.on('event', (e) => received.push(e));
+    await new Promise<void>((r) => client.on('connect', () => r()));
+
+    client.emit('room.join', '7'); // denied silently by authorizeJoin
+    await wait(120);
+    await emitRoomEvent('room:7', { ev: 'gift.received', data: { giftId: '1' } });
+    await wait(150);
+
+    expect(received.filter((e) => e.ev === 'gift.received')).toHaveLength(0); // never subscribed
+
+    client.close();
+    await new Promise<void>((r) => server.close(() => r()));
+    http.close();
+  });
+
+  it('M1: calls onRoomLeave for each joined room on an unclean disconnect', async () => {
+    const http = createServer();
+    const leaves: Array<[string, string]> = [];
+    const server = initRealtime(http, async (t) => (t ? 8n : null), {
+      onRoomLeave: async (uid, roomId) => { leaves.push([String(uid), roomId]); },
+    });
+    const port = await listen(http);
+    const client = Client(`http://localhost:${port}`, { auth: { token: 'x' }, transports: ['websocket'] });
+    await new Promise<void>((r) => client.on('connect', () => r()));
+
+    client.emit('room.join', '8');
+    await wait(120);
+    client.close(); // unclean drop — no room.leave sent
+    // Wait for the server-side `disconnecting` handler to fire the hook.
+    for (let i = 0; i < 50 && leaves.length === 0; i++) await wait(20);
+
+    expect(leaves).toContainEqual(['8', '8']);
+
+    await new Promise<void>((r) => server.close(() => r()));
+    http.close();
+  });
+
+  it('lifecycle stress: many rooms joined then an unclean drop cleans up every one', async () => {
+    const http = createServer();
+    const leaves = new Set<string>();
+    const server = initRealtime(http, async (t) => (t ? 5n : null), {
+      onRoomLeave: async (_uid, roomId) => { leaves.add(roomId); },
+    });
+    const port = await listen(http);
+    const client = Client(`http://localhost:${port}`, { auth: { token: 'x' }, transports: ['websocket'] });
+    await new Promise<void>((r) => client.on('connect', () => r()));
+
+    const rooms = Array.from({ length: 15 }, (_, i) => `s${i}`);
+    for (const r of rooms) client.emit('room.join', r);
+    await wait(200);
+    client.close(); // drop while subscribed to all of them
+
+    for (let i = 0; i < 80 && leaves.size < rooms.length; i++) await wait(20);
+    for (const r of rooms) expect(leaves.has(r)).toBe(true); // every membership released
+
+    await new Promise<void>((r) => server.close(() => r()));
+    http.close();
+  });
 });
