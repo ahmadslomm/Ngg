@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../core/assets/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
@@ -59,6 +60,19 @@ class SeatTile extends StatelessWidget {
                     child: const SvgaView(asset: AppAssets.seatSpeaking, loop: true),
                   ),
                 _avatarCircle(),
+                // REAL avatar frame (server `avatar_frame_url`) — wraps the avatar.
+                // Silently absent if the URL is null or fails to load.
+                if (seat.isOccupied && decoration.avatarFrameUrl != null)
+                  IgnorePointer(
+                    child: CachedNetworkImage(
+                      imageUrl: decoration.avatarFrameUrl!,
+                      width: _avatar + 26,
+                      height: _avatar + 26,
+                      fit: BoxFit.contain,
+                      errorWidget: (_, __, ___) => const SizedBox.shrink(),
+                      placeholder: (_, __) => const SizedBox.shrink(),
+                    ),
+                  ),
                 // Recovered CP (couple) frame — wraps the avatar (transparent centre).
                 if (seat.isOccupied && decoration.cpFrame != null)
                   IgnorePointer(
@@ -89,8 +103,21 @@ class SeatTile extends StatelessWidget {
                     top: 2,
                     child: Image.asset(AppAssets.cpLove, width: 18, height: 18, fit: BoxFit.contain),
                   ),
-                // Worn medal (recovered set), top-right.
-                if (seat.isOccupied && decoration.medalAsset != null)
+                // Worn medal, top-right. Prefer the REAL adorned-medal icon
+                // (`wornMedalUrl`, remote); fall back to a recovered asset override.
+                if (seat.isOccupied && decoration.wornMedalUrl != null)
+                  Positioned(
+                    right: 0,
+                    top: 2,
+                    child: CachedNetworkImage(
+                      imageUrl: decoration.wornMedalUrl!,
+                      height: 18,
+                      fit: BoxFit.contain,
+                      errorWidget: (_, __, ___) => const SizedBox.shrink(),
+                      placeholder: (_, __) => const SizedBox.shrink(),
+                    ),
+                  )
+                else if (seat.isOccupied && decoration.medalAsset != null)
                   Positioned(
                     right: 0,
                     top: 2,

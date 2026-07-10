@@ -97,14 +97,24 @@ enum CpFrame {
 
 class SeatDecoration {
   const SeatDecoration({
+    this.avatarFrameUrl,
+    this.wornMedalUrl,
     this.vipShieldIndex,
     this.cpFrame,
     this.cpBonded = false,
     this.medalAsset,
   });
 
+  /// **REAL** — the user's actual `avatar_frame_url` (remote). Rendered directly;
+  /// silently absent if the URL is null or fails to load.
+  final String? avatarFrameUrl;
+
+  /// **REAL** — the user's first adorned medal icon (remote).
+  final String? wornMedalUrl;
+
   /// Index into [AppAssets.vipShields]. The grade→shield mapping is UNKNOWN, so
-  /// this is a display index only — never asserted as a VIP level.
+  /// this is a display index only — never asserted as a VIP level, and never set
+  /// from the real `vip_level` at runtime.
   final int? vipShieldIndex;
 
   /// Recovered CP (couple) avatar frame, if this seat is in a couple.
@@ -113,13 +123,18 @@ class SeatDecoration {
   /// Whether to show the CP heart bond marker on this seat.
   final bool cpBonded;
 
-  /// Optional worn medal asset path (recovered set), if any.
+  /// Optional worn medal *asset* path (recovered set), if any.
   final String? medalAsset;
 
   static const none = SeatDecoration();
 
   bool get isEmpty =>
-      vipShieldIndex == null && cpFrame == null && !cpBonded && medalAsset == null;
+      avatarFrameUrl == null &&
+      wornMedalUrl == null &&
+      vipShieldIndex == null &&
+      cpFrame == null &&
+      !cpBonded &&
+      medalAsset == null;
 
   String? get vipShield {
     final i = vipShieldIndex;

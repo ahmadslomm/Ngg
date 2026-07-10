@@ -4,6 +4,38 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-10 — Real server data → RoomDisplay (DTO mapping layer)
+
+**Context:** Phase 6.5 wired the decoration widgets to a `roomDisplayProvider` that still
+returned `RoomDisplay.none`. This connects that seam to the **real** API — no backend change.
+
+**Ground truth (verified):** the room API returns only `{ seats, rtcRole }` — no room
+metadata, owner, or PK. `Room.type`/`ownerId` exist in Prisma but are exposed by no client
+endpoint. The real per-seat decoration data lives on `GET /users/:id`
+(`avatar_frame_url`, `vip_level`, `wealth_level`, adorned `medals[]`).
+
+### Added / changed (Flutter, display layer only)
+- **`room_display_builder.dart`** — pure `buildRoomDisplay(seats, profiles)`: maps real
+  profile fields onto per-seat displays; keeps room skin/PK/CP at neutral UNKNOWN defaults.
+- **`seatProfilesProvider`** — hydrates seated users' profiles, gated on the *occupant set*
+  (not volume/mic ticks); best-effort (a failed fetch just omits that seat).
+- **`roomDisplayProvider`** — now derives real data from `seats × profiles`; falls back to the
+  neutral shape while loading / for every UNKNOWN.
+- **`SeatDisplay` / `SeatDecoration`** — added the **real** remote fields `avatarFrameUrl`,
+  `wornMedalUrl` (kept distinct from the recovered/override-only grade→art fields).
+- **`SeatTile`** — renders the real avatar frame + worn medal (remote, silent fallback).
+
+### Explicitly UNKNOWN (not invented)
+Room skin (`type` not exposed) · PK (no subsystem) · host≡owner (owner not exposed) · VIP
+shield & wealth-card art (level→art ordering unverified) · CP for other users (no public
+lookup). All held at neutral defaults. See `SERVER_ROOM_DTO_MAPPING_REPORT.md`.
+
+### Verification
+`flutter analyze` clean · `flutter test` **95/95** (+7 builder tests) · golden `room` unchanged
+(no regression at default decorations) · `flutter build apk --release` → **304.4 MB**.
+
+---
+
 ## 2026-07-10 — Phase 6.5 room-ecosystem integration (recovered H5 decorations)
 
 **Context:** The visual-reconstruction passes restored the room chrome and the recovered H5 room

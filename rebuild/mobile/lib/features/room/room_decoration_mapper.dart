@@ -39,8 +39,14 @@ CpFrame? cpFrameForRank(int rank) => switch (rank) {
 
 /// One seat's raw attributes → its [SeatDecoration]. Returns [SeatDecoration.none]
 /// when nothing applies, so undecorated seats stay pixel-identical to before.
+///
+/// The real fields ([SeatDisplay.avatarFrameUrl] / [SeatDisplay.wornMedalUrl]) pass
+/// straight through; the recovered/override fields go through the display-only
+/// grade→art helpers above.
 SeatDecoration mapSeatDecoration(SeatDisplay d) {
   final decoration = SeatDecoration(
+    avatarFrameUrl: d.avatarFrameUrl,
+    wornMedalUrl: d.wornMedalUrl,
     vipShieldIndex: vipShieldIndexForGrade(d.vipGrade),
     cpFrame: cpFrameForRank(d.cpRank),
     cpBonded: d.cpBonded,

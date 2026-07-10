@@ -13,11 +13,25 @@ library;
 
 import 'room_decorations.dart';
 
-/// Raw per-seat display attributes as they would arrive from the server
-/// (grades/ranks), keyed to a seat by [position] (matches `Seat.position`).
+/// Raw per-seat display attributes, keyed to a seat by [position] (matches
+/// `Seat.position`). Two provenances, kept distinct on purpose:
+///
+///  * **REAL** — hydrated at runtime from `GET /users/:id`
+///    (`SERVER_ROOM_DTO_MAPPING_REPORT.md`): [avatarFrameUrl], [wornMedalUrl],
+///    plus the informational [vipLevel] / [wealthLevel]. These are the user's
+///    actual server values and are safe to render faithfully.
+///  * **RECOVERED / OVERRIDE-ONLY** — [vipGrade], [cpRank], [cpBonded],
+///    [wealthGrade], [medalAsset] select the recovered original assets whose
+///    grade→art ordering is **UNKNOWN**. The runtime builder never sets these
+///    (they stay 0/off); they exist for previews/tests only, so a display-only
+///    guess is never presented as the user's real badge.
 class SeatDisplay {
   const SeatDisplay({
     required this.position,
+    this.vipLevel = 0,
+    this.wealthLevel = 0,
+    this.avatarFrameUrl,
+    this.wornMedalUrl,
     this.vipGrade = 0,
     this.cpRank = 0,
     this.cpBonded = false,
@@ -27,20 +41,38 @@ class SeatDisplay {
 
   final int position;
 
-  /// Server VIP grade; 0 = none. The grade→shield ordering is display-only and
-  /// unknown (see [AppAssets.vipShields]); the mapper picks a stable shield.
+  // ---- REAL (server) ----
+
+  /// Real `vip_level` from the profile. Informational (a faithful level→shield
+  /// art mapping is UNKNOWN, so it is not turned into a recovered shield).
+  final int vipLevel;
+
+  /// Real `wealth_level` from the profile. Informational (card mapping UNKNOWN).
+  final int wealthLevel;
+
+  /// Real `avatar_frame_url` — the user's actual chosen avatar frame (remote).
+  final String? avatarFrameUrl;
+
+  /// Real worn-medal icon (remote) — the first adorned medal from `medals[]`.
+  final String? wornMedalUrl;
+
+  // ---- RECOVERED / OVERRIDE-ONLY (grade→art ordering UNKNOWN) ----
+
+  /// Recovered VIP shield selector; 0 = none. Display-only ordering (see
+  /// [AppAssets.vipShields]). Never set from [vipLevel] at runtime.
   final int vipGrade;
 
-  /// Couple rank 1..3; 0 = not in a couple.
+  /// Couple rank 1..3; 0 = not in a couple. No public couple endpoint exists for
+  /// other seated users, so this stays 0 at runtime.
   final int cpRank;
 
-  /// Whether the seated user is CP-bonded (heart marker).
+  /// Whether the seated user is CP-bonded (heart marker). UNKNOWN at runtime.
   final bool cpBonded;
 
-  /// Server wealth grade; 0 = none. Mapping to a card is display-only.
+  /// Recovered wealth-card selector; 0 = none. Display-only ordering.
   final int wealthGrade;
 
-  /// An explicit worn-medal asset path, if the display layer resolved one.
+  /// An explicit recovered worn-medal *asset* path (distinct from [wornMedalUrl]).
   final String? medalAsset;
 }
 
