@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/bottle/bottle_screen.dart';
+import '../../features/dev/pag_gallery_screen.dart';
 import '../../features/dm/dm_chat_screen.dart';
 import '../../features/bottle/throw_bottle_screen.dart';
 import '../../features/home/home_screen.dart';
@@ -30,6 +31,8 @@ final appRouter = GoRouter(
     GoRoute(path: '/vip', builder: (_, __) => const VipScreen()),
     GoRoute(path: '/rankings', builder: (_, __) => const RankingScreen()),
     GoRoute(path: '/medals', builder: (_, __) => const MedalWallScreen()),
+    // Diagnostic: plays every bundled PAG (libpag) — VIP/avatar frames, tabs, entry effects.
+    GoRoute(path: '/dev/pag', builder: (_, __) => const PagGalleryScreen()),
     GoRoute(
       path: '/moments',
       builder: (_, __) => const MomentsScreen(),

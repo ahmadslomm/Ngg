@@ -8,6 +8,7 @@ import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_typography.dart';
 import '../../core/widgets/brand_background.dart';
+import '../../core/widgets/pag_view.dart';
 import '../dm/conversations_screen.dart';
 import '../dm/dm_providers.dart';
 import '../moments/moments_screen.dart';
@@ -36,11 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
   // Icons are the original gold art, cloned pixel-for-pixel from the owner's own ZaffaLive
   // screenshots (transparent PNGs in assets/images/nav/). Order/labels/chrome match the original.
   static const _tabs = <_TabDef>[
-    _TabDef('حفلة', AppAssets.navHome), // Party / rooms (Home)
-    _TabDef('حالة', AppAssets.navDynamic), // Status / Moments
-    _TabDef('لايف', AppAssets.navLive), // Live
-    _TabDef('رسالة', AppAssets.navMsg), // Messages
-    _TabDef('انا', AppAssets.navMine), // Me
+    _TabDef('حفلة', AppAssets.navHome, AppAssets.tabHome), // Party / rooms (Home)
+    _TabDef('حالة', AppAssets.navDynamic, AppAssets.tabDynamic), // Status / Moments
+    _TabDef('لايف', AppAssets.navLive, AppAssets.tabLive), // Live
+    _TabDef('رسالة', AppAssets.navMsg, AppAssets.tabMsg), // Messages
+    _TabDef('انا', AppAssets.navMine, AppAssets.tabMine), // Me
   ];
 
   Widget _tab(int i) {
@@ -82,9 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _TabDef {
-  const _TabDef(this.label, this.asset);
+  const _TabDef(this.label, this.asset, this.pag);
   final String label;
-  final String asset; // transparent PNG path in assets/images/nav/
+  final String asset; // transparent PNG path in assets/images/nav/ (static fallback)
+  final String pag; // original animated .pag (libpag) — plays when the tab is active
 }
 
 class _BrandNavBar extends ConsumerWidget {
@@ -127,6 +129,7 @@ class _BrandNavBar extends ConsumerWidget {
                       children: [
                         _NavIcon(
                           asset: tabs[i].asset,
+                          pag: tabs[i].pag,
                           active: i == index,
                           badge: i == _messagesTab ? unread : 0,
                         ),
@@ -153,8 +156,9 @@ class _BrandNavBar extends ConsumerWidget {
 
 /// A nav icon with an optional unread badge (used for the Messages tab).
 class _NavIcon extends StatelessWidget {
-  const _NavIcon({required this.asset, required this.active, this.badge = 0});
-  final String asset;
+  const _NavIcon({required this.asset, required this.pag, required this.active, this.badge = 0});
+  final String asset; // static PNG clone (fallback / inactive)
+  final String pag; // original animated .pag (libpag), plays when active
   final bool active;
   final int badge;
 
@@ -163,15 +167,28 @@ class _NavIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The original bottom bar shows full-colour gold icons at full size when active and dims the
-    // rest. The PNGs are the exact shipped icons, so we only vary size/opacity — no recolouring.
-    Widget img = Image.asset(
+    // The original bottom bar plays the animated .pag tab icon when active (via libpag) and shows
+    // the dimmed static gold PNG otherwise. The active PAG falls back to the same static PNG on any
+    // platform without libpag (web/desktop/tests) — so it always reads correctly. No recolouring.
+    final double size = active ? 32 : 28;
+    final Widget staticImg = Image.asset(
       asset,
-      height: active ? 32 : 28,
+      height: size,
       fit: BoxFit.contain,
       filterQuality: FilterQuality.high,
     );
-    if (!active) img = Opacity(opacity: 0.65, child: img);
+    Widget img;
+    if (active) {
+      img = PagView.asset(
+        pag,
+        width: size,
+        height: size,
+        loop: true,
+        fallback: staticImg,
+      );
+    } else {
+      img = Opacity(opacity: 0.65, child: staticImg);
+    }
     if (badge <= 0) return img;
     return Stack(
       clipBehavior: Clip.none,
