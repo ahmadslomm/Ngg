@@ -1,0 +1,44 @@
+# systemd unit for running the voxa backend WITHOUT Docker (single VM / bare metal).
+# This is the process-manager option: systemd supervises the Node process, restarts it on
+# crash, and delivers SIGTERM for the app's graceful drain. Prefer this OR Docker Compose,
+# not both. (For scale, use Kubernetes — see PRODUCTION_DEPLOYMENT_GUIDE.md.)
+#
+# Install:
+#   useradd --system --home /opt/voxa --shell /usr/sbin/nologin voxa   # unprivileged runtime user
+#   # deploy build to /opt/voxa/backend  (dist/, node_modules/, package.json, prisma/)
+#   # put production secrets in /opt/voxa/backend/.env  (chmod 600, owned by voxa; NOT in git)
+#   cp voxa-backend.service /etc/systemd/system/
+#   systemctl daemon-reload && systemctl enable --now voxa-backend
+#   journalctl -u voxa-backend -f     # structured pino logs land in the journal
+
+[Unit]
+Description=voxa backend (Node/Fastify + Socket.IO)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=voxa
+Group=voxa
+WorkingDirectory=/opt/voxa/backend
+# Secrets + NODE_ENV=production live here (mode 600). The app's env.ts refuses to boot with
+# insecure/placeholder values, so a misconfigured file fails fast instead of serving insecurely.
+EnvironmentFile=/opt/voxa/backend/.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node dist/server.js
+# Graceful shutdown: the app drains sockets -> HTTP -> Postgres -> Redis on SIGTERM.
+KillSignal=SIGTERM
+TimeoutStopSec=30
+Restart=always
+RestartSec=2
+
+# --- Hardening (defense in depth) ---
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/opt/voxa/backend
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

@@ -4,6 +4,31 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-11 — Production preparation phase (ops artifacts + readiness audit)
+
+**Context:** Production Preparation Phase. Audited the whole system for production, re-verified it
+end-to-end, and provisioned the concrete server-environment artifacts that were only described
+conceptually before. **No application code or behavior changed** — the additions are ops config
+(edge, process supervision, firewall, data safety) plus documentation. Full detail:
+`PRODUCTION_DEPLOYMENT_READINESS_REPORT.md`.
+
+**New ops artifacts (`rebuild/devops/`):** `nginx.conf` (TLS termination + HTTP→HTTPS redirect +
+**Socket.IO WebSocket upgrade** + security headers + real-client-IP/`X-Request-Id` passthrough;
+`nginx -t` verified); `voxa-backend.service` (systemd non-Docker option — non-root, `Restart=always`,
+SIGTERM drain, `ProtectSystem`/`NoNewPrivileges` hardening); `firewall.sh` (ufw deny-by-default:
+only 22/80/443 public, datastores never exposed); `scripts/backup.sh` + `scripts/restore.sh`
+(integrity-checked `pg_dump -Fc`; scratch-DB restore drill that ends at `wallet/reconcile`).
+
+**Verification (this phase):** backend build tsc **0**, backend tests **202/202**, Flutter analyze
+clean, Flutter tests **172/172**, **production boot guard proven to reject dev/placeholder secrets**,
+GitHub tree scanned clean (no secrets/artifacts/keystores; `.env` untracked). Env-var audit table:
+every prod-critical secret is enforced by the fail-closed guard in `src/lib/env.ts`.
+
+**Deferred (deliberately last):** Google Play Billing receipt verification — `verifyReceipt` remains
+fail-closed **501** in prod until wired as the final integration.
+
+---
+
 ## 2026-07-11 — Cloudflare R2 media uploads (launch task #2)
 
 **Context:** Give the app a real media-upload path. Implemented as **server-issued presigned R2
