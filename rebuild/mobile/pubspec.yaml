@@ -41,6 +41,7 @@ flutter:
   assets:
     - assets/brand/
     - assets/images/nav/
+    - assets/images/room/seats/
     - assets/room/
     - assets/roomEmoji/
     # Recovered original H5 room-ecosystem assets (owned) — see ROOM_ASSET_MAPPING.md

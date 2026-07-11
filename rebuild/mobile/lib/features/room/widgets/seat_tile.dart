@@ -155,28 +155,38 @@ class SeatTile extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           SizedBox(
             width: _avatar + 16,
             child: Text(
-              label ??
-                  (seat.isOccupied
-                      ? (seat.userId ?? '')
-                      : (seat.state == SeatState.locked ? 'Locked' : '${seat.position + 1}')),
+              // Empty/locked seats show "No.X"; occupied shows the display name. All white,
+              // matching the original.
+              label ?? (seat.isOccupied ? (seat.userId ?? '') : 'No.${seat.position + 1}'),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: AppTypography.micro.copyWith(
-                color: seat.isOccupied ? AppColors.onDark : AppColors.onDark50,
-              ),
+              style: AppTypography.micro.copyWith(color: AppColors.onDark),
             ),
           ),
+          const SizedBox(height: 2),
+          _CharmChip(charm: seat.charm),
         ],
       ),
     );
   }
 
   Widget _avatarCircle() {
+    // Empty seat = the original glassy bubble + neon armchair, cloned from the room screenshot.
+    // It carries its own rim/ring/glow, so it is drawn directly (no bordered container).
+    if (seat.state == SeatState.empty) {
+      return Image.asset(
+        AppAssets.seatEmptyCosmic,
+        width: _avatar + 14,
+        height: _avatar + 14,
+        fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
+      );
+    }
     final ringColor = seat.isSpeaking
         ? AppColors.teal
         : isHost
@@ -194,11 +204,37 @@ class SeatTile extends StatelessWidget {
       child: switch (seat.state) {
         SeatState.locked =>
           Center(child: SeatGlyphIcon(SeatGlyph.lock, size: _avatar * 0.42, color: AppColors.onDark30)),
-        SeatState.empty =>
-          Center(child: SeatGlyphIcon(SeatGlyph.plus, size: _avatar * 0.42, color: AppColors.onDark50)),
+        SeatState.empty => const SizedBox.shrink(), // handled above
         SeatState.occupied =>
           Image.asset(AppAssets.defaultAvatar, fit: BoxFit.cover), // remote avatar loads at runtime
       },
+    );
+  }
+}
+
+/// Charm/heart chip shown under every seat (the original "N ❤" pill). Colours cloned from the
+/// screenshot: dark translucent purple pill + magenta heart.
+class _CharmChip extends StatelessWidget {
+  const _CharmChip({required this.charm});
+  final int charm;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+      decoration: BoxDecoration(
+        color: const Color(0xFF544477).withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('$charm',
+              style: AppTypography.micro.copyWith(color: AppColors.onDark, fontWeight: FontWeight.w700, height: 1)),
+          const SizedBox(width: 3),
+          const Icon(Icons.favorite, size: 11, color: Color(0xFFF170F1)),
+        ],
+      ),
     );
   }
 }

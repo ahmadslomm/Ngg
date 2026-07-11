@@ -14,6 +14,7 @@ class Seat {
     this.micMuted = false,
     this.micMutedByAdmin = false,
     this.volume = 0,
+    this.charm = 0,
   });
 
   final int position;
@@ -22,6 +23,9 @@ class Seat {
   final bool micMuted;
   final bool micMutedByAdmin;
   final int volume; // 0..255 active-speaker indicator (client-side)
+  // Received-charm/heart count shown on the chip under the seat. Display-only; genuinely 0 for an
+  // empty seat (matching the original), and reflects the backend value once it sends one.
+  final int charm;
 
   bool get isOccupied => state == SeatState.occupied && userId != null;
   bool get canSpeak => isOccupied && !micMuted && !micMutedByAdmin;
@@ -33,6 +37,7 @@ class Seat {
         state: _seatStateFrom((j['state'] as num?)?.toInt() ?? 0),
         micMuted: j['micMuted'] as bool? ?? false,
         micMutedByAdmin: j['micMutedByAdmin'] as bool? ?? false,
+        charm: (j['charm'] as num?)?.toInt() ?? 0,
       );
 
   Seat copyWith({
@@ -42,6 +47,7 @@ class Seat {
     bool? micMuted,
     bool? micMutedByAdmin,
     int? volume,
+    int? charm,
   }) =>
       Seat(
         position: position,
@@ -50,6 +56,7 @@ class Seat {
         micMuted: micMuted ?? this.micMuted,
         micMutedByAdmin: micMutedByAdmin ?? this.micMutedByAdmin,
         volume: volume ?? this.volume,
+        charm: charm ?? this.charm,
       );
 }
 
