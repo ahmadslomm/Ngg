@@ -29,6 +29,22 @@ class AppAssets {
   static const loadingPag = '$_pag/loading/waitio_common_loading.pag';
   static const mainTopBgPag = '$_pag/main/waitio_main_top_bg.pag';
 
+  // VIP-tier animated avatar FRAME (userspace/waitio_vip{level}.pag), keyed to the REAL `vip_level`.
+  // 15 tiers shipped (square ~278px frame art). Null when no bundled art for the level — callers show
+  // nothing rather than a placeholder. Evidence: PAG canvas measured square (like the rank frame).
+  static String? vipFramePag(int level) =>
+      (level >= 1 && level <= 15) ? '$_pag/userspace/waitio_vip$level.pag' : null;
+
+  // VIP-tier animated speaking RING on a seat (yinbo/waitio_yinbo_vip{level}.pag). Only VIP7–15 have
+  // a distinct ring; lower/none fall back to [yinboDef]. Evidence: ORIGINAL_ROOM_FORENSIC_EVIDENCE.md.
+  static String? yinboVipPag(int level) =>
+      (level >= 7 && level <= 15) ? '$_pag/yinbo/waitio_yinbo_vip$level.pag' : null;
+  static const yinboDef = '$_pag/yinbo/waitio_yinbo_def.pag'; // default speaking ring (non-VIP)
+
+  // Rank avatar frames (animated) — for leaderboard / top-rank avatars.
+  static const rankAvatarFrame = '$_pag/rank/waitio_rank_avatar_frame.pag';
+  static const rankAvatarCpFrame = '$_pag/rank/waitio_rank_avatar_cp_frame.pag';
+
   // Bottom-nav tab animations (PAG) — proven names from the original bundle.
   static const tabHome = '$_pag/home/waitio_tab_home.pag';
   static const tabLive = '$_pag/home/waitio_tab_live.pag';

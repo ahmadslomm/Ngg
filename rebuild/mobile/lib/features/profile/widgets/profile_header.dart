@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/format.dart';
+import '../../../core/widgets/avatar_frame.dart';
 import '../../medals/models/medal_models.dart';
 import '../../medals/widgets/medal_strip.dart';
 
@@ -47,6 +48,7 @@ class ProfileHeader extends StatelessWidget {
               _FramedAvatar(
                 avatarUrl: profile['avatar_url'] as String?,
                 frameUrl: profile['avatar_frame_url'] as String?,
+                vipLevel: _int('vip_level'),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -103,9 +105,10 @@ class ProfileHeader extends StatelessWidget {
 /// Avatar with the user's decorative frame painted around it (VIP/event cosmetics).
 /// The frame is remote art and simply does not draw when the URL is absent or fails.
 class _FramedAvatar extends StatelessWidget {
-  const _FramedAvatar({this.avatarUrl, this.frameUrl});
+  const _FramedAvatar({this.avatarUrl, this.frameUrl, this.vipLevel = 0});
   final String? avatarUrl;
   final String? frameUrl;
+  final int vipLevel;
 
   static const double size = 72;
 
@@ -123,16 +126,8 @@ class _FramedAvatar extends StatelessWidget {
             backgroundImage: avatarUrl != null ? CachedNetworkImageProvider(avatarUrl!) : null,
             child: avatarUrl == null ? const Icon(Icons.person, size: size * 0.5) : null,
           ),
-          if (frameUrl != null)
-            IgnorePointer(
-              child: CachedNetworkImage(
-                imageUrl: frameUrl!,
-                width: frameSize,
-                height: frameSize,
-                errorWidget: (_, __, ___) => const SizedBox.shrink(),
-                placeholder: (_, __) => const SizedBox.shrink(),
-              ),
-            ),
+          // Worn frame (avatar_frame_url) → else the original VIP-tier PAG frame, by real vip_level.
+          AvatarFrame(size: size, frameUrl: frameUrl, vipLevel: vipLevel),
         ],
       ),
     );
