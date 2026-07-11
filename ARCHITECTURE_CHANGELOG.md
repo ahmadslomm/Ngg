@@ -4,6 +4,29 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-11 — Phase 12 pre-launch production validation (verification only)
+
+**Context:** Pre-launch validation for Google Play across payments, prod env, release build,
+backend ops, and economy. **No code changed** (no release blocker found). Validated at commit
+`4512b82b`, tree clean. Full detail: `PRE_LAUNCH_READINESS_REPORT.md`.
+
+**Confirmed:** every coin-increasing path is safe — `verifyAndGrant` (fail-closed 501 in prod until
+a real verifier is wired), `exchange` (beans-funded), lucky win (server-authoritative, in-tx),
+admin adjust (guarded/audited/ledgered); no client-controllable/unverified grant exists. Release
+AAB validated: `com.zaffalive.voxa`, signed, targetSdk 36 (> Play min 35), minimal permissions,
+per-ABI splits (~140 MB/device), R8 mapping produced. Economy is ledgered + reconcilable; anti-fraud
+(idempotency, optimistic lock, double-grant guard, encrypted payout accounts, money rate limits) all
+in place. Re-verified: backend **187/187**, Flutter **167/167**, analyze clean, tsc 0.
+
+**Gaps (non-code / account-side):** wire real Google Play/Apple receipt verification (the one launch
+integration task; plan in the report); no APM/error-tracking wired; backup restore drill not yet run;
+version `0.1.0` → bump to `1.0.0` for launch; real upload key + Play App Signing; iOS audit.
+
+**Verdict:** technically submittable (ideal for internal/closed testing); production launch gated on
+the above. Overall readiness **91/100**.
+
+---
+
 ## 2026-07-11 — Phase 11.1 production release hardening (blockers B2–B4 + High/Medium)
 
 **Context:** Close the verified release blockers and hardening items from
