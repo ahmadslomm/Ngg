@@ -5,8 +5,9 @@
 > 2026-07-11 from the original **ZaffaLive** app; owner holds the rights). This report inventories
 > every reference screen, maps each to the current Flutter code, states an honest visual-match
 > estimate, and defines the reconstruction order. Element-level detail is in
-> `SCREEN_BY_SCREEN_DIFFERENCES.md`; art in `ASSET_EXTRACTION_REPORT.md` /
-> `ASSET_REPLACEMENT_REPORT.md`.
+> `SCREEN_BY_SCREEN_DIFFERENCES.md`; **full per-image visual detail of every element / colour /
+> measurement / state across all 26 images** is in `REFERENCE_IMAGE_DETAILS.md`; art in
+> `ASSET_EXTRACTION_REPORT.md` / `ASSET_REPLACEMENT_REPORT.md`.
 >
 > **Rule compliance:** nothing is guessed — every uncertain element is in **REVIEW_REQUIRED**;
 > app logic is untouched; the existing architecture, theme system, and recovered assets are reused.
