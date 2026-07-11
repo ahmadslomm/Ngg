@@ -8,6 +8,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/widgets/avatar_frame.dart';
 import '../../feature_providers.dart';
 import '../models/room_meta.dart';
 import '../models/room_models.dart';
@@ -128,7 +129,10 @@ class _RoomUserCardState extends ConsumerState<RoomUserCard> {
   // ---- header: avatar + VIP frame + identity + medals ----
   Widget _header(Map<String, dynamic>? p, String uid, bool isOwner) {
     final avatar = _str(p?['avatar_url']);
-    final frame = _str(p?['vip_frame_url']);
+    // Worn frame, else real VIP-tier remote frame; AvatarFrame falls back to the original
+    // bundled VIP PAG frame by the real vip_level.
+    final frame = _str(p?['avatar_frame_url']) ?? _str(p?['vip_frame_url']);
+    final vipLevel = (p?['vip_level'] as num?)?.toInt() ?? 0;
     final nick = _str(p?['nick']) ?? uid;
     final vipBadge = _str(p?['vip_badge_url']);
     final medals = (p?['medals'] as List?) ?? const [];
@@ -147,15 +151,8 @@ class _RoomUserCardState extends ConsumerState<RoomUserCard> {
                     ? CachedNetworkImage(imageUrl: avatar, width: 60, height: 60, fit: BoxFit.cover, errorWidget: (_, __, ___) => _avatarFallback())
                     : _avatarFallback(),
               ),
-              // Recovered VIP-tier frame (real vip_frame_url), if any.
-              if (frame != null)
-                IgnorePointer(
-                  child: CachedNetworkImage(
-                    imageUrl: frame, width: 72, height: 72, fit: BoxFit.contain,
-                    errorWidget: (_, __, ___) => const SizedBox.shrink(),
-                    placeholder: (_, __) => const SizedBox.shrink(),
-                  ),
-                ),
+              // Worn/VIP remote frame, else the original bundled VIP-tier PAG frame by vip_level.
+              AvatarFrame(size: 60, frameUrl: frame, vipLevel: vipLevel, scale: 1.2),
             ],
           ),
         ),

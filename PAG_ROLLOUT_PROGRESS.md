@@ -39,14 +39,31 @@ No backend change needed — the mobile already hydrates real `vip_level` / `ava
 > Note: only VIP tiers 1–3 are seeded, so with current data VIP1–3 show a frame and non‑VIP show the
 > default wave; VIP7–15 art activates as soon as those tiers exist in the data. All art is original.
 
-### ⏳ Stage 3 — Entry effects (PAG) on room join
-Play the entering user's effect on join events (VIP entry / `topbanner/*`), driven by the join stream.
+### ✅ Stage 3 — VIP frame on the room user‑card popup (this commit)
+The seat‑tap occupant card now uses the shared `AvatarFrame` (worn `avatar_frame_url` → real
+`vip_frame_url` → original `userspace/waitio_vip{level}.pag`), driven by the card's already‑hydrated
+real `vip_level`. Completes "VIP frames everywhere it's shown" for the built avatar surfaces
+(profile · seats · user card).
+- Verify: `flutter analyze` clean · **172/172** tests · `flutter build apk --debug` ✓.
 
-### ⏳ Stage 4 — Rank avatar frame on leaderboards
-`rank/waitio_rank_avatar_frame.pag` (+ `_cp_frame` for couples) on top‑rank avatars, driven by rank.
+## Coverage of the 5 requested categories
+1. **VIP frames** — ✅ profile, seats, user‑card (original `userspace/waitio_vip{N}.pag`, by real `vip_level`).
+2. **Avatar frame in profile + rooms** — ✅ profile + seats + user‑card (worn/VIP remote → VIP PAG).
+   The dedicated **rank** frame is separate (below).
+3. **VIP voice wave on seats** — ✅ `yinbo/waitio_yinbo_vip{7..15}.pag`, by real speaker tier.
+4. **PAG tabs** — ✅ bottom‑nav active tab.
+5. **Entry effects** — ⏳ see "Remaining".
 
-### ⏳ Also — VIP frame in user cards / room owner / discovery avatars (wherever `vip_level` is shown)
-
-## Remaining / not started
+## Remaining (with honest reasons — not force‑placed)
+- **Rank avatar frame** (`rank/waitio_rank_avatar_frame.pag` + `_cp_frame`): its home is the leaderboard
+  podium, but `ranking_screen.dart` is a **26‑line stub** (no avatars). Mounting the frame requires
+  building that UI first → **blocked on UI, not on PAG**.
+- **Entry effects (#5)**: there is **no bundled PAG entry asset** — the original room entry is SVGA
+  (`waitio_jinchang.svga`, already used) and per‑user VIP entries are a **remote `entry_effect_url`**
+  that is **not in the public profile DTO** and not carried by the `room.joined` event. Doing it
+  data‑driven needs: (a) backend — add `entry_effect_url` to the profile / enrich `room.joined`; (b)
+  client — a per‑join entry overlay queue that plays SVGA **or** PAG by URL. **Not faked.**
+- **Unrequested chrome PAGs** available if wanted: `loading/waitio_common_loading.pag` (app spinner),
+  `main/waitio_main_top_bg.pag` (home header), `kroom/waitio_hotroom_playing.pag` (live‑room card
+  indicator), `topbanner/*` (event banners), `gift`/`bomb`/`cp` one‑shots.
 - **VAP `.mp4`** (`gift_5775`, rocket, login bg): intentionally deferred per instruction.
-- Anything whose role stays unproven is flagged REVIEW, never force‑placed.
