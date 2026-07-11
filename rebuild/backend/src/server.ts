@@ -33,6 +33,7 @@ import { chatRoutes } from './modules/chat/chat.routes.js';
 import { dmRoutes } from './modules/dm/dm.routes.js';
 import { bottleRoutes } from './modules/bottle/bottle.routes.js';
 import { medalRoutes, adminMedalRoutes } from './modules/medals/medal.routes.js';
+import { uploadRoutes } from './modules/uploads/upload.routes.js';
 
 declare module 'fastify' {
   interface FastifyInstance { authenticate: any; authenticateAdmin: any }
@@ -166,6 +167,7 @@ async function build() {
     await discoveryRoutes(v1);
     await dmRoutes(v1);
     await bottleRoutes(v1);
+    await uploadRoutes(v1);
     await medalRoutes(v1);
     await adminMedalRoutes(v1);
     await adminAuthRoutes(v1);

@@ -25,6 +25,19 @@ const schema = z.object({
   AGORA_APP_ID: z.string().default(''),
   AGORA_APP_CERTIFICATE: z.string().default(''),
   AGORA_TOKEN_TTL: z.coerce.number().default(3600),
+  // Cloudflare R2 (S3-compatible) object storage for user uploads (avatars, moment images,
+  // voice clips). All optional: if unset, the presign endpoint fails closed with 503 and the
+  // app falls back to its placeholder uploader. Endpoint is derived from the account id unless
+  // R2_ENDPOINT overrides it. R2_PUBLIC_BASE_URL is the public read origin (custom domain or
+  // the bucket's *.r2.dev URL).
+  R2_ACCOUNT_ID: z.string().default(''),
+  R2_ACCESS_KEY_ID: z.string().default(''),
+  R2_SECRET_ACCESS_KEY: z.string().default(''),
+  R2_BUCKET: z.string().default(''),
+  R2_ENDPOINT: z.string().default(''),
+  R2_PUBLIC_BASE_URL: z.string().default(''),
+  // Max upload size the client is told to enforce before requesting a URL (10 MiB default).
+  UPLOAD_MAX_BYTES: z.coerce.number().default(10 * 1024 * 1024),
   // Comma-separated allowed browser origins for the (future) web admin console in prod.
   CORS_ORIGINS: z.preprocess(
     (v) => (typeof v === 'string' && v.length ? v.split(',').map((s) => s.trim()).filter(Boolean) : []),

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 /// Media upload abstraction — decouples the feature layer from the object-storage
 /// vendor. The backend never receives bytes: `POST /moments` takes `media_urls` /
 /// `voice_url` and `POST /bottles` takes `voice_url`, i.e. URLs of media the client
@@ -13,12 +15,15 @@ abstract class MediaUploader {
   Future<String> uploadAudio(LocalFile file, {int seconds = 0});
 }
 
-/// A file picked or recorded on the device, ready to upload.
+/// A file picked or recorded on the device, ready to upload. [data] carries the raw bytes
+/// when a picker/recorder already has them in memory; otherwise the uploader reads [path]
+/// from disk. [bytes] is an optional size hint for progress UI.
 class LocalFile {
-  const LocalFile({required this.path, this.bytes = 0, this.mimeType});
+  const LocalFile({required this.path, this.bytes = 0, this.mimeType, this.data});
   final String path;
   final int bytes;
   final String? mimeType;
+  final Uint8List? data;
 }
 
 /// Thrown when an upload fails; features surface [message] to the user.

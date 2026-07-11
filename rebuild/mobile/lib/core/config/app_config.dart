@@ -12,6 +12,12 @@ class AppConfig {
   static const String signSecret =
       String.fromEnvironment('VOXA_SIGN_SECRET', defaultValue: 'dev-secret');
 
+  /// Whether media uploads go through the backend's presigned-R2 path (real uploader).
+  /// Off by default so dev/test builds keep using the offline placeholder uploader; set
+  /// `--dart-define=VOXA_UPLOADS=true` for a build whose backend has R2 provisioned.
+  static const bool uploadsEnabled =
+      bool.fromEnvironment('VOXA_UPLOADS', defaultValue: false);
+
   /// DEV-ONLY placeholder values that must never ship in a production (release) build.
   static const Set<String> devPlaceholders = {
     'https://api.example.com/v1',

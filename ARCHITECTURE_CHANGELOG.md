@@ -4,6 +4,34 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-11 — Cloudflare R2 media uploads (launch task #2)
+
+**Context:** Give the app a real media-upload path. Implemented as **server-issued presigned R2
+PUT URLs**: the client uploads bytes directly to R2 and hands the public URL to the existing content
+APIs (moments/bottles/profile) — matching the established "API accepts already-uploaded URLs"
+design. No features removed, architecture preserved, dev/test kept working. Full detail:
+`R2_UPLOAD_INTEGRATION_REPORT.md`.
+
+**Backend:** new `lib/r2.ts` — self-contained AWS **SigV4** query-presigner via `node:crypto`
+HMAC-SHA256 (**no `@aws-sdk` dependency**; region `auto`, path-style, `UNSIGNED-PAYLOAD`). New
+`modules/uploads/` service+routes: `POST /uploads/presign` (auth, 60/min, server-decided
+key+extension, per-kind MIME allowlist, 300s URLs) → `{ upload_url, public_url, key, headers,
+expires_at, max_bytes }`, **503 fail-closed** when R2 unprovisioned; `GET /uploads/config`. Env
+gained optional `R2_*` + `UPLOAD_MAX_BYTES` (partial config ⇒ disabled).
+
+**Mobile:** new `R2MediaUploader` (presign → direct PUT → public URL; `LocalFile` gained
+`Uint8List? data`); `mediaUploaderProvider` selects it when `AppConfig.uploadsEnabled`
+(`--dart-define=VOXA_UPLOADS=true`), else keeps the offline placeholder so dev/test are unchanged.
+
+**Verification:** backend **202/202** (+15), Flutter **172/172** (+5), tsc 0, analyze clean. SigV4
+validated against AWS's official **get-vanilla** test vector; env-driven presign smoke confirmed
+(correct host/path/`auto`/64-hex sig/300s). Secrets stay in gitignored `.env` — none committed.
+
+**Remaining seam:** a native gallery **image picker** to supply real bytes (the one documented UI
+wiring left; needs on-device QA), and a live R2 round-trip once real credentials are set.
+
+---
+
 ## 2026-07-11 — Phase 12 pre-launch production validation (verification only)
 
 **Context:** Pre-launch validation for Google Play across payments, prod env, release build,
