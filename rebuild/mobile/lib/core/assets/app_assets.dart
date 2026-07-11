@@ -32,6 +32,15 @@ class AppAssets {
   static const tabMsg = '$_pag/home/waitio_tab_msg.pag';
   static const tabMine = '$_pag/home/waitio_tab_mine.pag';
 
+  // Bottom-nav STATIC gold icons — transparent-background clones cut pixel-for-pixel from the
+  // owner's own original ZaffaLive screenshots (owned). Rendered now; the animated .pag versions
+  // above take over once libpag is wired. Sizes match the original bar.
+  static const navHome = 'assets/images/nav/waitio_tab_home.png'; // حفلة — mosque
+  static const navDynamic = 'assets/images/nav/waitio_tab_dynamic.png'; // حالة — compass star
+  static const navLive = 'assets/images/nav/waitio_tab_live.png'; // لايف — video camera
+  static const navMsg = 'assets/images/nav/waitio_tab_msg.png'; // رسالة — gem bubble
+  static const navMine = 'assets/images/nav/waitio_tab_mine.png'; // انا — king portrait
+
   // Gift / effects (SVGA — playable now)
   static const giftContinuous = '$_svga/gift/waitio_gift_continuous.svga';
   static const roomRocket = '$_svga/rocket/waitio_room_rocket.svga';

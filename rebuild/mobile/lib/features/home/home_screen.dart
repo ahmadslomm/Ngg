@@ -31,26 +31,30 @@ class _HomeScreenState extends State<HomeScreen> {
   // their network fetches until the user actually opens them.
   final Set<int> _visited = {0};
 
+  // Tab order mirrors the original's RTL bottom bar (right→left): حفلة · حالة · لايف · رسالة · انا.
+  // The nav Row renders under Directionality.rtl (below), so index 0 (حفلة) sits on the RIGHT.
+  // Icons are the original gold art, cloned pixel-for-pixel from the owner's own ZaffaLive
+  // screenshots (transparent PNGs in assets/images/nav/). Order/labels/chrome match the original.
   static const _tabs = <_TabDef>[
-    _TabDef('Home', Icons.explore_rounded),
-    _TabDef('Live', Icons.stream_rounded),
-    _TabDef('Moments', Icons.dynamic_feed_rounded),
-    _TabDef('Messages', Icons.chat_bubble_rounded),
-    _TabDef('Me', Icons.person_rounded),
+    _TabDef('حفلة', AppAssets.navHome), // Party / rooms (Home)
+    _TabDef('حالة', AppAssets.navDynamic), // Status / Moments
+    _TabDef('لايف', AppAssets.navLive), // Live
+    _TabDef('رسالة', AppAssets.navMsg), // Messages
+    _TabDef('انا', AppAssets.navMine), // Me
   ];
 
   Widget _tab(int i) {
     switch (i) {
       case 0:
-        return const _HomeTab();
+        return const _HomeTab(); // حفلة — room discovery
       case 1:
-        return const _PlaceholderTab(title: 'Live', icon: Icons.stream_rounded);
+        return const MomentsScreen(); // حالة — moments/status
       case 2:
-        return const MomentsScreen();
+        return const _PlaceholderTab(title: 'لايف', icon: Icons.videocam_rounded); // لايف
       case 3:
-        return const ConversationsScreen();
+        return const ConversationsScreen(); // رسالة — messages
       default:
-        return const ProfileScreen();
+        return const ProfileScreen(); // انا — me
     }
   }
 
@@ -78,9 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _TabDef {
-  const _TabDef(this.label, this.icon);
+  const _TabDef(this.label, this.asset);
   final String label;
-  final IconData icon;
+  final String asset; // transparent PNG path in assets/images/nav/
 }
 
 class _BrandNavBar extends ConsumerWidget {
@@ -96,7 +100,12 @@ class _BrandNavBar extends ConsumerWidget {
     final unread = ref.watch(dmUnreadProvider); // real DM unread total (getIMNum)
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.bgDeep,
+        // Exact nav-bar purple sampled from the original ZaffaLive bar (top→bottom gradient).
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF2C094D), Color(0xFF1D0833)],
+        ),
         border: const Border(top: BorderSide(color: AppColors.onDarkFaint)),
         boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 16)],
       ),
@@ -104,7 +113,10 @@ class _BrandNavBar extends ConsumerWidget {
         top: false,
         child: SizedBox(
           height: AppSpacing.bottomNavHeight,
-          child: Row(
+          // RTL so the first tab (حفلة) renders on the right, matching the original bar.
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Row(
             children: [
               for (var i = 0; i < tabs.length; i++)
                 Expanded(
@@ -114,7 +126,7 @@ class _BrandNavBar extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _NavIcon(
-                          icon: tabs[i].icon,
+                          asset: tabs[i].asset,
                           active: i == index,
                           badge: i == _messagesTab ? unread : 0,
                         ),
@@ -122,7 +134,7 @@ class _BrandNavBar extends ConsumerWidget {
                         Text(
                           tabs[i].label,
                           style: AppTypography.micro.copyWith(
-                            color: i == index ? AppColors.primary : AppColors.onDark50,
+                            color: i == index ? AppColors.onDark : AppColors.onDark50,
                             fontWeight: i == index ? FontWeight.w700 : FontWeight.w500,
                           ),
                         ),
@@ -132,6 +144,7 @@ class _BrandNavBar extends ConsumerWidget {
                 ),
             ],
           ),
+          ),
         ),
       ),
     );
@@ -140,26 +153,37 @@ class _BrandNavBar extends ConsumerWidget {
 
 /// A nav icon with an optional unread badge (used for the Messages tab).
 class _NavIcon extends StatelessWidget {
-  const _NavIcon({required this.icon, required this.active, this.badge = 0});
-  final IconData icon;
+  const _NavIcon({required this.asset, required this.active, this.badge = 0});
+  final String asset;
   final bool active;
   final int badge;
 
+  // The original's unread pill is a saturated amber, not red.
+  static const _badgeAmber = Color(0xFFF5B301);
+
   @override
   Widget build(BuildContext context) {
-    final color = active ? AppColors.primary : AppColors.onDark50;
-    if (badge <= 0) return Icon(icon, size: 24, color: color);
+    // The original bottom bar shows full-colour gold icons at full size when active and dims the
+    // rest. The PNGs are the exact shipped icons, so we only vary size/opacity — no recolouring.
+    Widget img = Image.asset(
+      asset,
+      height: active ? 32 : 28,
+      fit: BoxFit.contain,
+      filterQuality: FilterQuality.high,
+    );
+    if (!active) img = Opacity(opacity: 0.65, child: img);
+    if (badge <= 0) return img;
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Icon(icon, size: 24, color: color),
+        img,
         Positioned(
           right: -6,
           top: -4,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
             constraints: const BoxConstraints(minWidth: 15),
-            decoration: const BoxDecoration(color: AppColors.warnRed, borderRadius: BorderRadius.all(Radius.circular(8))),
+            decoration: const BoxDecoration(color: _badgeAmber, borderRadius: BorderRadius.all(Radius.circular(8))),
             child: Text(badge > 99 ? '99+' : '$badge',
                 textAlign: TextAlign.center, style: AppTypography.micro.copyWith(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 9)),
           ),
