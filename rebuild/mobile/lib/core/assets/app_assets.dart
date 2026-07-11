@@ -19,9 +19,10 @@ class AppAssets {
 
   // Room chrome (recovered originals)
   static const roomBgDefault = 'assets/room/room_bg_default.webp'; // purple "ZAFFA" throne backdrop
-  // Empty mic seat — glassy bubble + neon armchair, cloned pixel-for-pixel from the owner's own
-  // room screenshot (cosmic theme), keyed to composite over the room background.
-  static const seatEmptyCosmic = 'assets/images/room/seats/seat_empty_cosmic.png';
+  // Empty mic seats — cloned pixel-for-pixel from the owner's own room screenshots, keyed to
+  // composite over the room background. One per room theme/skin.
+  static const seatEmptyCosmic = 'assets/images/room/seats/seat_empty_cosmic.png'; // glassy bubble + neon armchair
+  static const seatEmptyGoldRing = 'assets/images/room/seats/seat_empty_goldring.png'; // gold double-ring + armchair
   static const roomEntry = '$_svga/kroom/waitio_jinchang.svga'; // 入场 entry effect
   static const seatSpeaking = '$_svga/yinbo/waitio_self_voice.svga'; // speaking voice wave
   static const cpSeat = '$_svga/kroom/waitio_cp_in_seat.svga';

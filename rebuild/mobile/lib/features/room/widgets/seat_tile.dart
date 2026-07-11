@@ -8,6 +8,16 @@ import '../models/room_decorations.dart';
 import '../models/room_models.dart';
 import 'seat_glyphs.dart';
 
+/// Empty-seat art per room theme — each is a pixel clone of the original. Which room decoration
+/// uses which skin is not yet confirmed from the reference (REVIEW_REQUIRED), so callers opt in;
+/// the default stays [SeatSkin.cosmic].
+enum SeatSkin { cosmic, goldRing }
+
+String _seatSkinAsset(SeatSkin s) => switch (s) {
+      SeatSkin.cosmic => AppAssets.seatEmptyCosmic,
+      SeatSkin.goldRing => AppAssets.seatEmptyGoldRing,
+    };
+
 /// One mic seat, reconstructed from the original room evidence
 /// (ORIGINAL_ROOM_FORENSIC_EVIDENCE.md): a distinct **host** seat vs audience
 /// seats; empty / occupied / locked states; self- vs admin-mute; and the real
@@ -23,6 +33,7 @@ class SeatTile extends StatelessWidget {
     this.label,
     this.onTap,
     this.decoration = SeatDecoration.none,
+    this.skin = SeatSkin.cosmic,
   });
 
   final Seat seat;
@@ -34,6 +45,9 @@ class SeatTile extends StatelessWidget {
   /// none → unchanged seat. Populated only by the display layer, never by the
   /// controller. See [SeatDecoration] and ROOM_ASSET_MAPPING.md.
   final SeatDecoration decoration;
+
+  /// Which cloned empty-seat art to show (per room theme). Default [SeatSkin.cosmic].
+  final SeatSkin skin;
 
   double get _avatar => isHost ? 60 : 52;
 
@@ -180,7 +194,7 @@ class SeatTile extends StatelessWidget {
     // It carries its own rim/ring/glow, so it is drawn directly (no bordered container).
     if (seat.state == SeatState.empty) {
       return Image.asset(
-        AppAssets.seatEmptyCosmic,
+        _seatSkinAsset(skin),
         width: _avatar + 14,
         height: _avatar + 14,
         fit: BoxFit.contain,
