@@ -61,6 +61,7 @@ CpFrame? cpFrameForRank(int rank) => switch (rank) {
 /// fallback when there is no real [SeatDisplay.vipBadgeUrl] — the real VIP badge wins.
 SeatDecoration mapSeatDecoration(SeatDisplay d) {
   final decoration = SeatDecoration(
+    vipLevel: d.vipLevel,
     avatarFrameUrl: d.avatarFrameUrl,
     vipFrameUrl: d.vipFrameUrl,
     vipBadgeUrl: d.vipBadgeUrl,

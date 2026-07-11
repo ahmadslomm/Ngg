@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../core/assets/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/widgets/avatar_frame.dart';
+import '../../../core/widgets/pag_view.dart';
 import '../../../core/widgets/svga_view.dart';
 import '../models/room_decorations.dart';
 import '../models/room_models.dart';
@@ -66,27 +68,26 @@ class SeatTile extends StatelessWidget {
               alignment: Alignment.center,
               clipBehavior: Clip.none,
               children: [
-                // Speaking wave (recovered SVGA) behind the avatar.
+                // Speaking wave behind the avatar — VIP7–15 get their original animated ring
+                // (yinbo/waitio_yinbo_vip{level}.pag, libpag); everyone else keeps the original
+                // default SVGA wave. Driven by the real speaker tier + isSpeaking.
                 if (seat.isSpeaking)
                   SizedBox(
                     width: _avatar + 16,
                     height: _avatar + 16,
-                    child: const SvgaView(asset: AppAssets.seatSpeaking, loop: true),
+                    child: _SpeakingRing(vipLevel: decoration.vipLevel),
                   ),
                 _avatarCircle(),
-                // REAL avatar frame — the user's chosen `avatar_frame_url`, else their
-                // real VIP-tier frame (`vip_frame_url`). Both are real server URLs;
-                // silently absent if null or fails to load.
-                if (seat.isOccupied && decoration.effectiveFrameUrl != null)
-                  IgnorePointer(
-                    child: CachedNetworkImage(
-                      imageUrl: decoration.effectiveFrameUrl!,
-                      width: _avatar + 26,
-                      height: _avatar + 26,
-                      fit: BoxFit.contain,
-                      errorWidget: (_, __, ___) => const SizedBox.shrink(),
-                      placeholder: (_, __) => const SizedBox.shrink(),
-                    ),
+                // REAL avatar frame — the user's chosen `avatar_frame_url` / real VIP-tier
+                // `vip_frame_url` (remote), else the original bundled VIP-tier frame
+                // `userspace/waitio_vip{level}.pag` (libpag), keyed to the real vip_level. No
+                // placeholder: a non-VIP with no worn frame shows none.
+                if (seat.isOccupied)
+                  AvatarFrame(
+                    size: _avatar,
+                    frameUrl: decoration.effectiveFrameUrl,
+                    vipLevel: decoration.vipLevel,
+                    scale: (_avatar + 26) / _avatar,
                   ),
                 // Recovered CP (couple) frame — wraps the avatar (transparent centre).
                 if (seat.isOccupied && decoration.cpFrame != null)
@@ -223,6 +224,28 @@ class SeatTile extends StatelessWidget {
           Image.asset(AppAssets.defaultAvatar, fit: BoxFit.cover), // remote avatar loads at runtime
       },
     );
+  }
+}
+
+/// The speaking wave drawn behind a seated avatar. VIP7–15 play their original animated ring
+/// `yinbo/waitio_yinbo_vip{level}.pag` (libpag); everyone else keeps the original default SVGA wave
+/// (`waitio_self_voice.svga`) — the real asset, not a placeholder. Driven by the real speaker tier.
+class _SpeakingRing extends StatelessWidget {
+  const _SpeakingRing({required this.vipLevel});
+  final int vipLevel;
+
+  @override
+  Widget build(BuildContext context) {
+    final pag = AppAssets.yinboVipPag(vipLevel);
+    if (pag != null) {
+      return PagView.asset(
+        pag,
+        loop: true,
+        // On a platform without libpag, fall back to the original default wave rather than nothing.
+        fallback: const SvgaView(asset: AppAssets.seatSpeaking, loop: true),
+      );
+    }
+    return const SvgaView(asset: AppAssets.seatSpeaking, loop: true);
   }
 }
 

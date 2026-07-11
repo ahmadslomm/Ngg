@@ -97,6 +97,7 @@ enum CpFrame {
 
 class SeatDecoration {
   const SeatDecoration({
+    this.vipLevel = 0,
     this.avatarFrameUrl,
     this.vipFrameUrl,
     this.vipBadgeUrl,
@@ -106,6 +107,12 @@ class SeatDecoration {
     this.cpBonded = false,
     this.medalAsset,
   });
+
+  /// **REAL** — the user's `vip_level`. Selects the original bundled VIP art by tier:
+  /// the animated avatar frame `userspace/waitio_vip{level}.pag` (when no remote frame) and the
+  /// animated speaking ring `yinbo/waitio_yinbo_vip{level}.pag` (VIP7–15). Tier is filename-encoded,
+  /// so this is evidence-based, not a grade→art guess.
+  final int vipLevel;
 
   /// **REAL** — the user's actual `avatar_frame_url` (remote). Rendered directly;
   /// silently absent if the URL is null or fails to load.
@@ -142,6 +149,7 @@ class SeatDecoration {
   static const none = SeatDecoration();
 
   bool get isEmpty =>
+      vipLevel == 0 &&
       avatarFrameUrl == null &&
       vipFrameUrl == null &&
       vipBadgeUrl == null &&

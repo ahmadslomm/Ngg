@@ -26,11 +26,18 @@ New reusable `core/widgets/avatar_frame.dart` (`AvatarFrame`): renders the worn 
 **real `vip_level`** + `avatar_frame_url`. No placeholder; non‑VIP with no worn frame shows none.
 - Verify: `flutter analyze` clean · **172/172** tests · `flutter build apk --debug` ✓.
 
-### ⏳ Stage 2 — Seats: VIP avatar frame + VIP speaking ring (next)
-Thread `vip_level` (+ `avatar_frame_url`) through the room **member/seat** payload (backend serialize →
-`Seat.fromJson` → `SeatTile`), then: reuse `AvatarFrame` on occupied seats, and replace the seat
-speaking SVGA with the original **`yinbo/waitio_yinbo_vip{level}.pag`** (VIP7–15) / **`yinbo_def.pag`**,
-driven by the real speaker tier + `isSpeaking`.
+### ✅ Stage 2 — Seats: VIP avatar frame + VIP speaking ring (this commit)
+No backend change needed — the mobile already hydrates real `vip_level` / `avatar_frame_url` /
+`vip_frame_url` per occupant (`room_display_builder` ← `GET /users/:id`). Threaded `vipLevel` through
+`SeatDisplay → SeatDecoration` (mapper), then in `SeatTile`:
+- **Frame:** occupied seats now use the shared `AvatarFrame` — worn/VIP remote frame first, else the
+  original **`userspace/waitio_vip{level}.pag`** (libpag), else nothing.
+- **Speaking ring:** VIP7–15 speakers play their original **`yinbo/waitio_yinbo_vip{level}.pag`**;
+  others keep the original default SVGA wave. Driven by real `vipLevel` + `isSpeaking`.
+- Verify: `flutter analyze` clean · **172/172** tests · `flutter build apk --debug` ✓.
+
+> Note: only VIP tiers 1–3 are seeded, so with current data VIP1–3 show a frame and non‑VIP show the
+> default wave; VIP7–15 art activates as soon as those tiers exist in the data. All art is original.
 
 ### ⏳ Stage 3 — Entry effects (PAG) on room join
 Play the entering user's effect on join events (VIP entry / `topbanner/*`), driven by the join stream.
