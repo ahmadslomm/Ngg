@@ -58,6 +58,11 @@ class AgoraVoiceEngine implements VoiceEngine {
   }
 
   ChannelMediaOptions _options(bool broadcaster) => ChannelMediaOptions(
+        // Live-broadcasting profile — matches the original app's observed Agora trace
+        // (`rtc.channel_profile:1`, see AGORA_RUNTIME_FORENSIC_REPORT.md). Required for the
+        // host/audience role model: `clientRoleType` + `audienceLatencyLevel` are only honored
+        // under live broadcasting, not the communication profile.
+        channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
         clientRoleType:
             broadcaster ? ClientRoleType.clientRoleBroadcaster : ClientRoleType.clientRoleAudience,
         publishMicrophoneTrack: broadcaster,
