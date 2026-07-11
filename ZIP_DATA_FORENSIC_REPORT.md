@@ -44,8 +44,17 @@ Valid originals, present in the dump, downloaded by the original client at runti
 - `waitio_svgaPath/409775947405104646/svga.svga` — valid SVGA, 18 KB
 - `waitio_svgaPath/591246528455171638/send_gift_5775/…mp4` — gift #5775 alpha‑video, 924 KB
 
-These are user‑ecosystem gift/effect assets keyed by server id; their exact role isn't labelled, so
-they are **left as `⚠REVIEW`, not force‑bundled** (kept available at `/root/i/mm/` if wanted).
+**Extracted & identified** (SVGA = zlib+protobuf; carved the embedded PNG sprites):
+- `songli1.svga` → blue glossy **nameplate + gold laurel wreath + crown + wings** = a VIP **entry/gift
+  banner** (15 sprites).
+- `svga.svga` → **purple pill banner with a circular avatar slot** = an entry strip (5 sprites).
+- `send_gift_5775…mp4` → **VAP** alpha‑video (colour+alpha stacked, 752×416 @15fps): an ornate gold
+  **winged fire banner** (gift #5775).
+
+**Salvaged into the project** (owned) at `mobile/assets/anim/salvaged/` with an evidence README: the
+two SVGA are registered in `AppAssets` (`entryBannerGoldLaurel`, `entryBannerPurpleAvatar`) and play
+via `svgaplayer_flutter` now; the mp4 (needs a VAP player) and `3.pag` (needs libpag) are preserved as
+evidence. Exact gift/VIP‑tier → asset mapping is server‑driven (id only) → **`⚠REVIEW`, not asserted**.
 
 ## 4. Direct answer to "animated VIP / avatar frames?"
 The original's animated frames **are PAG files we already hold**:

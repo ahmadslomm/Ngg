@@ -45,6 +45,11 @@ class AppAssets {
   static const navMsg = 'assets/images/nav/waitio_tab_msg.png'; // رسالة — gem bubble
   static const navMine = 'assets/images/nav/waitio_tab_mine.png'; // انا — king portrait
 
+  // Salvaged from the original app's on-device cache (owned; downloaded from fstatic.cat1314.com).
+  // SVGA play now via svgaplayer_flutter. See assets/anim/salvaged/README.md + ZIP_DATA_FORENSIC_REPORT.md.
+  static const entryBannerGoldLaurel = 'assets/anim/salvaged/entry_banner_gold_laurel.svga';
+  static const entryBannerPurpleAvatar = 'assets/anim/salvaged/entry_banner_purple_avatar.svga';
+
   // Gift / effects (SVGA — playable now)
   static const giftContinuous = '$_svga/gift/waitio_gift_continuous.svga';
   static const roomRocket = '$_svga/rocket/waitio_room_rocket.svga';

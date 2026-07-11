@@ -67,6 +67,8 @@ flutter:
     - assets/anim/svga/rocket/
     - assets/anim/svga/userspace/
     - assets/anim/svga/yinbo/
+    # Salvaged from the original app's on-device cache (owned) — see assets/anim/salvaged/README.md
+    - assets/anim/salvaged/
     # Restored original PAG assets (owned), by feature
     - assets/anim/pag/bomb/
     - assets/anim/pag/cp/
