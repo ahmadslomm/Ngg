@@ -1,4 +1,4 @@
-package com.example.voxa
+package com.zaffalive.voxa
 
 import io.flutter.embedding.android.FlutterActivity
 

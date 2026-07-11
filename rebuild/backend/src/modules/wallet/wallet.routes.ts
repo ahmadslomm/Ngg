@@ -31,8 +31,8 @@ export async function walletRoutes(app: FastifyInstance) {
   // Recharge products
   app.get('/store/products', async () => ok(serialize(await walletService.listProducts())));
 
-  // Create order
-  app.post('/store/orders', { preHandler: [app.authenticate] }, async (req, reply) => {
+  // Create order. Money endpoints carry a tighter per-route rate limit than the global cap (item 8).
+  app.post('/store/orders', { preHandler: [app.authenticate], config: { rateLimit: { max: 30, timeWindow: '1 minute' } } }, async (req, reply) => {
     try {
       const b = z.object({ product_id: z.coerce.bigint(), provider: z.number().int().min(0).max(1), purchase_token: z.string().min(1) }).parse(req.body);
       const order = await walletService.createOrder(uid(req), { productId: b.product_id, provider: b.provider, purchaseToken: b.purchase_token });
@@ -41,7 +41,7 @@ export async function walletRoutes(app: FastifyInstance) {
   });
 
   // Verify order -> grant coins (idempotent)
-  app.post('/store/orders/:id/verify', { preHandler: [app.authenticate] }, async (req, reply) => {
+  app.post('/store/orders/:id/verify', { preHandler: [app.authenticate], config: { rateLimit: { max: 30, timeWindow: '1 minute' } } }, async (req, reply) => {
     try {
       const r = await walletService.verifyAndGrant(uid(req), BigInt((req.params as any).id));
       return ok(serialize(r));
@@ -49,17 +49,17 @@ export async function walletRoutes(app: FastifyInstance) {
   });
 
   // beans -> coins
-  app.post('/exchange', { preHandler: [app.authenticate] }, async (req, reply) => {
+  app.post('/exchange', { preHandler: [app.authenticate], config: { rateLimit: { max: 20, timeWindow: '1 minute' } } }, async (req, reply) => {
     try {
       const b = z.object({ beans: z.coerce.bigint() }).parse(req.body);
       return ok(serialize(await walletService.exchange(uid(req), b.beans)));
     } catch (e) { return replyError(reply, e); }
   });
 
-  // Withdrawals
-  app.post('/withdrawals', { preHandler: [app.authenticate] }, async (req, reply) => {
+  // Withdrawals — the tightest limit (cash-out). account is capped so its encrypted form fits.
+  app.post('/withdrawals', { preHandler: [app.authenticate], config: { rateLimit: { max: 5, timeWindow: '1 minute' } } }, async (req, reply) => {
     try {
-      const b = z.object({ amount: z.coerce.bigint(), method: z.string().min(1).max(32), account: z.string().min(1).max(255) }).parse(req.body);
+      const b = z.object({ amount: z.coerce.bigint(), method: z.string().min(1).max(32), account: z.string().min(1).max(120) }).parse(req.body);
       const r = await walletService.createWithdrawal(uid(req), { amount: b.amount, method: b.method, account: b.account });
       return ok(serialize({ withdrawal_id: r.request.id, status: r.request.status, beans_after: r.beansAfter }));
     } catch (e) { return replyError(reply, e); }

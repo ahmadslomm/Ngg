@@ -84,13 +84,20 @@ export function initRealtime(
   return io;
 }
 
+// Idle rooms drop their seq key after this long with no broadcasts (item 11). Refreshed on every
+// event (sliding), so an active room never resets mid-session; only long-idle keys self-clean,
+// bounding Redis growth. Well beyond any single room session.
+const SEQ_TTL_SECONDS = 86_400; // 24h
+
 // Called by REST services after a committed mutation, with a per-room monotonic seq.
 // Best-effort broadcast (L1): a Redis hiccup must never reject into a fire-and-forget caller
 // (gift/chat routes) as an unhandled rejection — the money/state change already committed.
 export async function emitRoomEvent(room: string, env: RtEnvelope) {
   if (!io) return;
   try {
-    const seq = await redis.incr(`${room}:seq`);
+    // One round-trip: bump the per-room seq and refresh its sliding TTL together.
+    const res = await redis.multi().incr(`${room}:seq`).expire(`${room}:seq`, SEQ_TTL_SECONDS).exec();
+    const seq = (res?.[0]?.[1] as number) ?? 0;
     io.to(room).emit('event', { ...env, room, seq, ts: env.ts ?? Date.now() });
   } catch {
     /* dropped broadcast is a lost animation/update, never a lost mutation */

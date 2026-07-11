@@ -6,6 +6,7 @@ import { prisma } from '../../lib/prisma.js';
 import { serializableTx } from '../../lib/tx.js';
 import { AppError } from '../../lib/errors.js';
 import { isProd } from '../../lib/env.js';
+import { encryptField, decryptField } from '../../lib/crypto.js';
 import { Currency, LedgerReason } from '../../lib/ledger.js';
 
 // Configurable economy constants (defaults; overridable via `settings` later).
@@ -143,13 +144,15 @@ export class WalletService {
       const beansAfter = w.beans - input.amount;
       await tx.wallet.update({ where: { userId }, data: { beans: beansAfter } });
       await tx.walletLedger.create({ data: { userId, currency: Currency.Beans, delta: -input.amount, balanceAfter: beansAfter, reason: LedgerReason.Withdraw, refType: 'withdrawal' } });
-      const req = await tx.withdrawalRequest.create({ data: { userId, amount: input.amount, method: input.method, account: input.account, status: 0 } });
-      return { request: req, beansAfter };
+      // Encrypt the payout account at rest (financial PII). Decrypted only for the owner's list.
+      const req = await tx.withdrawalRequest.create({ data: { userId, amount: input.amount, method: input.method, account: encryptField(input.account), status: 0 } });
+      return { request: { ...req, account: input.account }, beansAfter };
     });
   }
 
   async listWithdrawals(userId: bigint) {
-    return prisma.withdrawalRequest.findMany({ where: { userId }, orderBy: { createdAt: 'desc' }, take: 50 });
+    const rows = await prisma.withdrawalRequest.findMany({ where: { userId }, orderBy: { createdAt: 'desc' }, take: 50 });
+    return rows.map((r) => ({ ...r, account: decryptField(r.account) }));
   }
 
   // Ledger reconciliation: wallet balance per currency must equal the sum of its ledger deltas.

@@ -63,7 +63,10 @@ class ApiClient {
     if (_refreshToken == null) return false;
     try {
       final res = await _dio.post('/auth/refresh', data: {'refresh_token': _refreshToken});
-      _accessToken = res.data['data']['access_token'];
+      _accessToken = res.data['data']['access_token'] as String?;
+      // Store the rotated refresh token so revocation/rotation on the server stays in sync.
+      final rt = res.data['data']['refresh_token'] as String?;
+      if (rt != null) _refreshToken = rt;
       return true;
     } catch (_) {
       return false;

@@ -19,8 +19,14 @@ if (hasReleaseKeystore) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+// Production application id. Defaults to the product package; override for your own store
+// listing via `-Pvoxa.applicationId=com.yourco.app` or gradle.properties — never a
+// `com.example.*` placeholder (a release build is refused below if it is).
+val prodApplicationId = (project.findProperty("voxa.applicationId") as String?) ?: "com.zaffalive.voxa"
+
 android {
-    namespace = "com.example.voxa"
+    // Internal code package (R/BuildConfig, MainActivity). Fixed to the product package.
+    namespace = "com.zaffalive.voxa"
     compileSdk = flutter.compileSdkVersion
     // Pinned to the highest NDK required by any plugin (sqflite_android); NDKs are
     // backward-compatible, so this satisfies every dependency and keeps release builds stable.
@@ -36,10 +42,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.voxa"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        applicationId = prodApplicationId
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -65,9 +68,30 @@ android {
                 signingConfigs.getByName("release")
             else
                 signingConfigs.getByName("debug")
-            isMinifyEnabled = false
-            isShrinkResources = false
+            // B3: R8 code shrink + resource shrink for a Play-compliant release. Flutter's Dart
+            // is AOT-compiled separately; these shrink the Java/Kotlin plugin code + Android
+            // resources. Keep rules for the native plugins live in proguard-rules.pro.
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
+    }
+}
+
+// B2 guard: refuse to assemble/bundle a RELEASE with a com.example.* placeholder application id.
+gradle.taskGraph.whenReady {
+    val releaseBound = allTasks.any { t ->
+        val n = t.name
+        n.contains("Release") && (n.startsWith("assemble") || n.startsWith("bundle") || n.startsWith("package"))
+    }
+    if (releaseBound && prodApplicationId.startsWith("com.example")) {
+        throw GradleException(
+            "Refusing release build: applicationId '$prodApplicationId' is a com.example.* placeholder. " +
+            "Set -Pvoxa.applicationId=com.yourco.app (or voxa.applicationId in gradle.properties).",
+        )
     }
 }
 

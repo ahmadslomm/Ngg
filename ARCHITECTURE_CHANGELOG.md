@@ -4,6 +4,45 @@ Chronological record of architecture-affecting changes. Newest first.
 
 ---
 
+## 2026-07-11 — Phase 11.1 production release hardening (blockers B2–B4 + High/Medium)
+
+**Context:** Close the verified release blockers and hardening items from
+`RELEASE_CANDIDATE_AUDIT_REPORT.md`. No features; architecture preserved; every security change
+tested; no secrets committed. Full detail: `RELEASE_HARDENING_REPORT.md`, `backend/OPERATIONS.md`.
+
+**Blockers:**
+- **B2** application id `com.example.voxa` → **`com.zaffalive.voxa`** (namespace + `MainActivity`
+  moved); overridable via `-Pvoxa.applicationId`; a Gradle guard refuses a `com.example.*` release.
+- **B3** release `isMinifyEnabled`/`isShrinkResources` on + Flutter-safe `proguard-rules.pro`;
+  ship an **App Bundle** (per-ABI splits: arm64 105 MB / v7a 83 / x86_64 80 + 29 MB assets → ~140 MB
+  per device vs the old 316 MB universal APK).
+- **B4** `AppConfig.productionConfigProblems` (pure/testable) + a `kReleaseMode` startup guard that
+  refuses dev-placeholder / non-TLS / weak config; API/RT/sign now come from `--dart-define`s. Client
+  persists the rotated refresh token.
+
+**Backend security (additive; fail-closed):**
+- **4/9** `env.ts` `productionConfigErrors` boot guard: in prod refuses `SIGN_ENFORCED=false`,
+  insecure dev auth, and any signing/encryption secret <32 chars or a known placeholder.
+- **5** new `lib/crypto.ts` (AES-256-GCM, `v1:iv:tag:ct`, `FIELD_ENCRYPTION_KEY`); withdrawal payout
+  `account` encrypted at rest, decrypted for the owner (route caps input at 120 chars).
+- **6** per-route brute-force limits on `/auth/login`, `/auth/refresh`, `/admin/auth/login` (10/min).
+- **7** refresh tokens carry a `jti`; `POST /auth/logout` denylists it in Redis (TTL self-clean);
+  `/auth/refresh` rejects revoked tokens.
+- **8** money-endpoint rate limits (orders/verify 30, exchange 20, withdrawals 5 / min).
+- **10** request-path Redis client bounded (`maxRetriesPerRequest:3` + connect timeout) → fails fast.
+- **11** `emitRoomEvent` sets a 24h sliding TTL on `${room}:seq` (pipelined incr+expire).
+- **12** `backend/OPERATIONS.md` — Postgres PITR/restore drill, migration rollback, Redis posture.
+
+**Verification:** `flutter analyze` clean · Flutter **167/167** (+5) · backend `tsc` 0 · vitest
+**187/187** (+12: crypto 4, env 5, auth 2, wallet-encryption 1) · **signed release AAB** 205 MB
+(`com.zaffalive.voxa`, R8+shrink) → `zaffalive-p11-1-hardening-20260711.aab`
+(sha256 `615f091f…2a0dd28`). B2 guard negative-verified (refuses `com.example.*`). Keystore +
+`key.properties` gitignored, not committed. **Remaining blockers: none in code** — pending payment
+verifier wiring, real upload keystore/Play signing, Postgres backups, iOS audit. Overall readiness
+**90/100**.
+
+---
+
 ## 2026-07-10 — Phase 11 release-candidate audit (verification only)
 
 **Context:** Full RC audit across security, infrastructure, mobile release, and economy

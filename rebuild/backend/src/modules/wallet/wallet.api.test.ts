@@ -78,6 +78,20 @@ describe('wallet API', () => {
     expect(list.body.data.length).toBe(1);
   });
 
+  it('withdrawal payout account is encrypted at rest and decrypted for the owner (item 5)', async () => {
+    const u = await makeUser({ beans: 5000n });
+    await inject(app, u, 'POST', '/withdrawals', { amount: '1000', method: 'paypal', account: 'secret@payout.com' });
+
+    // Raw DB row must NOT contain the plaintext — it's AES-GCM ciphertext (v1:...).
+    const row = await prisma.withdrawalRequest.findFirst({ where: { userId: BigInt(u) }, orderBy: { id: 'desc' } });
+    expect(row!.account).not.toContain('secret@payout.com');
+    expect(row!.account.startsWith('v1:')).toBe(true);
+
+    // The owner's list decrypts it back.
+    const list = await inject(app, u, 'GET', '/withdrawals');
+    expect(list.body.data[0].account).toBe('secret@payout.com');
+  });
+
   it('withdrawal rejects below minimum and insufficient', async () => {
     const u = await makeUser({ beans: 5000n });
     expect((await inject(app, u, 'POST', '/withdrawals', { amount: '500', method: 'x', account: 'y' })).body.message).toBe('below_min_withdrawal');

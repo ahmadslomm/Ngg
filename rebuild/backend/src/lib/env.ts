@@ -19,6 +19,9 @@ const schema = z.object({
   APP_SIGN_SECRET_PREVIOUS: z.string().optional().default(''),
   SIGN_SKEW_MS: z.coerce.number().default(300000),
   SIGN_ENFORCED: boolEnv(false),
+  // Key for at-rest field encryption (withdrawal payout accounts). Dev default; a strong,
+  // non-placeholder value is required in production (enforced below).
+  FIELD_ENCRYPTION_KEY: z.string().default('dev-field-encryption-key-change-me'),
   AGORA_APP_ID: z.string().default(''),
   AGORA_APP_CERTIFICATE: z.string().default(''),
   AGORA_TOKEN_TTL: z.coerce.number().default(3600),
@@ -35,7 +38,35 @@ const schema = z.object({
 export const env = schema.parse(process.env);
 export const isProd = env.NODE_ENV === 'production';
 
-// Fail-closed invariant: never boot a production process with insecure dev auth enabled.
-if (isProd && env.ALLOW_INSECURE_DEV_AUTH) {
-  throw new Error('Refusing to start: ALLOW_INSECURE_DEV_AUTH must be false in production.');
+// ---- Production fail-closed invariants (defense in depth) ----
+// Evaluated at import time so a misconfigured production process refuses to boot rather than
+// running with insecure defaults. Dev/test skip these (weak defaults stay convenient).
+export function productionConfigErrors(e: typeof env): string[] {
+  const problems: string[] = [];
+  if (e.ALLOW_INSECURE_DEV_AUTH) problems.push('ALLOW_INSECURE_DEV_AUTH must be false');
+  // 4: request signing (replay/tamper protection) must be enforced in production.
+  if (!e.SIGN_ENFORCED) problems.push('SIGN_ENFORCED must be true');
+  // 9: secret-strength validation — every signing/encryption secret must be strong and real.
+  const KNOWN_PLACEHOLDERS = new Set([
+    'change-me-access', 'change-me-refresh', 'generate-a-64-hex-secret',
+    'dev-secret', 'dev-field-encryption-key-change-me',
+  ]);
+  const secrets: Array<[string, string]> = [
+    ['JWT_ACCESS_SECRET', e.JWT_ACCESS_SECRET],
+    ['JWT_REFRESH_SECRET', e.JWT_REFRESH_SECRET],
+    ['APP_SIGN_SECRET_CURRENT', e.APP_SIGN_SECRET_CURRENT],
+    ['FIELD_ENCRYPTION_KEY', e.FIELD_ENCRYPTION_KEY],
+  ];
+  for (const [name, val] of secrets) {
+    if (val.length < 32) problems.push(`${name} must be ≥32 chars in production`);
+    if (KNOWN_PLACEHOLDERS.has(val)) problems.push(`${name} is a known placeholder`);
+  }
+  return problems;
+}
+
+if (isProd) {
+  const problems = productionConfigErrors(env);
+  if (problems.length) {
+    throw new Error(`Refusing to start in production: ${problems.join('; ')}.`);
+  }
 }
