@@ -1,6 +1,7 @@
 // Pure seat state machine + room permission model — the heart of the live-room vertical.
 // Deliberately free of Prisma/Redis/IO so it is fully unit-testable and deterministic.
 // The service layer (room.service.ts) applies these transitions, then persists + broadcasts.
+import { seatUpdate, seatInvited, micUpdate, roleChanged, userKicked } from './room.events.js';
 
 export enum Role { Listener = 0, Admin = 1, Owner = 2 }
 export enum SeatState { Empty = 0, Occupied = 1, Locked = 2 }
@@ -64,7 +65,7 @@ export function takeSeat(state: RoomState, actorId: string, position: number): R
   target.state = SeatState.Occupied;
   target.micMuted = false;
   target.micMutedByAdmin = false;
-  return { ok: true, seats, events: [{ ev: 'seat.update', data: { position, userId: actorId, state: SeatState.Occupied } }] };
+  return { ok: true, seats, events: [seatUpdate({ position, userId: actorId, state: SeatState.Occupied })] };
 }
 
 /** Leave own seat, or host/admin removes another user from a seat. */
@@ -84,7 +85,7 @@ export function leaveSeat(state: RoomState, actorId: string, position: number): 
   target.state = SeatState.Empty;
   target.micMuted = false;
   target.micMutedByAdmin = false;
-  return { ok: true, seats, events: [{ ev: 'seat.update', data: { position, userId: null, state: SeatState.Empty, removed } }] };
+  return { ok: true, seats, events: [seatUpdate({ position, userId: null, state: SeatState.Empty, removed })] };
 }
 
 /** Move own occupant to an empty, unlocked seat. */
@@ -104,8 +105,8 @@ export function switchSeat(state: RoomState, actorId: string, toPosition: number
   return {
     ok: true, seats,
     events: [
-      { ev: 'seat.update', data: { position: fromPos, userId: null, state: SeatState.Empty } },
-      { ev: 'seat.update', data: { position: toPosition, userId: actorId, state: SeatState.Occupied } },
+      seatUpdate({ position: fromPos, userId: null, state: SeatState.Empty }),
+      seatUpdate({ position: toPosition, userId: actorId, state: SeatState.Occupied }),
     ],
   };
 }
@@ -129,7 +130,7 @@ export function setSeatLock(state: RoomState, actorId: string, position: number,
     if (target.state !== SeatState.Locked) return { ok: false, error: 'not_locked' };
     target.state = SeatState.Empty;
   }
-  return { ok: true, seats, events: [{ ev: 'seat.update', data: { position, state: target.state, locked, removed } }] };
+  return { ok: true, seats, events: [seatUpdate({ position, state: target.state, locked, removed })] };
 }
 
 /**
@@ -152,7 +153,24 @@ export function setMute(state: RoomState, actorId: string, position: number, mut
     target.micMutedByAdmin = muted;
   }
   const speaking = !target.micMuted && !target.micMutedByAdmin;
-  return { ok: true, seats, events: [{ ev: 'mic.update', data: { position, muted, byAdmin: !isSelf, canSpeak: speaking } }] };
+  return { ok: true, seats, events: [micUpdate({ position, muted, byAdmin: !isSelf, canSpeak: speaking })] };
+}
+
+/**
+ * Self-mute (T1.10) — a distinct, self-only mic operation. Only ever writes `micMuted`; it never
+ * touches `micMutedByAdmin`, so it cannot lift a host's forced mute. Rejected while force-muted
+ * (same rule as the self path of setMute), keeping the two mute flags independent.
+ */
+export function setSelfMute(state: RoomState, actorId: string, position: number, muted: boolean): Result {
+  const seats = clone(state.seats);
+  const target = seatAt(seats, position);
+  if (!target) return { ok: false, error: 'seat_not_found' };
+  if (target.state !== SeatState.Occupied || !target.userId) return { ok: false, error: 'seat_empty' };
+  if (target.userId !== actorId) return { ok: false, error: 'not_allowed' }; // self only — cannot mute another
+  if (target.micMutedByAdmin) return { ok: false, error: 'admin_muted' };     // cannot self-toggle a forced mute
+  target.micMuted = muted;
+  const speaking = !target.micMuted && !target.micMutedByAdmin;
+  return { ok: true, seats, events: [micUpdate({ position, muted, byAdmin: false, canSpeak: speaking })] };
 }
 
 /** Owner grants/revokes admin. Only owner may change roles; owner role is immutable. */
@@ -162,7 +180,7 @@ export function setRole(state: RoomState, actorId: string, targetId: string, rol
   if (role === Role.Owner) return { ok: false, error: 'cannot_grant_owner' };
   const roles = { ...state.roles, [targetId]: role };
   if (role === Role.Listener) delete roles[targetId];
-  return { ok: true, roles, events: [{ ev: 'role.changed', data: { userId: targetId, role } }] };
+  return { ok: true, roles, events: [roleChanged({ userId: targetId, role })] };
 }
 
 /** Host/admin kicks a lower-ranked user from the room (also frees any seat they hold). */
@@ -173,7 +191,35 @@ export function kickUser(state: RoomState, actorId: string, targetId: string): R
   const seats = clone(state.seats);
   const seat = findUserSeat(seats, targetId);
   if (seat) { seat.userId = null; seat.state = SeatState.Empty; seat.micMuted = false; seat.micMutedByAdmin = false; }
-  const events: RoomEvent[] = [{ ev: 'user.kicked', data: { userId: targetId } }];
-  if (seat) events.push({ ev: 'seat.update', data: { position: seat.position, userId: null, state: SeatState.Empty } });
+  const events: RoomEvent[] = [userKicked({ userId: targetId })];
+  if (seat) events.push(seatUpdate({ position: seat.position, userId: null, state: SeatState.Empty }));
   return { ok: true, seats, events };
+}
+
+/**
+ * Invite (T1.10) — a host/admin seats a target user on an empty, unlocked seat (⇐ old
+ * inviteJoinMic). Authoritative seating like takeSeat, but initiated by staff for someone else.
+ * Emits the existing `seat.update` (the seat is now occupied) plus the additive `seat.invited`
+ * (who was placed, by whom) so clients can surface the invitation.
+ */
+export function inviteToSeat(state: RoomState, actorId: string, targetId: string, position: number): Result {
+  if (!isStaff(state, actorId)) return { ok: false, error: 'not_allowed' };
+  const seats = clone(state.seats);
+  const target = seatAt(seats, position);
+  if (!target) return { ok: false, error: 'seat_not_found' };
+  if (target.state === SeatState.Locked) return { ok: false, error: 'seat_locked' };
+  if (target.state === SeatState.Occupied) return { ok: false, error: 'seat_taken' };
+  if (findUserSeat(seats, targetId)) return { ok: false, error: 'already_seated' };
+
+  target.userId = targetId;
+  target.state = SeatState.Occupied;
+  target.micMuted = false;
+  target.micMutedByAdmin = false;
+  return {
+    ok: true, seats,
+    events: [
+      seatUpdate({ position, userId: targetId, state: SeatState.Occupied }),
+      seatInvited({ position, userId: targetId, by: actorId }),
+    ],
+  };
 }

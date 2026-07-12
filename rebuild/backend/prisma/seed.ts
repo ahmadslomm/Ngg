@@ -41,6 +41,40 @@ async function main() {
     for (const g of gifts) await prisma.gift.create({ data: { ...g, iconUrl: null, animUrl: null } });
   }
 
+  // Gift tabs (T2.3) — PLACEHOLDER grouping pending capture #2; real tab ids/names come from the
+  // captured config. Idempotent (seed only when empty). Existing gifts are NOT linked here
+  // (Gift.tabId stays null), so grouping puts them in `untabbed` until a post-capture seed maps them.
+  if ((await prisma.giftCategory.count()) === 0) {
+    const tabs = [
+      { id: 1, name: 'Hot', sort: 1 },
+      { id: 2, name: 'Lucky', sort: 2 },
+      { id: 3, name: 'Noble', sort: 3 },
+    ];
+    for (const t of tabs) await prisma.giftCategory.create({ data: { ...t, iconUrl: null } });
+  }
+
+  // Charm/wealth level ladders (T2.5) — PLACEHOLDER thresholds pending capture #4; real minExp/names
+  // come from the captured config. Idempotent (seed only when empty). One row-set per kind (0 charm,
+  // 1 wealth); level.service resolves Profile.charmExp/wealthExp against these. No Profile is touched.
+  if ((await prisma.levelConfig.count()) === 0) {
+    const ladders = [
+      { kind: 0, name: 'Charm' },
+      { kind: 1, name: 'Wealth' },
+    ];
+    const tiers = [
+      { level: 1, minExp: 0n },
+      { level: 2, minExp: 1000n },
+      { level: 3, minExp: 5000n },
+      { level: 4, minExp: 20000n },
+      { level: 5, minExp: 100000n },
+    ];
+    for (const l of ladders) {
+      for (const t of tiers) {
+        await prisma.levelConfig.create({ data: { kind: l.kind, level: t.level, minExp: t.minExp, name: `${l.name} ${t.level}`, iconUrl: null } });
+      }
+    }
+  }
+
   if ((await prisma.vipLevel.count()) === 0) {
     const vip = [
       { level: 1, name: 'Bronze', priceCoins: 1000n, durationDays: 30, sort: 1, benefits: { horn: false, vipCoins: 100 } },
@@ -48,6 +82,18 @@ async function main() {
       { level: 3, name: 'Gold', priceCoins: 20000n, durationDays: 30, sort: 3, benefits: { horn: true, birthdayGift: true, vipCoins: 3000 } },
     ];
     for (const v of vip) await prisma.vipLevel.create({ data: v });
+  }
+
+  // Room themes (T2.6) — PLACEHOLDER skin catalog pending capture #6; real ids/names/assets come
+  // from the captured config. Idempotent (seed only when empty). Rooms reference these via the
+  // Room.themeId FK; a room with no theme (themeId null) uses the client default skin.
+  if ((await prisma.roomTheme.count()) === 0) {
+    const themes = [
+      { id: 1, name: 'Default', sort: 1 },
+      { id: 2, name: 'Night', sort: 2 },
+      { id: 3, name: 'Party', sort: 3 },
+    ];
+    for (const t of themes) await prisma.roomTheme.create({ data: { ...t, skinUrl: null, bubbleUrl: null } });
   }
 
   if ((await prisma.product.count()) === 0) {

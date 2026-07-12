@@ -1,7 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { prisma } from '../../lib/prisma.js';
-import { sendGift, AppError } from './gift.service.js';
+import { sendGift, listGiftCatalogue, listGiftCatalogueGrouped, AppError } from './gift.service.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
 import { rankingService, Board } from '../ranking/ranking.service.js';
 import { coupleService } from '../couple/couple.service.js';
@@ -13,17 +12,29 @@ const sendGiftSchema = z.object({
   qty: z.number().int().positive().max(9999),
   room_id: z.coerce.bigint().optional(),
   recipient_ids: z.array(z.coerce.bigint()).min(1).max(50),
+  use_bag: z.boolean().optional().default(false), // T1.15: pay from backpack instead of coins
 });
 
 export async function giftRoutes(app: FastifyInstance) {
-  // Catalogue
+  // Catalogue — public, unchanged shape. When the caller is authenticated we merge their
+  // backpack quantity per gift (T1.14); anonymous callers get bag_qty 0. Optional auth: a
+  // best-effort token verify never blocks the public catalog.
   app.get('/gifts', async (req) => {
-    const category = (req.query as any)?.category;
-    const gifts = await prisma.gift.findMany({
-      where: { enabled: true, ...(category != null ? { category: Number(category) } : {}) },
-      orderBy: [{ category: 'asc' }, { sort: 'asc' }],
-    });
-    return { code: 0, message: 'ok', data: { items: gifts.map(serializeGift) } };
+    const q = req.query as any;
+    const category = q?.category;
+    let userId: bigint | undefined;
+    try {
+      const p: any = await (req as any).jwtVerify();
+      if (p?.id && p.t !== 'r') userId = BigInt(p.id);
+    } catch { /* anonymous — public catalog */ }
+    const opts = { category: category != null ? Number(category) : undefined, userId };
+    // T2.3: opt-in tab grouping. Default response shape is UNCHANGED (`{ items }`); `?group=tab`
+    // returns `{ tabs, untabbed }` instead. Nothing else about /gifts changes.
+    if (q?.group === 'tab') {
+      return { code: 0, message: 'ok', data: await listGiftCatalogueGrouped(opts) };
+    }
+    const items = await listGiftCatalogue(opts);
+    return { code: 0, message: 'ok', data: { items } };
   });
 
   // Send — authenticated, idempotent, server-priced.
@@ -39,6 +50,7 @@ export async function giftRoutes(app: FastifyInstance) {
         qty: body.qty,
         recipientIds: body.recipient_ids,
         idempotencyKey,
+        useBag: body.use_bag,
       });
       if (result.event.room) emitRoomEvent(result.event.room, result.event);
       const giftCategory = result.giftCategory;
@@ -96,11 +108,4 @@ export async function giftRoutes(app: FastifyInstance) {
       throw e;
     }
   });
-}
-
-function serializeGift(g: any) {
-  return {
-    id: String(g.id), name: g.name, category: g.category, price_coins: g.priceCoins,
-    icon_url: g.iconUrl, anim_url: g.animUrl, anim_type: g.animType, combo_enabled: g.comboEnabled,
-  };
 }

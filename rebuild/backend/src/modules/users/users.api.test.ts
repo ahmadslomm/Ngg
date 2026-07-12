@@ -65,6 +65,23 @@ describe('Users & social graph', () => {
     expect(before.body.data.is_self).toBe(false);
   });
 
+  it('card aggregates adorned medals + worn decorations, tolerating empty (T1.7)', async () => {
+    const target = await makeUser();
+    const viewer = await makeUser();
+    // Public card (contract §6): medals + decorations both present as arrays; the UserDecoration
+    // join has no store yet (arrives in T1.13) so decorations tolerate empty, like medals.
+    const pub = await inject(app, viewer, 'GET', `/users/${target}`);
+    expect(pub.status).toBe(200);
+    expect(Array.isArray(pub.body.data.medals)).toBe(true);
+    expect(pub.body.data.medals).toHaveLength(0);
+    expect(Array.isArray(pub.body.data.decorations)).toBe(true);
+    expect(pub.body.data.decorations).toHaveLength(0);
+    // The own-profile card carries the same aggregation shape.
+    const mine = await inject(app, target, 'GET', '/users/me');
+    expect(Array.isArray(mine.body.data.medals)).toBe(true);
+    expect(Array.isArray(mine.body.data.decorations)).toBe(true);
+  });
+
   it('follow increments counters, sets flags, and is idempotent', async () => {
     const a = await makeUser();
     const b = await makeUser();

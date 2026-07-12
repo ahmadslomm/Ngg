@@ -52,34 +52,61 @@ export class UsersService {
   // (Profile.vipLevel → VipLevel art). Null for non-VIP users — never fabricated.
   private async withVipArt(base: ReturnType<typeof serializeProfile>, vipLevel: number) {
     const art = await vipService.levelArt(vipLevel);
-    return { ...base, vip_frame_url: art?.frame_url ?? null, vip_badge_url: art?.badge_url ?? null };
+    return {
+      ...base,
+      vip_frame_url: art?.frame_url ?? null,
+      vip_badge_url: art?.badge_url ?? null,
+      // Real per-tier room ENTRY effect (VipLevel.entryEffectUrl). Null for non-VIP — never faked.
+      // The client picks the SVGA/PAG player by the URL extension and plays it once on room join.
+      vip_entry_effect_url: art?.entry_effect_url ?? null,
+    };
+  }
+
+  // Worn cosmetic decorations (avatar frame, entry effect, chat bubble). Reads the Profile.*Url
+  // cache columns — the fast denormalized copy the equip dual-write (T1.13) keeps in sync with
+  // UserDecoration.equipped (contract §6: the card aggregates worn decorations from the Profile
+  // cache). Only populated slots are returned; an unequipped kind is simply absent.
+  private async wornDecorations(userId: bigint): Promise<Array<{ slot: string; url: string }>> {
+    const p = await prisma.profile.findUnique({
+      where: { userId },
+      select: { avatarFrameUrl: true, entryEffectUrl: true, bubbleUrl: true },
+    });
+    if (!p) return [];
+    const out: Array<{ slot: string; url: string }> = [];
+    if (p.avatarFrameUrl) out.push({ slot: 'avatar_frame', url: p.avatarFrameUrl });
+    if (p.entryEffectUrl) out.push({ slot: 'entry_effect', url: p.entryEffectUrl });
+    if (p.bubbleUrl) out.push({ slot: 'chat_bubble', url: p.bubbleUrl });
+    return out;
   }
 
   async getMyProfile(userId: bigint) {
     const p = await this.requireProfile(userId);
-    const [medals, base] = await Promise.all([
+    const [medals, decorations, base] = await Promise.all([
       medalService.adornedMedals(userId),
+      this.wornDecorations(userId),
       this.withVipArt(serializeProfile(p), p.vipLevel),
     ]);
-    return { ...base, medals };
+    return { ...base, medals, decorations };
   }
 
-  // Public profile with viewer-relative relationship flags + adorned medals/badges.
+  // Public profile with viewer-relative relationship flags + adorned medals/badges + worn
+  // decorations (contract §6 card).
   async getProfile(viewerId: bigint | null, targetId: bigint) {
     const p = await this.requireProfile(targetId);
-    const [medals, base] = await Promise.all([
+    const [medals, decorations, base] = await Promise.all([
       medalService.adornedMedals(targetId),
+      this.wornDecorations(targetId),
       this.withVipArt(serializeProfile(p), p.vipLevel),
     ]);
-    const withMedals = { ...base, medals };
+    const card = { ...base, medals, decorations };
     if (viewerId == null || viewerId === targetId) {
-      return { ...withMedals, is_self: viewerId === targetId };
+      return { ...card, is_self: viewerId === targetId };
     }
     const [iFollow, followsMe] = await Promise.all([
       this.isFollowing(viewerId, targetId),
       this.isFollowing(targetId, viewerId),
     ]);
-    return { ...withMedals, is_self: false, is_following: iFollow, is_followed_by: followsMe, is_friend: iFollow && followsMe };
+    return { ...card, is_self: false, is_following: iFollow, is_followed_by: followsMe, is_friend: iFollow && followsMe };
   }
 
   async updateProfile(userId: bigint, patch: ProfilePatch) {

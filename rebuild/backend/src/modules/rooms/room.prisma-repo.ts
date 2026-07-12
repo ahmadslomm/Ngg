@@ -4,13 +4,14 @@
 // exercise this path end-to-end.
 import { prisma } from '../../lib/prisma.js';
 import { Prisma } from '@prisma/client';
-import type { RoomRepo, CreateRoomInput, RoomRecord } from './room.repo.js';
-import { freshSeats } from './room.repo.js';
+import type { RoomRepo, CreateRoomInput, RoomRecord, RoomTheme } from './room.repo.js';
+import { freshSeats, hashRoomPassword } from './room.repo.js';
 import { RoomState, Role, Seat, SeatState } from './seat-state.js';
 
 export class PrismaRoomRepo implements RoomRepo {
   async createRoom(input: CreateRoomInput): Promise<RoomRecord> {
     const seatCount = input.seatCount ?? 8;
+    const passwordHash = input.password ? hashRoomPassword(input.password) : null;
     const room = await prisma.$transaction(async (tx) => {
       const r = await tx.room.create({
         data: {
@@ -20,6 +21,8 @@ export class PrismaRoomRepo implements RoomRepo {
           mode: input.mode ?? 0,
           countryCode: input.countryCode,
           status: 1,
+          isLocked: !!passwordHash,
+          passwordHash,
         },
       });
       await tx.room.update({ where: { id: r.id }, data: { agoraChannel: `room:${r.id}` } });
@@ -34,7 +37,7 @@ export class PrismaRoomRepo implements RoomRepo {
     return {
       id: String(room.id), ownerId: String(room.ownerId), name: room.name,
       seatCount, status: 1, agoraChannel: `room:${room.id}`, type: room.type, mode: room.mode,
-      coverUrl: room.coverUrl ?? null,
+      coverUrl: room.coverUrl ?? null, isLocked: !!passwordHash, passwordHash, themeId: room.themeId ?? null,
     };
   }
 
@@ -45,7 +48,17 @@ export class PrismaRoomRepo implements RoomRepo {
       id: String(r.id), ownerId: String(r.ownerId), name: r.name,
       seatCount: r.seatCount, status: r.status, agoraChannel: r.agoraChannel ?? `room:${r.id}`,
       type: r.type, mode: r.mode, coverUrl: r.coverUrl ?? null,
+      isLocked: r.isLocked, passwordHash: r.passwordHash, themeId: r.themeId ?? null,
     };
+  }
+
+  // T1.11: one member's role + permissions bitmap for requireRoomAdmin (null when not a member).
+  async getMembership(roomId: string, userId: string) {
+    const m = await prisma.roomMember.findUnique({
+      where: { roomId_userId: { roomId: BigInt(roomId), userId: BigInt(userId) } },
+      select: { role: true, permissions: true },
+    });
+    return m ? { role: m.role, permissions: m.permissions } : null;
   }
 
   async getRoomState(roomId: string): Promise<RoomState | null> {
@@ -135,5 +148,16 @@ export class PrismaRoomRepo implements RoomRepo {
 
   async setOnlineCount(roomId: string, n: number): Promise<void> {
     await prisma.room.update({ where: { id: BigInt(roomId) }, data: { onlineCount: n } });
+  }
+
+  // T2.6 — an enabled RoomTheme by id (null when missing or disabled), and persist Room.themeId.
+  // The service validates via getTheme before calling setRoomTheme; the DB FK backstops a bad id.
+  async getTheme(themeId: number): Promise<RoomTheme | null> {
+    const t = await prisma.roomTheme.findFirst({ where: { id: themeId, enabled: true } });
+    return t ? { id: t.id, name: t.name, skinUrl: t.skinUrl, bubbleUrl: t.bubbleUrl } : null;
+  }
+
+  async setRoomTheme(roomId: string, themeId: number | null): Promise<void> {
+    await prisma.room.update({ where: { id: BigInt(roomId) }, data: { themeId } });
   }
 }

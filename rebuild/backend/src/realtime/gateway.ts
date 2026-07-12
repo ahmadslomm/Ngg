@@ -5,6 +5,7 @@ import { Server as IOServer } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
 import type { Server as HttpServer } from 'node:http';
 import { pubClient, subClient, redis } from '../lib/redis.js';
+import { consumeWsTicket } from '../lib/ws-ticket.js';
 
 let io: IOServer | null = null;
 
@@ -30,6 +31,19 @@ export function initRealtime(
   io.adapter(createAdapter(pubClient, subClient));
 
   io.use(async (socket, next) => {
+    // Ticket path (contract §3.4): a room-scoped, single-use wsTicket presented as `?ticket=` or
+    // handshake auth.ticket. It proves membership from /join; we consume it exactly once and
+    // re-check ban/suspension on connect. Absent a ticket, fall back to the JWT token path so
+    // existing (non-room-scoped) connections keep working.
+    const ticket = (socket.handshake.auth?.ticket || socket.handshake.query?.ticket || '') as string;
+    if (ticket) {
+      const t = await consumeWsTicket(ticket);
+      if (!t) return next(new Error('unauthorized')); // invalid / expired / replayed
+      if (hooks.authorizeJoin && !(await hooks.authorizeJoin(t.userId, t.roomId))) return next(new Error('forbidden'));
+      (socket.data as any).uid = t.userId;
+      (socket.data as any).ticketRoom = t.roomId; // auto-joined on connection
+      return next();
+    }
     const token = (socket.handshake.auth?.token || '') as string;
     const uid = await verifyToken(token);
     if (!uid) return next(new Error('unauthorized'));
@@ -37,22 +51,31 @@ export function initRealtime(
     next();
   });
 
+  // Subscribe a socket to a room channel: authorize (H2 ban/suspend), join, record presence, and
+  // announce the arrival. `reauthorize` is false only for a ticket auto-join, whose ban check
+  // already ran on connect. A denied join is silent (the REST /join already 403s).
+  async function joinRoom(socket: any, uid: bigint, roomId: string, reauthorize: boolean) {
+    const rid = String(roomId);
+    if (reauthorize && hooks.authorizeJoin && !(await hooks.authorizeJoin(uid, rid))) return;
+    const room = `room:${rid}`;
+    await socket.join(room);
+    await redis.zadd(`${room}:presence`, Date.now(), String(uid)); // presence heartbeat set
+    socket.to(room).emit('event', { ev: 'room.joined', room, ts: Date.now(), data: { uid: String(uid) } });
+  }
+
   io.on('connection', (socket) => {
     const uid = (socket.data as any).uid as bigint;
     // Personal channel: direct, non-room notifications (follow, couple invite, etc.) are
     // fanned out here via emitToUser(). Cluster-safe through the Redis adapter.
     void socket.join(`user:${uid}`);
 
+    // A ticket connection is already authorized for exactly one room (§3.4) — auto-join it so the
+    // client receives that room's broadcasts without a separate room.join round-trip.
+    const ticketRoom = (socket.data as any).ticketRoom as string | undefined;
+    if (ticketRoom) void joinRoom(socket, uid, ticketRoom, false);
+
     socket.on('room.join', async (roomId: string) => {
-      const rid = String(roomId);
-      // Authorization (H2): a banned/suspended user must not receive a room's live broadcasts
-      // (chat/gifts). Deny silently — the REST /rooms/:id/join already returns 403, so a
-      // legitimate client never reaches here for a room it can't enter.
-      if (hooks.authorizeJoin && !(await hooks.authorizeJoin(uid, rid))) return;
-      const room = `room:${rid}`;
-      await socket.join(room);
-      await redis.zadd(`${room}:presence`, Date.now(), String(uid)); // presence heartbeat set
-      socket.to(room).emit('event', { ev: 'room.joined', room, ts: Date.now(), data: { uid: String(uid) } });
+      await joinRoom(socket, uid, String(roomId), true);
     });
 
     socket.on('room.leave', async (roomId: string) => {

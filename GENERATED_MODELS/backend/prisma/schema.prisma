@@ -1,0 +1,489 @@
+// Prisma schema — reconstructed from decompiled ZaffaLive Gson models + decrypted API params.
+// Field names/types come verbatim from the APK models (no invention). Lines tagged
+// `@notes("needs confirmation")` are STRUCTURAL additions (surrogate id, timestamps, relations,
+// RoomSeat, enums) inferred for a relational DB — verify against a live capture before trusting.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---- enums (structural; values need confirmation) ----
+enum SeatStatus {  // @notes("needs confirmation")
+  EMPTY
+  OCCUPIED
+  LOCKED
+}
+
+enum MuteState {  // @notes("needs confirmation")
+  OFF
+  ON
+}
+
+enum TransactionKind {  // @notes("needs confirmation")
+  GIFT
+  LUCKY
+  DRAW
+  SONG
+  PRIVATE
+}
+
+enum TxDirection {  // @notes("needs confirmation")
+  IN
+  OUT
+}
+
+enum RoleType {  // @notes("needs confirmation")
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+model User {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  listen                     String?
+  beans                      String?
+  school                     String?
+  modify                     BigInt?
+  videoPhone                 Int? @map("video_phone")
+  isBlack                    Boolean?
+  auditAvatar                Int? @map("audit_avatar")
+  height                     String?
+  online                     Json?   // @notes("needs confirmation") nested/object
+  singerScore                String?
+  cpInfo                     Json? @map("cp_info")   // @notes("needs confirmation") nested/object
+  levelName                  String?
+  inRoom                     Int? @map("in_room")
+  singerRank                 Int?
+  isAdventureKing            Boolean?
+  medal                      Json?   // @notes("needs confirmation") nested/object
+  age                        String?
+  medalRes                   Json?   // @notes("needs confirmation") nested/object
+  songs                      String?
+  charm                      String?
+  perfect                    String?
+  cost                       String?
+  photos                     String?
+  level                      String?
+  distance                   String?
+  days                       String?
+  friend                     String?
+  rid                        String?
+  lock                       Boolean?
+  popular                    String?
+  issub                      String?
+  symbol                     Int?
+  wealthLv                   Int?
+  tag                        String?
+  wealthExp                  Int?
+  authList                   Json? @map("auth_list")   // @notes("needs confirmation") nested/object
+  nextWealthLvExp            Int?
+  avatarFrame                String?
+  voice2UNeedCoins           Int?
+  carFrame                   String?
+  im2UNeedCoins              Int?
+  voice2UNeedDefaultCoins    Int?
+  muteOp                     Int?
+  im2UNeedDefaultCoins       Int?
+  muteOpAdmi                 Int?
+  video2UNeedCoins           Int?
+  voicePhone                 Int? @map("voice_phone")
+  video2UNeedDefaultCoins    Int?
+  imReplyWordLimit           Int?
+  regtime                    BigInt?
+  charmLv                    Int?
+  chatBubble                 String?
+  nationalFlag               String?
+  vipInfo                    Json? @map("vip_info")   // @notes("needs confirmation") nested/object
+  supportersNum              Int? @map("supporters_num")
+  viewMe                     Json? @map("view_me")   // @notes("needs confirmation") nested/object
+  supporters                 Json?   // @notes("needs confirmation") nested/object
+  prettyUidInfo              Json? @map("pretty_uid_info")   // @notes("needs confirmation") nested/object
+  activeLevel                Int? @map("active_level")
+  hiddenSettings             Json?   // @notes("needs confirmation") nested/object
+  gameLv                     Int?
+  roomType                   String?
+  banInfo                    Json?   // @notes("needs confirmation") nested/object
+  uinfoExtra                 Json? @map("uinfo_extra")   // @notes("needs confirmation") nested/object
+  behaviorBanInfo            Json?   // @notes("needs confirmation") nested/object
+  zone                       String?
+  avatarFrameJson            String?
+  isBanned                   Int?
+  carFrameJson               String?
+  isPresident                Boolean?
+  infoBgImg                  String?
+  isAnchor                   Boolean?
+  whitelist                  Int?
+  usongHasUpdate             Boolean? @map("usong_has_update")
+  isEnthusiast               Boolean?
+  uid                        String? @unique
+  isRookie                   Boolean?
+  mobile                     String?
+  realFlag                   Int? @map("real_flag")
+  sex                        String?
+  clientMicType              Int?
+  nick                       String?
+  actTitles                  Json?   // @notes("needs confirmation") nested/object
+  sign                       String?
+  nobleLevel                 Int? @map("noble_level")
+  avatar                     String?
+  hasApplyGuild              Boolean?
+  birthday                   String?
+  family                     Json?   // @notes("needs confirmation") nested/object
+  identity                   String?
+  guildInfo                  Json? @map("guild_info")   // @notes("needs confirmation") nested/object
+  fansNum                    String?
+  gifts                      String?
+  focusNum                   String?
+  likes                      String?
+  pos                        Json?   // @notes("needs confirmation") nested/object
+  constellation              Json?   // @notes("needs confirmation") nested/object
+  role                       Json?   // @notes("needs confirmation") nested/object
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+  @@index([uid])
+}
+
+model Gift {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  rightag                    String?
+  hideWindow                 Int? @map("hide_window")
+  continuousUrl              String? @map("continuous_url")
+  continuousUrl2             String? @map("continuous_url2")
+  bannerUrl                  String? @map("banner_url")
+  title                      String?
+  desc                       String?
+  jumpUrl                    String? @map("jump_url")
+  sendNum                    Int? @map("send_num")
+  rebackType                 Int? @map("reback_type")
+  poolCoins                  Int? @map("pool_coins")
+  barLabelUrl                String? @map("bar_label_url")
+  continuousFlag             Int? @map("continuous_flag")
+  days                       Int?
+  bindUid                    Int? @map("bind_uid")
+  nick                       String?
+  avatar                     String?
+  groupId                    Int?
+  groupLv                    String?
+  groupCurLv                 String?
+  groupCurNums               String?
+  subGifts                   Json?   // @notes("needs confirmation") nested/object
+  groupSelect                Boolean?
+  svgaType                   Int? @map("svga_type")
+  svgaUrl                    String? @map("svga_url")
+  selectNums                 Json? @map("select_nums")   // @notes("needs confirmation") nested/object
+  bid                        Int?
+  uid                        String?
+  gid                        String? @unique
+  type                       String?
+  etime                      BigInt?
+  totalNum                   String? @map("total_num")
+  num                        Int?
+  uptime                     String?
+  srcId                      Int?   // @notes("needs confirmation") original API json key was `id`
+  name                       String?
+  image                      String?
+  price                      Int?
+  currency                   String?
+  disabled                   String?
+  newMark                    String? @map("new_mark")
+  kindX                      String? @map("kind")
+  seq                        String?
+  resourceIdx                Int? @map("resource_idx")
+  resourceUrl                String? @map("resource_url")
+  ltag                       String?
+  rtag                       String?
+  previewUrl                 String? @map("preview_url")
+  extraCharm                 Int? @map("extra_charm")
+  leftag                     String?
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+  @@index([gid])
+}
+
+model Room {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  ratio                      Float?
+  image                      String?
+  url                        String?
+  giftIndex                  String? @map("gift_index")
+  name                       String?
+  eventId                    Int?
+  clientImageRes             Json?   // @notes("needs confirmation") nested/object
+  clientLable                Int?
+  enableLuckyBox             Boolean?
+  thirdGame                  Int?
+  token                      String?
+  pageImage                  String? @map("page_image")
+  rid                        Int? @unique
+  pageImageNew               String? @map("page_image_new")
+  isRoomMode                 Boolean?
+  gameId                     Int?
+  ownerId      BigInt?   // @notes("needs confirmation") FK->User
+  seats        RoomSeat[] // @notes("needs confirmation")
+  transactions GiftTransaction[] // @notes("needs confirmation")
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+  @@index([rid])
+}
+
+model RoomSeat {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  pos                        Int?
+  uid                        String?
+  locked                     Boolean?
+  op                         Int?
+  status       SeatStatus? // @notes("needs confirmation")
+  muted        MuteState?  // @notes("needs confirmation") from op
+  roomId       BigInt?     // @notes("needs confirmation") FK->Room
+  room         Room?    @relation(fields:[roomId],references:[id]) // @notes("needs confirmation")
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+  @@index([roomId])
+}
+
+model Wallet {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  statusX                    Json? @map("status")   // @notes("needs confirmation") nested/object
+  actId                      Json?   // @notes("needs confirmation") nested/object
+  image                      String?
+  beginColor                 Int?
+  endColor                   Int?
+  topic                      String?
+  beginTime                  String?
+  endTime                    String?
+  active                     Int?
+  activeLimit                Int?
+  coins                      Int?
+  coinsLimit                 Int?
+  isJoin                     Int?
+  expiredSurplus             BigInt?
+  themeType                  Int?
+  level                      Int?
+  process                    Int?
+  limit                      Int?
+  userId       BigInt?  @unique // @notes("needs confirmation") FK->User (1-1)
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+}
+
+model GiftTransaction {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  rid                        String?
+  uids                       String?
+  gid                        String?
+  bid                        Int?
+  mergeNum                   Int? @map("merge_num")
+  source                     Int?
+  drawRatio                  String? @map("draw_ratio")
+  drawXy                     String? @map("draw_xy")
+  luckyBox                   Int? @map("lucky_box")
+  boxType                    Int? @map("box_type")
+  kind         TransactionKind? // @notes("needs confirmation")
+  senderId     BigInt?  // @notes("needs confirmation") FK->User
+  roomId       BigInt?  // @notes("needs confirmation") FK->Room
+  room         Room?    @relation(fields:[roomId],references:[id]) // @notes("needs confirmation")
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+  @@index([roomId])
+}
+
+model Payment {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  lefthour                   Int?
+  score                      Int?
+  mallType                   Int? @map("mall_type")
+  select                     Boolean?
+  uid                        String?
+  gid                        String?
+  utime                      String?
+  expireTime                 BigInt? @map("expire_time")
+  statusX                    Int? @map("status")
+  count                      Int?
+  srcType                    String? @map("src_type")
+  discountPrice              String? @map("discount_price")
+  localImgaUrl               String? @map("local_imga_url")
+  customize                  Int?
+  customizeStatus            String? @map("customize_status")
+  info                       String?
+  used                       Int?
+  actUrl                     String? @map("act_url")
+  srcId                      String?   // @notes("needs confirmation") original API json key was `id`
+  type                       String?
+  name                       String?
+  costType                   Int? @map("cost_type")
+  activeDays                 String? @map("active_days")
+  price                      String?
+  urlFront                   String? @map("url_front")
+  urlResource                String? @map("url_resource")
+  resourceJson               String? @map("resource_json")
+  ownFlag                    Int?
+  intro                      String?
+  headTips                   String? @map("head_tips")
+  isFlash                    Int? @map("is_flash")
+  sweetValue                 Int? @map("sweet_value")
+  charm                      Int?
+  leftday                    Int?
+  direction    TxDirection? // @notes("needs confirmation")
+  userId       BigInt?  // @notes("needs confirmation") FK->User
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+}
+
+model VipNoble {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  actTitles                  String?
+  chatBubble                 String?
+  nobleLevel                 Int? @map("noble_level")
+  authList                   Json? @map("auth_list")   // @notes("needs confirmation") nested/object
+  popDialog                  String?
+  uidLevel                   Int?
+  familyTag                  String?
+  guildTagUrl                String?
+  guildTag                   String?
+  carDiyJson                 String?
+  rookieGiftId               Int?
+  vipName                    String?
+  vipMedalImg                String?
+  avatarSmall                String? @map("avatar_small")
+  charmLv                    Int? @map("charm_lv")
+  bestFriendNick             String? @map("best_friend_nick")
+  bestFriendAvatar           String? @map("best_friend_avatar")
+  avatar                     String?
+  time                       String?
+  level                      String?
+  medal                      String?
+  charm                      Int?
+  sex                        Int?
+  micMuteOp                  Int? @map("mic_mute_op")
+  zone                       String?
+  avatarCarton               String? @map("avatar_carton")
+  songName                   String?
+  micMuteOpAdmin             Int? @map("mic_mute_op_admin")
+  avatarFrame                String?
+  avatarFrameJson            String?
+  carFrame                   String?
+  carFrameJson               String?
+  coupleNick                 String? @map("couple_nick")
+  coupleLv                   Int? @map("couple_lv")
+  coupleUid                  Int? @map("couple_uid")
+  coupleAvatar               String? @map("couple_avatar")
+  wealthLv                   Int?
+  wealthFrame                String?
+  isFans                     Int?
+  clientMicType              Int?
+  pos                        Json?   // @notes("needs confirmation") nested/object
+  symbol                     Json?   // @notes("needs confirmation") nested/object
+  familyLevel                Json?   // @notes("needs confirmation") nested/object
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+}
+
+model UserDecoration {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  carFrame                   String?
+  carFrameJson               String?
+  carDiyJson                 String?
+  entryShow                  String?
+  rookieGiftId               Int?
+  isFans                     Int?
+  avatarSmall                String? @map("avatar_small")
+  bestFriendNick             String? @map("best_friend_nick")
+  bestFriendAvatar           String? @map("best_friend_avatar")
+  actTitles                  String?
+  avatar                     String?
+  avatarFrame                String?
+  avatarFrameJson            String?
+  chatBubble                 String?
+  coupleLv                   Int? @map("couple_lv")
+  coupleNick                 String? @map("couple_nick")
+  coupleUid                  Int? @map("couple_uid")
+  coupleAvatar               String? @map("couple_avatar")
+  familyLevel                Int?
+  familyTag                  String?
+  guildTag                   String?
+  guildTagUrl                String?
+  medal                      String?
+  nick                       String?
+  nobleLevel                 Int? @map("noble_level")
+  role                       Int?
+  sex                        Int?
+  symbol                     Int?
+  authList                   Json? @map("auth_list")   // @notes("needs confirmation") nested/object
+  uid                        Int? @unique
+  uidLevel                   Int?
+  vipMedalImg                String?
+  vipName                    String?
+  wealthLv                   Int?
+  charmLv                    Int? @map("charm_lv")
+  userId       BigInt?  // @notes("needs confirmation") FK->User
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+  @@index([uid])
+}
+
+model Agency {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  selfUinfo                  Json? @map("self_uinfo")   // @notes("needs confirmation") nested/object
+  targetUinfo                Json? @map("target_uinfo")   // @notes("needs confirmation") nested/object
+  days                       Int?
+  sweetValue                 Int? @map("sweet_value")
+  hasCp                      Int?
+  applyGidInfo               Json? @map("apply_gid_info")   // @notes("needs confirmation") nested/object
+  cpLv                       Int? @map("cp_lv")
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+}
+
+model Ranking {
+  id           BigInt   @id @default(autoincrement())   // @notes("needs confirmation") surrogate PK
+  label                      Int?
+  prettyUid                  String? @map("pretty_uid")
+  orderNum                   Int?
+  avatar                     String?
+  weekLevel                  Int? @map("week_level")
+  gameId                     Int? @map("game_id")
+  needPasswd                 String?
+  talkTopic                  String? @map("talk_topic")
+  officialType               String? @map("official_type")
+  popularity                 String?
+  system                     String?
+  dayRank                    Int?
+  weekRank                   Int?
+  monthRank                  Int?
+  littleGameType             Int? @map("little_game_type")
+  themeName                  String?
+  themeUrl                   String?
+  roomLevel                  Int? @map("room_level")
+  gameType                   String? @map("game_type")
+  role                       String?
+  rid                        String?
+  owner                      String?
+  type                       String?
+  total                      String?
+  rname                      String?
+  intro                      String?
+  bulletin                   Json?   // @notes("needs confirmation") nested/object
+  passwd                     Json?   // @notes("needs confirmation") nested/object
+  picUrl                     String? @map("pic_url")
+  createTime                 String? @map("create_time")
+  updateTime                 String? @map("update_time")
+  statusX                    Int? @map("status")
+  area                       String?
+  loadTime                   String? @map("load_time")
+  topic                      String?
+  adminLimit                 String? @map("admin_limit")
+  rnameCn                    String? @map("rname_cn")
+  collect                    String?
+  usercnt                    String?
+  topicName                  String? @map("topic_name")
+  micMode                    Int? @map("mic_mode")
+  nationalFlag               String?
+  countryName                String?
+  createdAt    DateTime @default(now())   // @notes("needs confirmation")
+  updatedAt    DateTime @updatedAt        // @notes("needs confirmation")
+}

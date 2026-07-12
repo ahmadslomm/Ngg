@@ -8,6 +8,7 @@ import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_typography.dart';
 import '../gift/widgets/gift_effect_layer.dart';
 import '../gift/widgets/restored_effects.dart';
+import 'entry/entry_effect_overlay.dart';
 import 'models/room_decorations.dart';
 import 'models/room_display.dart';
 import 'models/room_model_config.dart';
@@ -158,6 +159,8 @@ class RoomScreen extends ConsumerWidget {
                 child: GiftEffectLayer(roomId: roomId, registry: restoredGiftEffectRegistry),
               ),
               Positioned.fill(child: RoomEntryEffect(asset: theme.entryEffectAsset)),
+              // Real per-user entry effects (SVGA/PAG) played above the room, queued + de-duped.
+              Positioned.fill(child: EntryEffectOverlay(effects: controller.entryEffects)),
             ],
           ),
         ),

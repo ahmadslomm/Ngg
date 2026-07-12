@@ -2,6 +2,7 @@ import { describe, it, expect, afterAll } from 'vitest';
 import { createServer, Server as HttpServer } from 'node:http';
 import { io as Client } from 'socket.io-client';
 import { initRealtime, emitRoomEvent } from './gateway.js';
+import { issueWsTicket } from '../lib/ws-ticket.js';
 import { redis, pubClient, subClient } from '../lib/redis.js';
 
 function listen(http: HttpServer): Promise<number> {
@@ -39,6 +40,76 @@ describe('realtime gateway (live WebSocket round-trip)', () => {
     client.close();
     await new Promise<void>((r) => server.close(() => r()));
     http.close();
+  });
+
+  it('T1.8: a valid wsTicket connects and auto-joins its room (no room.join needed)', async () => {
+    const http = createServer();
+    const server = initRealtime(http, async () => null); // ticket-only: token path returns nobody
+    const port = await listen(http);
+    const ticket = issueWsTicket({ userId: 77n, roomId: '500' });
+    const client = Client(`http://localhost:${port}`, { auth: { ticket }, transports: ['websocket'] });
+
+    const received: any[] = [];
+    client.on('event', (e) => received.push(e));
+    await new Promise<void>((r) => client.on('connect', () => r()));
+    await wait(120); // auto-join settles
+
+    await emitRoomEvent('room:500', { ev: 'gift.received', data: { g: 1 } });
+    await wait(150);
+    expect(received.some((e) => e.ev === 'gift.received')).toBe(true);
+
+    client.close();
+    await new Promise<void>((r) => server.close(() => r()));
+    http.close();
+  });
+
+  it('T1.8: an invalid or expired wsTicket is rejected on connect', async () => {
+    const http = createServer();
+    const server = initRealtime(http, async () => null);
+    const port = await listen(http);
+
+    const bad = Client(`http://localhost:${port}`, { auth: { ticket: 'not.a.ticket' }, transports: ['websocket'] });
+    expect(await new Promise<string>((r) => bad.on('connect_error', (e) => r(e.message)))).toBe('unauthorized');
+    bad.close();
+
+    const expired = issueWsTicket({ userId: 1n, roomId: '9' }, -10); // exp in the past
+    const exp = Client(`http://localhost:${port}`, { auth: { ticket: expired }, transports: ['websocket'] });
+    expect(await new Promise<string>((r) => exp.on('connect_error', (e) => r(e.message)))).toBe('unauthorized');
+    exp.close();
+
+    await new Promise<void>((r) => server.close(() => r()));
+    http.close();
+  });
+
+  it('T1.8: a broadcast reaches sockets in a room across two adapter nodes', async () => {
+    const httpA = createServer();
+    const httpB = createServer();
+    const nodeA = initRealtime(httpA, async () => null);
+    const nodeB = initRealtime(httpB, async () => null);
+    const portA = await listen(httpA);
+    const portB = await listen(httpB);
+
+    const cA = Client(`http://localhost:${portA}`, { auth: { ticket: issueWsTicket({ userId: 10n, roomId: '600' }) }, transports: ['websocket'] });
+    const cB = Client(`http://localhost:${portB}`, { auth: { ticket: issueWsTicket({ userId: 11n, roomId: '600' }) }, transports: ['websocket'] });
+    const rxB: any[] = [];
+    cB.on('event', (e) => rxB.push(e));
+    await Promise.all([
+      new Promise<void>((r) => cA.on('connect', () => r())),
+      new Promise<void>((r) => cB.on('connect', () => r())),
+    ]);
+    await wait(150); // both auto-joined room:600 on their respective nodes
+
+    // Emit from node A; the Redis adapter must fan the room broadcast out to node B's client.
+    nodeA.to('room:600').emit('event', { ev: 'cross.node', data: { ok: true } });
+    await wait(200);
+    expect(rxB.some((e) => e.ev === 'cross.node')).toBe(true);
+
+    cA.close(); cB.close();
+    await Promise.all([
+      new Promise<void>((r) => nodeA.close(() => r())),
+      new Promise<void>((r) => nodeB.close(() => r())),
+    ]);
+    httpA.close(); httpB.close();
   });
 
   it('rejects a socket with no auth token', async () => {

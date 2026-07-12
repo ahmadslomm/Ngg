@@ -1,0 +1,7146 @@
+{
+ "meta": {
+  "source": "decompiled APK, all literals decrypted",
+  "decryptor": "XOR(base64(enc[:-1]), key=com.waig.nalo)",
+  "focus": [
+   "gift",
+   "room",
+   "user",
+   "vip",
+   "wallet",
+   "mall",
+   "task"
+  ],
+  "methods": 150,
+  "methods_with_params": 100
+ },
+ "methods": [
+  {
+   "method": "gift.checkHasPacketGift",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20455d",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.getClientGiftTabs",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20456e",
+     "java_args": [
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.getCommonGift",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20457f",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.getDrawGiftTemplate",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20458g",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.getGiftList",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20459h",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "subkind",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "roomKind",
+     "value_type": "constant",
+     "source_expr": "1",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.getPacketGift",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20461j",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.getReceieveGift",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20462k",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "size",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.getTopUserGiftMap",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20463l",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.getUserGiftMap",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20464m",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "page",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.getUserSongGiftList",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20465n",
+     "java_args": [
+      "i",
+      "str",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "usid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "rank_uid",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.sendPrivateGift",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20466o",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "i4"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "bid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.sendSongGift",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20467p",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "i4"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "usid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "bid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.shareGiftMapMoment",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20468q",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "gift.songGiftRank",
+   "module": "gift",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20469r",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "usid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "mall.buyCustomizeTheme",
+   "module": "mall",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yn4.java",
+     "method": "m58340a",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "file",
+      "i4"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "owner",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "days",
+     "value_type": "input",
+     "source_expr": "i3",
+     "conditional": false
+    },
+    {
+     "name": "gid",
+     "value_type": "input",
+     "source_expr": "i4",
+     "conditional": false
+    },
+    {
+     "name": "photo",
+     "value_type": "input",
+     "source_expr": "file",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "mall.buyProduct",
+   "module": "mall",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "method": "m18070S",
+     "java_args": [
+      "activity",
+      "i",
+      "c7355b"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "token",
+     "value_type": "unknown",
+     "source_expr": "AddAlarmClockPresenter.m41457g().m41485q()",
+     "conditional": false
+    },
+    {
+     "name": "uid",
+     "value_type": "unknown",
+     "source_expr": "Integer.valueOf(AddAlarmClockPresenter.m41457g().m41486r())",
+     "conditional": false
+    },
+    {
+     "name": "num",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "mall.buyTheme",
+   "module": "mall",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/fk2.java",
+     "method": "m17549u2",
+     "java_args": [
+      "c7355b"
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "mall.getMallProductV",
+   "module": "mall",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "mall.getMyProduct",
+   "module": "mall",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "method": "if",
+     "java_args": [
+      "this.f14295a.isSuccessful("
+     ]
+    },
+    {
+     "file": "p000/fv5.java",
+     "method": "if",
+     "java_args": [
+      "this.f14295a.isSuccessful("
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "mall.giveAwayProduct",
+   "module": "mall",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "method": "m18067M",
+     "java_args": [
+      "activity",
+      "i",
+      "c7355b",
+      "i2"
+     ]
+    },
+    {
+     "file": "p000/fv5.java",
+     "method": "m18067M",
+     "java_args": [
+      "activity",
+      "i",
+      "c7355b",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "id",
+     "value_type": "unknown",
+     "source_expr": "Integer.valueOf(c7355b.m59781l())",
+     "conditional": false
+    },
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "num",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "mall.giveAwayUserList",
+   "module": "mall",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j85.java",
+     "method": "m25079q2",
+     "java_args": []
+    }
+   ],
+   "params": [
+    {
+     "name": "page",
+     "value_type": "unknown",
+     "source_expr": "Integer.valueOf(this.f19863g)",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "mall.useProduct",
+   "module": "mall",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "method": "m18078d0",
+     "java_args": [
+      "i",
+      "str",
+      "z",
+      "z2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "id",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "used",
+     "value_type": "unknown",
+     "source_expr": "Integer.valueOf(z ? 1 : 0)",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "mall.useTheme",
+   "module": "mall",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/fk2.java",
+     "method": "m17548s2",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "uid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "room.addRole",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26343b",
+     "java_args": [
+      "i",
+      "i2",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "fromUserId",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.batchGetRoomInfos",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/mq3.java",
+     "method": "if",
+     "java_args": [
+      "this.f24735a.isSuccessful("
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.collectRoom",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30831f",
+     "java_args": [
+      "i"
+     ]
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30839p",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "op",
+     "value_type": "constant",
+     "source_expr": "1",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.createRoomEx",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/dl2.java",
+     "method": "m13669j",
+     "java_args": [
+      "i",
+      "i2",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "topic",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "token",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.delRole",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26344c",
+     "java_args": [
+      "i",
+      "i2",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "fromUserId",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.discoverRoom",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/xt1.java",
+     "method": "m56699d",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.gameRank",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/xe4.java",
+     "method": "m56020c",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getActivityGames",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26345d",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getActivityGamesV",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getApplyMicList",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26346e",
+     "java_args": [
+      "j"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "j",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getBlackList",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30834k",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getCallFansList",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26347f",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getCoinFlowRank",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26348g",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getCoinFlowTotalRank",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/xe4.java",
+     "method": "m56022e",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getCountryListV",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getCountryRoomListV",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getHotvalAndMedal",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24882f",
+     "java_args": [
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rids",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getMyRoomList",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/dl2.java",
+     "method": "m13670l",
+     "java_args": []
+    }
+   ],
+   "params": [
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getRecommendRoomV",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getRoomCharmRank",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26349h",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getRoomInfo",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30833j",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getRoomModelConfig",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26351j",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getSendGiftRankV",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getTop",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getTopicRandom",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "preprocessed/conection/mutate/nudged/LiveGoodListViewHandlerActivity.java",
+     "method": "m37531b2",
+     "java_args": []
+    },
+    {
+     "file": "p000/k14.java",
+     "method": "m26352k",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "game_type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "little_game_type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getUserCharmRankV",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getUserContributeRank",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26353l",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "Integer.valueOf(yi1.m57994j().m23403i())",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getUserOnlineList",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26354m",
+     "java_args": [
+      "j",
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "j",
+     "conditional": false
+    },
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getUserOnlineListV",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.getWealthInfo",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/tc4.java",
+     "method": "m48564x0",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.inviteFriends",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58849i",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.luckyGiftRank",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/xe4.java",
+     "method": "m56021d",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.shareReport",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C5448q7.java",
+     "method": "if",
+     "java_args": [
+      "null"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "http_reportCnt",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "http_reportFeq",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "roomImReportTimeout",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "http_reportAction",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "ping_domain",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "notReportFiles",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.updateRoomImg",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C4075mi.java",
+     "method": "if",
+     "java_args": [
+      "m19277l"
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "room.updateRoomInfo",
+   "module": "room",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/k14.java",
+     "method": "m26356o",
+     "java_args": [
+      "i",
+      "Map<String",
+      "map"
+     ]
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30838o",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30840q",
+     "java_args": [
+      "i",
+      "str"
+     ]
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30841r",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30842s",
+     "java_args": [
+      "i",
+      "str"
+     ]
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30843t",
+     "java_args": [
+      "i",
+      "str"
+     ]
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30845v",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    },
+    {
+     "file": "p000/C4075mi.java",
+     "method": "m30846w",
+     "java_args": [
+      "i",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "game_type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "bulletin",
+     "value_type": "unknown",
+     "source_expr": "new StringBuffer(str)",
+     "conditional": false
+    },
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "rname",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "token",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "passwd",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "talk_topic",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "task.getSignInListV",
+   "module": "task",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "task.giveBeans",
+   "module": "task",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/fx4.java",
+     "method": "if",
+     "java_args": [
+      "null"
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "b14",
+    "file": "p000/b14.java",
+    "category": "wallet",
+    "field_count": 18,
+    "asset_fields": [
+     "image",
+     "topic"
+    ]
+   }
+  },
+  {
+   "method": "task.signInV",
+   "module": "task",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.bashGetIsSubscribe",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24879c",
+     "java_args": [
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "stars",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.batchGetUserinfoV",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getCountryConfig",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24881e",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getCountryList",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24880d",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getFansList",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "method": "if",
+     "java_args": [
+      "1"
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getFriendList",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "preprocessed/conection/processer/maneger/gatherer/BPlusBaseRefreshComponentActivity.java",
+     "method": "m40609f2",
+     "java_args": [
+      "i"
+     ]
+    },
+    {
+     "file": "preprocessed/conection/processer/maneger/gatherer/BPlusBaseRefreshComponentActivity.java",
+     "method": "m40609f2",
+     "java_args": [
+      "i"
+     ]
+    },
+    {
+     "file": "p000/pq2.java",
+     "method": "m36623E2",
+     "java_args": [
+      "0"
+     ]
+    },
+    {
+     "file": "p000/pq2.java",
+     "method": "if",
+     "java_args": [
+      "pq2.m36633y2(pq2Var"
+     ]
+    },
+    {
+     "file": "p000/C4155my.java",
+     "method": "if",
+     "java_args": [
+      "1"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "uid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "token",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "start",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "get_cp",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getGiftWallList",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C2867h.java",
+     "method": "m20460i",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "uid",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "user.getIsSubscribe",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/vm2.java",
+     "method": "m53231n0",
+     "java_args": [
+      "i",
+      "il1<Boolean",
+      "il1Var"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "star_uid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getNewUserPrizes",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24883g",
+     "java_args": []
+    }
+   ],
+   "params": [
+    {
+     "name": "deviceId",
+     "value_type": "unknown",
+     "source_expr": "bm3.m6543d(AddAlarmClockPresenter.m41457g())",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getSensitivePath",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24884h",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getSubcribeList",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "method": "if",
+     "java_args": [
+      "1"
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getUserIdentity",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24885i",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getUserImSendStatus",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/ViewOnClickListenerC2286e1.java",
+     "method": "m14532M2",
+     "java_args": []
+    }
+   ],
+   "params": [
+    {
+     "name": "touid",
+     "value_type": "unknown",
+     "source_expr": "Integer.valueOf(this.f11656m)",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getUserinfo",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/lb1.java",
+     "method": "if",
+     "java_args": [
+      "m34209H"
+     ]
+    },
+    {
+     "file": "p000/lb1.java",
+     "method": "m28981u",
+     "java_args": [
+      "interfaceC3832h"
+     ]
+    },
+    {
+     "file": "p000/lb1.java",
+     "method": "m28981u",
+     "java_args": [
+      "interfaceC3832h"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "response_status",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "code",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "response_data",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "withExtra",
+     "value_type": "constant",
+     "source_expr": "1",
+     "conditional": false
+    },
+    {
+     "name": "withFriendCard",
+     "value_type": "constant",
+     "source_expr": "1",
+     "conditional": false
+    },
+    {
+     "name": "withGuild",
+     "value_type": "constant",
+     "source_expr": "1",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.getWhiteList",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24886j",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.recommendUser",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/ny1.java",
+     "method": "if",
+     "java_args": [
+      "this.f26599a.isSuccessful("
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.registerFinish",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24887k",
+     "java_args": []
+    }
+   ],
+   "params": [
+    {
+     "name": "deviceId",
+     "value_type": "unknown",
+     "source_expr": "bm3.m6543d(AddAlarmClockPresenter.m41457g())",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.setCountry",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24888l",
+     "java_args": [
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "cc",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.subcribe",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "method": "m31776t",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "str"
+     ]
+    },
+    {
+     "file": "p000/C4155my.java",
+     "method": "if",
+     "java_args": [
+      "1"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "str == null ? d82.m13169a(\"FhwIXFkSHAVNHAgOCg===\") : str",
+     "conditional": false
+    },
+    {
+     "name": "uid",
+     "value_type": "unknown",
+     "source_expr": "AddAlarmClockPresenter.m41457g().m41486r() + \"\"",
+     "conditional": false
+    },
+    {
+     "name": "token",
+     "value_type": "unknown",
+     "source_expr": "AddAlarmClockPresenter.m41457g().m41485q() + \"\"",
+     "conditional": false
+    },
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "eventId",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "arg1",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "arg2",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.supporter",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/zf5.java",
+     "method": "if",
+     "java_args": [
+      "this.f48229a.isSuccessful("
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.unbind",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "preprocessed/conection/processer/interval/SClientRequestInfoActivity.java",
+     "method": "m40541i2",
+     "java_args": []
+    },
+    {
+     "file": "preprocessed/conection/processer/interval/SClientRequestInfoActivity.java",
+     "method": "m40541i2",
+     "java_args": []
+    },
+    {
+     "file": "preprocessed/conection/processer/interval/HomeTravelStepModelActivity.java",
+     "method": "m40494i2",
+     "java_args": []
+    },
+    {
+     "file": "preprocessed/conection/processer/interval/HomeTravelStepModelActivity.java",
+     "method": "m40494i2",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.unsubcribe",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C4155my.java",
+     "method": "m31790u",
+     "java_args": [
+      "this.f25011c",
+      "this.f25012d",
+      "this.f25013e",
+      "this.f25014f"
+     ]
+    },
+    {
+     "file": "p000/C4155my.java",
+     "method": "if",
+     "java_args": [
+      "1"
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.updateCountry",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24889m",
+     "java_args": [
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "cc",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.updateLang",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j46.java",
+     "method": "m24890n",
+     "java_args": [
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "afterLang",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.updateUInfo",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C6951xo.java",
+     "method": "m56453e",
+     "java_args": []
+    },
+    {
+     "file": "p000/C2868h0.java",
+     "method": "m20480j",
+     "java_args": [
+      "str",
+      "i",
+      "str2"
+     ]
+    },
+    {
+     "file": "p000/C2868h0.java",
+     "method": "if",
+     "java_args": [
+      "null"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "token",
+     "value_type": "unknown",
+     "source_expr": "AddAlarmClockPresenter.m41457g().m41485q() + \"\"",
+     "conditional": false
+    },
+    {
+     "name": "action",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    },
+    {
+     "name": "nick",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "sex",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "birthday",
+     "value_type": "input",
+     "source_expr": "str2",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "user.uploadAvatar",
+   "module": "user",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/zv3.java",
+     "method": "run",
+     "java_args": []
+    }
+   ],
+   "params": [
+    {
+     "name": "response_data",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "bn0",
+    "file": "p000/bn0.java",
+    "category": "user",
+    "field_count": 98,
+    "asset_fields": [
+     "audit_avatar",
+     "avatarFrame",
+     "carFrame",
+     "avatarFrameJson",
+     "carFrameJson",
+     "infoBgImg",
+     "avatar"
+    ]
+   }
+  },
+  {
+   "method": "wallet.getWalletInfo",
+   "module": "wallet",
+   "style": "json-rpc",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "preprocessed/conection/processer/gated/megabit/C5176d.java",
+     "method": "m40035j",
+     "java_args": [
+      "eVar"
+     ]
+    },
+    {
+     "file": "preprocessed/conection/processer/gated/megabit/C5176d.java",
+     "method": "m40035j",
+     "java_args": [
+      "eVar"
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "b14",
+    "file": "p000/b14.java",
+    "category": "wallet",
+    "field_count": 18,
+    "asset_fields": [
+     "image",
+     "topic"
+    ]
+   }
+  },
+  {
+   "method": "Action/ChargeGiftBag.getGiftBagStatus",
+   "module": "Action/ChargeGiftBag",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/ss1.java",
+     "method": "m47577e",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "C7355b",
+    "file": "p000/zl2.java",
+    "category": "payment",
+    "field_count": 34,
+    "asset_fields": [
+     "local_imga_url",
+     "act_url",
+     "url_front",
+     "url_resource",
+     "resource_json"
+    ]
+   }
+  },
+  {
+   "method": "Action/GameMall.exchangeProduct",
+   "module": "Action/GameMall",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "method": "m18079r",
+     "java_args": [
+      "activity",
+      "c7355b"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "id",
+     "value_type": "unknown",
+     "source_expr": "Integer.valueOf(c7355b.m59781l())",
+     "conditional": false
+    },
+    {
+     "name": "num",
+     "value_type": "constant",
+     "source_expr": "1",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "b14",
+    "file": "p000/b14.java",
+    "category": "wallet",
+    "field_count": 18,
+    "asset_fields": [
+     "image",
+     "topic"
+    ]
+   }
+  },
+  {
+   "method": "Action/GameMall.getMallProduct",
+   "module": "Action/GameMall",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/fv5.java",
+     "method": "if",
+     "java_args": [
+      "this.f14295a.isSuccessful("
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "b14",
+    "file": "p000/b14.java",
+    "category": "wallet",
+    "field_count": 18,
+    "asset_fields": [
+     "image",
+     "topic"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRocketGift.gifts",
+   "module": "Action/LiveRocketGift",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "method": "m54769h",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRocketGift.roomGifts",
+   "module": "Action/LiveRocketGift",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "method": "m54772k",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.addRole",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "method": "m16969a",
+     "java_args": [
+      "i",
+      "i2",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "fromUserId",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.blockade",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "method": "m24853a",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoomBomb.getBombConfig",
+   "module": "Action/LiveRoomBomb",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "method": "m24854c",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoomBomb.getRoomPrizeRecord",
+   "module": "Action/LiveRoomBomb",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "method": "m54775n",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.createRoom",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "method": "m24850b",
+     "java_args": [
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "name",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.delRole",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "method": "m16970b",
+     "java_args": [
+      "i",
+      "i2",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "fromUserId",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.getCoinFlowRank",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "method": "m16973f",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "generated",
+     "source_expr": "Integer.valueOf(vm2.m53171y0().m53194M0())",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "C2445et",
+    "file": "p000/C2445et.java",
+    "category": "ranking",
+    "field_count": 43,
+    "asset_fields": [
+     "avatar",
+     "talk_topic",
+     "themeUrl",
+     "pic_url",
+     "topic",
+     "topic_name"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.getMyCollectRoomList",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "method": "m16971c",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.getRoomExtraInfo",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/C6484ux.java",
+     "method": "if",
+     "java_args": [
+      "0"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "to_uid",
+     "value_type": "input",
+     "source_expr": "m35030c",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.getRoomInfo",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "method": "m24855d",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.getUserContributeRank",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "method": "m16974g",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "Integer.valueOf(yi1.m57994j().m23403i())",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.getUserOnlineList",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "method": "m16975h",
+     "java_args": [
+      "j",
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "start",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.heartbeat",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "method": "m24851e",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.joinRoom",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "method": "m24852f",
+     "java_args": [
+      "i",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "passwd",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.kickUser",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "method": "m24856g",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.recommend",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "method": "m16972d",
+     "java_args": [
+      "i",
+      "str",
+      "i2"
+     ]
+    },
+    {
+     "file": "p000/C3349is.java",
+     "method": "if",
+     "java_args": [
+      "this.f18998a.isSuccessful("
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "fromUserId",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.sendLiveGift",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/j30.java",
+     "method": "m24857h",
+     "java_args": [
+      "i",
+      "str",
+      "i2",
+      "i3",
+      "i4",
+      "i5",
+      "i6",
+      "i7",
+      "str2",
+      "str3",
+      "num"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "uids",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "bid",
+     "value_type": "input",
+     "source_expr": "i5",
+     "conditional": false
+    },
+    {
+     "name": "drawRatio",
+     "value_type": "input",
+     "source_expr": "str3",
+     "conditional": false
+    },
+    {
+     "name": "drawXY",
+     "value_type": "input",
+     "source_expr": "str2",
+     "conditional": false
+    },
+    {
+     "name": "room_mode",
+     "value_type": "constant",
+     "source_expr": "1",
+     "conditional": false
+    },
+    {
+     "name": "merge_num",
+     "value_type": "input",
+     "source_expr": "num",
+     "conditional": false
+    },
+    {
+     "name": "gid",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "source",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "lucky_box",
+     "value_type": "input",
+     "source_expr": "i6",
+     "conditional": false
+    },
+    {
+     "name": "box_type",
+     "value_type": "input",
+     "source_expr": "i6",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.setTextConfig",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/f63.java",
+     "method": "m16976i",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/LiveRoom.updateRoomImg",
+   "module": "Action/LiveRoom",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/b86.java",
+     "method": "if",
+     "java_args": [
+      "this.f4698a.isSuccessful("
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/Noble.getBirthdayInfo",
+   "module": "Action/Noble",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/vq3.java",
+     "method": "m53536e",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "C5619a",
+    "file": "p000/qw1.java",
+    "category": "vip",
+    "field_count": 43,
+    "asset_fields": [
+     "guildTagUrl",
+     "vipMedalImg",
+     "avatar_small",
+     "best_friend_avatar",
+     "avatar",
+     "avatar_carton",
+     "avatarFrame",
+     "avatarFrameJson",
+     "carFrame",
+     "carFrameJson",
+     "couple_avatar",
+     "wealthFrame"
+    ]
+   }
+  },
+  {
+   "method": "Action/Noble.receiveBirthdayPresent",
+   "module": "Action/Noble",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/vq3.java",
+     "method": "m53537f",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "C5619a",
+    "file": "p000/qw1.java",
+    "category": "vip",
+    "field_count": 43,
+    "asset_fields": [
+     "guildTagUrl",
+     "vipMedalImg",
+     "avatar_small",
+     "best_friend_avatar",
+     "avatar",
+     "avatar_carton",
+     "avatarFrame",
+     "avatarFrameJson",
+     "carFrame",
+     "carFrameJson",
+     "couple_avatar",
+     "wealthFrame"
+    ]
+   }
+  },
+  {
+   "method": "Action/Noble.sendHorn",
+   "module": "Action/Noble",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/vq3.java",
+     "method": "m53535d",
+     "java_args": [
+      "i",
+      "str",
+      "z"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "content",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "roomKind",
+     "value_type": "constant",
+     "source_expr": "1",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "C5619a",
+    "file": "p000/qw1.java",
+    "category": "vip",
+    "field_count": 43,
+    "asset_fields": [
+     "guildTagUrl",
+     "vipMedalImg",
+     "avatar_small",
+     "best_friend_avatar",
+     "avatar",
+     "avatar_carton",
+     "avatarFrame",
+     "avatarFrameJson",
+     "carFrame",
+     "carFrameJson",
+     "couple_avatar",
+     "wealthFrame"
+    ]
+   }
+  },
+  {
+   "method": "Action/Noble.shareMoment",
+   "module": "Action/Noble",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/vq3.java",
+     "method": "m53538g",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "C5619a",
+    "file": "p000/qw1.java",
+    "category": "vip",
+    "field_count": 43,
+    "asset_fields": [
+     "guildTagUrl",
+     "vipMedalImg",
+     "avatar_small",
+     "best_friend_avatar",
+     "avatar",
+     "avatar_carton",
+     "avatarFrame",
+     "avatarFrameJson",
+     "carFrame",
+     "carFrameJson",
+     "couple_avatar",
+     "wealthFrame"
+    ]
+   }
+  },
+  {
+   "method": "Action/RocketGift.gifts",
+   "module": "Action/RocketGift",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "method": "m54769h",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/RocketGift.roomGifts",
+   "module": "Action/RocketGift",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "method": "m54772k",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.batchGetUserInfo",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58837a",
+     "java_args": [
+      "i",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "uids",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.blockade",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58843b",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.cancelCallFans",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58844c",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "roomKind",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.disableMic",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58845d",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "i4"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "pos",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.divideGroup",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58846e",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "groupNum",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.getDynamicKey",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58848g",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.heartbeat",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58838h",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.inviteJoinMic",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58850j",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "i4"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "pos",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "fx2",
+    "file": "p000/fx2.java",
+    "category": "agency",
+    "field_count": 7,
+    "asset_fields": []
+   }
+  },
+  {
+   "method": "Action/RoomApi.joinMic",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58839k",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "i4",
+      "i5"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "pos",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.joinRoom",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58840l",
+     "java_args": [
+      "i",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "passwd",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.kickUser",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58851m",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "touid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.lockMic",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58852n",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "i4"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "pos",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.mute",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58853o",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "op",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.notifyUpdateUInfo",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58854p",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.quitMic",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58841q",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "i4"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "pos",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.sendGift",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58855r",
+     "java_args": [
+      "i",
+      "str",
+      "i2",
+      "i3",
+      "i4",
+      "i5",
+      "i6",
+      "i7",
+      "str2",
+      "str3",
+      "num"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "uids",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "bid",
+     "value_type": "input",
+     "source_expr": "i5",
+     "conditional": false
+    },
+    {
+     "name": "drawRatio",
+     "value_type": "input",
+     "source_expr": "str3",
+     "conditional": false
+    },
+    {
+     "name": "drawXY",
+     "value_type": "input",
+     "source_expr": "str2",
+     "conditional": false
+    },
+    {
+     "name": "merge_num",
+     "value_type": "input",
+     "source_expr": "num",
+     "conditional": false
+    },
+    {
+     "name": "gid",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "source",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "lucky_box",
+     "value_type": "input",
+     "source_expr": "i6",
+     "conditional": false
+    },
+    {
+     "name": "box_type",
+     "value_type": "input",
+     "source_expr": "i6",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.sendLuckyNum",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58856s",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.setCharmConfig",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58842t",
+     "java_args": [
+      "i",
+      "i2",
+      "i3",
+      "str"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "currency",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "clear",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.setTextConfig",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58857u",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.startCallFans",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58858v",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "roomKind",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.startTimingPKGroup",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58859w",
+     "java_args": [
+      "i",
+      "i2",
+      "str",
+      "str2",
+      "str3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "groupRed",
+     "value_type": "input",
+     "source_expr": "str",
+     "conditional": false
+    },
+    {
+     "name": "groupBlue",
+     "value_type": "input",
+     "source_expr": "str2",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "times",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "content",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.stopTimingPKGroup",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58860x",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomApi.switchMic",
+   "module": "Action/RoomApi",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58861y",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    },
+    {
+     "name": "pos",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomBomb.getBombConfig",
+   "module": "Action/RoomBomb",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/yw1.java",
+     "method": "m58847f",
+     "java_args": [
+      "i"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "rid",
+     "value_type": "unknown",
+     "source_expr": "(referenced literal)",
+     "conditional": null
+    }
+   ],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/RoomBomb.getRoomPrizeRecord",
+   "module": "Action/RoomBomb",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/wl2.java",
+     "method": "m54775n",
+     "java_args": []
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "rx4",
+    "file": "p000/rx4.java",
+    "category": "gift",
+    "field_count": 50,
+    "asset_fields": [
+     "continuous_url",
+     "continuous_url2",
+     "banner_url",
+     "jump_url",
+     "bar_label_url",
+     "avatar",
+     "groupCurLv",
+     "subGifts",
+     "svga_type",
+     "svga_url",
+     "image",
+     "resource_idx",
+     "resource_url",
+     "preview_url"
+    ]
+   }
+  },
+  {
+   "method": "Action/SuperManage.ban",
+   "module": "Action/SuperManage",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "method": "m7774a",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "toUid",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "days",
+     "value_type": "input",
+     "source_expr": "i3",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/SuperManage.behaviorBan",
+   "module": "Action/SuperManage",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "method": "m7775b",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "toUid",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "days",
+     "value_type": "input",
+     "source_expr": "i3",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/SuperManage.deleteSong",
+   "module": "Action/SuperManage",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "method": "m7776c",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    },
+    {
+     "file": "p000/kl0.java",
+     "method": "m27356f",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "id",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "toUid",
+     "value_type": "input",
+     "source_expr": "i",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/SuperManage.resetLiveRoom",
+   "module": "Action/SuperManage",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "method": "m7777d",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "toUid",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i3",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/SuperManage.resetRoom",
+   "module": "Action/SuperManage",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "method": "m7778e",
+     "java_args": [
+      "i",
+      "i2",
+      "i3"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "toUid",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    },
+    {
+     "name": "rid",
+     "value_type": "input",
+     "source_expr": "i3",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "Action/SuperManage.resetUser",
+   "module": "Action/SuperManage",
+   "style": "action-rest",
+   "transport": "POST /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/c73.java",
+     "method": "m7779f",
+     "java_args": [
+      "i",
+      "i2"
+     ]
+    }
+   ],
+   "params": [
+    {
+     "name": "toUid",
+     "value_type": "input",
+     "source_expr": "valueOf",
+     "conditional": false
+    },
+    {
+     "name": "type",
+     "value_type": "input",
+     "source_expr": "i2",
+     "conditional": false
+    }
+   ],
+   "response_model": {
+    "class": "ri3",
+    "file": "p000/ri3.java",
+    "category": "room",
+    "field_count": 16,
+    "asset_fields": [
+     "image",
+     "url",
+     "clientImageRes",
+     "page_image",
+     "page_image_new"
+    ]
+   }
+  },
+  {
+   "method": "/html/vipScoreRank/index.html?type=%1$s&",
+   "module": "/html/vipScoreRank/index",
+   "style": "h5-webview",
+   "transport": "GET /",
+   "auth_params": [
+    "timestamp",
+    "sign",
+    "token"
+   ],
+   "callers": [
+    {
+     "file": "p000/vl3.java",
+     "method": "if",
+     "java_args": [
+      "null"
+     ]
+    }
+   ],
+   "params": [],
+   "response_model": {
+    "class": "C5619a",
+    "file": "p000/qw1.java",
+    "category": "vip",
+    "field_count": 43,
+    "asset_fields": [
+     "guildTagUrl",
+     "vipMedalImg",
+     "avatar_small",
+     "best_friend_avatar",
+     "avatar",
+     "avatar_carton",
+     "avatarFrame",
+     "avatarFrameJson",
+     "carFrame",
+     "carFrameJson",
+     "couple_avatar",
+     "wealthFrame"
+    ]
+   }
+  }
+ ]
+}

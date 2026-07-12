@@ -23,6 +23,17 @@ const REVOKED_KEY = (jti: string) => `revoked:rt:${jti}`;
 async function isRefreshRevoked(jti: string | undefined): Promise<boolean> {
   return jti ? (await redis.exists(REVOKED_KEY(jti))) === 1 : false;
 }
+// Revoke a refresh token by denylisting its jti until the token's own expiry (so the denylist
+// self-cleans). Shared by /auth/logout and the single-use rotation in /auth/refresh. A token
+// with no jti/exp (older tokens) falls back to the configured refresh TTL.
+async function revokeRefresh(payload: any): Promise<void> {
+  if (payload?.t === 'r' && payload.jti) {
+    const ttl = typeof payload.exp === 'number'
+      ? Math.max(1, payload.exp - Math.floor(Date.now() / 1000))
+      : env.JWT_REFRESH_TTL;
+    await redis.set(REVOKED_KEY(payload.jti), '1', 'EX', ttl);
+  }
+}
 // Brute-force protection (item 6): a strict per-route limit on the credential endpoints.
 const loginRateLimit = { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } };
 
@@ -31,57 +42,36 @@ export async function authRoutes(app: FastifyInstance) {
     const { type, credential, nick } = loginSchema.parse(req.body);
     // TODO: verify `credential` with the provider SDK (Google/FB/Apple) or OTP store.
     const providerUid = await verifyProvider(type, credential);
-
-    const identity = await prisma.userIdentity.findUnique({
-      where: { provider_providerUid: { provider: type, providerUid } },
-      include: { user: { include: { profile: true } } },
-    }).catch(() => null);
-
-    let userId: bigint;
-    if (identity) {
-      userId = identity.userId;
-    } else {
-      const user = await prisma.user.create({
-        data: {
-          account: `${type}:${providerUid}`.slice(0, 64),
-          identities: { create: { provider: type, providerUid } },
-          profile: { create: { nick: nick ?? `user_${Date.now() % 100000}` } },
-          wallet: { create: {} },
-        },
-      });
-      userId = user.id;
-    }
-
+    const userId = await resolveIdentityUser(type, providerUid, nick);
     return { code: 0, message: 'ok', data: { ...issueTokens(app, userId), uid: String(userId) } };
   });
 
   // Refresh — the client depends on this to keep sessions alive past the 15-min access TTL.
-  // Rotates the access token; verifies the refresh token's signature and `t:'r'` marker.
+  // Single-use rotation (item 7): verify the refresh token's signature + `t:'r'` marker, then
+  // revoke the presented token as the new pair is minted, so a captured/replayed refresh token
+  // is dead after one use.
   app.post('/auth/refresh', loginRateLimit, async (req, reply) => {
     const { refresh_token } = refreshSchema.parse(req.body);
-    let userId: bigint;
+    let payload: any;
     try {
-      const payload = app.jwt.verify(refresh_token) as any;
+      payload = app.jwt.verify(refresh_token);
       if (payload.t !== 'r' || !payload.id) throw new Error('not_a_refresh_token');
       if (await isRefreshRevoked(payload.jti)) throw new Error('revoked'); // item 7
-      userId = BigInt(payload.id);
     } catch {
       return reply.code(401).send({ code: 4010, message: 'invalid_refresh_token' });
     }
+    const userId = BigInt(payload.id);
     if (await moderationService.isSuspended(userId)) return reply.code(403).send({ code: 4030, message: 'account_suspended' });
+    await revokeRefresh(payload); // the presented refresh token cannot be reused after rotation
     return { code: 0, message: 'ok', data: { ...issueTokens(app, userId), uid: String(userId) } };
   });
 
   // Logout — revoke a refresh token so it can no longer mint access tokens (item 7). The jti is
   // denylisted in Redis until the token's own expiry, so the denylist self-cleans. Idempotent.
-  app.post('/auth/logout', async (req, reply) => {
+  app.post('/auth/logout', async (req) => {
     const { refresh_token } = refreshSchema.parse(req.body);
     try {
-      const payload = app.jwt.verify(refresh_token) as any;
-      if (payload.t === 'r' && payload.jti) {
-        const ttl = typeof payload.exp === 'number' ? Math.max(1, payload.exp - Math.floor(Date.now() / 1000)) : env.JWT_REFRESH_TTL;
-        await redis.set(REVOKED_KEY(payload.jti), '1', 'EX', ttl);
-      }
+      await revokeRefresh(app.jwt.verify(refresh_token));
     } catch {
       // A malformed/expired token is already unusable — logout is a no-op success.
     }
@@ -108,6 +98,44 @@ function issueTokens(app: FastifyInstance, userId: bigint) {
   // Refresh carries a unique jti so it can be individually revoked (logout / item 7).
   const refresh = app.jwt.sign({ id: String(userId), t: 'r', jti: randomUUID() }, { expiresIn: env.JWT_REFRESH_TTL });
   return { access_token: access, refresh_token: refresh };
+}
+
+// Provider→identity upsert (contract §1): return the user for an existing (provider, providerUid)
+// identity, or create user+identity+profile+wallet on first login. Race-safe — two concurrent
+// first-logins for the same credential can both miss the lookup, so a unique-constraint violation
+// (P2002) is read as "another request just created it" and we re-read instead of 500-ing.
+async function resolveIdentityUser(type: string, providerUid: string, nick?: string): Promise<bigint> {
+  const existing = await prisma.userIdentity.findUnique({
+    where: { provider_providerUid: { provider: type, providerUid } },
+    select: { userId: true },
+  });
+  if (existing) return existing.userId;
+  try {
+    const user = await prisma.user.create({
+      data: {
+        account: `${type}:${providerUid}`.slice(0, 64),
+        identities: { create: { provider: type, providerUid } },
+        profile: { create: { nick: nick ?? `user_${Date.now() % 100000}` } },
+        wallet: { create: {} },
+      },
+      select: { id: true },
+    });
+    return user.id;
+  } catch (e) {
+    if (isUniqueViolation(e)) {
+      const raced = await prisma.userIdentity.findUnique({
+        where: { provider_providerUid: { provider: type, providerUid } },
+        select: { userId: true },
+      });
+      if (raced) return raced.userId;
+    }
+    throw e;
+  }
+}
+
+// Duck-typed Prisma unique-constraint check (P2002) — avoids importing the Prisma error class.
+function isUniqueViolation(e: unknown): boolean {
+  return typeof e === 'object' && e !== null && (e as { code?: string }).code === 'P2002';
 }
 
 async function verifyProvider(type: string, credential: string): Promise<string> {

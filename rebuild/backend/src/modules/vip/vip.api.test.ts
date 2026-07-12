@@ -82,4 +82,36 @@ describe('VIP API', () => {
     const prof = await prisma.profile.findUnique({ where: { userId: u } });
     expect(prof!.vipLevel).toBe(0);
   });
+
+  // --- T2.1 additions ---
+  it('GET /vip/levels returns the tier list (alias of /vip/plans)', async () => {
+    const r = await inject(app, null, 'GET', '/vip/levels');
+    expect(r.status).toBe(200);
+    expect(r.body.data.find((x: any) => x.level === L1).name).toBe('TestBronze');
+  });
+
+  it('GET /vip/privileges/me returns active-tier benefits; level 0 when none', async () => {
+    const u = await makeUser({ coins: 2000n });
+    const none = await inject(app, u, 'GET', '/vip/privileges/me');
+    expect(none.body.data).toMatchObject({ level: 0, active: false });
+
+    await inject(app, u, 'POST', '/vip/purchase', { level: L1 });
+    const priv = await inject(app, u, 'GET', '/vip/privileges/me');
+    expect(priv.body.data.level).toBe(L1);
+    expect(priv.body.data.active).toBe(true);
+    expect(priv.body.data.privileges.horn).toBe(true);
+  });
+
+  it('idempotent purchase: same Idempotency-Key twice charges once (replay → 200)', async () => {
+    const u = await makeUser({ coins: 3000n });
+    const key = `api-vip-idem-${Date.now()}`;
+    const first = await inject(app, u, 'POST', '/vip/purchase', { level: L1 }, { 'idempotency-key': key });
+    expect(first.status).toBe(200);
+    expect(first.body.data.coinsAfter).toBe('2000'); // 3000 − 1000
+    const replay = await inject(app, u, 'POST', '/vip/purchase', { level: L1 }, { 'idempotency-key': key });
+    expect(replay.status).toBe(200);
+    expect(replay.body.data.replay).toBe(true);
+    const w = await prisma.wallet.findUnique({ where: { userId: u } });
+    expect(w!.coins).toBe(2000n); // charged exactly once (3000 - 1000)
+  });
 });

@@ -23,6 +23,7 @@ class PagView extends StatelessWidget {
     this.loop = true,
     this.autoPlay = true,
     this.fallback,
+    this.onFinished,
   })  : url = null,
         bytes = null;
 
@@ -34,6 +35,7 @@ class PagView extends StatelessWidget {
     this.loop = true,
     this.autoPlay = true,
     this.fallback,
+    this.onFinished,
   })  : asset = null,
         bytes = null;
 
@@ -45,6 +47,7 @@ class PagView extends StatelessWidget {
     this.loop = true,
     this.autoPlay = true,
     this.fallback,
+    this.onFinished,
   })  : asset = null,
         url = null;
 
@@ -68,6 +71,9 @@ class PagView extends StatelessWidget {
   /// plugin. Typically the matching static PNG so the UI still reads correctly.
   final Widget? fallback;
 
+  /// Fired when a **non-looping** animation finishes (so a one-shot overlay can advance/dismiss).
+  final VoidCallback? onFinished;
+
   int get _repeat =>
       loop ? pag.PAGView.REPEAT_COUNT_LOOP : pag.PAGView.REPEAT_COUNT_DEFAULT;
 
@@ -83,6 +89,7 @@ class PagView extends StatelessWidget {
         height: height,
         repeatCount: _repeat,
         autoPlay: autoPlay,
+        onAnimationEnd: onFinished,
         defaultBuilder: _fallback,
       );
     }
@@ -93,6 +100,7 @@ class PagView extends StatelessWidget {
         height: height,
         repeatCount: _repeat,
         autoPlay: autoPlay,
+        onAnimationEnd: onFinished,
         defaultBuilder: _fallback,
       );
     }
@@ -102,6 +110,7 @@ class PagView extends StatelessWidget {
       height: height,
       repeatCount: _repeat,
       autoPlay: autoPlay,
+      onAnimationEnd: onFinished,
       defaultBuilder: _fallback,
     );
   }

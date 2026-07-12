@@ -3,6 +3,7 @@ import type { FastifyInstance } from 'fastify';
 import { buildTestApp, makeUser, makeAdmin, inject } from '../../testing/harness.js';
 import { moderationRoutes } from './moderation.routes.js';
 import { moderationService } from './moderation.service.js';
+import { RoomPermission } from '../../lib/authz.js';
 import { prisma } from '../../lib/prisma.js';
 
 let app: FastifyInstance;
@@ -61,6 +62,35 @@ describe('Moderation', () => {
 
     await inject(app, owner, 'DELETE', `/rooms/${roomId}/ban/${troublemaker}`);
     expect(await moderationService.isRoomBanned(troublemaker, roomId)).toBe(false);
+  });
+
+  it('room ban honors the KICK permission bitmap (T1.11 extension)', async () => {
+    const owner = await makeUser();
+    const roomId = await makeRoom(owner);
+
+    // Admin WITH the KICK bit can ban.
+    const adminOk = await makeUser();
+    await prisma.roomMember.create({ data: { roomId, userId: adminOk, role: 1, permissions: RoomPermission.KICK } });
+    const t1 = await makeUser();
+    expect((await inject(app, adminOk, 'POST', `/rooms/${roomId}/ban`, { user_id: String(t1) })).status).toBe(200);
+    expect(await moderationService.isRoomBanned(t1, roomId)).toBe(true);
+    // …and can unban (same KICK gate).
+    expect((await inject(app, adminOk, 'DELETE', `/rooms/${roomId}/ban/${t1}`)).status).toBe(200);
+
+    // Admin whose non-zero bitmap LACKS KICK (LOCK_SEAT only) is denied — and no ban is written.
+    const adminNo = await makeUser();
+    await prisma.roomMember.create({ data: { roomId, userId: adminNo, role: 1, permissions: RoomPermission.LOCK_SEAT } });
+    const t2 = await makeUser();
+    const denied = await inject(app, adminNo, 'POST', `/rooms/${roomId}/ban`, { user_id: String(t2) });
+    expect(denied.status).toBe(403);
+    expect(denied.body.message).toBe('insufficient_permission');
+    expect(await moderationService.isRoomBanned(t2, roomId)).toBe(false); // rejection → no mutation
+
+    // Admin with permissions=0 falls back to role (can ban).
+    const adminLegacy = await makeUser();
+    await prisma.roomMember.create({ data: { roomId, userId: adminLegacy, role: 1, permissions: 0 } });
+    const t3 = await makeUser();
+    expect((await inject(app, adminLegacy, 'POST', `/rooms/${roomId}/ban`, { user_id: String(t3) })).status).toBe(200);
   });
 
   it('report handling: resolve writes a log; double-handle is rejected', async () => {

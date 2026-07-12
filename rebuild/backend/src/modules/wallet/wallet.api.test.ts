@@ -25,6 +25,45 @@ describe('wallet API', () => {
     expect(r.body.data.beans).toBe('50');
   });
 
+  it('GET /wallet is self-only: each user reads only their own balance (T1.12)', async () => {
+    const a = await makeUser({ coins: 111n });
+    const b = await makeUser({ coins: 222n });
+    // Balance is addressed solely by the caller's id — there is no path to another user's wallet.
+    expect((await inject(app, a, 'GET', '/wallet')).body.data.coins).toBe('111');
+    expect((await inject(app, b, 'GET', '/wallet')).body.data.coins).toBe('222');
+  });
+
+  it('GET /wallet/ledger paginates newest-first (T1.12)', async () => {
+    const u = await makeUser(); // no opening balances → clean ledger slate
+    // Seed five ledger rows with increasing createdAt + balanceAfter (test fixture, not economy logic).
+    for (let i = 0; i < 5; i++) {
+      await prisma.walletLedger.create({
+        data: { userId: BigInt(u), currency: 0, delta: 10n, balanceAfter: BigInt((i + 1) * 10), reason: 5, refType: 'test', createdAt: new Date(Date.now() + i * 1000) },
+      });
+    }
+    const p1 = await inject(app, u, 'GET', '/wallet/ledger?page=1&page_size=3');
+    expect(p1.status).toBe(200);
+    expect(p1.body.data.total).toBe(5);
+    expect(p1.body.data.items.map((r: any) => r.balanceAfter)).toEqual(['50', '40', '30']); // newest-first
+    const p2 = await inject(app, u, 'GET', '/wallet/ledger?page=2&page_size=3');
+    expect(p2.body.data.items.map((r: any) => r.balanceAfter)).toEqual(['20', '10']);
+  });
+
+  it('wallet balance equals the most recent ledger balanceAfter per currency (T1.12)', async () => {
+    // A real ledgered mutation (existing exchange) — asserts balances stay in lockstep with the
+    // ledger's latest balanceAfter, the observable invariant of consistent money-writing.
+    const u = await makeUser({ beans: 1000n });
+    await inject(app, u, 'POST', '/exchange', { beans: '400' }); // 1:1 → coins +400, beans -400
+    const w = (await inject(app, u, 'GET', '/wallet')).body.data;
+    const items = (await inject(app, u, 'GET', '/wallet/ledger')).body.data.items; // newest-first
+    const latestCoins = items.find((r: any) => r.currency === 0);
+    const latestBeans = items.find((r: any) => r.currency === 1);
+    expect(w.coins).toBe('400');
+    expect(w.beans).toBe('600');
+    expect(latestCoins.balanceAfter).toBe(w.coins); // balance == last balanceAfter (coins)
+    expect(latestBeans.balanceAfter).toBe(w.beans); // balance == last balanceAfter (beans)
+  });
+
   it('purchase flow: create order -> verify grants coins; re-verify is idempotent', async () => {
     const u = await makeUser();
     const create = await inject(app, u, 'POST', '/store/orders', { product_id: String(productId), provider: 0, purchase_token: `tok-${u}` });

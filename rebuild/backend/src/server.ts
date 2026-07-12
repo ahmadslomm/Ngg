@@ -137,6 +137,19 @@ async function build() {
   const roomService = new RoomService(
     new PrismaRoomRepo(),
     (room, e) => emitRoomEvent(room, { ev: e.ev, data: e.data }),
+    // Entrant resolver for the `room.joined` broadcast: the joining user's real profile +
+    // per-tier entry effect (`vip_entry_effect_url`). Best-effort; public path, null viewer.
+    async (userId) => {
+      try {
+        const p: any = await usersService.getProfile(null, BigInt(userId));
+        return {
+          nick: p.nick,
+          avatar_url: p.avatar_url,
+          vip_level: p.vip_level ?? 0,
+          entry_effect_url: p.vip_entry_effect_url ?? null,
+        };
+      } catch { return null; }
+    },
   );
 
   await app.register(async (v1) => {

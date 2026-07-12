@@ -1,9 +1,14 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import Fastify, { FastifyInstance } from 'fastify';
 import { InMemoryRoomRepo } from './room.repo.js';
 import { RoomService } from './room.service.js';
 import { roomRoutes } from './room.routes.js';
 import { Role, SeatState } from './seat-state.js';
+import { consumeWsTicket } from '../../lib/ws-ticket.js';
+import { redis } from '../../lib/redis.js';
+
+// consumeWsTicket touches the shared Redis singleton (single-use guard) — close it so vitest exits.
+afterAll(() => { redis.disconnect(); });
 
 // Build a Fastify app wired to the in-memory repo, with a test auth shim and an
 // event sink so we can assert the realtime broadcasts the service produces.
@@ -50,6 +55,68 @@ describe('live-room API (end-to-end through HTTP)', () => {
     expect(r.status).toBe(200);
     expect(r.body.data.rtcRole).toBe('audience'); // not seated yet
     expect(ctx.events.some((e) => e.ev === 'room.joined' && e.data.userId === 'u1')).toBe(true);
+  });
+
+  it('create returns an owner rtcToken (T1.9, contract §3.1)', async () => {
+    const made = await as(ctx.app, 'owner', 'POST', '/rooms', { name: 'Owned' });
+    expect(made.status).toBe(200);
+    expect(made.body.data.rtc_token).toBeTruthy();
+    expect(made.body.data.rtc_token.token).toBeTruthy();
+  });
+
+  it('join returns a valid rtcToken and a one-time wsTicket (T1.9)', async () => {
+    // Numeric uid so the wsTicket (userId → bigint on consume) round-trips.
+    const j = await as(ctx.app, '1001', 'POST', `/rooms/${roomId}/join`);
+    expect(j.status).toBe(200);
+    expect(j.body.data.rtc_token.token).toBeTruthy();
+    const ticket = j.body.data.ws_ticket as string;
+    expect(typeof ticket).toBe('string');
+
+    // One-time: the first consume wins, a replay is rejected.
+    const first = await consumeWsTicket(ticket);
+    expect(first).not.toBeNull();
+    expect(first!.roomId).toBe(roomId);
+    expect(String(first!.userId)).toBe('1001');
+    const replay = await consumeWsTicket(ticket);
+    expect(replay).toBeNull();
+  });
+
+  it('join enforces the room password when the room is locked (T1.9)', async () => {
+    const made = await as(ctx.app, 'owner', 'POST', '/rooms', { name: 'Locked', password: 's3cret' });
+    const rid = made.body.data.room_id;
+
+    const missing = await as(ctx.app, 'u9', 'POST', `/rooms/${rid}/join`);
+    expect(missing.status).toBe(403);
+    expect(missing.body.message).toBe('wrong_password');
+
+    const wrong = await as(ctx.app, 'u9', 'POST', `/rooms/${rid}/join`, { password: 'nope' });
+    expect(wrong.status).toBe(403);
+
+    const correct = await as(ctx.app, 'u9', 'POST', `/rooms/${rid}/join`, { password: 's3cret' });
+    expect(correct.status).toBe(200);
+  });
+
+  it('an unlocked room joins without a password (T1.9)', async () => {
+    const j = await as(ctx.app, 'u8', 'POST', `/rooms/${roomId}/join`); // beforeEach room has no password
+    expect(j.status).toBe(200);
+  });
+
+  it('rejects a banned user from joining (T1.9)', async () => {
+    const app = Fastify();
+    const repo = new InMemoryRoomRepo();
+    const service = new RoomService(repo, () => {});
+    app.decorate('authenticate', async (req: any, reply: any) => {
+      const u = req.headers['x-test-uid'];
+      if (!u) return reply.code(401).send({ code: 4010, message: 'unauthorized' });
+      req.user = { id: u };
+    });
+    app.register(roomRoutes(service, (u) => u === 'banned'));
+    await app.ready();
+    const made = await as(app, 'owner', 'POST', '/rooms', { name: 'R' });
+    const rid = made.body.data.room_id;
+    const r = await as(app, 'banned', 'POST', `/rooms/${rid}/join`);
+    expect(r.status).toBe(403);
+    expect(r.body.message).toBe('room_banned');
   });
 
   it('join + seats expose read-only room meta + getRoomModelConfig layout params', async () => {

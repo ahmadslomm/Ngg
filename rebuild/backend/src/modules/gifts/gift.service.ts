@@ -4,6 +4,79 @@
 // Server is authoritative on price; the client-sent amount is ignored.
 // The whole thing is ONE serializable transaction that also writes append-only ledger rows.
 import { serializableTx } from '../../lib/tx.js';
+import { prisma } from '../../lib/prisma.js';
+
+// Client-facing catalog item shape. Preserves every existing field of the old inline
+// serializeGift verbatim and only ADDS `bag_qty` (T1.14).
+function serializeCatalogGift(g: any, bagQty: number) {
+  return {
+    id: String(g.id), name: g.name, category: g.category, price_coins: g.priceCoins,
+    icon_url: g.iconUrl, anim_url: g.animUrl, anim_type: g.animType, combo_enabled: g.comboEnabled,
+    bag_qty: bagQty,
+  };
+}
+
+// Live backpack quantity per gift for a caller — qty > 0 and not past `expiresAt` (expired grants
+// excluded). Empty for a public (no userId) caller or no gifts. Shared by the flat + grouped views.
+async function bagQtyByGift(userId: bigint | undefined, giftIds: bigint[]): Promise<Map<string, number>> {
+  const m = new Map<string, number>();
+  if (userId === undefined || giftIds.length === 0) return m;
+  const rows = await prisma.userGiftBag.findMany({
+    where: {
+      userId,
+      giftId: { in: giftIds },
+      qty: { gt: 0 },
+      OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }], // exclude expired grants
+    },
+    select: { giftId: true, qty: true },
+  });
+  for (const r of rows) m.set(String(r.giftId), r.qty);
+  return m;
+}
+
+const catalogueOrder = [{ category: 'asc' as const }, { sort: 'asc' as const }];
+const catalogueWhere = (category?: number) => ({ enabled: true, ...(category != null ? { category } : {}) });
+
+// Gift catalog with the per-user backpack quantity merged in (T1.14). Public callers (no
+// userId) get bag_qty 0 for every gift; an authenticated caller gets the real held count.
+export async function listGiftCatalogue(opts: { category?: number; userId?: bigint } = {}) {
+  const gifts = await prisma.gift.findMany({ where: catalogueWhere(opts.category), orderBy: catalogueOrder });
+  const bag = await bagQtyByGift(opts.userId, gifts.map((g) => g.id));
+  return gifts.map((g) => serializeCatalogGift(g, bag.get(String(g.id)) ?? 0));
+}
+
+// Enabled gift tabs (T2.3), ordered for display. May be empty (table ships empty pre-capture).
+export async function listGiftTabs() {
+  const tabs = await prisma.giftCategory.findMany({ where: { enabled: true }, orderBy: [{ sort: 'asc' }, { id: 'asc' }] });
+  return tabs.map((t) => ({ id: t.id, name: t.name, sort: t.sort, icon_url: t.iconUrl }));
+}
+
+// Gift catalog grouped by tab (T2.3). Same gift set + bag merge as the flat view, bucketed by the
+// scalar Gift.tabId into the enabled GiftCategory tabs. Empty-tabs tolerated: a tab with no gifts
+// still appears with items: []. No FK, so a gift whose tabId has no enabled tab falls back to
+// `untabbed` (never dropped) — as do gifts with a null tabId. Item shape is IDENTICAL to the flat
+// view (no per-item tab field added).
+export async function listGiftCatalogueGrouped(opts: { category?: number; userId?: bigint } = {}) {
+  const gifts = await prisma.gift.findMany({ where: catalogueWhere(opts.category), orderBy: catalogueOrder });
+  const bag = await bagQtyByGift(opts.userId, gifts.map((g) => g.id));
+  const ser = (g: any) => serializeCatalogGift(g, bag.get(String(g.id)) ?? 0);
+
+  const tabs = await prisma.giftCategory.findMany({ where: { enabled: true }, orderBy: [{ sort: 'asc' }, { id: 'asc' }] });
+  const tabIds = new Set(tabs.map((t) => t.id));
+  const byTab = new Map<number, any[]>();
+  const untabbed: any[] = [];
+  for (const g of gifts) {
+    if (g.tabId != null && tabIds.has(g.tabId)) {
+      (byTab.get(g.tabId) ?? byTab.set(g.tabId, []).get(g.tabId)!).push(ser(g));
+    } else {
+      untabbed.push(ser(g)); // null tabId, or a tab that doesn't exist / is disabled
+    }
+  }
+  return {
+    tabs: tabs.map((t) => ({ id: t.id, name: t.name, sort: t.sort, icon_url: t.iconUrl, items: byTab.get(t.id) ?? [] })),
+    untabbed,
+  };
+}
 
 export interface SendGiftInput {
   senderId: bigint;
@@ -13,6 +86,7 @@ export interface SendGiftInput {
   recipientIds: bigint[];
   idempotencyKey?: string;
   luckyRand?: number; // test seam for deterministic lucky rolls
+  useBag?: boolean;   // T1.15: pay from UserGiftBag (backpack) instead of coins
 }
 
 export interface SendGiftResult {
@@ -79,6 +153,66 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
 
     const unitPrice = gift.priceCoins;                       // server-authoritative price
     const totalCoins = BigInt(unitPrice) * BigInt(qty) * BigInt(recipientIds.length);
+
+    // --- Backpack (bag) send (T1.15): pay from UserGiftBag, NOT coins. ---
+    // Decrement qty by qty×|recipients| (same cost math as coins), require a LIVE bag row
+    // (qty sufficient, not expired). Recipients get CHARM ONLY — no beans: beans are the
+    // withdrawable currency and must be backed by real coin spend, so a free bag gift must
+    // not mint them (BUSINESS_LOGIC.md §1). Sender gains no wealthExp (no coin spend). A
+    // delta-0 coins ledger row is written purely as the audit trail + idempotency anchor
+    // (reuses the existing unique idempotencyKey — no schema/ledger-architecture change).
+    if (input.useBag) {
+      const need = qty * recipientIds.length;
+      const bag = await tx.userGiftBag.findUnique({ where: { userId_giftId: { userId: senderId, giftId } } });
+      const live = !!bag && bag.qty >= need && (bag.expiresAt == null || bag.expiresAt > new Date());
+      if (!live) throw new AppError('insufficient_bag');
+      await tx.userGiftBag.update({
+        where: { userId_giftId: { userId: senderId, giftId } },
+        data: { qty: bag!.qty - need },
+      });
+
+      const wallet = await tx.wallet.findUnique({ where: { userId: senderId } });
+      const coinsNow = wallet?.coins ?? 0n;
+      await tx.walletLedger.create({
+        data: {
+          userId: senderId, currency: CURRENCY.COINS, delta: 0n,
+          balanceAfter: coinsNow, reason: LEDGER.GIFT_SEND,
+          refType: 'gift_bag', refId: giftId, idempotencyKey: input.idempotencyKey ?? null,
+        },
+      });
+
+      const bagPerRecipient = BigInt(unitPrice) * BigInt(qty);
+      for (const rid of recipientIds) {
+        // Charm only (no wallet beans credit). updateMany → no-op if the recipient has no Profile.
+        await tx.profile.updateMany({
+          where: { userId: rid },
+          data: { charmExp: { increment: bagPerRecipient * CHARM_PER_COIN } },
+        });
+      }
+
+      const bagTxn = await tx.giftTransaction.create({
+        data: {
+          senderId, roomId: roomId ?? null, giftId, qty, unitPrice, totalCoins,
+          recipients: recipientIds.map(String),
+        },
+      });
+
+      const bagEvent: GiftReceivedEvent = {
+        ev: 'gift.received',
+        room: roomId ? `room:${roomId}` : undefined,
+        data: {
+          giftId: String(giftId), qty, senderId: String(senderId),
+          recipientIds: recipientIds.map(String), unitPrice, totalCoins: String(totalCoins),
+          animUrl: gift.animUrl, animType: gift.animType, comboEnabled: gift.comboEnabled,
+        },
+      };
+
+      return {
+        transactionId: bagTxn.id, totalCoins, senderCoinsAfter: coinsNow,
+        perRecipientBeans: bagPerRecipient /* charm value; no beans moved */,
+        giftCategory: gift.category, event: bagEvent, lucky: undefined,
+      };
+    }
 
     // Debit sender (optimistic lock via version; CHECK(coins>=0) is the DB backstop).
     const sender = await tx.wallet.findUnique({ where: { userId: senderId } });

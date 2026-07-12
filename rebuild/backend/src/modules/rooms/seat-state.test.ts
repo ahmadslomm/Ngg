@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   Role, SeatState, RoomState, Seat,
-  takeSeat, leaveSeat, switchSeat, setSeatLock, setMute, setRole, kickUser,
+  takeSeat, leaveSeat, switchSeat, setSeatLock, setMute, setSelfMute, setRole, kickUser, inviteToSeat,
   computeRtcRole, roleOf, findUserSeat,
 } from './seat-state.js';
 
@@ -167,5 +167,69 @@ describe('computeRtcRole', () => {
   });
   it('not seated => audience', () => {
     expect(computeRtcRole(emptySeats(4), 'ghost')).toBe('audience');
+  });
+});
+
+describe('setSelfMute (T1.10)', () => {
+  it('self mutes only micMuted; micMutedByAdmin untouched; emits mic.update byAdmin=false', () => {
+    const s = room(); s.seats[2].userId = 'u1'; s.seats[2].state = SeatState.Occupied;
+    const r = setSelfMute(s, 'u1', 2, true);
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect(r.seats[2].micMuted).toBe(true);
+      expect(r.seats[2].micMutedByAdmin).toBe(false); // independent flag preserved
+      expect(r.events[0]).toMatchObject({ ev: 'mic.update', data: { byAdmin: false, canSpeak: false } });
+    }
+  });
+  it('cannot self-toggle while force-muted (does not lift the admin mute)', () => {
+    const s = room(); s.seats[2].userId = 'u1'; s.seats[2].state = SeatState.Occupied; s.seats[2].micMutedByAdmin = true;
+    expect(setSelfMute(s, 'u1', 2, false)).toMatchObject({ ok: false, error: 'admin_muted' });
+  });
+  it('cannot self-mute another user’s seat', () => {
+    const s = room({ roles: { adm: Role.Admin } });
+    s.seats[2].userId = 'u1'; s.seats[2].state = SeatState.Occupied;
+    expect(setSelfMute(s, 'adm', 2, true)).toMatchObject({ ok: false, error: 'not_allowed' });
+  });
+  it('rejects an empty seat', () => {
+    expect(setSelfMute(room(), 'u1', 2, true)).toMatchObject({ ok: false, error: 'seat_empty' });
+  });
+});
+
+describe('inviteToSeat (T1.10)', () => {
+  it('admin seats a target on an empty seat; emits seat.update + additive seat.invited', () => {
+    const s = room({ roles: { adm: Role.Admin } });
+    const r = inviteToSeat(s, 'adm', 'guest', 3);
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect(r.seats[3].userId).toBe('guest');
+      expect(r.seats[3].state).toBe(SeatState.Occupied);
+      expect(r.events.some((e) => e.ev === 'seat.update')).toBe(true);
+      const invited = r.events.find((e) => e.ev === 'seat.invited');
+      expect(invited).toMatchObject({ data: { position: 3, userId: 'guest', by: 'adm' } });
+    }
+  });
+  it('owner may also invite', () => {
+    expect(inviteToSeat(room(), 'owner', 'guest', 1).ok).toBe(true);
+  });
+  it('a listener cannot invite (staff only)', () => {
+    expect(inviteToSeat(room(), 'rando', 'guest', 1)).toMatchObject({ ok: false, error: 'not_allowed' });
+  });
+  it('rejects an occupied seat', () => {
+    const s = room({ roles: { adm: Role.Admin } });
+    s.seats[1].userId = 'x'; s.seats[1].state = SeatState.Occupied;
+    expect(inviteToSeat(s, 'adm', 'guest', 1)).toMatchObject({ ok: false, error: 'seat_taken' });
+  });
+  it('rejects a locked seat', () => {
+    const s = room({ roles: { adm: Role.Admin } }); s.seats[1].state = SeatState.Locked;
+    expect(inviteToSeat(s, 'adm', 'guest', 1)).toMatchObject({ ok: false, error: 'seat_locked' });
+  });
+  it('rejects inviting a user who already holds a seat', () => {
+    const s = room({ roles: { adm: Role.Admin } });
+    s.seats[0].userId = 'guest'; s.seats[0].state = SeatState.Occupied;
+    expect(inviteToSeat(s, 'adm', 'guest', 1)).toMatchObject({ ok: false, error: 'already_seated' });
+  });
+  it('rejects a non-existent seat position', () => {
+    const s = room({ roles: { adm: Role.Admin } });
+    expect(inviteToSeat(s, 'adm', 'guest', 99)).toMatchObject({ ok: false, error: 'seat_not_found' });
   });
 });

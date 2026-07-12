@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/realtime/realtime_client.dart';
 import '../../core/voice/voice_engine.dart';
+import 'entry/entry_effect.dart';
 import 'models/room_models.dart';
 import 'room_repository.dart';
 
@@ -75,6 +76,14 @@ class RoomController extends StateNotifier<RoomUiState> {
 
   StreamSubscription<RoomEvent>? _rtSub;
   StreamSubscription<VoiceEvent>? _voiceSub;
+
+  // Real room-entry effects, built from `room.joined` broadcasts and consumed by the
+  // EntryEffectOverlay. Broadcast so the overlay can (re)subscribe independently of state.
+  final StreamController<EntryEffect> _entryEffects = StreamController<EntryEffect>.broadcast();
+  int _entrySeq = 0;
+
+  /// Stream of entry effects to play (one per real join that carries an `entry_effect_url`).
+  Stream<EntryEffect> get entryEffects => _entryEffects.stream;
   // Guards the room-leave path so it runs exactly once, whether triggered by the close
   // button, a kick, or provider auto-dispose (Back / swipe / programmatic pop).
   bool _left = false;
@@ -126,6 +135,11 @@ class RoomController extends StateNotifier<RoomUiState> {
         _pushChat(ChatMessage.fromJson(e.data));
       case 'user.kicked':
         if ('${e.data['userId']}' == myUid) leaveRoom(kicked: true);
+      case 'room.joined':
+        // Real entry effect for the entrant (server-provided `entry_effect_url`); ignored when
+        // there is none. The overlay queues/plays it — the controller only forwards the domain event.
+        final eff = EntryEffect.fromJoin(e.data, seq: _entrySeq++);
+        if (eff != null && !_entryEffects.isClosed) _entryEffects.add(eff);
     }
   }
 
@@ -300,6 +314,7 @@ class RoomController extends StateNotifier<RoomUiState> {
     }
     _rtSub?.cancel();
     _voiceSub?.cancel();
+    _entryEffects.close();
     voice.dispose();
     super.dispose();
   }

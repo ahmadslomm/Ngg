@@ -27,6 +27,9 @@ model User {
   deletedAt    DateTime?
 
   profile      Profile?
+  setting      UserSetting?
+  decorations  UserDecoration[]
+  giftBag      UserGiftBag[]
   wallet       Wallet?
   identities   UserIdentity[]
   vipHistory   VipHistory[]
@@ -53,7 +56,9 @@ model Profile {
   userId        BigInt  @id
   nick          String  @db.VarChar(64)
   avatarUrl     String?
-  avatarFrameUrl String?
+  avatarFrameUrl String?          // equipped avatar-frame decoration cache (kind 0)
+  entryEffectUrl String?          // equipped entry-effect decoration cache (kind 1) — T1.13
+  bubbleUrl      String?          // equipped chat-bubble decoration cache (kind 2) — T1.13
   gender        Int     @default(0)
   birthday      DateTime?
   signature     String? @db.VarChar(255)
@@ -66,11 +71,35 @@ model Profile {
   fansCount     Int     @default(0)
   followingCount Int    @default(0)
   vipLevel      Int     @default(0) // denormalized current tier (cache)
+  // T1.16 Phase-1 fidelity columns (in-APK, nullable/defaulted, not read yet — storage only).
+  // (entryEffectUrl added in T1.13; chatBubbleUrl == existing bubbleUrl — both skipped.)
+  nobleLevel      Int      @default(0) // noble/aristocracy tier
+  vipExpireAt     DateTime?            // current VIP expiry
+  mountUrl        String?              // equipped mount/vehicle asset
+  charmLevelName  String?              // display name of the charm tier
+  wealthLevelName String?              // display name of the wealth tier
   updatedAt     DateTime @updatedAt
   user          User    @relation(fields: [userId], references: [id])
   @@index([countryCode])
   @@index([charmLevel])
   @@index([wealthLevel])
+}
+
+// Per-user privacy & message-pricing settings (plan §2.5). The global Setting(key/value) model
+// stays for app config; user-scoped preferences get their own 1:1 row keyed by userId (OLD
+// bn0.hiddenSettings / view_me / voice2UNeedCoins / im2UNeedCoins / muteOp). A default row is
+// created lazily on first read/patch.
+model UserSetting {
+  userId          BigInt   @id
+  voiceCallCoins  Int      @default(0)    // price per voice-call minute (OLD voice2UNeedCoins)
+  imMsgCoins      Int      @default(0)    // price a stranger pays to DM (OLD im2UNeedCoins)
+  allowStrangerDm Boolean  @default(true)
+  showOnlineState Boolean  @default(true) // OLD view_me — online visibility
+  showInRoom      Boolean  @default(true) // reveal which room I'm currently in
+  whoCanGift      Int      @default(0)    // 0 everyone · 1 friends · 2 nobody
+  extra           Json?                   // forward-compat bag (OLD hiddenSettings / muteOp)
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id])
 }
 
 model UserRelation {
@@ -100,12 +129,21 @@ model Room {
   seatCount    Int     @default(8)
   onlineCount  Int     @default(0)
   agoraChannel String? @db.VarChar(64)
+  // T1.16 Phase-1 fidelity columns (in-APK, nullable/defaulted, not read yet — storage only).
+  announcement String?          // room announcement text
+  roomLevel    Int     @default(0) // room progression tier
+  roomExp      BigInt  @default(0) // room progression exp
+  bgMusicUrl   String?          // background music asset
+  themeId      Int?             // room theme (T2.6: real FK → RoomTheme, ON DELETE SET NULL)
+  miniGameId   Int?             // active mini-game (scalar ref, no FK)
+  welcomeText  String?          // auto welcome message
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   owner        User        @relation("owner", fields: [ownerId], references: [id])
   members      RoomMember[]
   seats        Seat[]
+  theme        RoomTheme?  @relation(fields: [themeId], references: [id], onDelete: SetNull) // T2.6
 
   @@index([status, countryCode])
   @@index([ownerId])
@@ -117,13 +155,57 @@ model Room {
 }
 
 model RoomMember {
-  roomId   BigInt
-  userId   BigInt
-  role     Int      @default(0) // 0 guest, 1 admin, 2 owner
-  joinedAt DateTime @default(now())
-  room     Room     @relation(fields: [roomId], references: [id])
+  roomId      BigInt
+  userId      BigInt
+  role        Int      @default(0) // 0 guest, 1 admin, 2 owner
+  permissions Int      @default(0) // fine-grained room-admin bitmap (T1.11): KICK=1 LOCK_SEAT=2 MUTE=4 EDIT_ROOM=8 MANAGE_ROLES=16; 0 = unset → role fallback
+  // T1.16 Phase-1 fidelity columns (in-APK, nullable, not read yet — storage only).
+  mutedUntil  DateTime?          // member mute expiry
+  invitedById BigInt?            // who invited this member (scalar ref, no FK)
+  joinedAt    DateTime @default(now())
+  room        Room     @relation(fields: [roomId], references: [id])
   @@id([roomId, userId])
   @@index([userId])
+}
+
+// Room theme/skin catalog (T2.6) — config-as-data drives the room's client skin. Room.themeId is a
+// REAL FK into this table (the task calls for a validated FK, unlike the T1.16 scalar refs); an
+// invalid themeId is rejected at write time by the service and backstopped by the FK, and deleting a
+// theme nulls referencing rooms (ON DELETE SET NULL). Seeded post-capture (#6); the catalog may ship
+// empty (a room with no theme uses the client default skin).
+model RoomTheme {
+  id        Int     @id             // explicit ids (match captured theme ids); config-as-data
+  name      String  @db.VarChar(64)
+  skinUrl   String?                 // room background / skin asset
+  bubbleUrl String?                 // themed chat-bubble asset (optional)
+  sort      Int     @default(0)
+  enabled   Boolean @default(true)
+  rooms     Room[]
+  @@index([enabled, sort])
+}
+
+// PK battle snapshot (T2.7) — a two-sided contest inside a room. `aUserId`/`bUserId` are the two
+// competitors; a gift sent to one of them during the battle adds its coins to that side's score
+// (accumulated via pk.service.accumulate, an atomic increment — race-safe). At `endsAt` a delayed
+// `rooms:pk-settle` job computes the winner (higher score; equal = draw/null). Settlement is guarded
+// by `version` so it happens EXACTLY once even if a manual settle overlaps the delayed job. All refs
+// (roomId/aUserId/bUserId/winnerId) are plain scalars — NO FK (the T1.16 pattern). No money/ledger:
+// settle records the outcome only.
+model RoomPk {
+  id        BigInt    @id @default(autoincrement())
+  roomId    BigInt    // scalar ref, no FK
+  status    Int       @default(0) // 0 active, 1 settled
+  aUserId   BigInt    // side A competitor (scalar ref, no FK)
+  bUserId   BigInt    // side B competitor (scalar ref, no FK)
+  aScore    BigInt    @default(0)
+  bScore    BigInt    @default(0)
+  winnerId  BigInt?   // set on settle; null = draw (or not yet settled)
+  version   Int       @default(0) // optimistic guard — settle computes the outcome exactly once
+  startedAt DateTime  @default(now())
+  endsAt    DateTime
+  settledAt DateTime?
+  @@index([roomId, status])
+  @@index([status, endsAt])
 }
 
 model Seat {
@@ -154,9 +236,87 @@ model Gift {
   subGifts     Json?
   enabled      Boolean @default(true)
   sort         Int     @default(0)
+  // T1.16 Phase-1 fidelity columns (in-APK, nullable, not read yet — storage only).
+  charmValue   Int?     // charm awarded per unit (catalog-configured; distinct from priceCoins)
+  comboUrl     String?  // combo-hit animation asset
+  previewUrl   String?  // catalog preview image
+  bannerUrl    String?  // full-screen banner animation asset
+  exclusiveUid BigInt?  // if set, gift is exclusive to this user (scalar ref, no FK)
+  validityDays Int?     // time-limited gift validity window
+  tabId        Int?     // catalog tab grouping (scalar ref, no FK)
+  poolId       Int?     // lucky/draw pool grouping (scalar ref, no FK)
   createdAt    DateTime @default(now())
   txns         GiftTransaction[]
+  bagEntries   UserGiftBag[]
   @@index([category, enabled, sort])
+}
+
+// Gift catalog tabs (T2.3) — config-as-data grouping for GET /gifts?group=tab. Gift.tabId is a
+// plain scalar lookup into this table (NO FK/relation, per the T1.16 decision); a gift referencing
+// a missing/disabled tab falls back to the untabbed bucket at read time. Seeded post-capture (#2);
+// the table may ship empty (grouping tolerates it).
+model GiftCategory {
+  id      Int     @id
+  name    String  @db.VarChar(64)
+  iconUrl String?
+  sort    Int     @default(0)
+  enabled Boolean @default(true)
+  @@index([enabled, sort])
+}
+
+// Gift jackpot pool (T2.4) — a shared pool that ACCUMULATES coins from lucky sends and PAYS OUT the
+// whole amount to a winner when it crosses `threshold`. Ships DARK: `enabled` defaults false, so
+// accumulate/settle are inert until a captured config (capture #3) turns a pool on. Gift.poolId is a
+// plain scalar lookup into this table (NO FK/relation, per the T1.16 decision). Accumulate is an
+// atomic DB increment (race-safe); settle uses the `version` optimistic guard so a single threshold
+// crossing pays out EXACTLY once under concurrency. The payout's audit trail is the WalletLedger row
+// (refType 'gift_pool') plus the lastPayout* fields below.
+model GiftPool {
+  id                Int       @id             // matches Gift.poolId scalar (config-as-data; explicit ids)
+  name              String?   @db.VarChar(64)
+  amount            BigInt    @default(0)      // live accumulated jackpot
+  threshold         BigInt    @default(0)      // payout trigger (values blocked on capture #3)
+  version           Int       @default(0)      // optimistic lock — one settle per threshold crossing
+  enabled           Boolean   @default(false)  // ship DARK (flag off = inert)
+  lastContributorId BigInt?                    // pending winner = last accumulator (scalar ref, no FK)
+  lastPayoutAt      DateTime?                  // audit: when the pool last paid out
+  lastPayoutAmount  BigInt?                    // audit: how much the last payout was
+  payoutCount       Int       @default(0)      // audit: total payouts
+  updatedAt         DateTime  @updatedAt
+  @@index([enabled])
+}
+
+// Charm/wealth level ladder (T2.5) — config-as-data thresholds that turn Profile.charmExp /
+// wealthExp into a level + display name via level.service (removing any hard-coded tier math). One
+// table serves both ladders via `kind` (0 charm, 1 wealth). Resolution is the highest tier whose
+// `minExp <= exp` (inclusive). Thresholds ship as PLACEHOLDERS pending capture #4; an empty table
+// (or an exp below the lowest tier) resolves to level 0 safely. Read-only lookup — no FK to Profile.
+model LevelConfig {
+  id      Int     @id @default(autoincrement())
+  kind    Int     // 0 charm, 1 wealth
+  level   Int     // tier number (1..N), ascending with minExp
+  minExp  BigInt  // inclusive lower bound: exp >= minExp qualifies for this tier
+  name    String  @db.VarChar(64) // display name (source of Profile.charmLevelName / wealthLevelName)
+  iconUrl String?
+  @@unique([kind, level])
+  @@index([kind, minExp])
+}
+
+// Per-user gift backpack (T1.14) — free/awarded gifts a user holds to send later (⇐ old
+// "backpack" gift source). One row per (user, gift); `qty` is the held count, `expiresAt` bounds
+// time-limited grants. Rows with qty<=0 or a past `expiresAt` are excluded from the catalog merge.
+// This is READ-ONLY plumbing here; the send path that decrements the bag is T1.15.
+model UserGiftBag {
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt
+  giftId    BigInt
+  qty       Int      @default(0)
+  expiresAt DateTime?
+  updatedAt DateTime @updatedAt
+  user      User @relation(fields: [userId], references: [id])
+  gift      Gift @relation(fields: [giftId], references: [id])
+  @@unique([userId, giftId])
+  @@index([userId])
 }
 
 model Wallet {
@@ -246,6 +406,12 @@ model GiftTransaction {
   recipients  Json
   comboId     String?
   luckyPayout BigInt?
+  // T1.16 Phase-1 fidelity columns (in-APK, nullable, not read yet — storage only).
+  drawPath    String?  // painted-gift draw path (drawXY/drawRatio serialized)
+  sourceScene Int?     // origin scene (room/private/song/…)
+  charmGained BigInt?  // charm credited by this send (denormalized for audit)
+  comboCount  Int?     // combo streak length at send time
+  batchId     String?  // groups a multi-recipient/batch send
   createdAt   DateTime @default(now())
   sender      User    @relation("sender", fields: [senderId], references: [id])
   gift        Gift    @relation(fields: [giftId], references: [id])
@@ -372,6 +538,38 @@ model Setting {
   scope     String  @default("global")
   updatedBy String?
   updatedAt DateTime @updatedAt
+}
+
+// Cosmetic decoration catalog (T1.13). One row per purchasable item; `kind` selects the
+// cosmetic slot and its Profile.*Url cache column (0 avatar_frame → avatarFrameUrl,
+// 1 entry_effect → entryEffectUrl, 2 chat_bubble → bubbleUrl).
+model DecorationItem {
+  id           BigInt   @id @default(autoincrement())
+  kind         Int      // 0 avatar_frame · 1 entry_effect · 2 chat_bubble
+  name         String   @db.VarChar(64)
+  url          String
+  priceCoins   BigInt   @default(0)
+  durationDays Int?     // null = permanent; otherwise the UserDecoration expires after N days
+  enabled      Boolean  @default(true)
+  sort         Int      @default(0)
+  createdAt    DateTime @default(now())
+  owners       UserDecoration[]
+  @@index([kind, enabled, sort])
+}
+
+// Per-user decoration ownership + equip state (T1.13). At most one equipped per kind (enforced
+// in the equip transaction). `equipped` mirrors the Profile.*Url cache written in the same tx.
+model UserDecoration {
+  id         BigInt   @id @default(autoincrement())
+  userId     BigInt
+  itemId     BigInt
+  equipped   Boolean  @default(false)
+  expiresAt  DateTime?
+  acquiredAt DateTime @default(now())
+  user       User           @relation(fields: [userId], references: [id])
+  item       DecorationItem @relation(fields: [itemId], references: [id])
+  @@unique([userId, itemId])
+  @@index([userId, equipped])
 }
 
 model AdminUser {

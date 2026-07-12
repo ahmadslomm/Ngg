@@ -2,15 +2,21 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { moderationService } from './moderation.service.js';
 import { prisma } from '../../lib/prisma.js';
-import { ok, replyError, serialize, AppError } from '../../lib/errors.js';
+import { ok, replyError, serialize } from '../../lib/errors.js';
+import { requireRoomAdmin, RoomRole, RoomPermission } from '../../lib/authz.js';
 
-async function assertRoomStaff(roomId: bigint, userId: bigint) {
+// Room moderation authorization (T1.11 extension): assert the actor holds the room-admin
+// authority + the required permission bit before any ban mutation. Owner bypasses; an Admin
+// with a non-zero bitmap must carry `permission`; a 0/undefined bitmap falls back to role.
+// Throws AppError (insufficient_role / insufficient_permission) — caught by the route's
+// try/catch, so a denial happens BEFORE the service is called (no mutation).
+async function assertRoomPermission(roomId: bigint, userId: bigint, permission: number) {
   const [room, member] = await Promise.all([
-    prisma.room.findUnique({ where: { id: roomId } }),
-    prisma.roomMember.findUnique({ where: { roomId_userId: { roomId, userId } } }),
+    prisma.room.findUnique({ where: { id: roomId }, select: { ownerId: true } }),
+    prisma.roomMember.findUnique({ where: { roomId_userId: { roomId, userId } }, select: { role: true, permissions: true } }),
   ]);
-  const staff = (room && room.ownerId === userId) || (member && member.role >= 1);
-  if (!staff) throw new AppError('not_allowed', 403);
+  const role = room?.ownerId === userId ? RoomRole.Owner : (member?.role ?? RoomRole.Listener);
+  requireRoomAdmin({ role, permissions: member?.permissions }, permission);
 }
 
 export async function moderationRoutes(app: FastifyInstance) {
@@ -36,7 +42,7 @@ export async function moderationRoutes(app: FastifyInstance) {
   app.post('/rooms/:id/ban', { preHandler: [app.authenticate] }, async (req, reply) => {
     try {
       const roomId = BigInt((req.params as any).id);
-      await assertRoomStaff(roomId, uid(req));
+      await assertRoomPermission(roomId, uid(req), RoomPermission.KICK);
       const b = z.object({ user_id: z.coerce.bigint(), reason: z.string().max(255).optional() }).parse(req.body);
       return ok(serialize(await moderationService.banFromRoom(uid(req), roomId, b.user_id, { reason: b.reason })));
     } catch (e) { return replyError(reply, e); }
@@ -45,7 +51,7 @@ export async function moderationRoutes(app: FastifyInstance) {
   app.delete('/rooms/:id/ban/:userId', { preHandler: [app.authenticate] }, async (req, reply) => {
     try {
       const roomId = BigInt((req.params as any).id);
-      await assertRoomStaff(roomId, uid(req));
+      await assertRoomPermission(roomId, uid(req), RoomPermission.KICK);
       return ok(await moderationService.unbanFromRoom(roomId, BigInt((req.params as any).userId)));
     } catch (e) { return replyError(reply, e); }
   });
