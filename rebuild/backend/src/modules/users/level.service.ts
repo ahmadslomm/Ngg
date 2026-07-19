@@ -5,7 +5,7 @@
 // (INCLUSIVE boundary). A missing ladder (empty table, or an exp below the lowest tier) resolves to
 // level 0 / null — safe, never throws. Read-only: this resolver does not write Profile or recompute
 // stored levels; wiring it into the profile read/update path is a separate (later) concern.
-import { prisma } from '../../lib/prisma.js';
+import { usersRepo } from './users.repo.js';
 
 export const LEVEL_KIND = { CHARM: 0, WEALTH: 1 } as const;
 export type LevelKind = (typeof LEVEL_KIND)[keyof typeof LEVEL_KIND];
@@ -18,10 +18,7 @@ const FALLBACK: ResolvedLevel = { level: 0, name: null, iconUrl: null };
 // fallback. LevelConfig is the only data source consulted.
 export async function resolveLevel(kind: number, exp: bigint): Promise<ResolvedLevel> {
   const at = exp < 0n ? 0n : exp;
-  const row = await prisma.levelConfig.findFirst({
-    where: { kind, minExp: { lte: at } },
-    orderBy: [{ minExp: 'desc' }, { level: 'desc' }],
-  });
+  const row = await usersRepo.findLevelTier(kind, at);
   return row ? { level: row.level, name: row.name, iconUrl: row.iconUrl } : { ...FALLBACK };
 }
 

@@ -70,6 +70,8 @@ export interface RoomRepo {
   // service validates against getTheme before calling setRoomTheme; the DB FK is the backstop.
   getTheme(themeId: number): Promise<RoomTheme | null>;
   setRoomTheme(roomId: string, themeId: number | null): Promise<void>;
+  // Persist a room's cover image URL (per-room background). Existing column — no migration.
+  setRoomCover(roomId: string, coverUrl: string | null): Promise<void>;
 }
 
 export function freshSeats(n: number): Seat[] {
@@ -138,5 +140,8 @@ export class InMemoryRoomRepo implements RoomRepo {
   }
   async setRoomTheme(roomId: string, themeId: number | null) {
     const r = this.rooms.get(roomId); if (r) r.themeId = themeId;
+  }
+  async setRoomCover(roomId: string, coverUrl: string | null) {
+    const r = this.rooms.get(roomId); if (r) r.coverUrl = coverUrl;
   }
 }

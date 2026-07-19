@@ -51,9 +51,34 @@ export function createWorker<T = unknown>(
 interface WorkerDef { name: string; processor: Processor; concurrency?: number }
 const registry: WorkerDef[] = [];
 
-/** Register a processor to be started by bootstrap(). Called by future job-owning tasks. */
+/**
+ * Register a processor to be started by bootstrap().
+ *
+ * INVARIANT — one processor per queue. bootstrap() starts one BullMQ Worker per registry entry, so
+ * two processors on the same queue would COMPETE for jobs and each would silently no-op the other's
+ * job kinds. A queue that serves several job kinds must use a single dispatching processor (see
+ * ranking-snapshot's `rankingQueueProcessor`, which delegates non-snapshot jobs to the agg handler).
+ * Registering a duplicate queue therefore throws instead of failing silently in production.
+ */
 export function registerWorker(def: WorkerDef): void {
+  const existing = registry.find((d) => d.name === def.name);
+  if (existing) {
+    // Re-registering the SAME processor is an idempotent no-op, so calling a wiring function twice
+    // (or two wiring functions that overlap) is safe at boot.
+    if (existing.processor === def.processor) return;
+    throw new Error(`worker already registered for queue "${def.name}" — one processor per queue (use a dispatching processor)`);
+  }
   registry.push(def);
+}
+
+/** Registered queue names (ops/tests introspection). */
+export function registeredQueues(): string[] {
+  return registry.map((d) => d.name);
+}
+
+/** Test-only: clear the registry so a test can exercise wiring in isolation. */
+export function resetWorkerRegistry(): void {
+  registry.length = 0;
 }
 
 /** Start a Worker for every registered processor. Safe to run with an empty registry. */
@@ -77,17 +102,56 @@ export async function shutdown(signal?: string): Promise<void> {
 }
 
 // T3.1 — wire the read-only daily shadow reconcile: register its consumer (started by bootstrap) and
-// upsert its nightly repeatable schedule (idempotent). This is the ONLY worker wired at boot; every
-// other defined worker (vip-expire, pool-settle, pk-settle, ranking-agg, notify) stays unwired. No
-// money mutation — wallet-reconcile only reads + alerts.
+// upsert its nightly repeatable schedule (idempotent). No money mutation — it only reads + alerts.
 export async function wireDailyShadowJobs(): Promise<void> {
   registerWalletReconcileWorker();
   await scheduleWalletReconcile();
 }
 
+/**
+ * PRODUCTION WORKER REGISTRATION (see docs/WORKERS.md).
+ *
+ * Exactly ONE processor per queue — a queue serving several job kinds uses a dispatching processor:
+ *   reconcile     → wallet-reconcile (read-only shadow; nightly schedule)
+ *   notifications → notify           (dispatches `deliver` + `push-retry`; push-retry scheduled)
+ *   ranking       → ranking-snapshot (dispatches `snapshot` + delegates `agg`; snapshot scheduled)
+ *   rooms         → pk-settle        (delayed per-battle settle jobs)
+ *   gifts         → pool-settle      (gift-pool settle)
+ *   vip           → vip-expire       (expiry sweep)
+ *   tasks         → task-reset       (prunes finished task periods; reset itself is implicit)
+ *
+ * Enable with WORKERS_ENABLED=all (default in production deployments); the reconcile shadow always
+ * boots. Registering a duplicate queue throws (see registerWorker), so a wiring mistake fails fast at
+ * boot rather than silently dropping jobs.
+ */
+export async function wireProductionWorkers(): Promise<void> {
+  const { registerNotifyWorker, scheduledPushRetry } = await import('./jobs/notify.js');
+  const { registerRankingWorker, scheduleRankingSnapshot } = await import('./jobs/ranking-snapshot.js');
+  const { registerPkSettleWorker } = await import('./jobs/pk-settle.js');
+  const { registerPoolSettleWorker } = await import('./jobs/pool-settle.js');
+  const { registerVipExpireWorker } = await import('./jobs/vip-expire.js');
+  const { registerTaskResetWorker, scheduleTaskReset } = await import('./jobs/task-reset.js');
+
+  registerNotifyWorker();
+  registerRankingWorker(); // combined snapshot + agg dispatcher (NOT registerRankingAggWorker — same queue)
+  registerPkSettleWorker();
+  registerPoolSettleWorker();
+  registerVipExpireWorker();
+  registerTaskResetWorker();
+
+  // Repeatable schedules (idempotent upserts — safe to call on every boot).
+  await scheduledPushRetry(5 * 60_000).catch(() => {});   // retry failed pushes every 5 min
+  await scheduleRankingSnapshot(60_000).catch(() => {});  // refresh ranking snapshots every minute
+  await scheduleTaskReset().catch(() => {});              // prune finished task periods hourly
+}
+
 async function main(): Promise<void> {
   log('info', 'worker_boot', { concurrency: DEFAULT_CONCURRENCY });
   await wireDailyShadowJobs(); // register the reconcile consumer + its nightly schedule before bootstrap
+  if ((process.env.WORKERS_ENABLED ?? '') === 'all') {
+    await wireProductionWorkers();
+    log('info', 'production_workers_wired', { queues: registeredQueues() });
+  }
   bootstrap();
   for (const sig of ['SIGTERM', 'SIGINT'] as const) {
     process.on(sig, () => { void shutdown(sig).then(() => process.exit(0)); });

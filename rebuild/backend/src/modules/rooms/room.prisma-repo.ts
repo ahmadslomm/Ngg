@@ -160,4 +160,9 @@ export class PrismaRoomRepo implements RoomRepo {
   async setRoomTheme(roomId: string, themeId: number | null): Promise<void> {
     await prisma.room.update({ where: { id: BigInt(roomId) }, data: { themeId } });
   }
+
+  // Persist Room.coverUrl (the per-room background image URL). Existing column — no migration.
+  async setRoomCover(roomId: string, coverUrl: string | null): Promise<void> {
+    await prisma.room.update({ where: { id: BigInt(roomId) }, data: { coverUrl } });
+  }
 }

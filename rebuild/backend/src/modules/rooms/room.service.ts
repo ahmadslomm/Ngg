@@ -210,4 +210,16 @@ export class RoomService {
     await this.emit(this.channel(roomId), roomUpdated({ room_id: roomId, theme_id: themeId, theme }));
     return { ok: true, data: { theme_id: themeId, theme } };
   }
+
+  // Set (or clear) the room's cover image (per-room background). Requires EDIT_ROOM (owner
+  // bypasses). Mirrors setTheme: persists Room.coverUrl and broadcasts a room_updated event.
+  async setCover(roomId: string, actorId: string, coverUrl: string | null): Promise<ServiceResult<{ cover_url: string | null }>> {
+    const room = await this.repo.getRoom(roomId);
+    if (!room) return { ok: false, error: 'room_unavailable' };
+    const denied = await this.requirePermission(roomId, actorId, RoomPermission.EDIT_ROOM);
+    if (denied) return { ok: false, error: denied };
+    await this.repo.setRoomCover(roomId, coverUrl);
+    await this.emit(this.channel(roomId), roomUpdated({ room_id: roomId, cover_url: coverUrl }));
+    return { ok: true, data: { cover_url: coverUrl } };
+  }
 }

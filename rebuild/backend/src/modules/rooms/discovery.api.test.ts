@@ -18,14 +18,20 @@ async function room(ownerId: bigint, opts: Partial<{ name: string; status: numbe
   });
 }
 
+// A unique countryCode (<=8 chars) per assertion. The discovery feed is a GLOBAL list and the test
+// DB accumulates rooms across runs (1000s), so a global `/rooms` query can't find a freshly-created
+// low-online room on page 1. Scoping to a unique country isolates this run's rooms deterministically.
+const uniqueCC = () => 'z' + Math.random().toString(36).slice(2, 8);
+
 describe('Room discovery', () => {
   it('lists only live rooms with real host info and online count', async () => {
+    const cc = uniqueCC();
     const host = await makeUser({ nick: 'Streamer' });
-    const live = await room(host, { name: 'live one', online: 5, type: 1 });
-    await room(host, { name: 'closed one', status: 0 }); // closed → excluded
+    const live = await room(host, { name: 'live one', online: 5, type: 1, country: cc });
+    await room(host, { name: 'closed one', status: 0, country: cc }); // closed → excluded
     const viewer = await makeUser();
 
-    const r = await inject(app, viewer, 'GET', '/rooms');
+    const r = await inject(app, viewer, 'GET', `/rooms?country=${cc}&page_size=100`);
     expect(r.status).toBe(200);
     const found = r.body.data.items.find((x: any) => x.room_id === String(live.id));
     expect(found).toBeTruthy();
@@ -38,12 +44,13 @@ describe('Room discovery', () => {
   });
 
   it('sort=popular orders by real online count (desc)', async () => {
+    const cc = uniqueCC();
     const h = await makeUser();
-    const lo = await room(h, { name: 'quiet', online: 1 });
-    const hi = await room(h, { name: 'busy', online: 99 });
+    const lo = await room(h, { name: 'quiet', online: 1, country: cc });
+    const hi = await room(h, { name: 'busy', online: 99, country: cc });
     const viewer = await makeUser();
 
-    const r = await inject(app, viewer, 'GET', '/rooms?sort=popular&page_size=100');
+    const r = await inject(app, viewer, 'GET', `/rooms?sort=popular&country=${cc}&page_size=100`);
     const ids = r.body.data.items.map((x: any) => x.room_id);
     expect(ids.indexOf(String(hi.id))).toBeLessThan(ids.indexOf(String(lo.id)));
   });

@@ -28,25 +28,9 @@ export async function walletRoutes(app: FastifyInstance) {
     return ok(serialize(await walletService.getIncome(uid(req), pageArgs(req.query))));
   });
 
-  // Recharge products
-  app.get('/store/products', async () => ok(serialize(await walletService.listProducts())));
-
-  // Create order. Money endpoints carry a tighter per-route rate limit than the global cap (item 8).
-  app.post('/store/orders', { preHandler: [app.authenticate], config: { rateLimit: { max: 30, timeWindow: '1 minute' } } }, async (req, reply) => {
-    try {
-      const b = z.object({ product_id: z.coerce.bigint(), provider: z.number().int().min(0).max(1), purchase_token: z.string().min(1) }).parse(req.body);
-      const order = await walletService.createOrder(uid(req), { productId: b.product_id, provider: b.provider, purchaseToken: b.purchase_token });
-      return ok(serialize({ order_id: order.id, status: order.status }));
-    } catch (e) { return replyError(reply, e); }
-  });
-
-  // Verify order -> grant coins (idempotent)
-  app.post('/store/orders/:id/verify', { preHandler: [app.authenticate], config: { rateLimit: { max: 30, timeWindow: '1 minute' } } }, async (req, reply) => {
-    try {
-      const r = await walletService.verifyAndGrant(uid(req), BigInt((req.params as any).id));
-      return ok(serialize(r));
-    } catch (e) { return replyError(reply, e); }
-  });
+  // NOTE: /store/* (products, orders, verify) moved to the Payments bounded context
+  // (modules/payments/payment.routes.ts). The wallet module is now purely balances + exchange +
+  // withdrawals; fulfilment credits flow back in through WalletService.applyDelta.
 
   // beans -> coins
   app.post('/exchange', { preHandler: [app.authenticate], config: { rateLimit: { max: 20, timeWindow: '1 minute' } } }, async (req, reply) => {

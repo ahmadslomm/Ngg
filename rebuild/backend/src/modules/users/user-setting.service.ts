@@ -2,7 +2,7 @@
 // keyed by userId. The row is created lazily with defaults on first read/patch, so a client
 // never has to "initialize" settings. Global app config still lives in the Setting model; this
 // is strictly user-scoped, addressed only via the authenticated user's id (self-only).
-import { prisma } from '../../lib/prisma.js';
+import { usersRepo } from './users.repo.js';
 
 // Wire shape (snake_case, matching the users module's serialized profile).
 function serializeSettings(s: {
@@ -44,20 +44,15 @@ export class UserSettingService {
   // Return the user's settings, creating the default row on first access. Reads don't write
   // once the row exists; the miss-path upsert is race-safe (concurrent first reads converge).
   async getSettings(userId: bigint) {
-    const existing = await prisma.userSetting.findUnique({ where: { userId } });
+    const existing = await usersRepo.findSetting(userId);
     if (existing) return serializeSettings(existing);
-    const created = await prisma.userSetting.upsert({ where: { userId }, create: { userId }, update: {} });
+    const created = await usersRepo.upsertSetting(userId);
     return serializeSettings(created);
   }
 
   // Apply a partial update, creating the row (defaults + patch) if it doesn't exist yet.
   async updateSettings(userId: bigint, patch: SettingsPatch) {
-    const data = definedOnly(patch);
-    const row = await prisma.userSetting.upsert({
-      where: { userId },
-      create: { userId, ...data },
-      update: data,
-    });
+    const row = await usersRepo.upsertSetting(userId, definedOnly(patch));
     return serializeSettings(row);
   }
 }

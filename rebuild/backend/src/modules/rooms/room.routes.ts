@@ -165,5 +165,14 @@ export function roomRoutes(
       if (!r.ok) return fail(reply, r.error!);
       return { code: 0, message: 'ok', data: r.data };
     });
+
+    // Set (or clear) the room cover image (per-room background). Requires EDIT_ROOM (owner
+    // bypasses). `cover_url: null` clears it. The URL is an already-uploaded R2 public URL.
+    app.post('/rooms/:id/cover', { preHandler: [app.authenticate] }, async (req, reply) => {
+      const body = z.object({ cover_url: z.string().max(255).nullable() }).parse(req.body);
+      const r = await service.setCover((req.params as any).id, uid(req), body.cover_url);
+      if (!r.ok) return fail(reply, r.error!);
+      return { code: 0, message: 'ok', data: r.data };
+    });
   };
 }

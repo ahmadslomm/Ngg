@@ -3,9 +3,8 @@
 // is NOT statically recoverable; this does NOT reproduce that algorithm. It offers only
 // transparent, real orderings (online count / recency) and real filters (country, followed
 // owners). No invented metric, recommendation, or category. See ROOM_DISCOVERY_RECOVERY_REPORT.md.
-import { prisma } from '../../lib/prisma.js';
-
-const FOLLOW = 1;
+import type { Prisma } from '@prisma/client';
+import { discoveryRepo } from './discovery.repo.js';
 
 export type DiscoverSort = 'popular' | 'new';
 
@@ -33,34 +32,27 @@ export interface RoomCardDTO {
 
 export class DiscoveryService {
   async discover(opts: DiscoverOpts): Promise<{ items: RoomCardDTO[]; page: number; page_size: number }> {
-    const where: any = { status: 1 }; // live rooms only (real Room.status)
+    const where: Prisma.RoomWhereInput = { status: 1 }; // live rooms only (real Room.status)
     if (opts.country) where.countryCode = opts.country;
 
     if (opts.following) {
       if (!opts.viewerId) return { items: [], page: opts.page, page_size: opts.pageSize };
-      const rels = await prisma.userRelation.findMany({ where: { userId: opts.viewerId, type: FOLLOW }, select: { targetId: true } });
-      const ownerIds = rels.map((r) => r.targetId);
+      const ownerIds = await discoveryRepo.followedOwnerIds(opts.viewerId);
       if (ownerIds.length === 0) return { items: [], page: opts.page, page_size: opts.pageSize };
       where.ownerId = { in: ownerIds };
     }
 
     // Transparent real ordering: 'popular' = most people online now; 'new' = most recent.
     // NOT the original's hot_value ranking (UNKNOWN). id is the stable tiebreaker.
-    const orderBy: any[] = opts.sort === 'new'
+    const orderBy: Prisma.RoomOrderByWithRelationInput[] = opts.sort === 'new'
       ? [{ createdAt: 'desc' }, { id: 'desc' }]
       : [{ onlineCount: 'desc' }, { id: 'desc' }];
 
-    const rooms = await prisma.room.findMany({
-      where, orderBy,
-      skip: (opts.page - 1) * opts.pageSize,
-      take: opts.pageSize,
-    });
+    const rooms = await discoveryRepo.findRooms(where, orderBy, (opts.page - 1) * opts.pageSize, opts.pageSize);
 
     // Batch host profiles (no N+1). Missing profile → host null (never fabricated).
     const ownerIds = [...new Set(rooms.map((r) => r.ownerId))];
-    const profiles = ownerIds.length
-      ? await prisma.profile.findMany({ where: { userId: { in: ownerIds } } })
-      : [];
+    const profiles = await discoveryRepo.findProfiles(ownerIds);
     const byId = new Map(profiles.map((p) => [String(p.userId), p]));
 
     const items: RoomCardDTO[] = rooms.map((r) => {

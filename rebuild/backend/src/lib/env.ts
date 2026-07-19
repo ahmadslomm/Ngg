@@ -10,6 +10,10 @@ const schema = z.object({
   PORT: z.coerce.number().default(8080),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
   DATABASE_URL: z.string(),
+  // Optional read-replica DSN. When set, repositories route heavy/read-only queries here via
+  // `db.read`; writes always go to the primary (`DATABASE_URL`). Unset ⇒ the primary serves reads
+  // too (single-node dev/test). Enables horizontal read scaling without code changes.
+  DATABASE_READ_URL: z.string().optional(),
   REDIS_URL: z.string().default('redis://localhost:6379'),
   JWT_ACCESS_SECRET: z.string().min(8),
   JWT_REFRESH_SECRET: z.string().min(8),
@@ -25,6 +29,9 @@ const schema = z.object({
   AGORA_APP_ID: z.string().default(''),
   AGORA_APP_CERTIFICATE: z.string().default(''),
   AGORA_TOKEN_TTL: z.coerce.number().default(3600),
+  // Google Sign-In: the OAuth Web client id (client_type 3 in google-services.json). Verified as
+  // the expected `aud` of the app's Google ID token. Empty ⇒ /auth/google fails closed with 503.
+  GOOGLE_CLIENT_ID: z.string().default(''),
   // Cloudflare R2 (S3-compatible) object storage for user uploads (avatars, moment images,
   // voice clips). All optional: if unset, the presign endpoint fails closed with 503 and the
   // app falls back to its placeholder uploader. Endpoint is derived from the account id unless

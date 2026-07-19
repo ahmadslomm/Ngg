@@ -5,6 +5,7 @@
 // The whole thing is ONE serializable transaction that also writes append-only ledger rows.
 import { serializableTx } from '../../lib/tx.js';
 import { prisma } from '../../lib/prisma.js';
+import { walletService } from '../wallet/wallet.service.js';
 
 // Client-facing catalog item shape. Preserves every existing field of the old inline
 // serializeGift verbatim and only ADDS `bag_qty` (T1.14).
@@ -171,15 +172,13 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
         data: { qty: bag!.qty - need },
       });
 
-      const wallet = await tx.wallet.findUnique({ where: { userId: senderId } });
-      const coinsNow = wallet?.coins ?? 0n;
-      await tx.walletLedger.create({
-        data: {
-          userId: senderId, currency: CURRENCY.COINS, delta: 0n,
-          balanceAfter: coinsNow, reason: LEDGER.GIFT_SEND,
-          refType: 'gift_bag', refId: giftId, idempotencyKey: input.idempotencyKey ?? null,
-        },
-      });
+      // Audit-only ledger row (delta 0): a backpack gift moves no coins. Routed through the sole
+      // balance mutator so all ledger writes flow through WalletService.
+      const audit = await walletService.applyDelta(
+        { userId: senderId, currency: CURRENCY.COINS, delta: 0n, allowZero: true, reason: LEDGER.GIFT_SEND, refType: 'gift_bag', refId: giftId, idempotencyKey: input.idempotencyKey ?? null },
+        { tx },
+      );
+      const coinsNow = audit.balanceAfter;
 
       const bagPerRecipient = BigInt(unitPrice) * BigInt(qty);
       for (const rid of recipientIds) {
@@ -219,18 +218,12 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
     if (!sender) throw new AppError('wallet_missing');
     if (sender.coins < totalCoins) throw new AppError('insufficient_coins');
 
-    const senderCoinsAfter = sender.coins - totalCoins;
-    await tx.wallet.update({
-      where: { userId: senderId },
-      data: { coins: senderCoinsAfter, version: { increment: 1 } },
-    });
-    await tx.walletLedger.create({
-      data: {
-        userId: senderId, currency: CURRENCY.COINS, delta: -totalCoins,
-        balanceAfter: senderCoinsAfter, reason: LEDGER.GIFT_SEND,
-        refType: 'gift', refId: giftId, idempotencyKey: input.idempotencyKey ?? null,
-      },
-    });
+    // Debit the sender through the sole balance mutator (serializable + ledgered + version bump).
+    const debit = await walletService.applyDelta(
+      { userId: senderId, currency: CURRENCY.COINS, delta: -totalCoins, bumpVersion: true, reason: LEDGER.GIFT_SEND, refType: 'gift', refId: giftId, idempotencyKey: input.idempotencyKey ?? null },
+      { tx },
+    );
+    const senderCoinsAfter = debit.balanceAfter;
 
     // Sender wealth progression.
     await tx.profile.update({
@@ -241,17 +234,11 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
     // Credit each receiver: beans + charm.
     const perRecipientCoins = BigInt(unitPrice) * BigInt(qty);
     for (const rid of recipientIds) {
-      const rWallet = await tx.wallet.upsert({
-        where: { userId: rid }, update: {}, create: { userId: rid },
-      });
-      const beansAfter = rWallet.beans + perRecipientCoins;
-      await tx.wallet.update({ where: { userId: rid }, data: { beans: beansAfter } });
-      await tx.walletLedger.create({
-        data: {
-          userId: rid, currency: CURRENCY.BEANS, delta: perRecipientCoins,
-          balanceAfter: beansAfter, reason: LEDGER.GIFT_RECV, refType: 'gift', refId: giftId,
-        },
-      });
+      // Credit the receiver's withdrawable beans through the sole balance mutator.
+      await walletService.applyDelta(
+        { userId: rid, currency: CURRENCY.BEANS, delta: perRecipientCoins, reason: LEDGER.GIFT_RECV, refType: 'gift', refId: giftId },
+        { tx },
+      );
       // updateMany (not update) so a recipient without a Profile row no-ops instead of aborting
       // the whole gift transaction (L6). Wallet is already upserted above; charm is best-effort.
       await tx.profile.updateMany({
@@ -268,14 +255,12 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
       const multiplier = rollLucky(gift.luckyConfig as unknown as LuckyConfig, input.luckyRand);
       if (multiplier > 0) {
         const coinsWon = (totalCoins * BigInt(Math.round(multiplier * 100))) / 100n;
-        finalCoins = senderCoinsAfter + coinsWon;
-        await tx.wallet.update({ where: { userId: senderId }, data: { coins: finalCoins, version: { increment: 1 } } });
-        await tx.walletLedger.create({
-          data: {
-            userId: senderId, currency: CURRENCY.COINS, delta: coinsWon,
-            balanceAfter: finalCoins, reason: LEDGER.LUCKY_WIN, refType: 'gift_lucky', refId: giftId,
-          },
-        });
+        // Credit the lucky winnings back to the sender through the sole balance mutator.
+        const win = await walletService.applyDelta(
+          { userId: senderId, currency: CURRENCY.COINS, delta: coinsWon, bumpVersion: true, reason: LEDGER.LUCKY_WIN, refType: 'gift_lucky', refId: giftId },
+          { tx },
+        );
+        finalCoins = win.balanceAfter;
         lucky = { multiplier, coinsWon };
       } else {
         lucky = { multiplier: 0, coinsWon: 0n };

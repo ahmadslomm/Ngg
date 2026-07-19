@@ -1,3 +1,5 @@
+// Wallet API — balances, ledger, exchange, withdrawals. The recharge/store flow (products, orders,
+// verify) lives in the Payments module now; see modules/payments/payment.api.test.ts.
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 import { buildTestApp, makeUser, inject } from '../../testing/harness.js';
@@ -5,14 +7,9 @@ import { walletRoutes } from './wallet.routes.js';
 import { prisma } from '../../lib/prisma.js';
 
 let app: FastifyInstance;
-let productId: bigint;
 
 beforeAll(async () => {
   app = await buildTestApp(walletRoutes);
-  const p = await prisma.product.create({
-    data: { sku: `test-sku-${Date.now()}`, title: '300 Coins', priceCents: 499, currency: 'USD', coins: 300n, bonusCoins: 30n },
-  });
-  productId = p.id;
 });
 afterAll(async () => { await app.close(); await prisma.$disconnect(); });
 
@@ -62,32 +59,6 @@ describe('wallet API', () => {
     expect(w.beans).toBe('600');
     expect(latestCoins.balanceAfter).toBe(w.coins); // balance == last balanceAfter (coins)
     expect(latestBeans.balanceAfter).toBe(w.beans); // balance == last balanceAfter (beans)
-  });
-
-  it('purchase flow: create order -> verify grants coins; re-verify is idempotent', async () => {
-    const u = await makeUser();
-    const create = await inject(app, u, 'POST', '/store/orders', { product_id: String(productId), provider: 0, purchase_token: `tok-${u}` });
-    expect(create.status).toBe(200);
-    const orderId = create.body.data.order_id;
-
-    const v1 = await inject(app, u, 'POST', `/store/orders/${orderId}/verify`);
-    expect(v1.status).toBe(200);
-    expect(v1.body.data.granted).toBe(true);
-    expect(v1.body.data.coinsAfter).toBe('330'); // 300 + 30 bonus
-
-    const v2 = await inject(app, u, 'POST', `/store/orders/${orderId}/verify`);
-    expect(v2.body.data.alreadyGranted).toBe(true);
-
-    const w = await inject(app, u, 'GET', '/wallet');
-    expect(w.body.data.coins).toBe('330'); // not doubled
-  });
-
-  it('duplicate purchase token returns the same order (fraud guard)', async () => {
-    const u = await makeUser();
-    const tok = `dup-${u}`;
-    const a = await inject(app, u, 'POST', '/store/orders', { product_id: String(productId), provider: 0, purchase_token: tok });
-    const b = await inject(app, u, 'POST', '/store/orders', { product_id: String(productId), provider: 0, purchase_token: tok });
-    expect(a.body.data.order_id).toBe(b.body.data.order_id);
   });
 
   it('exchange converts beans to coins and ledgers both sides', async () => {

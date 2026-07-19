@@ -439,19 +439,60 @@ model Order {
   publicId             String  @unique @default(uuid())
   userId               BigInt
   productId            BigInt
-  provider             Int     // 0 google, 1 apple
+  // Provider KEY, not a vendor enum — "mock" | "google" | "apple" | … . Business logic never
+  // branches on this; the provider registry resolves it to an adapter.
+  provider             String  @db.VarChar(32)
   providerPurchaseToken String
+  // Price snapshot taken at order creation — the reward can never be influenced by the client.
   amountCents          Int
   currency             String  @db.VarChar(8)
   coinsGranted         BigInt  @default(0)
-  status               Int     @default(0) // 0 pending,1 verified,2 granted,3 refunded
+  // Lifecycle: 0 created · 1 pending · 2 verified · 3 fulfilled · 4 failed · 5 refunded
+  status               Int     @default(0)
+  // Idempotency anchors: `idempotencyKey` dedupes order CREATION, `fulfillmentKey` is the
+  // exactly-once fulfilment marker (also the wallet ledger reference).
+  idempotencyKey       String? @unique @db.VarChar(128)
+  fulfillmentKey       String? @unique @db.VarChar(128)
+  failureReason        String? @db.VarChar(255)
   createdAt            DateTime @default(now())
-  verifiedAt          DateTime?
+  verifiedAt           DateTime?
+  fulfilledAt          DateTime?
+  failedAt             DateTime?
+  refundedAt           DateTime?
   user                 User    @relation(fields: [userId], references: [id])
   product              Product @relation(fields: [productId], references: [id])
+  transitions          OrderTransition[]
   @@unique([provider, providerPurchaseToken])
   @@index([userId, createdAt])
   @@index([status])
+}
+
+/// Durable audit of every payment state transition (who moved the order, from what, to what, why).
+model OrderTransition {
+  id         BigInt   @id @default(autoincrement())
+  orderId    BigInt
+  fromStatus Int
+  toStatus   Int
+  reason     String?  @db.VarChar(255)
+  actor      String?  @db.VarChar(64) // "user:123" | "provider:mock" | "admin:7" | "system"
+  createdAt  DateTime @default(now())
+  order      Order    @relation(fields: [orderId], references: [id])
+  @@index([orderId, createdAt])
+}
+
+/// Raw provider webhook deliveries. `@@unique([provider, eventId])` makes redelivery a no-op:
+/// the same event is recorded once and processed once (replay-safe).
+model PaymentWebhookEvent {
+  id          BigInt   @id @default(autoincrement())
+  provider    String   @db.VarChar(32)
+  eventId     String   @db.VarChar(128)
+  orderId     BigInt?
+  payload     Json
+  processed   Boolean  @default(false)
+  processedAt DateTime?
+  receivedAt  DateTime @default(now())
+  @@unique([provider, eventId])
+  @@index([processed, receivedAt])
 }
 
 // ---------- Progression ----------
@@ -529,7 +570,21 @@ model Notification {
   payload   Json?
   read      Boolean @default(false)
   createdAt DateTime @default(now())
+
+  // --- delivery tracking (P3 Notifications) ---
+  // 0 pending · 1 in-app delivered · 2 push sent · 3 push failed. In-app delivery is the durable row
+  // itself (status >= 1 once persisted); push is a separate best-effort channel tracked here so the
+  // worker can retry it without duplicating the notification.
+  deliveryStatus Int       @default(0)
+  pushAttempts   Int       @default(0)
+  lastError      String?   @db.VarChar(255)
+  deliveredAt    DateTime?
+  // Retry-safety: a delivery job carries a stable key; re-running the SAME job (BullMQ retry after a
+  // partial failure) upserts onto the same row instead of creating a duplicate notification.
+  dedupeKey      String?   @unique @db.VarChar(128)
+
   @@index([userId, read, createdAt])
+  @@index([deliveryStatus, pushAttempts])
 }
 
 model Setting {
@@ -664,8 +719,19 @@ model CommissionRecord {
   amount     BigInt   // computed commission
   periodKey  String   @db.VarChar(16)
   createdAt  DateTime @default(now())
+
+  // --- payout state (P3 Agency) ---
+  // A commission is RECORDED when earned and PAID separately. `paidAt` is the exactly-once guard: the
+  // payout flips it via a status-guarded update (where paidAt IS NULL) inside the same transaction as
+  // the WalletService credit, so a retry/concurrent payout can never pay twice. `payoutKey` is the
+  // durable idempotency key (also the wallet ledger's refType/refId anchor).
+  paidAt     DateTime?
+  payoutKey  String?   @unique @db.VarChar(128)
+  paidToId   BigInt?   // recipient of the payout (the agency owner)
+
   @@index([agencyId, periodKey])
   @@index([hostId, periodKey])
+  @@index([agencyId, paidAt])
 }
 
 // ---------- Admin content ----------
@@ -809,4 +875,54 @@ model UserMedal {
   medal     Medal     @relation(fields: [medalId], references: [id])
   @@unique([userId, medalId])
   @@index([userId, adorned])
+}
+
+// ---------------------------------------------------------------------------------------------
+// Tasks (P3) — daily / new-user tasks with progress tracking and claimable rewards.
+// ---------------------------------------------------------------------------------------------
+
+/// The task catalog (config-as-data, edited by platform admins).
+model TaskConfig {
+  id             BigInt   @id @default(autoincrement())
+  code           String   @unique @db.VarChar(32) // stable business id, e.g. "D_SIGNIN"
+  kind           Int      @default(0)             // 0 daily (resets each period), 1 new-user (once)
+  title          String   @db.VarChar(128)
+  description    String?  @db.VarChar(255)
+  // Reward is multi-currency by design: `rewardCurrency` is a lib/ledger Currency value, so a task
+  // can pay coins, beans, vip-coins… without any schema or code change.
+  rewardCurrency Int      @default(0)
+  rewardAmount   BigInt
+  target         Int      @default(1)             // progress required before the reward is claimable
+  iconUrl        String?
+  androidJump    String?
+  iosJump        String?
+  enabled        Boolean  @default(true)
+  sort           Int      @default(0)
+  createdAt      DateTime @default(now())
+
+  @@index([enabled, kind, sort])
+}
+
+/// Per-user progress for one task in one period.
+///
+/// DAILY RESET IS IMPLICIT: rows are keyed by `periodKey` ("YYYY-MM-DD" for daily, "once" for
+/// new-user), so a new day simply addresses a new row that is created lazily on first progress. No
+/// user rows are rewritten at rollover — the reset worker only prunes old periods (bounded work).
+/// The unique (userId, code, periodKey) is also what makes a duplicate daily reward impossible.
+model UserTaskProgress {
+  id        BigInt    @id @default(autoincrement())
+  userId    BigInt
+  code      String    @db.VarChar(32)
+  periodKey String    @db.VarChar(16)
+  progress  Int       @default(0)
+  status    Int       @default(0) // 0 in-progress, 1 claimable, 2 claimed
+  // Durable exactly-once claim anchor; also the wallet ledger reference for the reward.
+  claimKey  String?   @unique @db.VarChar(128)
+  claimedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([userId, code, periodKey])
+  @@index([userId, periodKey])
+  @@index([periodKey, status])
 }

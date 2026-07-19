@@ -1,13 +1,14 @@
 // Users module — public/own profile, profile edit, and the social graph (follow / fans /
 // friends). Follow edges reuse UserRelation (type 1); blocks are type 2 (moderation).
 // Denormalized Profile.fansCount / followingCount are kept correct transactionally.
-import { prisma } from '../../lib/prisma.js';
+// Persistence is delegated to UsersRepository (no direct Prisma here).
 import { serializableTx } from '../../lib/tx.js';
 import { AppError } from '../../lib/errors.js';
 import { moderationService } from '../moderation/moderation.service.js';
 import { medalService } from '../medals/medal.service.js';
 import { vipService } from '../vip/vip.service.js';
 import { emitToUser } from '../../realtime/gateway.js';
+import { usersRepo } from './users.repo.js';
 
 const FOLLOW = 1;
 
@@ -43,7 +44,7 @@ function serializeProfile(p: any) {
 
 export class UsersService {
   private async requireProfile(userId: bigint) {
-    const p = await prisma.profile.findUnique({ where: { userId } });
+    const p = await usersRepo.getProfile(userId);
     if (!p) throw new AppError('user_not_found', 404);
     return p;
   }
@@ -67,10 +68,7 @@ export class UsersService {
   // UserDecoration.equipped (contract §6: the card aggregates worn decorations from the Profile
   // cache). Only populated slots are returned; an unequipped kind is simply absent.
   private async wornDecorations(userId: bigint): Promise<Array<{ slot: string; url: string }>> {
-    const p = await prisma.profile.findUnique({
-      where: { userId },
-      select: { avatarFrameUrl: true, entryEffectUrl: true, bubbleUrl: true },
-    });
+    const p = await usersRepo.getProfileDecorations(userId);
     if (!p) return [];
     const out: Array<{ slot: string; url: string }> = [];
     if (p.avatarFrameUrl) out.push({ slot: 'avatar_frame', url: p.avatarFrameUrl });
@@ -116,13 +114,13 @@ export class UsersService {
       if (patch[k] !== undefined) data[k] = patch[k];
     }
     if (Object.keys(data).length === 0) throw new AppError('no_fields', 400);
-    const updated = await prisma.profile.update({ where: { userId }, data });
+    const updated = await usersRepo.updateProfile(userId, data);
     return serializeProfile(updated);
   }
 
   // ----- social graph -----
   async isFollowing(userId: bigint, targetId: bigint): Promise<boolean> {
-    return (await prisma.userRelation.count({ where: { userId, targetId, type: FOLLOW } })) > 0;
+    return (await usersRepo.countFollow(userId, targetId, FOLLOW)) > 0;
   }
 
   async follow(userId: bigint, targetId: bigint) {
@@ -133,13 +131,11 @@ export class UsersService {
     if (await moderationService.isBlocked(targetId, userId)) throw new AppError('blocked_by_target', 403);
 
     const created = await serializableTx(async (tx) => {
-      const existing = await tx.userRelation.findUnique({
-        where: { userId_targetId_type: { userId, targetId, type: FOLLOW } },
-      });
+      const existing = await usersRepo.findFollow(tx, userId, targetId, FOLLOW);
       if (existing) return false; // idempotent — no double count
-      await tx.userRelation.create({ data: { userId, targetId, type: FOLLOW } });
-      await tx.profile.update({ where: { userId }, data: { followingCount: { increment: 1 } } });
-      await tx.profile.update({ where: { userId: targetId }, data: { fansCount: { increment: 1 } } });
+      await usersRepo.createFollow(tx, userId, targetId, FOLLOW);
+      await usersRepo.bumpProfileCounter(tx, userId, 'followingCount', 1);
+      await usersRepo.bumpProfileCounter(tx, targetId, 'fansCount', 1);
       return true;
     });
 
@@ -150,13 +146,11 @@ export class UsersService {
 
   async unfollow(userId: bigint, targetId: bigint) {
     await serializableTx(async (tx) => {
-      const existing = await tx.userRelation.findUnique({
-        where: { userId_targetId_type: { userId, targetId, type: FOLLOW } },
-      });
+      const existing = await usersRepo.findFollow(tx, userId, targetId, FOLLOW);
       if (!existing) return;
-      await tx.userRelation.delete({ where: { userId_targetId_type: { userId, targetId, type: FOLLOW } } });
-      await tx.profile.update({ where: { userId }, data: { followingCount: { decrement: 1 } } });
-      await tx.profile.update({ where: { userId: targetId }, data: { fansCount: { decrement: 1 } } });
+      await usersRepo.deleteFollow(tx, userId, targetId, FOLLOW);
+      await usersRepo.bumpProfileCounter(tx, userId, 'followingCount', -1);
+      await usersRepo.bumpProfileCounter(tx, targetId, 'fansCount', -1);
     });
     return { ok: true, following: false };
   }
@@ -164,8 +158,8 @@ export class UsersService {
   private async hydrate(ids: bigint[], viewerId: bigint) {
     if (ids.length === 0) return [];
     const [profiles, myFollows] = await Promise.all([
-      prisma.profile.findMany({ where: { userId: { in: ids } } }),
-      prisma.userRelation.findMany({ where: { userId: viewerId, type: FOLLOW, targetId: { in: ids } } }),
+      usersRepo.findProfilesByIds(ids),
+      usersRepo.findMyFollowsAmong(viewerId, ids, FOLLOW),
     ]);
     const followSet = new Set(myFollows.map((r) => String(r.targetId)));
     const byId = new Map(profiles.map((p) => [String(p.userId), p]));
@@ -178,30 +172,22 @@ export class UsersService {
 
   // Followers of `userId` (people whose edge points at userId).
   async listFollowers(userId: bigint, viewerId: bigint, page: number, pageSize: number) {
-    const rels = await prisma.userRelation.findMany({
-      where: { targetId: userId, type: FOLLOW }, orderBy: { createdAt: 'desc' },
-      skip: (page - 1) * pageSize, take: pageSize,
-    });
+    const rels = await usersRepo.listFollowerRels(userId, FOLLOW, (page - 1) * pageSize, pageSize);
     return this.hydrate(rels.map((r) => r.userId), viewerId);
   }
 
   // Users that `userId` follows.
   async listFollowing(userId: bigint, viewerId: bigint, page: number, pageSize: number) {
-    const rels = await prisma.userRelation.findMany({
-      where: { userId, type: FOLLOW }, orderBy: { createdAt: 'desc' },
-      skip: (page - 1) * pageSize, take: pageSize,
-    });
+    const rels = await usersRepo.listFollowingRels(userId, FOLLOW, (page - 1) * pageSize, pageSize);
     return this.hydrate(rels.map((r) => r.targetId), viewerId);
   }
 
   // Friends = mutual follow.
   async listFriends(userId: bigint, page: number, pageSize: number) {
-    const iFollow = await prisma.userRelation.findMany({ where: { userId, type: FOLLOW }, select: { targetId: true } });
+    const iFollow = await usersRepo.listMyFollowTargetIds(userId, FOLLOW);
     const targetIds = iFollow.map((r) => r.targetId);
     if (targetIds.length === 0) return [];
-    const back = await prisma.userRelation.findMany({
-      where: { userId: { in: targetIds }, targetId: userId, type: FOLLOW }, select: { userId: true },
-    });
+    const back = await usersRepo.listBackFollowerIds(targetIds, userId, FOLLOW);
     const friendIds = back.map((r) => r.userId).slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     return this.hydrate(friendIds, userId);
   }

@@ -7,7 +7,7 @@
 // deferral as T2.2/T2.4.
 import { QUEUE } from '../../queue/index.js';
 import { registerWorker } from '../index.js';
-import { settle, PK_SETTLE_JOB } from '../../modules/rooms/pk.service.js';
+import { settle, PK_SETTLE_JOB } from '../../modules/pk/pk.service.js';
 
 // Settle the battle named in the job payload. Returns the settle result for observability.
 export async function runPkSettle(pkId: bigint) {

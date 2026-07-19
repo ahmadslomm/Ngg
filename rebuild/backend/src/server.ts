@@ -3,9 +3,8 @@ import { randomUUID } from 'node:crypto';
 import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
 import rateLimit from '@fastify/rate-limit';
-import { ZodError } from 'zod';
 import { env, isProd } from './lib/env.js';
-import { AppError } from './lib/errors.js';
+import { registerErrorHandling } from './lib/error-handler.js';
 import { verifySignature } from './lib/sign.js';
 import { prisma } from './lib/prisma.js';
 import { redis, pubClient, subClient } from './lib/redis.js';
@@ -15,9 +14,13 @@ import { configRoutes } from './modules/config/config.routes.js';
 import { giftRoutes } from './modules/gifts/gift.routes.js';
 import { roomRoutes } from './modules/rooms/room.routes.js';
 import { discoveryRoutes } from './modules/rooms/discovery.routes.js';
+import { pkRoutes } from './modules/pk/pk.routes.js';
+import { notificationRoutes } from './modules/notifications/notification.routes.js';
+import { taskRoutes } from './modules/tasks/task.routes.js';
 import { RoomService } from './modules/rooms/room.service.js';
 import { PrismaRoomRepo } from './modules/rooms/room.prisma-repo.js';
 import { walletRoutes } from './modules/wallet/wallet.routes.js';
+import { paymentRoutes, paymentAdminRoutes } from './modules/payments/payment.routes.js';
 import { vipRoutes } from './modules/vip/vip.routes.js';
 import { rankingRoutes } from './modules/ranking/ranking.routes.js';
 import { agencyRoutes } from './modules/agency/agency.routes.js';
@@ -71,19 +74,8 @@ async function build() {
   await app.register(jwt, { secret: env.JWT_ACCESS_SECRET });
   await app.register(rateLimit, { max: 300, timeWindow: '1 minute', redis });
 
-  // Consistent error envelope. Validation errors are 400 (never a 500 that leaks the
-  // internal schema); AppError carries its own status; anything else is a generic 500
-  // (the details are logged server-side, never returned to the client).
-  app.setErrorHandler((err, req, reply) => {
-    if (err instanceof ZodError) {
-      return reply.code(400).send({ code: 4000, message: 'invalid_request', issues: err.issues.map((i) => ({ path: i.path.join('.'), message: i.message })) });
-    }
-    if (err instanceof AppError) return reply.code(err.status).send({ code: err.status * 10, message: err.code });
-    if ((err as any).validation) return reply.code(400).send({ code: 4000, message: 'invalid_request' });
-    if ((err as any).statusCode === 429) return reply.code(429).send({ code: 4290, message: 'rate_limited' });
-    req.log.error({ err }, 'unhandled_error');
-    return reply.code(500).send({ code: 5000, message: 'internal_error' });
-  });
+  // Consistent error envelope + 404 + request-id (extracted to lib/error-handler for reuse & tests).
+  registerErrorHandling(app);
 
   // Auth decorator — resolves req.user from a VERIFIED JWT and blocks suspended accounts.
   app.decorate('authenticate', async (req: any, reply: any) => {
@@ -169,6 +161,7 @@ async function build() {
       },
     )(v1);
     await walletRoutes(v1);
+    await paymentRoutes(v1);
     await vipRoutes(v1);
     await rankingRoutes(v1);
     await agencyRoutes(v1);
@@ -178,6 +171,9 @@ async function build() {
     await momentRoutes(v1);
     await chatRoutes(v1);
     await discoveryRoutes(v1);
+    await pkRoutes(v1);
+    await notificationRoutes(v1);
+    await taskRoutes(v1);
     await dmRoutes(v1);
     await bottleRoutes(v1);
     await uploadRoutes(v1);
@@ -185,6 +181,7 @@ async function build() {
     await adminMedalRoutes(v1);
     await adminAuthRoutes(v1);
     await adminRoutes(v1);
+    await paymentAdminRoutes(v1);
   }, { prefix: '/v1' });
 
   return app;
