@@ -64,6 +64,23 @@ export async function userRoutes(app: FastifyInstance) {
     } catch (e) { return replyError(reply, e); }
   });
 
+  // P3a — user lookup by uid (⇐ old `search.searchFriendByUid`; every recovered search action took
+  // only `uid`, so this is an exact match, not free-text). Static path, registered before
+  // /users/:id. Auth required + a tighter rate limit than the global cap: exact-uid matching plus
+  // an empty (never erroring) result for unknown input already makes enumeration useless, and the
+  // limit caps brute-force scanning. Items use the same card shape as GET /users/:id.
+  app.get(
+    '/users/search',
+    { preHandler: [app.authenticate], config: { rateLimit: { max: 30, timeWindow: '1 minute' } } },
+    async (req, reply) => {
+      try {
+        const q = z.object({ q: z.string().max(32).optional() }).parse(req.query ?? {});
+        const { page, pageSize } = pageArgs(req.query);
+        return ok(serialize(await usersService.search(uid(req), q.q ?? '', page, pageSize)));
+      } catch (e) { return replyError(reply, e); }
+    },
+  );
+
   // Public profile (viewer-relative flags)
   app.get('/users/:id', { preHandler: [app.authenticate] }, async (req, reply) => {
     try {

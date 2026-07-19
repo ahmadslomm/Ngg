@@ -107,6 +107,27 @@ export class UsersService {
     return { ...card, is_self: false, is_following: iFollow, is_followed_by: followsMe, is_friend: iFollow && followsMe };
   }
 
+  /**
+   * P3a — user lookup (⇐ old `search.searchFriendByUid`, whose only captured params were
+   * `['token','uid']`). EVERY search action in the recovered catalog takes a `uid` and nothing
+   * else — there is no evidence of nick/free-text search anywhere — so this is an EXACT UID
+   * lookup, not a fuzzy query. A non-numeric or unknown `q` yields an empty page rather than an
+   * error, so the endpoint cannot be used to probe which accounts exist.
+   *
+   * Results reuse the standard profile card (`getProfile`), so a search hit parses exactly like
+   * `GET /users/:id`. An exact lookup returns at most one row, which keeps that card cheap.
+   */
+  async search(viewerId: bigint, q: string, page: number, pageSize: number) {
+    const empty = { items: [] as unknown[], total: 0, page, page_size: pageSize };
+    if (!/^\d{1,20}$/.test(q)) return empty; // not a uid → no results (and no existence signal)
+    let targetId: bigint;
+    try { targetId = BigInt(q); } catch { return empty; }
+    const profile = await usersRepo.getProfile(targetId);
+    if (!profile) return empty;
+    if (page > 1) return { ...empty, total: 1 }; // single hit lives on page 1
+    return { items: [await this.getProfile(viewerId, targetId)], total: 1, page, page_size: pageSize };
+  }
+
   async updateProfile(userId: bigint, patch: ProfilePatch) {
     await this.requireProfile(userId);
     const data: Record<string, unknown> = {};

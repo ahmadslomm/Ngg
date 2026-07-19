@@ -110,6 +110,40 @@ export class CoupleService {
     return { paired: true, couple: serialize(c, userId), partner: partner ? { uid: String(partnerId), nick: partner.nick, avatar_url: partner.avatarUrl } : null };
   }
 
+  /**
+   * P3a — PUBLIC couple badge for any user (⇐ old `couple.cpHouse`, which took a `to_uid` and
+   * returned `{ target_info, sweet_value, days, cp_lv_info, … }`). Deliberately narrower than
+   * `getMine`:
+   *   • ONLY an ACTIVE pairing is ever exposed — a Pending proposal (or a Broken one) is private
+   *     between the two parties and must not leak to a third party.
+   *   • No `proposer_uid` / `status` / internal ids — those are negotiation details, not badge data.
+   *   • An unknown user returns the same `{ paired: false }` as a user with no couple, so the
+   *     endpoint never confirms or denies whether an account exists.
+   * `days` mirrors the old response's `days` field (whole days since the pairing was established).
+   */
+  async publicCoupleOf(userId: bigint) {
+    const c = await prisma.couple.findFirst({
+      where: { status: CoupleStatus.Active, OR: [{ aUserId: userId }, { bUserId: userId }] },
+    });
+    if (!c) return { paired: false as const };
+    const partnerId = c.aUserId === userId ? c.bUserId : c.aUserId;
+    const partner = await prisma.profile.findUnique({ where: { userId: partnerId } });
+    const days = c.establishedAt
+      ? Math.max(0, Math.floor((Date.now() - c.establishedAt.getTime()) / 86_400_000))
+      : 0;
+    return {
+      paired: true as const,
+      partner: partner
+        ? { uid: String(partnerId), nick: partner.nick, avatar_url: partner.avatarUrl }
+        : { uid: String(partnerId), nick: null, avatar_url: null },
+      sweet_value: String(c.sweetValue),
+      cp_level: c.cpLevel,
+      ring_url: c.ringUrl,
+      established_at: c.establishedAt,
+      days,
+    };
+  }
+
   async listInvites(userId: bigint) {
     const rows = await prisma.couple.findMany({
       where: { status: CoupleStatus.Pending, proposerId: { not: userId }, OR: [{ aUserId: userId }, { bUserId: userId }] },
