@@ -42,8 +42,16 @@ function importsOf(rel: string): string[] {
 // may appear in source. This guard file is the ONLY place those needles legitimately appear, so it
 // excludes itself from the content scan.
 describe('boundary: legacy ZaffaLive backend is permanently removed', () => {
-  const GUARD = 'architecture.boundaries.test.ts';
-  const scanned = files.filter((f) => f !== GUARD);
+  // The ONLY files allowed to contain the legacy needles are the guards themselves: this one (the
+  // CODE guard) and its DATA counterpart, which asserts no legacy CDN host is stored in any asset
+  // column (P2a). Both must name the hosts in order to detect them. Every other file still fails —
+  // the ratchet stays honest — and the staleness test below stops this allowlist from rotting.
+  const GUARD_FILES = ['architecture.boundaries.test.ts', 'modules/uploads/asset-url-guard.test.ts'];
+  const scanned = files.filter((f) => !GUARD_FILES.includes(f));
+
+  it('the guard allowlist has no stale entries (every listed guard file exists)', () => {
+    expect(GUARD_FILES.filter((f) => !files.includes(f))).toEqual([]);
+  });
 
   it('the legacy upstream SDK directory does not exist', () => {
     expect(existsSync(join(SRC, 'upstream'))).toBe(false);

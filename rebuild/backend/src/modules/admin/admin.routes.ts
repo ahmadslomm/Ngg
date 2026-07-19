@@ -59,14 +59,42 @@ export async function adminRoutes(app: FastifyInstance) {
       return ok(serialize(await adminService.createGift(aid(req), { name: b.name, category: b.category, priceCoins: b.price_coins, iconUrl: b.icon_url, animUrl: b.anim_url, sort: b.sort })));
     } catch (e) { return replyError(reply, e); }
   });
+  // P2a: art fields are now updatable (icon/anim/combo/preview/banner) — previously only
+  // enabled/price/sort, so an existing gift could never be given art through the API. `null`
+  // explicitly clears a slot; omitted fields are left untouched.
   app.patch('/admin/gifts/:id', guard, async (req, reply) => {
     try {
-      const b = z.object({ enabled: z.boolean().optional(), price_coins: z.number().int().optional(), sort: z.number().int().optional() }).parse(req.body);
+      const url = z.string().max(512).nullable().optional();
+      const b = z.object({
+        enabled: z.boolean().optional(), price_coins: z.number().int().optional(), sort: z.number().int().optional(),
+        icon_url: url, anim_url: url, combo_url: url, preview_url: url, banner_url: url,
+      }).parse(req.body);
       const patch: any = {};
       if (b.enabled != null) patch.enabled = b.enabled;
       if (b.price_coins != null) patch.priceCoins = b.price_coins;
       if (b.sort != null) patch.sort = b.sort;
+      if (b.icon_url !== undefined) patch.iconUrl = b.icon_url;
+      if (b.anim_url !== undefined) patch.animUrl = b.anim_url;
+      if (b.combo_url !== undefined) patch.comboUrl = b.combo_url;
+      if (b.preview_url !== undefined) patch.previewUrl = b.preview_url;
+      if (b.banner_url !== undefined) patch.bannerUrl = b.banner_url;
       return ok(serialize(await adminService.updateGift(aid(req), BigInt((req.params as any).id), patch)));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  // P2a: presign a CATALOG art upload (platform-admin only, gated in the service). The admin PUTs
+  // the bytes to R2, then writes the returned public_url into a catalog row via the editors above.
+  app.post('/admin/uploads/presign', guard, async (req, reply) => {
+    try {
+      const b = z.object({
+        asset_type: z.string().min(1).max(32),
+        content_type: z.string().min(1).max(128),
+      }).parse(req.body);
+      const r = await adminService.presignCatalogAsset(aid(req), b.asset_type, b.content_type);
+      return ok(serialize({
+        key: r.key, upload_url: r.uploadUrl, public_url: r.publicUrl,
+        method: r.method, headers: r.headers, expires_at: r.expiresAt, max_bytes: r.maxBytes,
+      }));
     } catch (e) { return replyError(reply, e); }
   });
 

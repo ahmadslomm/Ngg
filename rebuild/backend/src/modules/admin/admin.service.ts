@@ -11,6 +11,7 @@ import { LedgerReason, Currency } from '../../lib/ledger.js';
 import { moderationService } from '../moderation/moderation.service.js';
 import { rankingService, Board, Period } from '../ranking/ranking.service.js';
 import { walletService } from '../wallet/wallet.service.js';
+import { uploadService } from '../uploads/upload.service.js';
 import { adminRepo } from './admin.repo.js';
 import { requirePlatformAdmin, requireModerator } from './admin.authz.js';
 
@@ -124,6 +125,21 @@ export class AdminService {
     return moderationService.handleReport(adminId, reportId, resolve);
   }
   moderationLogs(opts: { page: number; pageSize: number }) { return moderationService.logs(opts); }
+
+  // ----- catalog asset uploads (P2a) -----
+  /**
+   * Mint a presigned PUT URL for CATALOG art (gift icon/animation, frame, room skin, medal, banner).
+   * Platform-admin only — the gate runs BEFORE R2 is consulted, so an under-privileged caller is
+   * rejected regardless of provisioning. Audited for provenance (who minted which upload key).
+   * Uploading is all this does: wiring the resulting URL into a catalog row goes through the
+   * existing catalog editors (e.g. PATCH /admin/gifts/:id).
+   */
+  async presignCatalogAsset(adminId: bigint, assetType: string, contentType: string) {
+    await requirePlatformAdmin(adminId);
+    const r = uploadService.presignCatalog(adminId, { assetType, contentType });
+    await audit(adminId, 'catalog.asset.presign', 'asset', undefined, null, { assetType, contentType, key: r.key });
+    return r;
+  }
 
   // ----- room system message (F8) -----
   // Broadcast a room-scoped system notice (⇐ old opcode 13000 onSystemMsg). Platform-admin only.
