@@ -28,3 +28,8 @@ output/*.log
 # Python bytecode
 __pycache__/
 *.pyc
+
+# …but the compiled nine-patch drawables under output/jadx_out/resources/res/ ARE unique:
+# apktool DECODES .9.png (strips the compiled chunk), so the copies in
+# AndroidStudioProject/app/src/main/res differ byte-for-byte. 151 files / 334 KB, force-added
+# and therefore tracked despite the parent exclusion above. Do not "clean" them.
