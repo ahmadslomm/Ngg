@@ -27,8 +27,13 @@ export interface RoomCardDTO {
   seat_count: number;
   online_count: number;  // real: maintained = count(RoomMember)
   country_code: string | null;
+  status: number;        // real Room.status (0 closed · 1 live) — lets favorites show offline rooms
   host: RoomHostDTO | null;
 }
+
+// A room row from the repo (the fields the card needs). Kept local so both discover() and the
+// favorites reuse the SAME mapper — no duplicate room-card rendering logic.
+type RoomRow = { id: bigint; name: string; coverUrl: string | null; type: number; isLocked: boolean; seatCount: number; onlineCount: number; countryCode: string | null; status: number; ownerId: bigint };
 
 export class DiscoveryService {
   async discover(opts: DiscoverOpts): Promise<{ items: RoomCardDTO[]; page: number; page_size: number }> {
@@ -49,13 +54,21 @@ export class DiscoveryService {
       : [{ onlineCount: 'desc' }, { id: 'desc' }];
 
     const rooms = await discoveryRepo.findRooms(where, orderBy, (opts.page - 1) * opts.pageSize, opts.pageSize);
+    const items = await this.toCards(rooms);
+    return { items, page: opts.page, page_size: opts.pageSize };
+  }
 
-    // Batch host profiles (no N+1). Missing profile → host null (never fabricated).
+  /**
+   * Map room rows → RoomCardDTO with batched host profiles (no N+1). The SINGLE room-card renderer,
+   * reused by discover() and the favorites list (F6) so there is one rendering path. Preserves the
+   * caller's room order; a missing host profile → `host: null` (never fabricated).
+   */
+  async toCards(rooms: RoomRow[]): Promise<RoomCardDTO[]> {
+    if (rooms.length === 0) return [];
     const ownerIds = [...new Set(rooms.map((r) => r.ownerId))];
     const profiles = await discoveryRepo.findProfiles(ownerIds);
     const byId = new Map(profiles.map((p) => [String(p.userId), p]));
-
-    const items: RoomCardDTO[] = rooms.map((r) => {
+    return rooms.map((r) => {
       const p = byId.get(String(r.ownerId));
       return {
         room_id: String(r.id),
@@ -66,10 +79,10 @@ export class DiscoveryService {
         seat_count: r.seatCount,
         online_count: r.onlineCount,
         country_code: r.countryCode ?? null,
+        status: r.status,
         host: p ? { uid: String(p.userId), nick: p.nick, avatar_url: p.avatarUrl ?? null, vip_level: p.vipLevel } : null,
       };
     });
-    return { items, page: opts.page, page_size: opts.pageSize };
   }
 }
 

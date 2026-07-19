@@ -59,6 +59,10 @@ export class AdminRepository {
   listRooms(skip: number, take: number, client: DbClient = db.read) {
     return client.room.findMany({ orderBy: { id: 'desc' }, skip, take });
   }
+  /** F8: existence check for the room system-message broadcast (null → 404, no event emitted). */
+  findRoomById(roomId: bigint, client: DbClient = db.read) {
+    return client.room.findUnique({ where: { id: roomId }, select: { id: true } });
+  }
   closeRoom(roomId: bigint, client: DbClient = db.write) {
     return client.room.update({ where: { id: roomId }, data: { status: 0 } });
   }

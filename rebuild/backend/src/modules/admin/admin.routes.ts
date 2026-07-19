@@ -4,6 +4,8 @@ import { adminService } from './admin.service.js';
 import { catalogAdminService } from './catalog-admin.service.js';
 import { Board, Period } from '../ranking/ranking.service.js';
 import { ok, replyError, serialize, pageArgs } from '../../lib/errors.js';
+import { emitRoomEvent } from '../../realtime/gateway.js';
+import { systemMessage } from '../rooms/room.events.js';
 
 // All routes require admin auth (app.authenticateAdmin sets req.admin).
 export async function adminRoutes(app: FastifyInstance) {
@@ -33,6 +35,21 @@ export async function adminRoutes(app: FastifyInstance) {
   // rooms
   app.get('/admin/rooms', guard, async (req) => ok(serialize(await adminService.listRooms(pageArgs(req.query)))));
   app.post('/admin/rooms/:id/close', guard, async (req) => ok(await adminService.closeRoom(aid(req), BigInt((req.params as any).id))));
+
+  // F8 (P1): broadcast a room-scoped system notice (⇐ old onSystemMsg). Platform-admin gated in the
+  // service; transient (audited, never stored as a message). Emitted only after the service returns.
+  app.post('/admin/rooms/:id/system-message', guard, async (req, reply) => {
+    try {
+      const b = z.object({
+        text: z.string().min(1).max(500),
+        kind: z.enum(['notice', 'warning', 'announcement']).optional().default('notice'),
+      }).parse(req.body);
+      const roomId = BigInt((req.params as any).id);
+      const payload = await adminService.sendRoomSystemMessage(aid(req), roomId, b.text, b.kind);
+      emitRoomEvent(`room:${roomId}`, systemMessage(payload));
+      return ok(payload);
+    } catch (e) { return replyError(reply, e); }
+  });
 
   // gifts
   app.get('/admin/gifts', guard, async () => ok(serialize(await adminService.listGifts())));

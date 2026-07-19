@@ -1,15 +1,16 @@
 // Room service — applies pure seat-state transitions, persists via the repo, and emits
 // realtime events. No direct Prisma/Redis import: infrastructure is injected, so the
 // same code path is unit/API-tested in memory and runs on real infra in production.
-import type { RoomRepo, CreateRoomInput, RoomRecord, RoomTheme } from './room.repo.js';
+import type { RoomRepo, CreateRoomInput, RoomRecord, RoomInfoRecord, RoomTheme, MemberRow } from './room.repo.js';
 import { verifyRoomPassword } from './room.repo.js';
 import {
   RoomState, Role, Seat, Result,
   takeSeat, leaveSeat, switchSeat, setSeatLock, setMute, setSelfMute, setRole, kickUser, inviteToSeat,
-  computeRtcRole,
+  computeRtcRole, findUserSeat,
 } from './seat-state.js';
 import { requireRoomAdmin, RoomPermission } from '../../lib/authz.js';
-import { roomUpdated } from './room.events.js';
+import { roomUpdated, micApplied, type MicApplyAction } from './room.events.js';
+import { ApplyStatus, type ApplyRow } from './room.repo.js';
 import { AppError } from '../../lib/errors.js';
 
 export type Emit = (room: string, event: { ev: string; data: Record<string, unknown> }) => void | Promise<void>;
@@ -184,6 +185,33 @@ export class RoomService {
     return { ok: true };
   }
 
+  // F1 (P1): full room info for `GET /rooms/:id`. Read-only; resolves the equipped theme (only when
+  // still enabled — same rule as setTheme's getTheme) so the client can skin without a second call.
+  // No WS event, no mutation. Returns `room_unavailable` when the room doesn't exist.
+  async getRoomInfo(roomId: string): Promise<ServiceResult<{ info: RoomInfoRecord; theme: RoomTheme | null }>> {
+    const info = await this.repo.getRoomInfo(roomId);
+    if (!info) return { ok: false, error: 'room_unavailable' };
+    const theme = info.themeId != null ? await this.repo.getTheme(info.themeId) : null;
+    return { ok: true, data: { info, theme } };
+  }
+
+  // F2 (P1): paginated online members for `GET /rooms/:id/online`. Lists from RoomMember (the source
+  // of truth) and returns `total` from countMembers — Room.onlineCount is only a denormalized cache.
+  // Read-only; no WS event. Profile hydration happens at the route via the injected batch lookup, so
+  // the room module never imports users. Returns `room_unavailable` when the room doesn't exist.
+  async getOnlineMembers(
+    roomId: string,
+    opts: { page: number; pageSize: number },
+  ): Promise<ServiceResult<{ members: MemberRow[]; total: number; page: number; pageSize: number }>> {
+    const room = await this.repo.getRoom(roomId);
+    if (!room) return { ok: false, error: 'room_unavailable' };
+    const [members, total] = await Promise.all([
+      this.repo.listMembers(roomId, { skip: (opts.page - 1) * opts.pageSize, take: opts.pageSize }),
+      this.repo.countMembers(roomId),
+    ]);
+    return { ok: true, data: { members, total, page: opts.page, pageSize: opts.pageSize } };
+  }
+
   async getSeats(roomId: string): Promise<ServiceResult<{ seats: Seat[] }>> {
     const [room, state] = await Promise.all([this.repo.getRoom(roomId), this.repo.getRoomState(roomId)]);
     if (!room || !state) return { ok: false, error: 'room_unavailable' };
@@ -209,6 +237,85 @@ export class RoomService {
     await this.repo.setRoomTheme(roomId, themeId);
     await this.emit(this.channel(roomId), roomUpdated({ room_id: roomId, theme_id: themeId, theme }));
     return { ok: true, data: { theme_id: themeId, theme } };
+  }
+
+  // ---------- F5: apply-to-mic queue ----------
+  // Emit mic.applied carrying the room's current pending count (folds in mic.apply.count).
+  private async emitMicApplied(roomId: string, userId: string, action: MicApplyAction, position: number | null): Promise<number> {
+    const pending = await this.repo.countApplies(roomId, ApplyStatus.Pending);
+    await this.emit(this.channel(roomId), micApplied({ roomId, userId, action, position, pending }));
+    return pending;
+  }
+
+  /** A user requests a mic seat. Must be a member and not already seated. Upserts one pending row. */
+  async applyForMic(roomId: string, userId: string, position: number | null): Promise<ServiceResult<{ pending: number }>> {
+    const room = await this.repo.getRoom(roomId);
+    if (!room || room.status !== 1) return { ok: false, error: 'room_unavailable' };
+    if (!(await this.repo.getMembership(roomId, userId))) return { ok: false, error: 'not_in_room' };
+    const state = await this.repo.getRoomState(roomId);
+    if (state && findUserSeat(state.seats, userId)) return { ok: false, error: 'already_seated' };
+    await this.repo.applyForMic(roomId, userId, position);
+    const pending = await this.emitMicApplied(roomId, userId, 'request', position);
+    return { ok: true, data: { pending } };
+  }
+
+  /** Host views the pending queue (oldest first). Requires MANAGE_ROLES (owner bypasses). */
+  async listApplies(roomId: string, hostId: string): Promise<ServiceResult<{ applies: ApplyRow[]; pending: number }>> {
+    if (!(await this.repo.getRoom(roomId))) return { ok: false, error: 'room_unavailable' };
+    const denied = await this.requirePermission(roomId, hostId, RoomPermission.MANAGE_ROLES);
+    if (denied) return { ok: false, error: denied };
+    const [applies, pending] = await Promise.all([
+      this.repo.listApplies(roomId, ApplyStatus.Pending),
+      this.repo.countApplies(roomId, ApplyStatus.Pending),
+    ]);
+    return { ok: true, data: { applies, pending } };
+  }
+
+  /**
+   * Host approves an application and SEATS the applicant at `position` via the EXISTING invite FSM
+   * (no new seat logic). Exactly-once: the pending→granted status flip selects a single winner; if
+   * the subsequent seating fails (seat taken/locked), the flip is reverted so the request stays
+   * pending for a retry.
+   */
+  async grantApply(roomId: string, hostId: string, applicantId: string, position: number): Promise<ServiceResult<{ seats: Seat[]; pending: number }>> {
+    if (!(await this.repo.getRoom(roomId))) return { ok: false, error: 'room_unavailable' };
+    const denied = await this.requirePermission(roomId, hostId, RoomPermission.MANAGE_ROLES);
+    if (denied) return { ok: false, error: denied };
+    const apply = await this.repo.findApplyByUser(roomId, applicantId);
+    if (!apply || apply.status !== ApplyStatus.Pending) return { ok: false, error: 'apply_not_pending' };
+    const won = await this.repo.resolveApply(apply.id, ApplyStatus.Pending, ApplyStatus.Granted, hostId);
+    if (won.count === 0) return { ok: false, error: 'apply_not_pending' }; // lost the race
+    // Reuse the invite transition (emits seat.update + seat.invited) — the existing seat/mic flow.
+    const res = await this.applySeat(roomId, (s) => inviteToSeat(s, hostId, applicantId, position));
+    if (!res.ok) {
+      await this.repo.resolveApply(apply.id, ApplyStatus.Granted, ApplyStatus.Pending, null); // revert
+      return { ok: false, error: res.error };
+    }
+    const pending = await this.emitMicApplied(roomId, applicantId, 'grant', position);
+    return { ok: true, data: { seats: res.data!.seats, pending } };
+  }
+
+  /** Host rejects a pending application. Requires MANAGE_ROLES (owner bypasses). */
+  async rejectApply(roomId: string, hostId: string, applicantId: string): Promise<ServiceResult<{ pending: number }>> {
+    if (!(await this.repo.getRoom(roomId))) return { ok: false, error: 'room_unavailable' };
+    const denied = await this.requirePermission(roomId, hostId, RoomPermission.MANAGE_ROLES);
+    if (denied) return { ok: false, error: denied };
+    const apply = await this.repo.findApplyByUser(roomId, applicantId);
+    if (!apply || apply.status !== ApplyStatus.Pending) return { ok: false, error: 'apply_not_pending' };
+    const won = await this.repo.resolveApply(apply.id, ApplyStatus.Pending, ApplyStatus.Rejected, hostId);
+    if (won.count === 0) return { ok: false, error: 'apply_not_pending' };
+    const pending = await this.emitMicApplied(roomId, applicantId, 'reject', apply.position);
+    return { ok: true, data: { pending } };
+  }
+
+  /** A user cancels their own pending application. Self-only (no room-admin needed). */
+  async cancelApply(roomId: string, userId: string): Promise<ServiceResult<{ pending: number }>> {
+    const apply = await this.repo.findApplyByUser(roomId, userId);
+    if (!apply || apply.status !== ApplyStatus.Pending) return { ok: false, error: 'apply_not_pending' };
+    const won = await this.repo.resolveApply(apply.id, ApplyStatus.Pending, ApplyStatus.Cancelled, null);
+    if (won.count === 0) return { ok: false, error: 'apply_not_pending' };
+    const pending = await this.emitMicApplied(roomId, userId, 'cancel', apply.position);
+    return { ok: true, data: { pending } };
   }
 
   // Set (or clear) the room's cover image (per-room background). Requires EDIT_ROOM (owner

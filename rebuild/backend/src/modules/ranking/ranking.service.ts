@@ -6,11 +6,11 @@
 // proactive snapshot/cache refresh — runs on BACKGROUND WORKERS only (ranking-agg, ranking-snapshot),
 // never in the request path. Persistence is delegated to RankingRepository (no direct Redis/Prisma).
 import { QUEUE, enqueue, jobName } from '../../queue/index.js';
-import { rankingRepo, RANK_CACHE_TTL, type RankEntry } from './ranking.repo.js';
+import { rankingRepo, RANK_CACHE_TTL, type RankEntry, type RoomRankEntry } from './ranking.repo.js';
 
 export enum Board { Charm = 0, Wealthy = 1, Room = 2, Host = 3, Gift = 4 }
 export enum Period { Day = 0, Week = 1, Month = 2, Total = 3 }
-export type { RankEntry } from './ranking.repo.js';
+export type { RankEntry, RoomRankEntry } from './ranking.repo.js';
 
 // T2.8 — durable-aggregation job on the `ranking` queue (consumed by workers/jobs/ranking-agg).
 export const RANKING_AGG_ACTION = 'agg';
@@ -45,6 +45,17 @@ export function periodKeyFor(period: Period, at: Date): string {
     case Period.Total: return 'all';
   }
 }
+// F7: the lower time bound for a period's aggregation window (null = all-time). Aligned with the
+// periodKeyFor buckets: start of UTC day / ISO-week Monday / UTC month; Total = no bound.
+export function periodSince(period: Period, at: Date = new Date()): Date | null {
+  const y = at.getUTCFullYear(), mo = at.getUTCMonth(), d = at.getUTCDate();
+  switch (period) {
+    case Period.Day: return new Date(Date.UTC(y, mo, d));
+    case Period.Week: { const dow = (at.getUTCDay() + 6) % 7; return new Date(Date.UTC(y, mo, d - dow)); }
+    case Period.Month: return new Date(Date.UTC(y, mo, 1));
+    case Period.Total: return null;
+  }
+}
 export const ALL_PERIODS = [Period.Day, Period.Week, Period.Month, Period.Total];
 export const ALL_BOARDS = [Board.Charm, Board.Wealthy, Board.Room, Board.Host, Board.Gift];
 
@@ -67,6 +78,20 @@ export class RankingService {
     if (!top) {
       top = await rankingRepo.topLive(board, period, pk, CACHE_TOP_N);
       await rankingRepo.setCachedTop(board, period, pk, top);
+    }
+    return top.slice(0, limit);
+  }
+
+  // F7: room-scoped contributor rank — top spenders in ONE room over a period. Cache-aside (mirrors
+  // getBoard): serve the cached top-N; on a miss aggregate GiftTransaction once + cache. Does NOT
+  // touch Board.Room or any global board — it is a separate, derived read.
+  async roomContribution(roomId: bigint, period: Period, limit = 50, at: Date = new Date()): Promise<RoomRankEntry[]> {
+    const pk = periodKeyFor(period, at);
+    let top = await rankingRepo.getCachedRoomRank(roomId, period, pk);
+    if (!top) {
+      const rows = await rankingRepo.roomContributionTop(roomId, periodSince(period, at), CACHE_TOP_N);
+      top = rows.map((r, i) => ({ subjectId: r.subjectId, contribution: r.contribution, rank: i + 1 }));
+      await rankingRepo.setCachedRoomRank(roomId, period, pk, top);
     }
     return top.slice(0, limit);
   }

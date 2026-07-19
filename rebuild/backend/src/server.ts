@@ -14,6 +14,7 @@ import { configRoutes } from './modules/config/config.routes.js';
 import { giftRoutes } from './modules/gifts/gift.routes.js';
 import { roomRoutes } from './modules/rooms/room.routes.js';
 import { discoveryRoutes } from './modules/rooms/discovery.routes.js';
+import { favoriteRoutes } from './modules/rooms/favorite.routes.js';
 import { pkRoutes } from './modules/pk/pk.routes.js';
 import { notificationRoutes } from './modules/notifications/notification.routes.js';
 import { taskRoutes } from './modules/tasks/task.routes.js';
@@ -159,6 +160,11 @@ async function build() {
           return { uid: String(p.uid), nick: p.nick, avatar_url: p.avatar_url, avatar_frame_url: p.avatar_frame_url };
         } catch { return null; }
       },
+      // F2: batch profile resolver for the online-member list (single query; failure → ids only).
+      async (userIds) => {
+        try { return await usersService.getCompactCards(userIds.map((id) => BigInt(id))); }
+        catch { return new Map(); }
+      },
     )(v1);
     await walletRoutes(v1);
     await paymentRoutes(v1);
@@ -171,6 +177,7 @@ async function build() {
     await momentRoutes(v1);
     await chatRoutes(v1);
     await discoveryRoutes(v1);
+    await favoriteRoutes(v1);
     await pkRoutes(v1);
     await notificationRoutes(v1);
     await taskRoutes(v1);

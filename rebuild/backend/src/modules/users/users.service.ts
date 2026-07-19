@@ -155,6 +155,19 @@ export class UsersService {
     return { ok: true, following: false };
   }
 
+  // Compact profile cards for a batch of user ids — one query, missing ids omitted. Read-only.
+  // Consumed by the rooms online-list (F2) via DI so the rooms module never imports users.
+  async getCompactCards(ids: bigint[]): Promise<Map<string, { uid: string; nick: string; avatar_url: string | null; avatar_frame_url: string | null; vip_level: number }>> {
+    if (ids.length === 0) return new Map();
+    const profiles = await usersRepo.findProfilesByIds(ids);
+    return new Map(
+      profiles.map((p) => [
+        String(p.userId),
+        { uid: String(p.userId), nick: p.nick, avatar_url: p.avatarUrl ?? null, avatar_frame_url: p.avatarFrameUrl ?? null, vip_level: p.vipLevel },
+      ]),
+    );
+  }
+
   private async hydrate(ids: bigint[], viewerId: bigint) {
     if (ids.length === 0) return [];
     const [profiles, myFollows] = await Promise.all([

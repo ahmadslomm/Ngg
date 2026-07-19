@@ -926,3 +926,25 @@ model UserTaskProgress {
   @@index([userId, periodKey])
   @@index([periodKey, status])
 }
+
+model SeatApply {
+  id           BigInt   @id @default(autoincrement())
+  roomId       BigInt   // scalar ref, no FK (matches RoomPk precedent; avoids touching Room)
+  userId       BigInt   // the applicant (scalar ref, no FK)
+  position     Int?     // requested seat position; null = any available seat
+  status       Int      @default(0) // 0 pending · 1 granted · 2 rejected · 3 cancelled
+  resolvedById BigInt?  // host who granted/rejected (audit; null while pending)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@unique([roomId, userId])           // ONE live request per user per room (upsert-reused across re-applies)
+  @@index([roomId, status, createdAt]) // host's pending-applications list + pending count
+}
+
+model RoomFavorite {
+  userId    BigInt   // scalar ref, no FK (matches RoomPk/SeatApply precedent; avoids touching Room/User)
+  roomId    BigInt   // scalar ref, no FK
+  createdAt DateTime @default(now())
+  @@id([userId, roomId])           // composite PK = identity + uniqueness (one favorite per user+room)
+  @@index([roomId])                // reverse lookup: favorite count / who favorited room X
+  @@index([userId, createdAt])     // "my favorites, newest-first" listing
+}

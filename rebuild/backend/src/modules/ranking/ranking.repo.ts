@@ -1,10 +1,16 @@
 // RankingRepository — all ranking persistence: the live board (Redis sorted sets), a snapshot CACHE
 // (Redis string holding the serialized top-N), and the durable Ranking table (Prisma). The service
 // depends on this, never on Redis/Prisma directly. No business logic here.
+import type { Prisma } from '@prisma/client';
 import { redis } from '../../lib/redis.js';
 import { db, type DbClient } from '../../lib/db.js';
 
 export interface RankEntry { rank: number; subject_id: string; score: number }
+
+/** F7: one aggregated room contributor (senderId + summed coins spent in the room, as a string). */
+export interface RoomContribRow { subjectId: string; contribution: string }
+/** F7: a ranked room contributor (contribution kept as a string — BigInt-safe). */
+export interface RoomRankEntry { subjectId: string; contribution: string; rank: number }
 
 /** Snapshot-cache TTL (seconds). Short so it self-heals; writes invalidate immediately. */
 export const RANK_CACHE_TTL = 15;
@@ -62,6 +68,34 @@ export class RankingRepository {
       update: { score, rank },
       create: { board, period, periodKey, subjectId, score, rank },
     });
+  }
+
+  // --- F7: room-scoped contributor rank (DERIVED from GiftTransaction; no new writes/table) ---
+  // Sum coins spent per sender in one room over a period window, top-first. Rides the existing
+  // @@index([roomId, createdAt]). `since=null` = all-time (Total period).
+  async roomContributionTop(roomId: bigint, since: Date | null, limit: number, client: DbClient = db.read): Promise<RoomContribRow[]> {
+    const where: Prisma.GiftTransactionWhereInput = { roomId };
+    if (since) where.createdAt = { gte: since };
+    const rows = await client.giftTransaction.groupBy({
+      by: ['senderId'],
+      where,
+      _sum: { totalCoins: true },
+      orderBy: { _sum: { totalCoins: 'desc' } },
+      take: limit,
+    });
+    return rows.map((r) => ({ subjectId: String(r.senderId), contribution: String(r._sum.totalCoins ?? 0n) }));
+  }
+
+  // F7 snapshot cache — short TTL, mirrors the board cache. Keyed by room + period bucket, so a new
+  // day/week/month addresses a fresh key. TTL-only (no per-gift invalidation) is the cost mitigation
+  // for the "emit on every in-room gift" path: rapid gifts reuse one aggregation for the TTL window.
+  private roomRankKey(roomId: bigint, period: number, pk: string) { return `roomrankcache:${roomId}:${period}:${pk}`; }
+  async getCachedRoomRank(roomId: bigint, period: number, pk: string): Promise<RoomRankEntry[] | null> {
+    const s = await redis.get(this.roomRankKey(roomId, period, pk));
+    return s ? (JSON.parse(s) as RoomRankEntry[]) : null;
+  }
+  async setCachedRoomRank(roomId: bigint, period: number, pk: string, entries: RoomRankEntry[]): Promise<void> {
+    await redis.set(this.roomRankKey(roomId, period, pk), JSON.stringify(entries), 'EX', RANK_CACHE_TTL);
   }
 }
 

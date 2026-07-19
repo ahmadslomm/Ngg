@@ -4,8 +4,8 @@
 // exercise this path end-to-end.
 import { prisma } from '../../lib/prisma.js';
 import { Prisma } from '@prisma/client';
-import type { RoomRepo, CreateRoomInput, RoomRecord, RoomTheme } from './room.repo.js';
-import { freshSeats, hashRoomPassword } from './room.repo.js';
+import type { RoomRepo, CreateRoomInput, RoomRecord, RoomInfoRecord, RoomTheme, MemberRow, ApplyRow } from './room.repo.js';
+import { freshSeats, hashRoomPassword, ApplyStatus } from './room.repo.js';
 import { RoomState, Role, Seat, SeatState } from './seat-state.js';
 
 export class PrismaRoomRepo implements RoomRepo {
@@ -52,6 +52,20 @@ export class PrismaRoomRepo implements RoomRepo {
     };
   }
 
+  // F1 (P1): full read-only room info. Reads the storage-only columns (announcement, roomLevel/
+  // roomExp, tags, welcomeText, bgMusicUrl) already on Room — no schema change.
+  async getRoomInfo(roomId: string): Promise<RoomInfoRecord | null> {
+    const r = await prisma.room.findUnique({ where: { id: BigInt(roomId) } });
+    if (!r) return null;
+    return {
+      id: String(r.id), publicId: r.publicId, ownerId: String(r.ownerId), name: r.name,
+      type: r.type, mode: r.mode, seatCount: r.seatCount, onlineCount: r.onlineCount,
+      countryCode: r.countryCode ?? null, coverUrl: r.coverUrl ?? null, themeId: r.themeId ?? null,
+      announcement: r.announcement ?? null, welcomeText: r.welcomeText ?? null, bgMusicUrl: r.bgMusicUrl ?? null,
+      roomLevel: r.roomLevel, roomExp: r.roomExp, tags: r.tags ?? null, status: r.status,
+    };
+  }
+
   // T1.11: one member's role + permissions bitmap for requireRoomAdmin (null when not a member).
   async getMembership(roomId: string, userId: string) {
     const m = await prisma.roomMember.findUnique({
@@ -59,6 +73,65 @@ export class PrismaRoomRepo implements RoomRepo {
       select: { role: true, permissions: true },
     });
     return m ? { role: m.role, permissions: m.permissions } : null;
+  }
+
+  // F2 (P1): a page of the room's members in stable join order (joinedAt, userId tiebreak), and the
+  // total count — the authoritative online list (Room.onlineCount is only the denormalized cache).
+  async listMembers(roomId: string, opts: { skip: number; take: number }): Promise<MemberRow[]> {
+    const rows = await prisma.roomMember.findMany({
+      where: { roomId: BigInt(roomId) },
+      orderBy: [{ joinedAt: 'asc' }, { userId: 'asc' }],
+      skip: opts.skip,
+      take: opts.take,
+      select: { userId: true, role: true },
+    });
+    return rows.map((r) => ({ userId: String(r.userId), role: r.role }));
+  }
+  async countMembers(roomId: string): Promise<number> {
+    return prisma.roomMember.count({ where: { roomId: BigInt(roomId) } });
+  }
+
+  // ----- F5: apply-to-mic queue -----
+  private toApplyRow(r: { id: bigint; roomId: bigint; userId: bigint; position: number | null; status: number; createdAt: Date }): ApplyRow {
+    return { id: String(r.id), roomId: String(r.roomId), userId: String(r.userId), position: r.position, status: r.status, createdAt: r.createdAt };
+  }
+  // Upsert one pending row per (room,user). Race-safe: a concurrent duplicate create hits the
+  // @@unique([roomId,userId]) constraint (P2002) and we flip the existing row back to pending —
+  // so N concurrent applies converge to exactly ONE pending row.
+  async applyForMic(roomId: string, userId: string, position: number | null): Promise<ApplyRow> {
+    const rid = BigInt(roomId), uid = BigInt(userId);
+    try {
+      const row = await prisma.seatApply.create({ data: { roomId: rid, userId: uid, position, status: ApplyStatus.Pending } });
+      return this.toApplyRow(row);
+    } catch (e) {
+      if (typeof e === 'object' && e !== null && (e as { code?: string }).code === 'P2002') {
+        const row = await prisma.seatApply.update({
+          where: { roomId_userId: { roomId: rid, userId: uid } },
+          data: { position, status: ApplyStatus.Pending, resolvedById: null },
+        });
+        return this.toApplyRow(row);
+      }
+      throw e;
+    }
+  }
+  async findApplyByUser(roomId: string, userId: string): Promise<ApplyRow | null> {
+    const r = await prisma.seatApply.findUnique({ where: { roomId_userId: { roomId: BigInt(roomId), userId: BigInt(userId) } } });
+    return r ? this.toApplyRow(r) : null;
+  }
+  async listApplies(roomId: string, status: number): Promise<ApplyRow[]> {
+    const rows = await prisma.seatApply.findMany({ where: { roomId: BigInt(roomId), status }, orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] });
+    return rows.map((r) => this.toApplyRow(r));
+  }
+  async countApplies(roomId: string, status: number): Promise<number> {
+    return prisma.seatApply.count({ where: { roomId: BigInt(roomId), status } });
+  }
+  // Status-guarded flip (exactly-once): only the caller who finds it still at `fromStatus` wins.
+  async resolveApply(id: string, fromStatus: number, toStatus: number, resolvedById: string | null): Promise<{ count: number }> {
+    const res = await prisma.seatApply.updateMany({
+      where: { id: BigInt(id), status: fromStatus },
+      data: { status: toStatus, resolvedById: resolvedById ? BigInt(resolvedById) : null },
+    });
+    return { count: res.count };
   }
 
   async getRoomState(roomId: string): Promise<RoomState | null> {
@@ -79,6 +152,7 @@ export class PrismaRoomRepo implements RoomRepo {
       state: s.state as SeatState,
       micMuted: s.micMuted,
       micMutedByAdmin: s.micMutedByAdmin,
+      charm: Number(s.charmCounter), // F3: read-only parity surface (Seat.charmCounter; 0 today)
     }));
     return { ownerId: String(room.ownerId), roles, seats: mapped };
   }

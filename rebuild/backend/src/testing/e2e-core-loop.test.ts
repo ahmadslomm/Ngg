@@ -131,6 +131,26 @@ describe('T1.17 core-loop e2e smoke', () => {
     expect(gifts[0].data.recipientIds).toContain(guest.uid);
     expect(gifts[0].data.totalCoins).toBe('200');
 
+    // === Assert 4 (F3): the additive charm.updated fires for the recipient, in-room ===
+    // charm gained = unitPrice(100) × qty(2) × CHARM_PER_COIN(1) = 200 for the single recipient.
+    const charm = received.filter((e) => e.ev === 'charm.updated');
+    expect(charm.length).toBeGreaterThanOrEqual(1);
+    const forGuest = charm.find((e) => e.data.userId === guest.uid);
+    expect(forGuest).toBeTruthy();
+    expect(forGuest.room).toBe(`room:${roomId}`);
+    expect(forGuest.data.roomId).toBe(String(roomId));
+    expect(forGuest.data.charm).toBe(200);
+
+    // === Assert 5 (F7): the additive room.rank fires with the sender as top contributor ===
+    // The host spent 200 coins in this room → they are rank 1 in the daily contribution board.
+    const rank = received.filter((e) => e.ev === 'room.rank');
+    expect(rank.length).toBeGreaterThanOrEqual(1);
+    const rr = rank.at(-1)!;
+    expect(rr.room).toBe(`room:${roomId}`);
+    expect(rr.data.roomId).toBe(String(roomId));
+    expect(rr.data.period).toBe(0); // day
+    expect(rr.data.top[0]).toMatchObject({ uid: host.uid, contribution: '200', rank: 1 });
+
     client.close();
   });
 });

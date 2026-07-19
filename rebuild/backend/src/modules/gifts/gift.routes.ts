@@ -2,7 +2,12 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { sendGift, listGiftCatalogue, listGiftCatalogueGrouped, AppError } from './gift.service.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
-import { rankingService, Board } from '../ranking/ranking.service.js';
+import { charmUpdated, roomRankEvent } from '../rooms/room.events.js';
+import { rankingService, Board, Period } from '../ranking/ranking.service.js';
+
+// F7: how many top contributors the room.rank push carries (kept small — the WS payload is light;
+// clients pull the full list from GET /rooms/:id/rank).
+const ROOM_RANK_EVENT_TOP = 3;
 import { coupleService } from '../couple/couple.service.js';
 import { bumpCombo, addRocketProgress, addBombPool } from './gift-effects.service.js';
 import { medalService, MEDAL_CODES } from '../medals/medal.service.js';
@@ -77,6 +82,21 @@ export async function giftRoutes(app: FastifyInstance) {
         const roomChan = `room:${body.room_id}`;
         rankingService.addScore(Board.Room, body.room_id, total).catch(() => {});
         emitRoomEvent(roomChan, { ev: 'rank.update', data: { boards: [Board.Charm, Board.Wealthy, Board.Room, Board.Gift] } });
+        // F7 (P1): push the room's fresh top contributors (daily). Best-effort + async: the cache-aside
+        // read keeps this cheap under rapid gifting, and a failure never blocks the gift response.
+        // Additive — the payload-less rank.update above is unchanged.
+        rankingService.roomContribution(body.room_id, Period.Day, ROOM_RANK_EVENT_TOP)
+          .then((top) => emitRoomEvent(roomChan, roomRankEvent({
+            roomId: String(body.room_id), period: Period.Day, ts: Date.now(),
+            top: top.map((e) => ({ uid: e.subjectId, contribution: e.contribution, rank: e.rank })),
+          })))
+          .catch(() => {});
+        // F3 (P1): additive charm.updated per recipient — the charm each just gained (⇐ the existing
+        // Profile.charmExp mutation; `perRecipient` is that delta since CHARM_PER_COIN=1). Wired at the
+        // existing emit seam; no new economy logic, no room-module coupling beyond the pure builder.
+        for (const rid of body.recipient_ids) {
+          emitRoomEvent(roomChan, charmUpdated({ roomId: String(body.room_id), userId: String(rid), charm: perRecipient }));
+        }
         bumpCombo(senderId, body.gift_id, body.room_id).then((c) => {
           if (c.count >= 2) emitRoomEvent(roomChan, { ev: 'gift.combo', data: { senderId: String(senderId), giftId: String(body.gift_id), combo: c.count, comboId: c.comboId } });
         }).catch(() => {});

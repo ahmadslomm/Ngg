@@ -125,6 +125,19 @@ export class AdminService {
   }
   moderationLogs(opts: { page: number; pageSize: number }) { return moderationService.logs(opts); }
 
+  // ----- room system message (F8) -----
+  // Broadcast a room-scoped system notice (⇐ old opcode 13000 onSystemMsg). Platform-admin only.
+  // TRANSIENT: nothing is persisted as a message (no new message store) — only the existing AuditLog
+  // records that the broadcast happened. Returns the payload for the controller to emit, keeping the
+  // service transport-free (the controller owns the realtime emit, per the module convention).
+  async sendRoomSystemMessage(adminId: bigint, roomId: bigint, text: string, kind: 'notice' | 'warning' | 'announcement') {
+    await requirePlatformAdmin(adminId);
+    const room = await adminRepo.findRoomById(roomId);
+    if (!room) throw new AppError('room_not_found', 404);
+    await audit(adminId, 'room.system_message', 'room', roomId, null, { kind, text });
+    return { roomId: String(roomId), text, kind, ts: Date.now() };
+  }
+
   // ----- announcements -----
   listAnnouncements() { return adminRepo.listAnnouncements(); }
   async createAnnouncement(adminId: bigint, data: { title: string; body: string; audience?: string }) {
