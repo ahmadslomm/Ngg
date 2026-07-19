@@ -4,8 +4,8 @@
 module code is written.
 **Audience:** engineers building/operating the product backend.
 **One-line framing:** this is no longer a reverse-engineering project. The product backend is a
-first-class, horizontally-scalable service. The `upstream/zaffa` SDK is demoted to **infrastructure**
-(migration / verification only) and never sits in a user request path.
+first-class, horizontally-scalable service with **zero runtime dependency** on the old ZaffaLive
+backend — the outbound legacy SDK has been removed entirely (see §7).
 
 ---
 
@@ -246,18 +246,18 @@ Each module follows the canonical layering (§3). "Owns" = the Prisma models it 
 - **Depends on:** Wallet (fulfillment), provider adapters in `integrations/payments/*`.
 - **Tests:** verify-and-fulfill idempotency, replayed webhook, refund. **Δ full module.**
 
-## 7. The upstream SDK boundary (infrastructure-only)
+## 7. Legacy independence — no outbound legacy client (Phase X / Track A)
 
-- The SDK (`src/upstream/zaffa/**`) stays exactly as reviewed. It is **read-only** and **not** part of
-  serving the app.
-- **Allowed importers:** `src/integrations/**` (a thin migration/verification service) and
-  `src/workers/**` (batch jobs). **Forbidden importers:** any `modules/**/routes.ts` (controllers) and
-  any user-facing service.
-- **Enforcement:** an ESLint `no-restricted-imports` (or dependency-cruiser) boundary rule fails CI if
-  a controller/user-service imports `upstream/zaffa`. Documented in the module README + reviewed.
-- **Uses:** (1) one-off data migration (pull legacy user/economy data → our DB), (2) offline parity
-  checks comparing our responses to legacy captures. Both are worker/admin-triggered, never in a
-  request path.
+- The old ZaffaLive backend is **permanently removed**. The outbound migration SDK that used to live at
+  `src/upstream/**` has been **deleted** (it was dead code: never imported by any request path, worker,
+  or seed). The backend has **zero runtime dependency** on the old server.
+- **Enforcement:** `src/architecture.boundaries.test.ts` Rule 1 fails CI if (a) an `src/upstream/**`
+  directory reappears, (b) any file imports an `upstream/` path, or (c) any source file references a
+  legacy API host/domain/gateway (`zaffalive.com`, `api.zaffa*`, `act.zaffa*`, `/index.php`).
+- **Historical parity captures** (the legacy action catalog, response snapshots) live outside `src/`
+  as data/tooling only — see `LEGACY_DEPENDENCY_REPORT.md` and `LEGACY_REMOVAL_REPORT.md`. If a one-off
+  legacy read is ever needed again, it belongs in a **separate tool package excluded from the build**,
+  never back inside `src/`.
 
 ## 8. Data-model ownership
 
@@ -318,8 +318,7 @@ src/
   modules/<name>/           # canonical module (controller/service/repo/dto/schema/events/tests)
   realtime/                 # Socket.io gateway + handlers (consume events, push to rooms)
   queue/  workers/          # BullMQ queues + job processors
-  integrations/             # OUTBOUND adapters (payment providers, upstream/zaffa migration client)
-  upstream/zaffa/           # the SDK — infrastructure only (see §7)
+  integrations/             # OUTBOUND adapters (payment providers) — NO legacy client (see §7)
   testing/                  # shared test harness (DB reset, fixtures, auth helpers)
 prisma/                     # schema + migrations + seed
 ```

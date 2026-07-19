@@ -1,15 +1,16 @@
 // Architecture boundary enforcement (runs in CI via vitest — no ESLint dependency).
 //
 // Rules:
-//   1. The upstream ZaffaLive SDK is INFRASTRUCTURE. It may be imported only from `integrations/**`
-//      and `workers/**` — never from a controller, service, or the SDK-external app. (Strict: 0.)
+//   1. LEGACY INDEPENDENCE (Phase X / Track A). The old ZaffaLive backend is permanently removed:
+//      its outbound SDK (`src/upstream/**`) must NOT exist, must never be imported, and no legacy
+//      API host/domain or gateway path may be referenced anywhere in `src`. (Strict: 0.)
 //   2. Prisma clients are constructed ONLY in `lib/db.ts`. (Strict: 0.)
 //   3. The prisma client (`lib/prisma` / `lib/db`) is imported only by Repositories (and db/testing/
 //      workers). Existing violations are tracked in DEBT (the migration ledger) and must not GROW;
 //      when a module is refactored onto a Repository, its entry is removed from DEBT (no stale
 //      entries allowed — keeps the ledger honest as phases 1–3 burn it down).
 import { describe, it, expect } from 'vitest';
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const SRC = join(process.cwd(), 'src');
@@ -35,17 +36,29 @@ function importsOf(rel: string): string[] {
   return specs;
 }
 
-// --- Rule 1: upstream SDK boundary -----------------------------------------------------------
-describe('boundary: upstream SDK is infrastructure-only', () => {
-  const violations = files.filter(
-    (f) =>
-      !f.startsWith('upstream/') && // the SDK itself
-      !f.startsWith('integrations/') && // allowed consumer
-      !f.startsWith('workers/') && // allowed consumer
-      importsOf(f).some((s) => s.includes('upstream/zaffa')),
-  );
-  it('is never imported by controllers/services (only integrations/ + workers/)', () => {
-    expect(violations).toEqual([]);
+// --- Rule 1: legacy independence — the old ZaffaLive backend is permanently removed -----------
+// The dead outbound SDK was deleted in Phase X / Track A. These guards make its return fail CI:
+// the SDK directory must not exist, nothing may import it, and no legacy host/domain/gateway path
+// may appear in source. This guard file is the ONLY place those needles legitimately appear, so it
+// excludes itself from the content scan.
+describe('boundary: legacy ZaffaLive backend is permanently removed', () => {
+  const GUARD = 'architecture.boundaries.test.ts';
+  const scanned = files.filter((f) => f !== GUARD);
+
+  it('the legacy upstream SDK directory does not exist', () => {
+    expect(existsSync(join(SRC, 'upstream'))).toBe(false);
+  });
+
+  it('no source file imports the legacy SDK path', () => {
+    const importers = scanned.filter((f) => importsOf(f).some((s) => /(^|\/)upstream\//.test(s)));
+    expect(importers).toEqual([]);
+  });
+
+  it('no source file references a legacy API host, domain, or gateway path', () => {
+    // Any live call to the old backend must name one of these; forbidding them keeps egress dead.
+    const LEGACY = [/zaffalive\.com/i, /api\.zaffa\b/i, /act\.zaffa\b/i, /\/index\.php/i];
+    const offenders = scanned.filter((f) => LEGACY.some((re) => re.test(readSrc(f))));
+    expect(offenders).toEqual([]);
   });
 });
 

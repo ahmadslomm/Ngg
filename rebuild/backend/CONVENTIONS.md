@@ -57,8 +57,8 @@ Controller (routes.ts) → Service (service.ts) → Repository (repo.ts) → DB
 
 ## Enforced boundaries (`src/architecture.boundaries.test.ts`, CI)
 
-1. **Upstream SDK is infrastructure** — importable only from `integrations/**` and `workers/**`
-   (never a controller/service). Strict.
+1. **Legacy independence** — the old ZaffaLive SDK is removed; no `src/upstream/**`, no `upstream/`
+   import, and no legacy host/domain (`zaffalive.com`, `/index.php`, …) may appear in `src`. Strict.
 2. **PrismaClient constructed only in `lib/db.ts`.** Strict.
 3. **Prisma imported only by Repositories** (+ db/testing/workers). Existing offenders are tracked in
    a **DEBT ledger** that must only shrink; refactoring a module onto a Repository removes its entry.
