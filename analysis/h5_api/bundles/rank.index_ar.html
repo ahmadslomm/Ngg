@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="format-detection" content="telephone=no">
+		<meta http-eouiv="Cache-Control" content="no-cache, must-revalidate">
+		<title>مستوى الحميمية</title>
+		<link rel="stylesheet" type="text/css" href="./css/base.css">
+		<link rel="stylesheet" type="text/css" href="./css/index.css?v=1.4">
+		<script type="text/javascript" src="./js/font.js"></script>
+        <style>
+            body{
+                direction: rtl;
+			}
+        </style>
+	</head>
+	<body>
+		<div id="app">
+			<div id="main">
+				<div class="container">
+					<div class="top">
+						<p class="relation"></p>
+						<div class="pic">
+							<img class="img1" src="./img/comp_xin0.png" >
+							<img class="img2" src="./img/comp_xin0.png" >
+							<img class="img3" src="./img/comp_xin0.png" >
+						</div>
+						<p class="score">قيمة العلاقة الحميمة:<span>0</span></p>
+					</div>
+					<div class="rank_box">
+						<ul class="clearfix">
+
+						</ul>
+					</div>
+					<div class="tips">
+						<p>كيفية زيادة قيمة العلاقة الحميمة</p>
+						<div class="sec">
+							<p>أرسل رسالة لبعضكما البعض</p>
+							<ul>
+								<li>1. في كل ساعة ، أول 100 مرة للتفاعل ، في كل مرة +3 قيمة العلاقة الحميمة</li>
+								<li>2. كل ساعة ، التفاعل اللاحق ، +1 قيمة العلاقة الحميمة في كل مرة</li>
+								<li>يتم احتساب الوقت على أساس الفترة الزمنية للساعة بأكملها</li>
+							</ul>
+						</div>
+						<div class="sec">
+							<p style="padding-top: 0.8rem;">امنح الهدايا</p>
+							<ul>
+								<li>أعط هدية واحدة من الفاصوليا = +1 قيمة العلاقة الحميمة</li>
+								<li>أعط هدية عملة ذهبية واحدة = +10 قيمة العلاقة الحميمة</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <script type="text/javascript" src="./js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="./js/template-web.js"></script>
+    <script type="text/javascript" src="./js/index.js?v=1.6"></script> -->
+		<script type="text/javascript">
+			function GetQueryString(name){
+				var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)','i');
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null){
+						return decodeURIComponent(r[2]);
+				}else{
+						return null;
+				}
+			}
+			var score = GetQueryString('score');
+			var relation = document.querySelector('.relation');
+			var myscore = document.querySelector('.score span');
+			var img1 = document.querySelector('.img1');
+			var img2 = document.querySelector('.img2');
+			var img3 = document.querySelector('.img3');
+			//score = 300;
+			myscore.innerHTML = score;
+			
+			var step = -1;
+			var arr = [0,8000,50000,250000,700000,3000000,5000000,9999999];
+			for (var i =0; i<arr.length;i++) {
+				if (score>arr[i]) {
+					step++;
+				} else {
+					break;
+				}
+			}
+
+			var mid = arr[step+1]-arr[step];
+
+			var g=0,s=0;
+			var t = ((score-arr[step])/mid)*100;
+
+			s=Math.floor(((t/(100/30))/10));
+
+			g=parseInt((t/(100/30))%10);
+			
+			if(s==0){
+				img1.src='./img/comp_xin'+(g+1)+'.gif';
+			}
+			if(s==1){
+				img1.src='./img/comp_xin10.gif';
+				img2.src='./img/comp_xin'+(g+1)+'.gif';
+			}
+			if(s==2){
+				img1.src='./img/comp_xin10.gif';
+				img2.src='./img/comp_xin10.gif';
+				img3.src='./img/comp_xin'+(g+1)+'.gif';
+			}
+			if(s==3){
+				img1.src='./img/comp_xin10.gif';
+				img2.src='./img/comp_xin10.gif';
+				img3.src='./img/comp_xin10.gif';
+			}
+			if(score<8000){
+				relation.innerHTML = 'لا يوجد مستوى بعد';
+			}
+			if(score>=8000&&score<50000){
+				relation.innerHTML = 'معارف عامة،';
+			}
+			if(score>=50000&&score<250000){
+				relation.innerHTML = 'متشابهين في التفكير ،';
+			}
+			if(score>=250000&&score<700000){
+				relation.innerHTML = 'الصحبة على طول ليلا ونهارا ،';
+			}
+			if(score>=700000&&score<3000000){
+				relation.innerHTML = 'في السراء والضراء'،';
+\			}
+			if(score>=3000000&&score<5000000){
+				relation.innerHTML = 'مشاعر الأخوة ،';
+			}
+			if(score>=5000000&&score<9999999){
+				relation.innerHTML = 'متشابهين في القلب ،';
+			}
+			if(score>=9999999){
+				relation.innerHTML = 'حبيب الروح'،';
+			}
+			var nameArr = [
+				'لا يوجد مستوى بعد',
+				'معارف عامة،',
+				'متشابهين في التفكير ،',
+				'الصحبة على طول ليلا ونهارا ،',
+				'في السراء والضراء\'،',
+				'مشاعر الأخوة ،',
+				'متشابهين في القلب ،',
+				'حبيب الروح'،',
+			]
+			var socreArr = [0,8000,50000,250000,700000,3000000,5000000,9999999];
+			var html = '';
+			for (var i = 0; i < 8; i++) {
+					html +=
+						'<li>' +
+						'<img src="./img/i' + (i + 1) + '.png" alt="">' +
+						'<p>' + nameArr[i] + '</p>' +
+						'<p>قيمة العلاقة الحميمة:' + socreArr[i] + '</p>' +
+						'</li>'
+			}
+			document.querySelector('.rank_box ul').innerHTML = html;
+			
+		</script>
+	</body>
+</html>

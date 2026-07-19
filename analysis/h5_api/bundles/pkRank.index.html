@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title></title>
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    var size = 100 * (Math.min(clientWidth, 750) / 750);
+                    docEl.style.fontSize = size + 'px';
+                };
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+    </script>
+    <!-- <script src="/js/env.js"></script> -->
+    <!-- <script src="/js/miyouCallApp.js"></script> -->
+    <script src="//ufile.sodfachat.com/js/axios.min.js"></script>
+    <script src="//ufile.sodfachat.com/js/vue.runtime.min.js"></script>
+    <script src="//ufile.sodfachat.com/js/vuex.min.js"></script>
+    <script src="//ufile.sodfachat.com/js/vue-router.min.js"></script>
+    <script src="//ufile.sodfachat.com/js/vue-lazyload.js"></script>
+    <script src="//ufile.sodfachat.com/js/svga.lite.min.js"></script>
+    <script>_hash={"arcss":"74d2b9ed","arjs":"2ffb914b","encss":"2e045929","enjs":"8642bf59","escss":"3f699b27","esjs":"bbd353a2","idcss":"b55e2331","idjs":"4d00cedb","ptcss":"3faddde3","ptjs":"b12124bc","trcss":"1afb7b48","trjs":"839037f7","vendorcss":"c71a441d","vendorjs":"08338200"};</script>
+    <!-- <script type="module">
+        import * as callApps from "/js/miyouCallApp.js";
+        window._callApp = callApps
+    </script> -->
+<link href="css/vendor.css?c71a441d" rel="stylesheet"><link href="css/app.css?2c5d9dff" rel="stylesheet"></head>
+<body>
+    <div id="app"></div>
+<script>/*!
+ * Created by Guohui
+ * User: webflash2007@gmail.com
+ * Version: 1.0.0
+ */!function(e){function r(r){for(var n,l,i=r[0],f=r[1],a=r[2],c=0,s=[];c<i.length;c++)l=i[c],Object.prototype.hasOwnProperty.call(o,l)&&o[l]&&s.push(o[l][0]),o[l]=0;for(n in f)Object.prototype.hasOwnProperty.call(f,n)&&(e[n]=f[n]);for(p&&p(r);s.length;)s.shift()();return u.push.apply(u,a||[]),t()}function t(){for(var e,r=0;r<u.length;r++){for(var t=u[r],n=!0,i=1;i<t.length;i++){var f=t[i];0!==o[f]&&(n=!1)}n&&(u.splice(r--,1),e=l(l.s=t[0]))}return e}var n={},o={runtime:0},u=[];function l(r){if(n[r])return n[r].exports;var t=n[r]={i:r,l:!1,exports:{}};return e[r].call(t.exports,t,t.exports,l),t.l=!0,t.exports}l.m=e,l.c=n,l.d=function(e,r,t){l.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},l.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},l.t=function(e,r){if(1&r&&(e=l(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var t=Object.create(null);if(l.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var n in e)l.d(t,n,function(r){return e[r]}.bind(null,n));return t},l.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return l.d(r,"a",r),r},l.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},l.p="";var i=window.webpackJsonp=window.webpackJsonp||[],f=i.push.bind(i);i.push=r,i=i.slice();for(var a=0;a<i.length;a++)r(i[a]);var p=f;t()}([]);</script><script>/*!
+ * Created by Guohui
+ * User: webflash2007@gmail.com
+ * Version: 1.0.0
+ */
+(window.webpackJsonp=window.webpackJsonp||[]).push([["local"],{KrUS:function(t,e,n){const o=location.host;function s(t){const e={};return window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,(t,n,o)=>{e[n]=o}),t&&void 0!==e[t]?decodeURIComponent(e[t]):null}window.__area={TW:"tw",VI:"vi",VN:"vn",ID:"id",AR:"ar",IN:"in",TR:"tr"};const i=/localhost/i.test(o)||/\d+\.\d+\.\d+\.\d+/.test(o),a=/^t(est)?\./i.test(o),c=null!==s("test");window._test=i||a||c,window._localTest=i,window._platform=function(){let t="pc";const e=navigator.userAgent;return e.match(/iPhone|iPod|ios|iPad/i)?t="ios":e.match(/Android/i)&&(t="android"),t}(),window._app="taman",window._area="tw";let d=["en","id","ar","es","pt","tr"];const l=function(){const t=o.split("."),e=t.length;return e>=2&&!/:\d+$/.test(o)?(t[e-2]+"."+t[e-1]).toLowerCase():o}();if("undefined"!=typeof hosts){const t=hosts[l]||hosts[btoa(l)]||"";if(t){const e=t.split(",");3==e.length&&-1!=d.indexOf(e[2])&&(_app=e[0],_area=e[1],d=[e[2]].concat(d))}}void 0!==window._env&&(_env=Object.assign({},_env),_env.app&&(_app=_env.app),_env.area&&(_area=_env.area),_env.lang&&(d=[_env.lang].concat(d)),void 0!==_env.test&&(_test=_env.test));let r=d[0];const p=s("lang").replace("in","id")||navigator.language||"",w=p.toLowerCase(),_=w.split("-"),u=-1!=d.indexOf(w),h=-1!=d.indexOf(_[0]);(u||h)&&(r=p),window.__lang=r;const m=u?w:h?_[0]:d[0];window._local=m,window._host=l;let v="",g="";if("undefined"!=typeof _hash){const t=m+"css";void 0!==_hash[t]&&(v="?"+_hash[t]),g="?"+_hash[m+"js"]}const f=document.documentElement;if(f.className=f.className?f.className+" "+m:m,v){const t=document.createElement("link");t.href=`css/${m}.css${v}`,t.rel="stylesheet",document.getElementsByTagName("head")[0].appendChild(t)}document.write(`<script type="text/javascript" src="js/${m}.js${g}"><\/script>`),window._debug=null!==s("debug"),_debug&&(document.write('<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"><\/script>'),document.write("<script>new VConsole()<\/script>"))}},[["KrUS","runtime"]]]);</script><script src="js/vendor.js?08338200"></script><script src="js/app.js?950cd208"></script></body>
+</html>

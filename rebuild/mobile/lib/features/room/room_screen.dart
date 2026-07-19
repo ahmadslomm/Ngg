@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/media/image_upload_service.dart';
+import '../../core/providers.dart';
 import '../../core/session.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
@@ -16,6 +18,7 @@ import 'models/room_models.dart';
 import 'models/room_theme_config.dart';
 import 'room_decoration_mapper.dart';
 import 'room_providers.dart';
+import 'room_repository.dart';
 import 'seat_layout.dart';
 import 'widgets/room_backdrop.dart';
 import 'widgets/room_background.dart';
@@ -47,11 +50,35 @@ class RoomScreen extends ConsumerWidget {
   /// controller/state themselves are never touched.
   final RoomDisplay? displayOverride;
 
+  /// Owner-only: pick a gallery image, upload to R2 (kind=room), persist via POST /rooms/:id/cover,
+  /// then refresh room meta so the background updates immediately. Cancel is silent; failures toast.
+  Future<void> _changeCover(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final result = await ref.read(imageUploadServiceProvider).pickAndUpload(kind: 'room');
+    switch (result) {
+      case ImageUploadCancelled():
+        return;
+      case ImageUploadFailure(:final message):
+        messenger.showSnackBar(SnackBar(content: Text(message)));
+      case ImageUploadSuccess(:final url):
+        try {
+          await RoomRepository(ref.read(apiClientProvider)).setCover(roomId, url);
+          ref.invalidate(roomMetaProvider(roomId)); // background refreshes without a restart
+          messenger.showSnackBar(const SnackBar(content: Text('Room cover updated')));
+        } catch (_) {
+          messenger.showSnackBar(const SnackBar(content: Text('Could not update room cover')));
+        }
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(roomControllerProvider(roomId));
     final controller = ref.read(roomControllerProvider(roomId).notifier);
     final myUid = ref.watch(sessionProvider)?.uid ?? '';
+    // Owner detection (live path only) — enables the header's change-cover control.
+    final roomMeta = displayOverride == null ? ref.watch(roomMetaProvider(roomId)).valueOrNull : null;
+    final isOwner = myUid.isNotEmpty && roomMeta?.ownerId == myUid;
 
     // Decoration channel — separate from the controller/state (see roomDisplayProvider).
     final RoomDisplay display = displayOverride ?? ref.watch(roomDisplayProvider(roomId));
@@ -101,6 +128,7 @@ class RoomScreen extends ConsumerWidget {
                       await controller.leaveRoom();
                       if (context.mounted) Navigator.of(context).maybePop();
                     },
+                    onChangeCover: isOwner ? () => _changeCover(context, ref) : null,
                   ),
                   if (state.error != null)
                     Container(

@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 import '../../../core/assets/app_assets.dart';
+import '../../../core/assets/asset_view.dart';
 
-/// Full-bleed room backdrop: the recovered "ZAFFA" throne background under a
-/// top-to-bottom scrim that keeps seats and chat legible over the ornate art.
+/// Full-bleed room backdrop: the room's own theme skin when the server sent one, else the
+/// recovered "ZAFFA" throne background, under a top-to-bottom scrim that keeps seats and chat
+/// legible over the ornate art.
 ///
-/// The original binds a room's background at runtime (`room.backgroundUrl` /
-/// theme); this uses the purple pack member as the brand default (see
-/// ORIGINAL_ROOM_FORENSIC_EVIDENCE.md §4/§6).
+/// R2.5 wired [skinUrl] — the real `RoomTheme.skinUrl` the backend has always served and the
+/// client used to ignore. It goes through [AssetView] so a themed room can ship a static skin or
+/// an animated one without this widget caring which (see ORIGINAL_ROOM_FORENSIC_EVIDENCE.md §4/§6).
 class RoomBackground extends StatelessWidget {
-  const RoomBackground({super.key, required this.child});
+  const RoomBackground({super.key, required this.child, this.skinUrl});
+
   final Widget child;
+
+  /// `RoomTheme.skinUrl` for this room's theme. Null/blank → the bundled default.
+  final String? skinUrl;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(AppAssets.roomBgDefault, fit: BoxFit.cover),
+        AssetView.resolve(
+          remoteUrl: skinUrl,
+          fallbackIds: const ['room.room_bg_default'],
+          fit: BoxFit.cover,
+          fallback: Image.asset(AppAssets.roomBgDefault, fit: BoxFit.cover),
+        ),
         // Scrim: darken top (header) and bottom (controls/chat) for contrast.
         const DecoratedBox(
           decoration: BoxDecoration(

@@ -12,6 +12,15 @@ class AppConfig {
   static const String signSecret =
       String.fromEnvironment('VOXA_SIGN_SECRET', defaultValue: 'dev-secret');
 
+  /// Google Sign-In OAuth **Web** client id (client_type 3 in google-services.json). Passed to
+  /// `google_sign_in` as `serverClientId` so the returned ID token's audience matches what the
+  /// backend verifies. This value is public (it ships in google-services.json), so a default is
+  /// fine; override per build with `--dart-define=VOXA_GOOGLE_SERVER_CLIENT_ID=...`.
+  static const String googleServerClientId = String.fromEnvironment(
+    'VOXA_GOOGLE_SERVER_CLIENT_ID',
+    defaultValue: '449857729413-u9rmi422cv2igs67gkhi9b14kcpq26mt.apps.googleusercontent.com',
+  );
+
   /// Whether media uploads go through the backend's presigned-R2 path (real uploader).
   /// Off by default so dev/test builds keep using the offline placeholder uploader; set
   /// `--dart-define=VOXA_UPLOADS=true` for a build whose backend has R2 provisioned.

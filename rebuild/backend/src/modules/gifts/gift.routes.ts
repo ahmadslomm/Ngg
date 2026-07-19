@@ -1,6 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { sendGift, listGiftCatalogue, listGiftCatalogueGrouped, AppError } from './gift.service.js';
+import { sendGift, listGiftCatalogue, listGiftCatalogueGrouped, giftWall, AppError } from './gift.service.js';
+import { ok, serialize, pageArgs } from '../../lib/errors.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
 import { charmUpdated, roomRankEvent } from '../rooms/room.events.js';
 import { rankingService, Board, Period } from '../ranking/ranking.service.js';
@@ -40,6 +41,21 @@ export async function giftRoutes(app: FastifyInstance) {
     }
     const items = await listGiftCatalogue(opts);
     return { code: 0, message: 'ok', data: { items } };
+  });
+
+  // P4a — gift wall for a user (⇐ legacy `room.giftWallList`: USER-scoped, `uid` + `page`; it
+  // carries no `rid`, so no room-scoped variant is implemented). Read-only, newest first, one row
+  // per transaction. Owned by the gifts module (it owns GiftTransaction) though the path is
+  // user-namespaced — same pattern as P3a's /users/:id/couple living in the couple module.
+  app.get('/users/:id/gift-wall', { preHandler: [app.authenticate] }, async (req, reply) => {
+    try {
+      const { id } = z.object({ id: z.coerce.bigint() }).parse(req.params);
+      const { page, pageSize } = pageArgs(req.query);
+      return ok(serialize(await giftWall(id, page, pageSize)));
+    } catch (e) {
+      if (e instanceof AppError) return reply.code(400).send({ code: 4001, message: e.code });
+      throw e;
+    }
   });
 
   // Send — authenticated, idempotent, server-priced.

@@ -9,8 +9,14 @@ import { medalService } from '../medals/medal.service.js';
 import { vipService } from '../vip/vip.service.js';
 import { emitToUser } from '../../realtime/gateway.js';
 import { usersRepo } from './users.repo.js';
+import { levelService } from './level.service.js';
 
 const FOLLOW = 1;
+// P4a friend-card enrichment: mirror the owning modules' enum values (CoupleStatus.Active,
+// BanScope.Account) as local constants so this module reads their tables without importing
+// their services — the reads are batched in UsersRepository.
+const COUPLE_ACTIVE = 1;
+const BAN_SCOPE_ACCOUNT = 0;
 
 export interface ProfilePatch {
   nick?: string;
@@ -223,7 +229,73 @@ export class UsersService {
     if (targetIds.length === 0) return [];
     const back = await usersRepo.listBackFollowerIds(targetIds, userId, FOLLOW);
     const friendIds = back.map((r) => r.userId).slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return this.hydrate(friendIds, userId);
+    const cards = await this.hydrate(friendIds, userId);
+    return this.enrichFriendCards(cards, friendIds);
+  }
+
+  /**
+   * P4a — friend-card enrichment (⇐ legacy `user.getFriendList`, captured as
+   * `{ uid, nick, avatar, sign, symbol, tag, in_room, online, isBanned, cp_name }`).
+   * Applied ONLY to the friends list — `hydrate` itself is untouched, so the followers/following
+   * contracts are unchanged. Every added field has a real native source, batched (no N+1):
+   *   in_room  ⇐ RoomMember          · cp_name  ⇐ active Couple partner's nick
+   *   is_banned ⇐ active account Ban · online   ⇐ SEE THE CAVEAT BELOW
+   *
+   * `online` CAVEAT: there is no global session presence in this backend — presence is recorded
+   * per room (`room:{id}:presence`) only. So `online` here means exactly "currently present in a
+   * room" (`in_room !== null`), which is NARROWER than the legacy field. It is derived, not
+   * invented: no new presence system was added. `symbol` and `tag` are omitted entirely — their
+   * meaning was never captured and they have no native source.
+   */
+  private async enrichFriendCards(cards: Array<Record<string, unknown>>, friendIds: bigint[]) {
+    if (cards.length === 0) return cards;
+    const [rooms, couples, bans] = await Promise.all([
+      usersRepo.findCurrentRoomsOf(friendIds),
+      usersRepo.findActiveCouplesOf(friendIds, COUPLE_ACTIVE),
+      usersRepo.findActiveAccountBansOf(friendIds, BAN_SCOPE_ACCOUNT, new Date()),
+    ]);
+    // Most recent membership wins when a user somehow holds more than one.
+    const roomOf = new Map<string, string>();
+    for (const r of rooms) if (!roomOf.has(String(r.userId))) roomOf.set(String(r.userId), String(r.roomId));
+    const bannedSet = new Set(bans.map((b) => String(b.userId)));
+    // Resolve each friend's partner id, then batch the partner nicks in one more query.
+    const partnerOf = new Map<string, bigint>();
+    for (const c of couples) {
+      const a = String(c.aUserId), b = String(c.bUserId);
+      if (friendIds.some((f) => String(f) === a)) partnerOf.set(a, c.bUserId);
+      if (friendIds.some((f) => String(f) === b)) partnerOf.set(b, c.aUserId);
+    }
+    const partnerProfiles = await usersRepo.findProfilesByIds([...new Set(partnerOf.values())]);
+    const nickOf = new Map(partnerProfiles.map((p) => [String(p.userId), p.nick]));
+
+    return cards.map((c) => {
+      const uid = String(c.uid);
+      const inRoom = roomOf.get(uid) ?? null;
+      const partnerId = partnerOf.get(uid);
+      return {
+        ...c,
+        in_room: inRoom,
+        online: inRoom !== null, // room presence only — see the caveat above
+        is_banned: bannedSet.has(uid),
+        cp_name: partnerId != null ? nickOf.get(String(partnerId)) ?? null : null,
+      };
+    });
+  }
+
+  /**
+   * P4a — charm/wealth ladder progress (⇐ legacy `user.getWealthCfg`). Reads only Profile exp +
+   * LevelConfig through the existing resolver. Charm mirrors wealth by symmetry: `MyLevel.levelInfo`
+   * confirms a Charm axis exists and `Profile.charmExp` + LevelConfig kind 0 are already stored,
+   * though only wealth's field names were captured. The `Active` and `Game` axes from that capture
+   * are NOT built — no native columns exist and inventing them is out of scope.
+   */
+  async getLevels(userId: bigint) {
+    const p = await this.requireProfile(userId);
+    const [charm, wealth] = await Promise.all([
+      levelService.resolveProgress(levelService.LEVEL_KIND.CHARM, p.charmExp),
+      levelService.resolveProgress(levelService.LEVEL_KIND.WEALTH, p.wealthExp),
+    ]);
+    return { uid: String(userId), charm, wealth };
   }
 }
 

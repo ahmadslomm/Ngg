@@ -7,6 +7,11 @@
 /// restored and bundled but need the native `libpag` runtime to animate; the
 /// five animated tab icons are `.pag`, so the tab bar falls back to their
 /// static brand form until libpag is wired (see VISUAL_DIFFERENCE_REPORT.md).
+/// > **R2 note.** This class predates the Asset Registry and remains the typed accessor for the
+/// > ~38 paths that widgets already reference. New code should go through
+/// > `AssetRegistry` / `AssetView` instead. The 20 members below carrying `@Deprecated` are the
+/// > ones no widget ever read; they are ISOLATED rather than deleted (the art itself is live in
+/// > the registry) so nothing previously shipped is removed.
 class AppAssets {
   AppAssets._();
 
@@ -25,8 +30,11 @@ class AppAssets {
   static const seatEmptyGoldRing = 'assets/images/room/seats/seat_empty_goldring.png'; // gold double-ring + armchair
   static const roomEntry = '$_svga/kroom/waitio_jinchang.svga'; // 入场 entry effect
   static const seatSpeaking = '$_svga/yinbo/waitio_self_voice.svga'; // speaking voice wave
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `cp.cp_in_seat` via AssetView')
   static const cpSeat = '$_svga/kroom/waitio_cp_in_seat.svga';
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `misc.common_loading` via AssetView')
   static const loadingPag = '$_pag/loading/waitio_common_loading.pag';
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `home.main_top_bg` via AssetView')
   static const mainTopBgPag = '$_pag/main/waitio_main_top_bg.pag';
 
   // VIP-tier animated avatar FRAME (userspace/waitio_vip{level}.pag), keyed to the REAL `vip_level`.
@@ -39,10 +47,13 @@ class AppAssets {
   // a distinct ring; lower/none fall back to [yinboDef]. Evidence: ORIGINAL_ROOM_FORENSIC_EVIDENCE.md.
   static String? yinboVipPag(int level) =>
       (level >= 7 && level <= 15) ? '$_pag/yinbo/waitio_yinbo_vip$level.pag' : null;
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `seat.yinbo_def` via AssetView')
   static const yinboDef = '$_pag/yinbo/waitio_yinbo_def.pag'; // default speaking ring (non-VIP)
 
   // Rank avatar frames (animated) — for leaderboard / top-rank avatars.
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `ranking.rank_avatar_frame` via AssetView')
   static const rankAvatarFrame = '$_pag/rank/waitio_rank_avatar_frame.pag';
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `ranking.rank_avatar_cp_frame` via AssetView')
   static const rankAvatarCpFrame = '$_pag/rank/waitio_rank_avatar_cp_frame.pag';
 
   // Bottom-nav tab animations (PAG) — proven names from the original bundle.
@@ -63,27 +74,38 @@ class AppAssets {
 
   // Salvaged from the original app's on-device cache (owned; downloaded from fstatic.cat1314.com).
   // SVGA play now via svgaplayer_flutter. See assets/anim/salvaged/README.md + ZIP_DATA_FORENSIC_REPORT.md.
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `effect.entry_banner_gold_laurel` via AssetView')
   static const entryBannerGoldLaurel = 'assets/anim/salvaged/entry_banner_gold_laurel.svga';
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `effect.entry_banner_purple_avatar` via AssetView')
   static const entryBannerPurpleAvatar = 'assets/anim/salvaged/entry_banner_purple_avatar.svga';
 
   // Gift / effects (SVGA — playable now)
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `gift.gift_continuous_svga` via AssetView')
   static const giftContinuous = '$_svga/gift/waitio_gift_continuous.svga';
   static const roomRocket = '$_svga/rocket/waitio_room_rocket.svga';
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `gift.lucky_gift` via AssetView')
   static const luckyGift = '$_svga/kroom/waitio_lucky_gift.svga';
   static const luckyGiftWinning = '$_svga/kroom/waitio_lucky_gift_winning.svga';
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `misc.new_user_guide_send_gift` via AssetView')
   static const guideSendGift = '$_svga/guide/waitio_new_user_guide_send_gift.svga';
 
   // Medals / CP / seat decorations (SVGA)
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `medal.xunzhangguang` via AssetView')
   static const medalGlow = '$_svga/medal/waitio_xunzhangguang.svga';
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `cp.cp_in_seat` via AssetView')
   static const cpInSeat = '$_svga/kroom/waitio_cp_in_seat.svga';
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `cp.cp_heart` via AssetView')
   static const cpHeart = '$_svga/cp/waitio_cp_heart.svga';
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `entry.jinchang` via AssetView')
   static const roomEnter = '$_svga/kroom/waitio_jinchang.svga'; // entry effect
 
   /// Host-tier tags (SVGA), Arabic + English variants (the app is bilingual RTL/LTR).
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `agency.tag_<tier>_host_<lang>` via AssetView')
   static String hostTag(String tier, {bool ar = true}) =>
       '$_svga/hosttag/waitio_tag_${tier}_host_${ar ? 'ar' : 'en'}.svga';
 
   /// DJ level rings lv0..lv3 (SVGA).
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `room.dj_lv<n>` via AssetView')
   static String djLevel(int lv) => '$_svga/dj/waitio_dj_lv$lv.svga';
 
   // ---------------------------------------------------------------------------
@@ -101,6 +123,7 @@ class AppAssets {
   static const pkResultWin = '$_pk/pk_result_win.png'; // gold "WIN" winged ring
   static const pkResultTie = '$_pk/pk_result_tie.png'; // bronze "TIE" ring
   static const pkResultLoss = '$_pk/pk_result_loss.png'; // lose ring
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `pk.pk_panel_list` via AssetView')
   static const pkPanelList = '$_pk/pk_panel_list.png';
   static const pkPanelRate = '$_pk/pk_panel_rate.png';
 
@@ -131,6 +154,7 @@ class AppAssets {
     '$_vip/vip_shield_eadd1a.png',
     '$_vip/vip_shield_fa8c4c.png',
   ];
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `vip.vip_medallion_*` via AssetView')
   static const vipMedallions = <String>[
     '$_vip/vip_medallion_7191ec.png',
     '$_vip/vip_medallion_a07cba.png',
@@ -143,5 +167,6 @@ class AppAssets {
     '$_wealth/wealth_card_412034.png',
     '$_wealth/wealth_card_43be38.png',
   ];
+  @Deprecated('R2: unreferenced here — use AssetRegistry id `ranking.emblem_*` via AssetView')
   static String wealthEmblem(int i) => '$_wealth/emblem_${i.toString().padLeft(2, '0')}.svga';
 }

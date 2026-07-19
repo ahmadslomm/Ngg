@@ -1,0 +1,665 @@
+{
+  "anchor": {
+    "Action/Anchor.getGuildInfo": [
+      "uid"
+    ],
+    "Action/Guild.guildInfo": [
+      "uid"
+    ],
+    "wallet.accountList": [
+      "uid"
+    ],
+    "wallet.bindAccount": [
+      "uid"
+    ],
+    "wallet.getExchangeCoinConfig": [
+      "uid"
+    ],
+    "wallet.withdrawalToCoinsMerchant": [
+      "uid"
+    ],
+    "Action/Quests.receiveWeeklyLevelPrize": [
+      "uid"
+    ],
+    "Action/Guild.getAnchorWithdrawalDetails": [
+      "gid",
+      "lang",
+      "page",
+      "receipt_type",
+      "token",
+      "uid"
+    ],
+    "Action/Anchor.getGuildWages": [
+      "uid"
+    ],
+    "Action/Anchor.getDayAnchorInfo": [
+      "from",
+      "page",
+      "token",
+      "uid",
+      "ymd"
+    ],
+    "Action/Anchor.getMonthAnchorInfo": [
+      "from",
+      "lang",
+      "page",
+      "token",
+      "uid",
+      "ym"
+    ],
+    "Action/Anchor.getAnchorPinkJewel": [
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/Anchor.getAnchorPinkJewelSettlement": [
+      "page",
+      "token",
+      "uid",
+      "ym"
+    ],
+    "Action/Quests.getWeeklyLevelInfo": [
+      "uid"
+    ],
+    "Action/Anchor.getAnchorList": [
+      "from",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/Anchor.getApplyGuildList": [
+      "from",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/Anchor.searchAnchor": [
+      "uid"
+    ],
+    "Action/Anchor.guildRemoveAnchor": [
+      "uid"
+    ],
+    "Action/Anchor.refuseJoinGuild": [
+      "uid"
+    ],
+    "Action/Anchor.agreeJoinGuild": [
+      "uid"
+    ],
+    "Action/Anchor.inviteSearchUser": [
+      "uid"
+    ],
+    "Action/Anchor.inviteJoinGuild": [
+      "uid"
+    ],
+    "Action/Anchor.getGuildPolicy": [
+      "uid"
+    ],
+    "Action/Guild.getGuildAnchorExitLogs": [
+      "gid",
+      "page",
+      "token",
+      "uid"
+    ],
+    "wallet.guildWithdrawal": [
+      "uid"
+    ],
+    "wallet.setDefaultAccount": [
+      "uid"
+    ],
+    "wallet.deleteAccount": [
+      "uid"
+    ],
+    "wallet.exchangeCoin": [
+      "uid"
+    ],
+    "wallet.getGuildBalanceChangeLogs": [
+      "gid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/Guild.getAnchorJewelAccountInfo": [
+      "gid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/Guild.getAnchorWithdrawalInfo": [
+      "anchor_uid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/Guild.getGuildAnchorOpLogs": [
+      "gid",
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/AnchorWithdraw.getMerchants": [
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.searchCoinsMerchant": [
+      "uid"
+    ]
+  },
+  "announcement": {
+    "notice.getNotice": [
+      "rid",
+      "token",
+      "uid"
+    ]
+  },
+  "announcementFamily": {
+    "Action/Family.getIMList": [
+      "page",
+      "token",
+      "uid"
+    ]
+  },
+  "coinsMerchant": {
+    "Action/CoinsMerchant.login": [
+      "code"
+    ],
+    "Action/CoinsMerchant.changeTradePassword": [
+      "code"
+    ],
+    "Action/CoinsMerchant.getConsumeList": [
+      "from",
+      "token",
+      "type",
+      "uid"
+    ],
+    "Action/CoinsMerchant.getBuyList": [
+      "from",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.submitPayInfo": [
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.sendCoins": [
+      "to_uid"
+    ],
+    "Action/CoinsMerchant.sendLoginReqToAdminSystem": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.sendCoinsToSubCoinsMerchant": [
+      "_login_uid",
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.getSubCoinsMerchantList": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.delSubMerchants": [
+      "_login_uid",
+      "token",
+      "uid",
+      "uids"
+    ],
+    "Action/CoinsMerchant.invitationSubMerchant": [
+      "_login_uid",
+      "token",
+      "uid",
+      "user_id"
+    ],
+    "Action/CoinsMerchant.handleInvitation": [
+      "id",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.getInvitationList": [
+      "page"
+    ],
+    "Action/CoinsMerchant.sendPropsToSubMerchant": [
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.sendPropsToUser": [
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.getProps": [
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.getPropsAddLogsList": [
+      "log_type",
+      "page",
+      "token",
+      "type",
+      "uid"
+    ],
+    "Action/CoinsMerchant.getWithdrawalToCoinsMerchantSummaryList": [
+      "limit",
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.getCoinDistributionWithdrawalToCoinsMerchantList": [
+      "limit",
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.getProfile": [
+      "token",
+      "uid"
+    ],
+    "Action/CoinsMerchant.getUserInfo": [
+      "user_id"
+    ],
+    "Action/CoinsMerchant.sendMobileCode": [
+      "type"
+    ],
+    "Action/CoinsMerchant.checkCode": [
+      "code"
+    ],
+    "Action/CoinsMerchant.getSubMerchantInfo": [
+      "_login_uid",
+      "token",
+      "uid",
+      "user_id"
+    ]
+  },
+  "cp": {
+    "couple.cpHouse": [
+      "_login_uid",
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "couple.cancelCouple": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "couple.cpGiftList": [
+      "_login_uid",
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "couple.onAnswerCouple": [
+      "_login_uid",
+      "from_uid",
+      "msgid",
+      "op_type",
+      "token",
+      "uid"
+    ],
+    "Action/bestFriend.handleInvitation": [
+      "_login_uid",
+      "id",
+      "operation",
+      "token",
+      "uid"
+    ],
+    "Action/bestFriend.getInviteList": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token"
+    ],
+    "Action/bestFriend.getInvitationList": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token"
+    ],
+    "couple.getApplyList": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token"
+    ],
+    "couple.getHasApplyList": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token"
+    ]
+  },
+  "cpReward": {
+    "couple.getLastWeekRankDetail": [
+      "_login_uid",
+      "token",
+      "uid"
+    ]
+  },
+  "friendCenter": {
+    "Action/bestFriend.detail": [
+      "_login_uid",
+      "from_uid",
+      "token",
+      "touid"
+    ],
+    "Action/bestFriend.center": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "touid"
+    ],
+    "Action/bestFriend.remove": [
+      "_login_uid",
+      "token",
+      "touid"
+    ]
+  },
+  "giftWall": {
+    "Action/BDCenter.getGuildList": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "room.giftWallList": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token"
+    ]
+  },
+  "luckyBag": {
+    "Action/luckyBags.getConfigs": [
+      "rid",
+      "token",
+      "uid"
+    ],
+    "Action/luckyBags.fetchMeGotBags": [
+      "page",
+      "token",
+      "uid"
+    ],
+    "Action/luckyBags.fetchRoomBags": [
+      "page",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "Action/luckyBags.sendBag": [
+      "cid",
+      "rid",
+      "token",
+      "uid"
+    ]
+  },
+  "luckyBox": {
+    "luckyBox.getBillBoard": [
+      "id",
+      "token",
+      "uid"
+    ],
+    "luckyBox.getLuckyBoxDetail": [
+      "token",
+      "uid"
+    ]
+  },
+  "luckyDraw": {
+    "Action/LuckyDraw.drawPrizesPreview": [
+      "_login_uid",
+      "draw_level",
+      "is_web",
+      "token",
+      "uid"
+    ],
+    "Action/LuckyDraw.draw": [
+      "_login_uid",
+      "draw_level",
+      "number",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "Action/LuckyDraw.prizeLogs": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token"
+    ]
+  },
+  "luckyGift": {
+    "Action/rebackGiftV2.history": [
+      "page"
+    ]
+  },
+  "magicBox": {
+    "Action/MagicBox.getUserTaskList": [
+      "uid"
+    ],
+    "Action/MagicBox.getMagicGiftList": [
+      "uid"
+    ],
+    "Action/MagicBox.collectEnergy": [
+      "uid"
+    ],
+    "Action/MagicBox.openMagicBox": [
+      "uid"
+    ]
+  },
+  "medalRank": {
+    "medal.getAchievementMedalRank": [
+      "page"
+    ]
+  },
+  "my_level": {
+    "Action/MyLevel.levelInfo": [
+      "_login_uid",
+      "token",
+      "uid"
+    ]
+  },
+  "noble": {
+    "Action/Noble.getUserNoble": [
+      "token",
+      "uid"
+    ],
+    "Action/Noble.getUserIntegralInfo": [
+      "token",
+      "uid"
+    ],
+    "Action/Noble.getRebateCard": [
+      "token",
+      "uid"
+    ],
+    "Action/Noble.buyNoble": [
+      "level",
+      "token",
+      "uid"
+    ]
+  },
+  "pay": {},
+  "pkRank": {
+    "Action/RocketGift.rankList": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "Action/GroupPkRoom.rankPrizes": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "Action/GroupPkRoom.getGameRoomRank": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "type"
+    ]
+  },
+  "pkReward": {
+    "Action/RadioRoomPk.pkInfo": [
+      "_login_uid",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "Action/RadioRoomPk.pkRecordList": [
+      "_login_uid",
+      "lang",
+      "page",
+      "rid",
+      "status",
+      "token",
+      "uid"
+    ]
+  },
+  "pkRule": {
+    "Action/BDCenter.getGuildList": [
+      "_login_uid",
+      "token",
+      "uid"
+    ]
+  },
+  "rank": {},
+  "report": {
+    "report.getReportReason": [],
+    "report.reportUser": []
+  },
+  "roomGroupRule": {
+    "user.getUserinfo": [
+      "token",
+      "uid"
+    ]
+  },
+  "roomParty": {
+    "Action/RoomAct.getActList": [
+      "page",
+      "rid",
+      "token"
+    ],
+    "search.searchFriendByUid": [
+      "token",
+      "uid"
+    ],
+    "user.getFriendList": [
+      "token",
+      "uid"
+    ],
+    "Action/RoomAct.inviteFriendJoinAct": [
+      "token",
+      "uid"
+    ],
+    "Action/RoomAct.shareBirthdayAct": [
+      "token",
+      "uid"
+    ],
+    "Action/RoomAct.getInviteList": [
+      "token",
+      "uid"
+    ],
+    "Action/RoomAct.startAct": [
+      "actId",
+      "rid",
+      "token"
+    ],
+    "Action/RoomAct.endAct": [
+      "actId",
+      "rid",
+      "token"
+    ],
+    "Action/RoomAct.lightFireworks": [
+      "actId",
+      "rid",
+      "token"
+    ],
+    "Action/RoomAct.joinAct": [
+      "actId",
+      "rid",
+      "token"
+    ],
+    "Action/RoomAct.cancelAct": [
+      "actId",
+      "rid",
+      "token"
+    ],
+    "Action/RoomAct.publishAct": []
+  },
+  "roomRule": {
+    "Action/RoomLevel.rulePrize": [
+      "_login_uid",
+      "token",
+      "uid"
+    ]
+  },
+  "roomScoreRank": {
+    "medal.getAchievementMedalRank": [
+      "page"
+    ],
+    "room.getRoomPopularRank": [
+      "_login_uid",
+      "rid",
+      "start",
+      "token",
+      "type",
+      "uid"
+    ]
+  },
+  "svip": {
+    "Action/SVip.getInfo": [
+      "token",
+      "uid"
+    ],
+    "Action/SVip.getPrivilege": [
+      "token",
+      "uid"
+    ]
+  },
+  "task": {
+    "task.getTaskList2": [
+      "lang",
+      "token",
+      "uid"
+    ],
+    "task.getThePrize": [
+      "id",
+      "lang",
+      "token",
+      "uid"
+    ]
+  },
+  "totalRank": {
+    "room.getRankPrize": [
+      "_login_uid",
+      "token",
+      "uid"
+    ]
+  },
+  "vipScoreRank": {
+    "medal.getAchievementMedalRank": [
+      "page"
+    ],
+    "room.getVipUserRank": [
+      "_login_uid",
+      "rid",
+      "start",
+      "token",
+      "type",
+      "uid"
+    ]
+  },
+  "wealth_grade": {
+    "user.getWealthCfg": [
+      "signture",
+      "uid"
+    ]
+  }
+}

@@ -6,6 +6,8 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    // Firebase (FCM): consumes android/app/google-services.json.
+    id("com.google.gms.google-services")
 }
 
 // Release signing is provisioned via android/key.properties (gitignored). Copy
@@ -43,7 +45,8 @@ android {
 
     defaultConfig {
         applicationId = prodApplicationId
-        minSdk = flutter.minSdkVersion
+        // firebase_core 4.x / firebase_messaging 16.x require Android minSdk 23.
+        minSdk = maxOf(flutter.minSdkVersion, 23)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

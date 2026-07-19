@@ -17,12 +17,16 @@ class RoomHeader extends StatelessWidget {
     required this.seats,
     required this.voiceConnected,
     required this.onClose,
+    this.onChangeCover,
   });
 
   final String roomId;
   final List<Seat> seats;
   final bool voiceConnected;
   final VoidCallback onClose;
+
+  /// Owner-only: change the room cover image. Null (hidden) for non-owners.
+  final VoidCallback? onChangeCover;
 
   int get _online => seats.where((s) => s.isOccupied).length;
 
@@ -94,8 +98,31 @@ class RoomHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.xs),
+          if (onChangeCover != null) ...[
+            _CoverBtn(onTap: onChangeCover!),
+            const SizedBox(width: AppSpacing.xs),
+          ],
           _CircleBtn(onTap: onClose),
         ],
+      ),
+    );
+  }
+}
+
+/// Owner-only circular button to change the room cover image.
+class _CoverBtn extends StatelessWidget {
+  const _CoverBtn({required this.onTap});
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) {
+    return InkResponse(
+      onTap: onTap,
+      radius: 20,
+      child: Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.black.withValues(alpha: 0.30)),
+        child: const Icon(Icons.add_a_photo_outlined, size: 16, color: AppColors.onDark),
       ),
     );
   }

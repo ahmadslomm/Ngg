@@ -2,11 +2,20 @@
 apk_copy/
 *.apk
 
-# Downloaded tooling & Python venv (not part of the project)
-tools/
+# Downloaded tooling & Python venv at the REPO ROOT (not part of the project).
+# Leading slash is deliberate: an unanchored `tools/` also swallowed rebuild/backend/tools/,
+# which holds the catalog-importer and asset-mirror — project source, not downloaded tooling.
+/tools/
 
 # Raw full-unzip duplicate of the APK contents
 extracted/
+
+# apktool output — REDUNDANT with content already tracked:
+#   apk_out/res/**   is byte-identical to AndroidStudioProject/app/src/main/res/**
+#   apk_out/smali/** is mirrored by output/
+# 421 MB / 26,476 files of pure duplication; the assets it holds are already promoted into
+# rebuild/mobile/assets/.
+apk_out/
 
 # Redundant: jadx Java is mirrored in AndroidStudioProject/_decompiled_reference,
 # and apktool res is mirrored in AndroidStudioProject/app/src/main/res
@@ -15,3 +24,7 @@ output/apktool_out/
 
 # Logs
 output/*.log
+
+# Python bytecode
+__pycache__/
+*.pyc

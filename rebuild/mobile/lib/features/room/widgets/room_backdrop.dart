@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../../../core/assets/asset_view.dart';
 import '../models/room_decorations.dart';
 import 'party_background.dart';
 import 'room_background.dart';
@@ -34,13 +34,13 @@ class RoomBackdrop extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        CachedNetworkImage(
-          imageUrl: url,
+        // R2.5: routed through AssetView so an animated skin (svga/pag) works as well as a
+        // static one — the original's `themeUrl` was not restricted to images. Unresolvable or
+        // unplayable art falls back to the recovered skin default, as before.
+        AssetView.resolve(
+          remoteUrl: url,
           fit: BoxFit.cover,
-          // While loading / on failure, show the recovered skin default so the room is
-          // never blank and a broken per-room URL degrades gracefully.
-          placeholder: (_, __) => const RoomBackground(child: SizedBox.shrink()),
-          errorWidget: (_, __, ___) => _skinDefault(),
+          fallback: _skinDefault(),
         ),
         const DecoratedBox(
           decoration: BoxDecoration(

@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/assets/asset_view.dart';
 import '../models/medal_models.dart';
 
 /// A medal badge in one of three states:
@@ -100,6 +101,16 @@ class _AnimatedMedalBadgeState extends State<AnimatedMedalBadge> with SingleTick
         child: Stack(
           alignment: Alignment.center,
           children: [
+            // R2.5: the original's medal halo (`svga/medal/waitio_xunzhangguang.svga`, literally
+            // "medal glow") behind an adorned medal — recovered art that had no caller before.
+            if (widget.adorned && !widget.locked)
+              IgnorePointer(
+                child: AssetView.id(
+                  'medal.xunzhangguang',
+                  width: widget.size * 1.5,
+                  height: widget.size * 1.5,
+                ),
+              ),
             child,
             if (widget.locked)
               Icon(Icons.lock, size: widget.size * 0.28, color: Theme.of(context).colorScheme.onSurfaceVariant),

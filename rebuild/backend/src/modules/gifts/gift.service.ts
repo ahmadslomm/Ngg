@@ -6,6 +6,8 @@
 import { serializableTx } from '../../lib/tx.js';
 import { prisma } from '../../lib/prisma.js';
 import { walletService } from '../wallet/wallet.service.js';
+import { giftRepo } from './gift.repo.js';
+import { toGiftWallRow } from './gift.dto.js';
 
 // Client-facing catalog item shape. Preserves every existing field of the old inline
 // serializeGift verbatim and only ADDS `bag_qty` (T1.14).
@@ -293,4 +295,36 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
 
 export class AppError extends Error {
   constructor(public code: string) { super(code); }
+}
+
+/**
+ * P4a — gift wall for a user (⇐ legacy `room.giftWallList`, which is USER-scoped: `uid` + `page`,
+ * no `rid`). Shows gifts the user RECEIVED, newest first, ONE ROW PER TRANSACTION (no aggregation
+ * into counts). Read-only: no economy logic, nothing written.
+ *
+ * Direction note: the captured shape carries both a sender and a receiver per row, which is only
+ * self-consistent for a "gifts received by this user" wall (sender varies, receiver is the wall
+ * owner). A "sent" direction is NOT distinguishable from the captured evidence, so it is not built.
+ */
+export async function giftWall(userId: bigint, page: number, pageSize: number) {
+  const [txns, total] = await Promise.all([
+    giftRepo.listReceivedGifts(userId, (page - 1) * pageSize, pageSize),
+    giftRepo.countReceivedGifts(userId),
+  ]);
+  if (txns.length === 0) return { items: [], total, page, page_size: pageSize };
+
+  // Batch the two lookups the rows need (no N+1): gift catalog + sender/receiver profiles.
+  const giftIds = [...new Set(txns.map((t) => t.giftId))];
+  const profileIds = [...new Set([...txns.map((t) => t.senderId), userId])];
+  const [gifts, profiles] = await Promise.all([
+    giftRepo.findGiftsByIds(giftIds),
+    giftRepo.findProfilesByIds(profileIds),
+  ]);
+  const giftById = new Map(gifts.map((g) => [String(g.id), g]));
+  const profileById = new Map(profiles.map((p) => [String(p.userId), p]));
+
+  const items = txns.map((t) =>
+    toGiftWallRow(t, userId, profileById.get(String(t.senderId)), profileById.get(String(userId)), giftById.get(String(t.giftId))),
+  );
+  return { items, total, page, page_size: pageSize };
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/agency/agency_screen.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/bottle/bottle_screen.dart';
+import '../../features/couple/couple_screen.dart';
+import '../../features/dev/asset_audit_screen.dart';
 import '../../features/dev/pag_gallery_screen.dart';
 import '../../features/dm/dm_chat_screen.dart';
 import '../../features/bottle/throw_bottle_screen.dart';
@@ -11,8 +14,10 @@ import '../../features/moments/create_moment_screen.dart';
 import '../../features/moments/moments_screen.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/profile/relations_screen.dart';
+import '../../features/profile/widgets/gift_wall_section.dart';
 import '../../features/ranking/ranking_screen.dart';
 import '../../features/room/room_screen.dart';
+import '../../features/settings/settings_screen.dart';
 import '../../features/splash/splash_screen.dart';
 import '../../features/vip/vip_screen.dart';
 import '../../features/wallet/wallet_screen.dart';
@@ -31,8 +36,15 @@ final appRouter = GoRouter(
     GoRoute(path: '/vip', builder: (_, __) => const VipScreen()),
     GoRoute(path: '/rankings', builder: (_, __) => const RankingScreen()),
     GoRoute(path: '/medals', builder: (_, __) => const MedalWallScreen()),
+    GoRoute(path: '/settings', builder: (_, __) => const SettingsScreen()),
+    GoRoute(path: '/couple', builder: (_, __) => const CoupleScreen()),
+    // No id → pending invitations + create; with an id → that agency's detail page.
+    GoRoute(path: '/agency', builder: (_, __) => const AgencyScreen()),
+    GoRoute(path: '/agency/:id', builder: (_, s) => AgencyScreen(agencyId: s.pathParameters['id'])),
     // Diagnostic: plays every bundled PAG (libpag) — VIP/avatar frames, tabs, entry effects.
     GoRoute(path: '/dev/pag', builder: (_, __) => const PagGalleryScreen()),
+    // R2: renders every registered asset through the real AssetView pipeline.
+    GoRoute(path: '/dev/assets', builder: (_, __) => const AssetAuditScreen()),
     GoRoute(
       path: '/moments',
       builder: (_, __) => const MomentsScreen(),
@@ -59,6 +71,7 @@ final appRouter = GoRouter(
             initialTab: int.tryParse(s.uri.queryParameters['tab'] ?? '0') ?? 0,
           ),
         ),
+        GoRoute(path: 'gift-wall', builder: (_, s) => GiftWallScreen(uid: s.pathParameters['uid']!)),
       ],
     ),
     GoRoute(

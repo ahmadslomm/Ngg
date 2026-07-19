@@ -61,9 +61,39 @@ export class UsersRepository {
     return client.userSetting.upsert({ where: { userId }, create: { userId, ...data } as Prisma.UserSettingUncheckedCreateInput, update: data });
   }
 
+  // ----- P4a friend-card enrichment (batched cross-domain READS; all index-backed) -----
+  /** Current room membership for a batch of users (RoomMember has @@index([userId])). */
+  findCurrentRoomsOf(userIds: bigint[], client: DbClient = db.read) {
+    return userIds.length
+      ? client.roomMember.findMany({ where: { userId: { in: userIds } }, select: { userId: true, roomId: true, joinedAt: true }, orderBy: { joinedAt: 'desc' } })
+      : Promise.resolve([]);
+  }
+  /** Active couples touching a batch of users (Couple has @@index on both sides + status). */
+  findActiveCouplesOf(userIds: bigint[], activeStatus: number, client: DbClient = db.read) {
+    return userIds.length
+      ? client.couple.findMany({
+        where: { status: activeStatus, OR: [{ aUserId: { in: userIds } }, { bUserId: { in: userIds } }] },
+        select: { aUserId: true, bUserId: true },
+      })
+      : Promise.resolve([]);
+  }
+  /** Live account suspensions for a batch of users (Ban has @@index([userId, scope, active])). */
+  findActiveAccountBansOf(userIds: bigint[], accountScope: number, now: Date, client: DbClient = db.read) {
+    return userIds.length
+      ? client.ban.findMany({
+        where: { userId: { in: userIds }, scope: accountScope, active: true, OR: [{ expiresAt: null }, { expiresAt: { gt: now } }] },
+        select: { userId: true },
+      })
+      : Promise.resolve([]);
+  }
+
   // ----- level config -----
   findLevelTier(kind: number, exp: bigint, client: DbClient = db.read) {
     return client.levelConfig.findFirst({ where: { kind, minExp: { lte: exp } }, orderBy: [{ minExp: 'desc' }, { level: 'desc' }] });
+  }
+  /** P4a: the NEXT tier above `exp` (lowest minExp strictly greater). null at the top of the ladder. */
+  findNextLevelTier(kind: number, exp: bigint, client: DbClient = db.read) {
+    return client.levelConfig.findFirst({ where: { kind, minExp: { gt: exp } }, orderBy: [{ minExp: 'asc' }, { level: 'asc' }] });
   }
 }
 

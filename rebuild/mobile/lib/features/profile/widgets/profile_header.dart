@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/assets/renderers.dart';
 import '../../../core/format.dart';
 import '../../../core/widgets/avatar_frame.dart';
 import '../../medals/models/medal_models.dart';
@@ -47,7 +48,10 @@ class ProfileHeader extends StatelessWidget {
             children: [
               _FramedAvatar(
                 avatarUrl: profile['avatar_url'] as String?,
-                frameUrl: profile['avatar_frame_url'] as String?,
+                // Worn decoration wins; otherwise the tier's own VIP frame art. Both are real
+                // API fields — `AvatarFrame` still falls back to the bundled VIP PAG below.
+                frameUrl: (profile['avatar_frame_url'] as String?) ??
+                    (profile['vip_frame_url'] as String?),
                 vipLevel: _int('vip_level'),
               ),
               const SizedBox(width: 16),
@@ -63,7 +67,14 @@ class ProfileHeader extends StatelessWidget {
                       spacing: 6,
                       runSpacing: 6,
                       children: [
-                        if (_int('vip_level') > 0) _VipBadge(level: _int('vip_level')),
+                        // Real per-tier VIP art (`vip_badge_url`, served by users.service
+                        // withVipArt). Falls back to the synthetic gradient chip while the
+                        // catalog has no art for the tier.
+                        if (_int('vip_level') > 0)
+                          _VipBadge(
+                            level: _int('vip_level'),
+                            badgeUrl: profile['vip_badge_url'] as String?,
+                          ),
                         _LevelBadge(
                           icon: Icons.favorite,
                           label: 'Charm ${_int('charm_level')}',
@@ -135,11 +146,16 @@ class _FramedAvatar extends StatelessWidget {
 }
 
 class _VipBadge extends StatelessWidget {
-  const _VipBadge({required this.level});
+  const _VipBadge({required this.level, this.badgeUrl});
   final int level;
+  final String? badgeUrl;
 
   @override
   Widget build(BuildContext context) {
+    // Real catalog art wins; the gradient chip below is the fallback.
+    if ((badgeUrl?.trim().isNotEmpty ?? false)) {
+      return VipBadgeRenderer(badgeUrl: badgeUrl, level: level, size: 18);
+    }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
@@ -215,23 +231,32 @@ class _Stat extends StatelessWidget {
 
 /// Current CP (couple) status, from `GET /couple/me`. Only ever shown on your own
 /// profile — the backend exposes no public couple lookup.
+/// CP badge. Accepts BOTH couple payloads without reshaping them:
+///   • `/couple/me`        → `{ paired, partner, couple: { cp_level, sweet_value, … } }`
+///   • `/users/:id/couple` → `{ paired, partner, cp_level, sweet_value, … }` (flat, public)
+/// so it nests-or-falls-back to the envelope itself for the detail fields.
 class CoupleCard extends StatelessWidget {
-  const CoupleCard({super.key, required this.couple});
+  const CoupleCard({super.key, required this.couple, this.onTap});
   final Map<String, dynamic> couple;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final paired = couple['paired'] == true;
     final partner = couple['partner'] as Map?;
-    final details = couple['couple'] as Map?;
+    final details = (couple['couple'] as Map?) ?? couple;
+    // sweet_value crosses the wire as a string (BigInt), so parse before formatting.
+    final sweet = num.tryParse('${details['sweet_value'] ?? 0}') ?? 0;
     return Card(
       margin: EdgeInsets.zero,
       child: ListTile(
+        onTap: onTap,
         leading: Icon(Icons.favorite, color: paired ? Colors.pink : Theme.of(context).colorScheme.outline),
-        title: Text(paired ? 'CP with ${partner?['nick'] ?? details?['partner_uid']}' : 'No CP yet'),
+        title: Text(paired ? 'CP with ${partner?['nick'] ?? details['partner_uid'] ?? partner?['uid']}' : 'No CP yet'),
         subtitle: paired
-            ? Text('Level ${details?['cp_level'] ?? 0} · sweet ${formatCompact((details?['sweet_value'] as num?) ?? 0)}')
+            ? Text('Level ${details['cp_level'] ?? 0} · sweet ${formatCompact(sweet)}')
             : const Text('Pair up with someone to unlock CP perks'),
+        trailing: onTap == null ? null : const Icon(Icons.chevron_right),
       ),
     );
   }

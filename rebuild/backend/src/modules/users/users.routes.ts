@@ -88,6 +88,14 @@ export async function userRoutes(app: FastifyInstance) {
     } catch (e) { return replyError(reply, e); }
   });
 
+  // P4a — charm/wealth ladder progress (⇐ legacy user.getWealthCfg). Read-only.
+  app.get('/users/:id/levels', { preHandler: [app.authenticate] }, async (req, reply) => {
+    try {
+      const { id } = z.object({ id: z.coerce.bigint() }).parse(req.params);
+      return ok(serialize(await usersService.getLevels(id)));
+    } catch (e) { return replyError(reply, e); }
+  });
+
   // Follow / unfollow
   app.post('/users/:id/follow', { preHandler: [app.authenticate] }, async (req, reply) => {
     try { return ok(serialize(await usersService.follow(uid(req), BigInt((req.params as any).id)))); }

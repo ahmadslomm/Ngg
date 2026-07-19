@@ -19,6 +19,11 @@ class RoomRepository {
     return RoomMeta.fromJson((res.data['data'] as Map).cast<String, dynamic>());
   }
 
+  /// `POST /rooms/:id/cover` — set (or clear) the room cover image. Owner/EDIT_ROOM only
+  /// (server-enforced). [url] is an already-uploaded R2 public URL.
+  Future<void> setCover(String roomId, String? url) =>
+      _api.post('/rooms/$roomId/cover', data: {'cover_url': url});
+
   Future<({List<Seat> seats, String rtcRole})> join(String roomId) async {
     final res = await _api.post('/rooms/$roomId/join');
     final data = res.data['data'];

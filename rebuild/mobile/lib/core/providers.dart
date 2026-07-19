@@ -3,6 +3,7 @@ import 'audio/audio_player_engine.dart';
 import 'audio/audio_recorder_engine.dart';
 import 'audio/mic_permission.dart';
 import 'config/app_config.dart';
+import 'media/image_upload_service.dart';
 import 'media/media_uploader.dart';
 import 'media/r2_media_uploader.dart';
 import 'network/api_client.dart';
@@ -39,6 +40,11 @@ final mediaUploaderProvider = Provider<MediaUploader>((ref) {
   final api = ref.watch(apiClientProvider);
   return R2MediaUploader(presign: api.post);
 });
+
+/// Shared gallery-pick + upload flow (profile avatar, room cover, …). Wraps the active
+/// [mediaUploaderProvider], so with `VOXA_UPLOADS=true` every image upload goes through R2.
+final imageUploadServiceProvider = Provider<ImageUploadService>(
+    (ref) => ImageUploadService(ref.watch(mediaUploaderProvider)));
 
 /// Factories, not singletons: each player/recorder belongs to one controller, which
 /// owns its lifecycle and disposes it.

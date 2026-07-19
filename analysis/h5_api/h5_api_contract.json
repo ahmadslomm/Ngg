@@ -1,0 +1,1922 @@
+{
+  "Action/Anchor.getGuildInfo": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{  }",
+    "required_params": []
+  },
+  "Action/Guild.guildInfo": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[0] (empty)",
+    "required_params": []
+  },
+  "wallet.accountList": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[6] of { receipt_type, name, logo, desc, default, binding_state }",
+    "required_params": []
+  },
+  "wallet.bindAccount": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "wallet.getExchangeCoinConfig": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ guild, user }",
+    "required_params": []
+  },
+  "wallet.withdrawalToCoinsMerchant": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Quests.receiveWeeklyLevelPrize": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Guild.getAnchorWithdrawalDetails": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "gid",
+      "lang",
+      "page",
+      "receipt_type",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "The gid parameter is required",
+    "response_shape": "",
+    "required_params": [
+      "gid"
+    ]
+  },
+  "Action/Anchor.getGuildWages": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "unfound action in table,action:getGuildWages",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.getDayAnchorInfo": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "from",
+      "page",
+      "token",
+      "uid",
+      "ymd"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{  }",
+    "required_params": []
+  },
+  "Action/Anchor.getMonthAnchorInfo": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "from",
+      "lang",
+      "page",
+      "token",
+      "uid",
+      "ym"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{  }",
+    "required_params": []
+  },
+  "Action/Anchor.getAnchorPinkJewel": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "unfound action in table,action:getAnchorPinkJewel",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.getAnchorPinkJewelSettlement": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "page",
+      "token",
+      "uid",
+      "ym"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "unfound action in table,action:getAnchorPinkJewelSettlement",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Quests.getWeeklyLevelInfo": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "type is invalid parameters ",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.getAnchorList": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "from",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "الوكالة غير موجودة",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.getApplyGuildList": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "from",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "الوكالة غير موجودة",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.searchAnchor": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.guildRemoveAnchor": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.refuseJoinGuild": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.agreeJoinGuild": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.inviteSearchUser": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.inviteJoinGuild": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Anchor.getGuildPolicy": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ policy }",
+    "required_params": []
+  },
+  "Action/Guild.getGuildAnchorExitLogs": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "gid",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ list }",
+    "required_params": []
+  },
+  "wallet.guildWithdrawal": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "wallet.setDefaultAccount": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "wallet.deleteAccount": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "wallet.exchangeCoin": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "wallet.getGuildBalanceChangeLogs": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "gid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "المستخدم ليس الوكيل",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Guild.getAnchorJewelAccountInfo": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "gid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "The gid parameter is required",
+    "response_shape": "",
+    "required_params": [
+      "gid"
+    ]
+  },
+  "Action/Guild.getAnchorWithdrawalInfo": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "anchor_uid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "The anchor_uid parameter is required",
+    "response_shape": "",
+    "required_params": [
+      "anchor_uid"
+    ]
+  },
+  "Action/Guild.getGuildAnchorOpLogs": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "gid",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[0] (empty)",
+    "required_params": []
+  },
+  "Action/AnchorWithdraw.getMerchants": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ count, list }",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.searchCoinsMerchant": {
+    "pages": [
+      "anchor"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "notice.getNotice": {
+    "pages": [
+      "announcement"
+    ],
+    "params_seen": [
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ count, notices }",
+    "required_params": []
+  },
+  "Action/Family.getIMList": {
+    "pages": [
+      "announcementFamily"
+    ],
+    "params_seen": [
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ list }",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.login": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "code",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.changeTradePassword": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "code",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getConsumeList": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "from",
+      "token",
+      "type",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "سيطة غير صالحة",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getBuyList": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "from",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "سيطة غير صالحة",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.submitPayInfo": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.sendCoins": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.sendLoginReqToAdminSystem": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.sendCoinsToSubCoinsMerchant": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getSubCoinsMerchantList": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "سيطة غير صالحة",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.delSubMerchants": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid",
+      "uids"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.invitationSubMerchant": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid",
+      "user_id"
+    ],
+    "kind": "read",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.handleInvitation": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "id",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getInvitationList": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "سيطة غير صالحة",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.sendPropsToSubMerchant": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.sendPropsToUser": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getProps": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "سيطة غير صالحة",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getPropsAddLogsList": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "log_type",
+      "page",
+      "token",
+      "type",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "سيطة غير صالحة",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getWithdrawalToCoinsMerchantSummaryList": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "limit",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ list, setDefaultStartTime }",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getCoinDistributionWithdrawalToCoinsMerchantList": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "limit",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ setDefaultStartTime }",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getProfile": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "سيطة غير صالحة",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getUserInfo": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "token",
+      "uid",
+      "user_id"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "parameter `user_id` is required",
+    "response_shape": "",
+    "required_params": [
+      "user_id"
+    ]
+  },
+  "Action/CoinsMerchant.sendMobileCode": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "token",
+      "type",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.checkCode": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "code",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/CoinsMerchant.getSubMerchantInfo": {
+    "pages": [
+      "coinsMerchant"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid",
+      "user_id"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "parameter `user_id` is required",
+    "response_shape": "",
+    "required_params": [
+      "user_id"
+    ]
+  },
+  "couple.cpHouse": {
+    "pages": [
+      "cp"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ self_info, target_info, sweet_value, days, is_apply, is_my_space, cancel_gid_info, cp_lv_info, cp_privililege }",
+    "required_params": []
+  },
+  "couple.cancelCouple": {
+    "pages": [
+      "cp"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "couple.cpGiftList": {
+    "pages": [
+      "cp"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "to_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ gift_list }",
+    "required_params": []
+  },
+  "couple.onAnswerCouple": {
+    "pages": [
+      "cp"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "from_uid",
+      "msgid",
+      "op_type",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/bestFriend.handleInvitation": {
+    "pages": [
+      "cp"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "id",
+      "operation",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/bestFriend.getInviteList": {
+    "pages": [
+      "cp"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ list }",
+    "required_params": []
+  },
+  "Action/bestFriend.getInvitationList": {
+    "pages": [
+      "cp"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ list }",
+    "required_params": []
+  },
+  "couple.getApplyList": {
+    "pages": [
+      "cp"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ list }",
+    "required_params": []
+  },
+  "couple.getHasApplyList": {
+    "pages": [
+      "cp"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ list }",
+    "required_params": []
+  },
+  "couple.getLastWeekRankDetail": {
+    "pages": [
+      "cpReward"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ rank_list, prize_list }",
+    "required_params": []
+  },
+  "Action/bestFriend.detail": {
+    "pages": [
+      "friendCenter"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "from_uid",
+      "token",
+      "touid",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "uid wrong.",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/bestFriend.center": {
+    "pages": [
+      "friendCenter"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "touid",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[0] (empty)",
+    "required_params": []
+  },
+  "Action/bestFriend.remove": {
+    "pages": [
+      "friendCenter"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "touid",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/BDCenter.getGuildList": {
+    "pages": [
+      "giftWall",
+      "pkRule"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "parameter `page` is required",
+    "response_shape": "",
+    "required_params": [
+      "page"
+    ]
+  },
+  "room.giftWallList": {
+    "pages": [
+      "giftWall"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[20] of { send_gift_uinfo, receive_gift_uinfo, gift_info }",
+    "required_params": []
+  },
+  "Action/luckyBags.getConfigs": {
+    "pages": [
+      "luckyBag"
+    ],
+    "params_seen": [
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ sub_type, configs }",
+    "required_params": []
+  },
+  "Action/luckyBags.fetchMeGotBags": {
+    "pages": [
+      "luckyBag"
+    ],
+    "params_seen": [
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[0] (empty)",
+    "required_params": []
+  },
+  "Action/luckyBags.fetchRoomBags": {
+    "pages": [
+      "luckyBag"
+    ],
+    "params_seen": [
+      "page",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[0] (empty)",
+    "required_params": []
+  },
+  "Action/luckyBags.sendBag": {
+    "pages": [
+      "luckyBag"
+    ],
+    "params_seen": [
+      "cid",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "luckyBox.getBillBoard": {
+    "pages": [
+      "luckyBox"
+    ],
+    "params_seen": [
+      "id",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[0] (empty)",
+    "required_params": []
+  },
+  "luckyBox.getLuckyBoxDetail": {
+    "pages": [
+      "luckyBox"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[3] of { lucky_box_type, lucky_box_cost, gift_list, lucky_box_discount }",
+    "required_params": []
+  },
+  "Action/LuckyDraw.drawPrizesPreview": {
+    "pages": [
+      "luckyDraw"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "draw_level",
+      "is_web",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ msg, data }",
+    "required_params": []
+  },
+  "Action/LuckyDraw.draw": {
+    "pages": [
+      "luckyDraw"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "draw_level",
+      "number",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/LuckyDraw.prizeLogs": {
+    "pages": [
+      "luckyDraw"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ msg, list }",
+    "required_params": []
+  },
+  "Action/rebackGiftV2.history": {
+    "pages": [
+      "luckyGift"
+    ],
+    "params_seen": [
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[20] of { id, uid, consume, coins, created_at, extra }",
+    "required_params": []
+  },
+  "Action/MagicBox.getUserTaskList": {
+    "pages": [
+      "magicBox"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ energyExchangeOne, energy, taskList }",
+    "required_params": []
+  },
+  "Action/MagicBox.getMagicGiftList": {
+    "pages": [
+      "magicBox"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ energyExchangeOne, specialTimes, giftList }",
+    "required_params": []
+  },
+  "Action/MagicBox.collectEnergy": {
+    "pages": [
+      "magicBox"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/MagicBox.openMagicBox": {
+    "pages": [
+      "magicBox"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "medal.getAchievementMedalRank": {
+    "pages": [
+      "medalRank",
+      "roomScoreRank",
+      "vipScoreRank"
+    ],
+    "params_seen": [
+      "page",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ ranking, score, level1, level2, level3, level4, nick, avatar, uid, list }",
+    "required_params": []
+  },
+  "Action/MyLevel.levelInfo": {
+    "pages": [
+      "my_level"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ Wealth, Charm, Active, Game }",
+    "required_params": []
+  },
+  "Action/Noble.getUserNoble": {
+    "pages": [
+      "noble"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ user, level_list }",
+    "required_params": []
+  },
+  "Action/Noble.getUserIntegralInfo": {
+    "pages": [
+      "noble"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ uid, noble_level, noble_integral }",
+    "required_params": []
+  },
+  "Action/Noble.getRebateCard": {
+    "pages": [
+      "noble"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "نظام غير طبيعي",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/Noble.buyNoble": {
+    "pages": [
+      "noble"
+    ],
+    "params_seen": [
+      "level",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/RocketGift.rankList": {
+    "pages": [
+      "pkRank"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ owner, list }",
+    "required_params": []
+  },
+  "Action/GroupPkRoom.rankPrizes": {
+    "pages": [
+      "pkRank"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ room, user }",
+    "required_params": []
+  },
+  "Action/GroupPkRoom.getGameRoomRank": {
+    "pages": [
+      "pkRank"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "lang",
+      "page",
+      "token",
+      "type",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ owner, list }",
+    "required_params": []
+  },
+  "Action/RadioRoomPk.pkInfo": {
+    "pages": [
+      "pkReward"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ id, rid, pk_time, win_amount, lose_amount, draw_amount, kill_amount, coin_amount, create_time }",
+    "required_params": []
+  },
+  "Action/RadioRoomPk.pkRecordList": {
+    "pages": [
+      "pkReward"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "lang",
+      "page",
+      "rid",
+      "status",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[0] (empty)",
+    "required_params": []
+  },
+  "report.getReportReason": {
+    "pages": [
+      "report"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ 1, 2, 3, 4 }",
+    "required_params": []
+  },
+  "report.reportUser": {
+    "pages": [
+      "report"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "user.getUserinfo": {
+    "pages": [
+      "roomGroupRule"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ uid, mobile, sex, nick, sign, avatar, birthday, zone, country, regkind, regtype, regtime, identity, credit, body, height …}",
+    "required_params": []
+  },
+  "Action/RoomAct.getActList": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "page",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ isOwner, image, online, showTypes, list }",
+    "required_params": []
+  },
+  "search.searchFriendByUid": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "user.getFriendList": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[1] of { uid, nick, avatar, sign, symbol, tag, in_room, online, isBanned, cp_name }",
+    "required_params": []
+  },
+  "Action/RoomAct.inviteFriendJoinAct": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/RoomAct.shareBirthdayAct": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/RoomAct.getInviteList": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "parameter `actId` is required",
+    "response_shape": "",
+    "required_params": [
+      "actId"
+    ]
+  },
+  "Action/RoomAct.startAct": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "actId",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/RoomAct.endAct": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "actId",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/RoomAct.lightFireworks": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "actId",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/RoomAct.joinAct": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "actId",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/RoomAct.cancelAct": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "actId",
+      "rid",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/RoomAct.publishAct": {
+    "pages": [
+      "roomParty"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "not-called",
+    "live_error": "",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/RoomLevel.rulePrize": {
+    "pages": [
+      "roomRule"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[5] of { exp, level, prize }",
+    "required_params": []
+  },
+  "room.getRoomPopularRank": {
+    "pages": [
+      "roomScoreRank"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "rid",
+      "start",
+      "token",
+      "type",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "unfound action in table,action:getRoomPopularRank",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/SVip.getInfo": {
+    "pages": [
+      "svip"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "Feature disabled.",
+    "response_shape": "",
+    "required_params": []
+  },
+  "Action/SVip.getPrivilege": {
+    "pages": [
+      "svip"
+    ],
+    "params_seen": [
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "Feature disabled.",
+    "response_shape": "",
+    "required_params": []
+  },
+  "task.getTaskList2": {
+    "pages": [
+      "task"
+    ],
+    "params_seen": [
+      "lang",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ newUser, daily }",
+    "required_params": []
+  },
+  "task.getThePrize": {
+    "pages": [
+      "task"
+    ],
+    "params_seen": [
+      "id",
+      "lang",
+      "token",
+      "uid"
+    ],
+    "kind": "write",
+    "live_status": "error",
+    "live_error": "parameter `id` is required",
+    "response_shape": "",
+    "required_params": [
+      "id"
+    ]
+  },
+  "room.getRankPrize": {
+    "pages": [
+      "totalRank"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "array[6] of { rank_tye, top_user_list, week_prize_list, top_user_monthly_list, month_prize_list }",
+    "required_params": []
+  },
+  "room.getVipUserRank": {
+    "pages": [
+      "vipScoreRank"
+    ],
+    "params_seen": [
+      "_login_uid",
+      "rid",
+      "start",
+      "token",
+      "type",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "error",
+    "live_error": "unfound action in table,action:getVipUserRank",
+    "response_shape": "",
+    "required_params": []
+  },
+  "user.getWealthCfg": {
+    "pages": [
+      "wealth_grade"
+    ],
+    "params_seen": [
+      "signture",
+      "token",
+      "uid"
+    ],
+    "kind": "read",
+    "live_status": "OK",
+    "live_error": "",
+    "response_shape": "{ cfg, avatar, wealthExp, wealthLv, wealthLimit, nextWealthLvExp, nextExp }",
+    "required_params": []
+  }
+}
