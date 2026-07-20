@@ -53,6 +53,77 @@ export class MedalService {
     return rows.map(serialize);
   }
 
+  /**
+   * Achievement-medal rank — the shape recovered from the captured
+   * `medal.getAchievementMedalRank` response:
+   *
+   *   `{ ranking, score, level1, level2, level3, level4, nick, avatar, uid, list }`
+   *
+   * `level1..level4` are the counts of achievement medals the user holds at each TIER. That the
+   * original exposes exactly four is why `Medal.tier` is treated as 1-4 here rather than open-ended.
+   *
+   * UNKNOWN: how the original computed `score`. The capture returned 0 for a user with no medals,
+   * which is consistent with any weighting. A tier-weighted sum is used and labelled as
+   * rebuild-owned rather than presented as the original's formula.
+   */
+  async achievementRank(userId: bigint) {
+    const [rows, profile] = await Promise.all([
+      prisma.userMedal.findMany({
+        where: {
+          userId,
+          medal: { enabled: true, category: MedalCategory.Achievement },
+          OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+        },
+        include: { medal: true },
+      }),
+      prisma.profile.findUnique({ where: { userId }, select: { nick: true, avatarUrl: true } }),
+    ]);
+
+    const byTier = [0, 0, 0, 0];
+    for (const r of rows) {
+      const t = r.medal.tier;
+      if (t >= 1 && t <= 4) byTier[t - 1]++;
+    }
+    // REBUILD-OWNED weighting — see the note above.
+    const score = byTier.reduce((sum, count, i) => sum + count * (i + 1), 0);
+
+    // Ranking is 1-based and dense: how many users score strictly higher, plus one. Computed over
+    // the achievement medals actually held, so it cannot disagree with the counts returned here.
+    const ranking = await this.rankByScore(score);
+
+    return {
+      ranking,
+      score,
+      level1: byTier[0], level2: byTier[1], level3: byTier[2], level4: byTier[3],
+      nick: profile?.nick ?? null,
+      avatar: profile?.avatarUrl ?? null,
+      uid: String(userId),
+      // The capture returned an empty list for a user with no medals; it carries the medal rows.
+      list: rows.map(serialize),
+    };
+  }
+
+  /** How many users out-score `score`, plus one. */
+  private async rankByScore(score: number): Promise<number> {
+    const rows = await prisma.userMedal.findMany({
+      where: {
+        medal: { enabled: true, category: MedalCategory.Achievement },
+        OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+      },
+      select: { userId: true, medal: { select: { tier: true } } },
+    });
+    const scores = new Map<string, number>();
+    for (const r of rows) {
+      const t = r.medal.tier;
+      if (t < 1 || t > 4) continue;
+      const k = String(r.userId);
+      scores.set(k, (scores.get(k) ?? 0) + t);
+    }
+    let higher = 0;
+    for (const s of scores.values()) if (s > score) higher++;
+    return higher + 1;
+  }
+
   // Idempotent award by medal code. Unknown/disabled codes are ignored (no throw) so
   // best-effort hooks stay quiet. Returns true if newly awarded.
   async award(userId: bigint, code: string, opts: { expiresAt?: Date } = {}): Promise<boolean> {

@@ -19,6 +19,7 @@ import '../../features/ranking/ranking_screen.dart';
 import '../../features/room/room_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/splash/splash_screen.dart';
+import '../../features/noble/noble_screen.dart';
 import '../../features/vip/vip_screen.dart';
 import '../../features/wallet/wallet_screen.dart';
 
@@ -33,6 +34,7 @@ final appRouter = GoRouter(
     GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
     GoRoute(path: '/home', builder: (_, __) => const HomeScreen()),
     GoRoute(path: '/wallet', builder: (_, __) => const WalletScreen()),
+    GoRoute(path: '/noble', builder: (_, __) => const NobleScreen()),
     GoRoute(path: '/vip', builder: (_, __) => const VipScreen()),
     GoRoute(path: '/rankings', builder: (_, __) => const RankingScreen()),
     GoRoute(path: '/medals', builder: (_, __) => const MedalWallScreen()),

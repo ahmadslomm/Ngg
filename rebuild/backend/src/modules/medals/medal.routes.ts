@@ -16,6 +16,10 @@ export async function medalRoutes(app: FastifyInstance) {
   app.get('/users/:id/medals', { preHandler: [app.authenticate] }, async (req) =>
     ok(serialize(await medalService.adornedMedals(BigInt((req.params as any).id)))));
 
+  // medal.getAchievementMedalRank — the captured shape (ranking/score/level1..level4).
+  app.get('/medals/achievement-rank', { preHandler: [app.authenticate] }, async (req: any) =>
+    ok(serialize(await medalService.achievementRank(req.user.id))));
+
   app.post('/medals/:id/adorn', { preHandler: [app.authenticate] }, async (req, reply) => {
     try { return ok(serialize(await medalService.adorn(uid(req), BigInt((req.params as any).id), true))); }
     catch (e) { return replyError(reply, e); }

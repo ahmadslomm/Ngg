@@ -76,6 +76,10 @@ model Profile {
   // T1.16 Phase-1 fidelity columns (in-APK, nullable/defaulted, not read yet — storage only).
   // (entryEffectUrl added in T1.13; chatBubbleUrl == existing bubbleUrl — both skipped.)
   nobleLevel      Int       @default(0) // noble/aristocracy tier
+  /// Noble points. Recovered from `Action/Noble.getUserIntegralInfo` → `{uid, noble_level,
+  /// noble_integral}`. What EARNS or SPENDS integral is UNKNOWN — no captured traffic shows it
+  /// changing, so nothing in this codebase mutates it yet.
+  nobleIntegral   BigInt    @default(0)
   vipExpireAt     DateTime? // current VIP expiry
   mountUrl        String? // equipped mount/vehicle asset
   charmLevelName  String? // display name of the charm tier

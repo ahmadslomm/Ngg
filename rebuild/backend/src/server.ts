@@ -15,6 +15,7 @@ import { giftRoutes } from './modules/gifts/gift.routes.js';
 import { roomRoutes } from './modules/rooms/room.routes.js';
 import { discoveryRoutes } from './modules/rooms/discovery.routes.js';
 import { favoriteRoutes } from './modules/rooms/favorite.routes.js';
+import { nobleRoutes } from './modules/noble/noble.routes.js';
 import { pkRoutes } from './modules/pk/pk.routes.js';
 import { pkBattleRoutes } from './modules/pk/pk-battle.routes.js';
 import { notificationRoutes } from './modules/notifications/notification.routes.js';
@@ -179,6 +180,7 @@ async function build() {
     await chatRoutes(v1);
     await discoveryRoutes(v1);
     await favoriteRoutes(v1);
+    await nobleRoutes(v1);
     await pkRoutes(v1);
     // Room-vs-room PK (the evidenced shape). Ownership is injected rather than imported, keeping
     // the PK context free of any dependency on the Rooms module.
