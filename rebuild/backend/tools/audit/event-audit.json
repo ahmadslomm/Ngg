@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T10:20:20.446Z",
+  "generatedAt": "2026-07-20T10:57:10.243Z",
   "method": "Static analysis: each `ev:` paired with its sibling `data:` literal; client `case` labels.",
   "totals": {
     "serverEvents": 37,
@@ -12,7 +12,7 @@
     {
       "event": "bomb.explode",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:127"
+        "src/modules/gifts/gift.routes.ts:134"
       ],
       "payloadKeys": [
         "pool",
@@ -26,7 +26,7 @@
     {
       "event": "bomb.tick",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:128"
+        "src/modules/gifts/gift.routes.ts:135"
       ],
       "payloadKeys": [
         "pool"
@@ -51,7 +51,7 @@
     {
       "event": "charm.updated",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:117"
+        "src/modules/gifts/gift.routes.ts:124"
       ],
       "payloadKeys": [
         "charm",
@@ -153,7 +153,7 @@
     {
       "event": "gift.combo",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:120"
+        "src/modules/gifts/gift.routes.ts:127"
       ],
       "payloadKeys": [
         "combo",
@@ -169,7 +169,7 @@
     {
       "event": "gift.lucky",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:96"
+        "src/modules/gifts/gift.routes.ts:103"
       ],
       "payloadKeys": [
         "coinsWon",
@@ -370,7 +370,7 @@
     {
       "event": "rank.update",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:103"
+        "src/modules/gifts/gift.routes.ts:110"
       ],
       "payloadKeys": [
         "boards"
@@ -454,7 +454,7 @@
     {
       "event": "room.rank",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:108"
+        "src/modules/gifts/gift.routes.ts:115"
       ],
       "payloadKeys": [
         "period",

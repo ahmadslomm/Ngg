@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T10:53:08.441Z",
+  "generatedAt": "2026-07-20T10:57:10.156Z",
   "method": "Static analysis of src/modules/**/*.routes.ts. No server boot, no DB, no network.",
   "totals": {
     "routes": 217,
