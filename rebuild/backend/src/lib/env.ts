@@ -80,7 +80,32 @@ export function productionConfigErrors(e: typeof env): string[] {
   for (const [name, val] of secrets) {
     if (val.length < 32) problems.push(`${name} must be ≥32 chars in production`);
     if (KNOWN_PLACEHOLDERS.has(val)) problems.push(`${name} is a known placeholder`);
+    // Length alone passes 'aaaa…'. A secret with almost no distinct characters is padding, not
+    // entropy, and reads as configured to every other check.
+    if (val.length >= 32 && new Set(val).size < 8) {
+      problems.push(`${name} has too little variety to be a real secret`);
+    }
   }
+
+  // Credentials whose absence currently fails at REQUEST time, not at boot. A deploy that is
+  // missing them looks healthy — the health check passes, the process stays up — and then every
+  // voice join or every asset upload fails in production. Fail at boot instead.
+  if (!e.AGORA_APP_ID) problems.push('AGORA_APP_ID must be set (voice would fail at join time)');
+  if (!e.AGORA_APP_CERTIFICATE) {
+    problems.push('AGORA_APP_CERTIFICATE must be set (voice would fail at join time)');
+  } else if (!/^[0-9a-fA-F]{32}$/.test(e.AGORA_APP_CERTIFICATE)) {
+    // agora.ts already refuses to mint from a placeholder; catching it at boot turns a per-request
+    // 500 into a deploy that never starts.
+    problems.push('AGORA_APP_CERTIFICATE is not a 32-char hex certificate');
+  }
+  for (const [name, val] of [
+    ['R2_ACCESS_KEY_ID', e.R2_ACCESS_KEY_ID],
+    ['R2_SECRET_ACCESS_KEY', e.R2_SECRET_ACCESS_KEY],
+    ['R2_BUCKET', e.R2_BUCKET],
+  ] as Array<[string, string]>) {
+    if (!val) problems.push(`${name} must be set (uploads would fail at request time)`);
+  }
+
   return problems;
 }
 
