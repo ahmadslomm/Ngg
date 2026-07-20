@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-07-20T10:23:42.541Z",
+  "generatedAt": "2026-07-20T10:53:08.441Z",
   "method": "Static analysis of src/modules/**/*.routes.ts. No server boot, no DB, no network.",
   "totals": {
-    "routes": 216,
+    "routes": 217,
     "admin": 56,
-    "authenticated": 151,
+    "authenticated": 152,
     "public-by-design": 8,
     "UNGUARDED-REVIEW": 1,
-    "validated": 97,
+    "validated": 99,
     "rateLimited": 23
   },
   "needsReview": [
@@ -688,6 +688,18 @@
     {
       "module": "agency",
       "method": "GET",
+      "path": "/agencies/policy",
+      "file": "src/modules/agency/agency.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "agency",
+      "method": "GET",
       "path": "/agencies/:id",
       "file": "src/modules/agency/agency.routes.ts",
       "auth": true,
@@ -1101,7 +1113,7 @@
       "auth": true,
       "admin": false,
       "rateLimit": null,
-      "validated": false,
+      "validated": true,
       "roles": [],
       "exposure": "authenticated"
     },

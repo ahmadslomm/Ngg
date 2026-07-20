@@ -128,6 +128,22 @@ async function build() {
     }
   });
 
+  // Operational invariants: is the system CORRECT, not merely up. Admin-guarded — the checks
+  // reveal money-drift and moderation state, and are heavier than a liveness probe.
+  app.get('/health/invariants', { preHandler: [app.authenticateAdmin] }, async (_req, reply) => {
+    const { runInvariantChecks } = await import('./modules/ops/invariants.service.js');
+    const report = await runInvariantChecks();
+    // A critical invariant returns 503 so an alerting rule keyed on status code fires without
+    // having to parse the body.
+    return reply.code(report.status === 'critical' ? 503 : 200).send({ code: 0, data: report });
+  });
+
+  // Prometheus scrape of the same checks.
+  app.get('/metrics', { preHandler: [app.authenticateAdmin] }, async (_req, reply) => {
+    const { runInvariantChecks, toPrometheus } = await import('./modules/ops/invariants.service.js');
+    return reply.type('text/plain; version=0.0.4').send(toPrometheus(await runInvariantChecks()));
+  });
+
   // Room vertical: Prisma-backed repo; service broadcasts through the realtime gateway.
   const roomService = new RoomService(
     new PrismaRoomRepo(),

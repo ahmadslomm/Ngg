@@ -94,6 +94,20 @@ server. Building them would be reconstructing something that never ran.
 
 ---
 
+## 3b. Analytics — nothing to rebuild
+
+The original has **no server-side analytics API**. A search of all 397 endpoints for
+log/track/event/stat/report/analytic/monitor returns only `app.uploadPing` plus moderation-report
+and guild-log endpoints — none of them telemetry.
+
+Its analytics were **Firebase**, confirmed by `firebase-analytics.properties`,
+`firebase-analytics-ktx.properties` and `client_analytics.proto` in the APK extraction. That is a
+client-side SDK with no server contract for us to reconstruct.
+
+**Conclusion: there is no analytics parity gap.** Product analytics is an operator choice (wire a
+Firebase/Amplitude SDK in the client), not a recoverable behaviour. Monitoring — which IS ours to
+build — is covered by `/health/invariants` and `/metrics`.
+
 ## 4. Environment blockers (not evidence)
 
 - **`R2_PUBLIC_BASE_URL` is an `r2.dev` subdomain** — Cloudflare rate-limits it; not for production.

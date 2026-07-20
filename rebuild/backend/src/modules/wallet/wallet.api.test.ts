@@ -32,12 +32,19 @@ describe('wallet API', () => {
 
   it('GET /wallet/ledger paginates newest-first (T1.12)', async () => {
     const u = await makeUser(); // no opening balances → clean ledger slate
-    // Seed five ledger rows with increasing createdAt + balanceAfter (test fixture, not economy logic).
+    // Seed five ledger rows with increasing createdAt + balanceAfter.
+    //
+    // The wallet is moved WITH them. This fixture used to write ledger rows only, leaving the
+    // wallet at 0 while its ledger summed to 50 — a state the economy can never legitimately reach.
+    // Harmless for the pagination assertion, but it left a permanently-drifting wallet behind on
+    // every run, and 550 of them had accumulated in the shared database: enough to bury a REAL
+    // drift in noise and make the ledger_drift monitor useless.
     for (let i = 0; i < 5; i++) {
       await prisma.walletLedger.create({
         data: { userId: BigInt(u), currency: 0, delta: 10n, balanceAfter: BigInt((i + 1) * 10), reason: 5, refType: 'test', createdAt: new Date(Date.now() + i * 1000) },
       });
     }
+    await prisma.wallet.update({ where: { userId: BigInt(u) }, data: { coins: 50n } });
     const p1 = await inject(app, u, 'GET', '/wallet/ledger?page=1&page_size=3');
     expect(p1.status).toBe(200);
     expect(p1.body.data.total).toBe(5);
