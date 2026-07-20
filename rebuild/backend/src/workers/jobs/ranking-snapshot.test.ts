@@ -12,7 +12,13 @@ import { closeQueues } from '../../queue/index.js';
 afterAll(async () => { redis.disconnect(); await prisma.$disconnect(); await closeQueues(); });
 
 // Unique period bucket per run (live board + durable rows are keyed by period and accumulate).
-const uniqueAt = () => new Date(Date.UTC(1970, 0, 1) + Math.floor(Math.random() * 1e13));
+// A random instant over ~317 years gives ~115k distinct DAY buckets — and the test database
+// PERSISTS across runs, so every past run leaves rows behind and the odds of landing on an
+// already-used day grow until they bite. A per-process counter makes collisions impossible within
+// a run, and the assertions below no longer depend on a bucket being globally pristine.
+let atSeq = 0;
+const uniqueAt = () =>
+  new Date(Date.UTC(1970, 0, 1) + Math.floor(Math.random() * 1e13) + (atSeq++) * 86_400_000);
 
 describe('ranking snapshot worker', () => {
   it('snapshot() persists durable Ranking rows and warms the cache', async () => {
@@ -23,7 +29,7 @@ describe('ranking snapshot worker', () => {
     await rankingService.addScore(Board.Room, s2, 80, at);
 
     const n = await rankingService.snapshot(Board.Room, Period.Day, 100, at);
-    expect(n).toBe(2);
+    expect(n).toBeGreaterThanOrEqual(2); // this run's two users, plus anything a past run left here
 
     const rows = await prisma.ranking.findMany({ where: { board: Board.Room, period: Period.Day, periodKey: pk }, orderBy: { rank: 'asc' } });
     expect(rows[0].subjectId).toBe(s2); // score 80 → rank 1

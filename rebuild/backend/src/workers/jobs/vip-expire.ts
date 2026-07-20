@@ -128,8 +128,10 @@ export const vipExpireProcessor = async (job?: { name?: string }) => {
  * the one-processor-per-queue rule makes a separate registration on `vip` throw.
  */
 export const vipQueueDispatcher = async (job?: { name?: string }) => {
-  const { NOBLE_EXPIRE_JOB, runNobleExpireSweep } = await import('./noble-expire.js');
+  const [{ NOBLE_EXPIRE_JOB, runNobleExpireSweep }, { VIP_RENEW_JOB, runVipRenewSweep }] =
+    await Promise.all([import('./noble-expire.js'), import('./vip-renew.js')]);
   if (job?.name === NOBLE_EXPIRE_JOB) return runNobleExpireSweep();
+  if (job?.name === VIP_RENEW_JOB) return runVipRenewSweep();
   return vipExpireProcessor(job);
 };
 

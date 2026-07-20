@@ -154,6 +154,7 @@ export async function wireProductionWorkers(): Promise<void> {
   const { schedulePkSweep } = await import('./jobs/pk-sweep.js');
   const { scheduleNobleExpire } = await import('./jobs/noble-expire.js');
   const { schedulePoolSettle } = await import('./jobs/pool-settle.js');
+  const { scheduleVipRenew } = await import('./jobs/vip-renew.js');
 
   await scheduledPushRetry(5 * 60_000).catch(() => {});   // retry failed pushes every 5 min
   await scheduleRankingSnapshot(60_000).catch(() => {});  // refresh ranking snapshots every minute
@@ -165,6 +166,7 @@ export async function wireProductionWorkers(): Promise<void> {
   // Its consumer was already registered in production; only the schedule was missing, so an
   // over-threshold gift pool never paid out. Inert while no pool is enabled.
   await schedulePoolSettle().catch(() => {});             // pay out over-threshold gift pools
+  await scheduleVipRenew().catch(() => {});               // charge due VIP auto-renewals
 }
 
 async function main(): Promise<void> {
