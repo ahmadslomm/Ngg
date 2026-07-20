@@ -49,8 +49,10 @@ export async function giftRoutes(app: FastifyInstance) {
   // user-namespaced — same pattern as P3a's /users/:id/couple living in the couple module.
   // `gift.getClientGiftTabs` — a real endpoint in the original's surface. The service was written
   // and never routed, so the tab list the client needs to lay out the gift panel was unreachable.
-  // Public like `/gifts`: the tab list carries no per-user data.
-  app.get('/gifts/tabs', async () => ({ code: 0, message: 'ok', data: await listGiftTabs() }));
+  // Authenticated, matching its sibling `GET /gifts`: leaving it open would be an inconsistency in
+  // the same feature, which is exactly what the route auditor flagged it for.
+  app.get('/gifts/tabs', { preHandler: [app.authenticate] }, async () =>
+    ({ code: 0, message: 'ok', data: await listGiftTabs() }));
 
   app.get('/users/:id/gift-wall', { preHandler: [app.authenticate] }, async (req, reply) => {
     try {

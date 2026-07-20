@@ -1,28 +1,16 @@
 {
-  "generatedAt": "2026-07-20T10:23:15.375Z",
+  "generatedAt": "2026-07-20T10:23:42.541Z",
   "method": "Static analysis of src/modules/**/*.routes.ts. No server boot, no DB, no network.",
   "totals": {
     "routes": 216,
     "admin": 56,
-    "authenticated": 150,
+    "authenticated": 151,
     "public-by-design": 8,
-    "UNGUARDED-REVIEW": 2,
+    "UNGUARDED-REVIEW": 1,
     "validated": 97,
     "rateLimited": 23
   },
   "needsReview": [
-    {
-      "module": "gifts",
-      "method": "GET",
-      "path": "/gifts/tabs",
-      "file": "src/modules/gifts/gift.routes.ts",
-      "auth": false,
-      "admin": false,
-      "rateLimit": null,
-      "validated": false,
-      "roles": [],
-      "exposure": "UNGUARDED-REVIEW"
-    },
     {
       "module": "payments",
       "method": "GET",
@@ -1242,12 +1230,12 @@
       "method": "GET",
       "path": "/gifts/tabs",
       "file": "src/modules/gifts/gift.routes.ts",
-      "auth": false,
+      "auth": true,
       "admin": false,
       "rateLimit": null,
       "validated": false,
       "roles": [],
-      "exposure": "UNGUARDED-REVIEW"
+      "exposure": "authenticated"
     },
     {
       "module": "gifts",

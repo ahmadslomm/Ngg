@@ -26,14 +26,28 @@ UNKNOWN until captured.
   account is not a coin merchant.
 - **Capture needed:** the same H5 pages from a **merchant** account.
 
-### 1.3 `mall.*` request/response schemas (10 endpoints)
+### 1.3 Guild / Agency (`Action/Guild`, `Action/Anchor`, `Action/BDCenter`) — 26 endpoints
+- **Why unobtainable:** the captured account was **not in a guild and not an agent**, so almost
+  every response is empty or an authorization error. `Action_Guild.guildInfo` → `[]`,
+  `Action_Anchor.getGuildInfo` → `{}`, `getAnchorList` → `الوكالة غير موجودة` ("agency does not
+  exist"), `wallet.getGuildBalanceChangeLogs` → `المستخدم ليس الوكيل` ("user is not the agent").
+- **What the FAILURES still recovered** — errors are evidence too:
+  - required params: `BDCenter.getGuildList` needs `page`; `Guild.getAnchorJewelAccountInfo` and
+    `getAnchorWithdrawalDetails` need `gid`; `Guild.getAnchorWithdrawalInfo` needs `anchor_uid`.
+  - **three more DEAD endpoints** (see §3).
+  - the vocabulary map: the original's **Guild** == its own Arabic **وكالة** == our `agency` module.
+- **What WAS captured:** `Anchor.getGuildPolicy` returned the four policy rules in full — now
+  reproduced verbatim in `agency.policy.ts` and served at `GET /agencies/policy`.
+- **Capture needed:** the same pages from an account that **owns or belongs to a guild**.
+
+### 1.4 `mall.*` request/response schemas (10 endpoints)
 - **Why unobtainable:** APK static strings gave method names only; no mall traffic was ever captured.
 - **Affected:** `buyProduct` · `getMallProductV` · `getMyProduct` · `giveAwayProduct` ·
   `giveAwayUserList` · `useProduct` · `buyTheme` · `useTheme` · `buyCustomizeTheme` +
   `GameMall.getMallProduct` / `exchangeProduct`.
 - **Capture needed:** live traffic while browsing, buying and gifting in the original's mall.
 
-### 1.4 `LivePk.*` request/response schemas (8 endpoints)
+### 1.5 `LivePk.*` request/response schemas (8 endpoints)
 - **Why unobtainable:** APK method names only. The PK **data model** was recovered from H5
   (`pkRecordList` / `pkInfo`), but the live-battle wire was not.
 - **Affected:** `startLivePk` · `matchLivePk` · `cancelPkMatch` · `breakOffPk` · `refusePk` ·
@@ -71,6 +85,12 @@ These were captured and are **facts about the original**, not missing work.
 | `Action/SVip.getPrivilege` | `{"error":"Feature disabled.","code":34567}` |
 | `Action/Noble.getRebateCard` | `{"error":"نظام غير طبيعي","code":34567}` |
 | `room.getVipUserRank` | `{"error":"unfound action in table","code":301}` — the APK calls an action the server never implemented |
+| `Action/Anchor.getAnchorPinkJewel` | `"unfound action in table"` — same: called by the client, absent from the server |
+| `Action/Anchor.getAnchorPinkJewelSettlement` | `"unfound action in table"` |
+| `Action/Anchor.getGuildWages` | `"unfound action in table"` |
+
+**Four** of the 397 endpoints are called by the original's own client and not implemented by its own
+server. Building them would be reconstructing something that never ran.
 
 ---
 

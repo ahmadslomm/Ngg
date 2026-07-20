@@ -1,6 +1,8 @@
 // Agency controller — HTTP only: validate (Zod) → call the service → return a DTO envelope.
 // No business logic, no authorization decisions (the service owns them), no Prisma.
 import type { FastifyInstance } from 'fastify';
+import { z } from 'zod';
+import { guildPolicy } from './agency.policy.js';
 import { agencyService } from './agency.service.js';
 import { AgencyRole } from './agency.authz.js';
 import { ok, replyError, serialize } from '../../lib/errors.js';
@@ -19,6 +21,13 @@ export async function agencyRoutes(app: FastifyInstance) {
       const a = await agencyService.createAgency(uid(req), { name: b.name, tag: b.tag, memberLimit: b.member_limit });
       return ok(serialize(toAgencyDTO(a)));
     } catch (e) { return replyError(reply, e); }
+  });
+
+  // `Action/Anchor.getGuildPolicy` — one of the few Guild endpoints whose capture returned real
+  // data. The four rules are reproduced verbatim in agency.policy.ts.
+  app.get('/agencies/policy', { preHandler: [app.authenticate] }, async (req) => {
+    const q = z.object({ locale: z.string().max(8).optional() }).parse(req.query ?? {});
+    return ok(guildPolicy(q.locale));
   });
 
   app.get('/agencies/:id', { preHandler: [app.authenticate] }, async (req, reply) => {
