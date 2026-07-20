@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T06:21:03.750Z",
+  "generatedAt": "2026-07-20T10:20:20.446Z",
   "method": "Static analysis: each `ev:` paired with its sibling `data:` literal; client `case` labels.",
   "totals": {
     "serverEvents": 37,

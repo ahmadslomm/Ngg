@@ -99,6 +99,10 @@ export async function shutdown(signal?: string): Promise<void> {
   for (const c of [redis, pubClient, subClient]) {
     try { c.disconnect(); } catch { /* already closed */ }
   }
+  // Close Prisma too. `disconnectDb` closes BOTH the write client and the read replica; nothing
+  // called it, so a shutdown left the replica connection open.
+  const { disconnectDb } = await import('../lib/db.js');
+  await disconnectDb().catch(() => {});
 }
 
 // T3.1 — wire the read-only daily shadow reconcile: register its consumer (started by bootstrap) and
@@ -140,9 +144,27 @@ export async function wireProductionWorkers(): Promise<void> {
   registerTaskResetWorker();
 
   // Repeatable schedules (idempotent upserts — safe to call on every boot).
+  //
+  // Registering a consumer is only HALF the wiring: without the matching schedule the worker sits
+  // idle waiting for a job nobody enqueues. `scheduleVipExpireSweep` was missing here, so VIP
+  // memberships never expired in production despite the sweep being written and unit-tested.
+  // `workers/schedule-coverage.test.ts` now fails if any schedule* export is left unwired.
+  const { scheduleVipExpireSweep } = await import('./jobs/vip-expire.js');
+  const { scheduleWithdrawalExpire } = await import('./jobs/withdrawal-expire.js');
+  const { schedulePkSweep } = await import('./jobs/pk-sweep.js');
+  const { scheduleNobleExpire } = await import('./jobs/noble-expire.js');
+  const { schedulePoolSettle } = await import('./jobs/pool-settle.js');
+
   await scheduledPushRetry(5 * 60_000).catch(() => {});   // retry failed pushes every 5 min
   await scheduleRankingSnapshot(60_000).catch(() => {});  // refresh ranking snapshots every minute
   await scheduleTaskReset().catch(() => {});              // prune finished task periods hourly
+  await scheduleVipExpireSweep().catch(() => {});         // downgrade lapsed VIP tiers hourly
+  await scheduleNobleExpire().catch(() => {});            // recompute lapsed noble cache hourly
+  await scheduleWithdrawalExpire().catch(() => {});       // return stale pending withdrawals hourly
+  await schedulePkSweep().catch(() => {});                // settle battles whose delayed job was lost
+  // Its consumer was already registered in production; only the schedule was missing, so an
+  // over-threshold gift pool never paid out. Inert while no pool is enabled.
+  await schedulePoolSettle().catch(() => {});             // pay out over-threshold gift pools
 }
 
 async function main(): Promise<void> {

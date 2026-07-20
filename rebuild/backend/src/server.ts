@@ -245,7 +245,10 @@ async function main() {
     try {
       io.close();                 // stop accepting sockets, close existing
       await app.close();          // stop HTTP, run onClose hooks, finish in-flight
-      await prisma.$disconnect();
+      // disconnectDb closes the write client AND the read replica; `prisma.$disconnect()` alone
+      // left the replica connection open on every shutdown.
+      const { disconnectDb } = await import('./lib/db.js');
+      await disconnectDb();
       redis.disconnect(); pubClient.disconnect(); subClient.disconnect();
       app.log.info('shutdown complete');
       process.exit(0);

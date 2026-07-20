@@ -1,0 +1,4594 @@
+{
+  "generatedAt": "2026-07-19T22:31:04Z",
+  "scope": "assets-archive/ only — no database, R2, Flutter, rewrite or importer touched",
+  "method": "Every file re-hashed from disk and identified by MAGIC BYTES, not by extension.",
+  "totals": {
+    "pages": 20,
+    "manifestRecords": 834,
+    "verified": 663,
+    "failedRecords": 171,
+    "filesOnDisk": 725,
+    "assetFiles": 387,
+    "assetBytes": 221975544,
+    "readyForR2": 363,
+    "needsReview": 27
+  },
+  "integrity": {
+    "missingOnDisk": [],
+    "sha256Mismatch": [],
+    "zeroByte": [],
+    "unreadable": [],
+    "contentTypeMismatch": [
+      {
+        "page": "giftWall",
+        "path": "assets-archive/h5/giftWall/assets/index_0da4f368",
+        "extension": "bin",
+        "sniffed": "markup",
+        "size": 41606,
+        "issue": "HTTP error page or markup stored under a non-HTML extension"
+      },
+      {
+        "page": "giftWall",
+        "path": "assets-archive/h5/giftWall/assets/index",
+        "extension": "bin",
+        "sniffed": "markup",
+        "size": 208116,
+        "issue": "HTTP error page or markup stored under a non-HTML extension"
+      },
+      {
+        "page": "announcement",
+        "path": "assets-archive/h5/announcement/assets/index",
+        "extension": "bin",
+        "sniffed": "markup",
+        "size": 21518,
+        "issue": "HTTP error page or markup stored under a non-HTML extension"
+      }
+    ],
+    "textualPayloadsInAssets": [
+      {
+        "page": "svip",
+        "path": "assets-archive/h5/svip/assets/web_vap_json_1724923273.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 202,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_e131f17d.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_22a6a938.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_f2d85cc3.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car_c3661287.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_dd76ed61.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_69db1216.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_ef489d1e.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car_9c33954a.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car_37e64a57.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_48f8bcf3.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car_59b7266d.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car_e12e575f.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_f082a71b.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car_b1c90a3e.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_5d4f15b3.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_c2f29d4d.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_beb00e4d.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/vapc_b471b3da.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car_7e4367f2.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car_09777910.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      },
+      {
+        "page": "noble",
+        "path": "assets-archive/h5/noble/assets/car_199f29b6.json",
+        "extension": "json",
+        "sniffed": "json",
+        "size": 150,
+        "issue": "json sitting in assets/ — a payload, not art"
+      }
+    ],
+    "orphansOnDiskNotInManifest": [
+      "assets-archive/h5/anchor/assets/9e5e24669ca19f1b64aa399e463d3d42.svga",
+      "assets-archive/h5/announcement/assets/index",
+      "assets-archive/h5/cp/assets/1715563ab282fd671fcaafdc710d52d9.mp4",
+      "assets-archive/h5/cp/assets/1e3c0126f7aa2f8020a9f0223c68009e_1716176352.png",
+      "assets-archive/h5/cp/assets/412710859af4bf135a9baaa26c1133a7_1715847815.png",
+      "assets-archive/h5/cp/assets/641439ffc242f05f6dfcc0c644b8c213.mp4",
+      "assets-archive/h5/cp/assets/8c0158825176a34b8155b71551d4f148_1716176564.png",
+      "assets-archive/h5/cp/assets/8f32866ca449b355d08737aed3c8baa8.mp4",
+      "assets-archive/h5/cp/assets/ac006299cf4876c53d1bb39243a33bc6.mp4",
+      "assets-archive/h5/cp/assets/c1e3e3df537a888d6a804a15fa8a0433.mp4",
+      "assets-archive/h5/cp/assets/d5487cc3c5b0ef171593bde791a61689_1715847764.png",
+      "assets-archive/h5/cp/assets/d7c836567295dca308521e2ffe47b401_1715847911.png",
+      "assets-archive/h5/cp/assets/ed294ece2ab4d901bc405c73b01fc919.mp4",
+      "assets-archive/h5/giftWall/assets/font_2553510_61agzg96wm8.ttf",
+      "assets-archive/h5/giftWall/assets/font_2553510_61agzg96wm8.woff",
+      "assets-archive/h5/giftWall/assets/index",
+      "assets-archive/h5/giftWall/assets/index_0da4f368",
+      "assets-archive/h5/magicBox/assets/bf4737adeac077bc2cd46a75fd716abf_1614933002.svga",
+      "assets-archive/h5/noble/assets/24a76c118d11d3aacab0c60338be5146_1628072700.svga",
+      "assets-archive/h5/noble/assets/TOP01.svga",
+      "assets-archive/h5/noble/assets/TOP02.svga",
+      "assets-archive/h5/noble/assets/TOP03.svga",
+      "assets-archive/h5/noble/assets/TOP04.svga",
+      "assets-archive/h5/noble/assets/TOP05.svga",
+      "assets-archive/h5/noble/assets/TOP06.svga",
+      "assets-archive/h5/noble/assets/TOP07.svga",
+      "assets-archive/h5/noble/assets/TOP08.svga",
+      "assets-archive/h5/noble/assets/TOP09.svga",
+      "assets-archive/h5/noble/assets/TOP10.svga",
+      "assets-archive/h5/noble/assets/TOP11.svga",
+      "assets-archive/h5/noble/assets/TOP12.svga",
+      "assets-archive/h5/noble/assets/TOP13.svga",
+      "assets-archive/h5/noble/assets/TOP14.svga",
+      "assets-archive/h5/noble/assets/TOP15.svga",
+      "assets-archive/h5/noble/assets/car.mp4",
+      "assets-archive/h5/noble/assets/vapc.mp4",
+      "assets-archive/h5/noble/assets/vip01.svga",
+      "assets-archive/h5/noble/assets/vip02.svga",
+      "assets-archive/h5/noble/assets/vip03.svga",
+      "assets-archive/h5/noble/assets/vip04.svga",
+      "assets-archive/h5/noble/assets/vip05.svga",
+      "assets-archive/h5/noble/assets/vip06.svga",
+      "assets-archive/h5/noble/assets/vip07.svga",
+      "assets-archive/h5/noble/assets/vip08.svga",
+      "assets-archive/h5/noble/assets/vip09.svga",
+      "assets-archive/h5/noble/assets/vip10.svga",
+      "assets-archive/h5/noble/assets/vip11.svga",
+      "assets-archive/h5/noble/assets/vip12.svga",
+      "assets-archive/h5/noble/assets/vip13.svga",
+      "assets-archive/h5/noble/assets/vip14.svga",
+      "assets-archive/h5/noble/assets/vip15.svga",
+      "assets-archive/h5/pkRank/assets/2ad233165abf6989a4c75e8e61e9c707.png",
+      "assets-archive/h5/svip/assets/web_vap_mp4_1724923273.mp4",
+      "assets-archive/h5/totalRank/assets/4a0e2602077537e105114f9a04ca095f.png",
+      "assets-archive/h5/wealth_grade/assets/0f84ef49bd52a74de81426b51542cad1_1641452351.svga",
+      "assets-archive/h5/wealth_grade/assets/3604e65ba11e636de52fa34773c7c98e_1612324328.svga",
+      "assets-archive/h5/wealth_grade/assets/62e5de7fe9fb145ac911c6a677d3a49e_1612324306.svga",
+      "assets-archive/h5/wealth_grade/assets/667fe883f269c70067ae83ef483aa27d_1612324316.svga",
+      "assets-archive/h5/wealth_grade/assets/6f7bf2724fe5f6956aec30f482cd244e_1686189299.svga",
+      "assets-archive/h5/wealth_grade/assets/80384069767a19c7f8985f7cd7c2a6df_1686189308.svga",
+      "assets-archive/h5/wealth_grade/assets/98cc296ae42ad7d9f0044889bb08c207_1612324293.svga",
+      "assets-archive/h5/wealth_grade/assets/aafa8100f4285171ca1b91f528e4b856_1612324339.svga"
+    ]
+  },
+  "duplicates": {
+    "distinctDigestsWithMoreThanOneCopy": 20,
+    "redundantBytes": 9862551,
+    "groups": [
+      {
+        "sha256": "4b564a305d9730bca6a63652716052e53cc528a29143e51062c6f0ea2a1963fb",
+        "copies": [
+          {
+            "page": "giftWall",
+            "path": "assets-archive/h5/giftWall/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "task",
+            "path": "assets-archive/h5/task/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "my_level",
+            "path": "assets-archive/h5/my_level/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "luckyBag",
+            "path": "assets-archive/h5/luckyBag/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "luckyDraw",
+            "path": "assets-archive/h5/luckyDraw/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "luckyGift",
+            "path": "assets-archive/h5/luckyGift/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "announcement",
+            "path": "assets-archive/h5/announcement/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "announcementFamily",
+            "path": "assets-archive/h5/announcementFamily/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "roomRule",
+            "path": "assets-archive/h5/roomRule/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "roomGroupRule",
+            "path": "assets-archive/h5/roomGroupRule/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "cp",
+            "path": "assets-archive/h5/cp/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "wealth_grade",
+            "path": "assets-archive/h5/wealth_grade/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "anchor",
+            "path": "assets-archive/h5/anchor/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "magicBox",
+            "path": "assets-archive/h5/magicBox/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "pkRank",
+            "path": "assets-archive/h5/pkRank/js/axios.min.js",
+            "url": "https://ufile.sodfachat.com/js/axios.min.js"
+          },
+          {
+            "page": "svip",
+            "path": "assets-archive/h5/svip/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "totalRank",
+            "path": "assets-archive/h5/totalRank/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "friendCenter",
+            "path": "assets-archive/h5/friendCenter/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "cpReward",
+            "path": "assets-archive/h5/cpReward/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "roomScoreRank",
+            "path": "assets-archive/h5/roomScoreRank/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "vipScoreRank",
+            "path": "assets-archive/h5/vipScoreRank/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "coinsMerchant",
+            "path": "assets-archive/h5/coinsMerchant/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "luckyBox",
+            "path": "assets-archive/h5/luckyBox/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "roomParty",
+            "path": "assets-archive/h5/roomParty/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "pkReward",
+            "path": "assets-archive/h5/pkReward/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "pkRule",
+            "path": "assets-archive/h5/pkRule/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          },
+          {
+            "page": "medalRank",
+            "path": "assets-archive/h5/medalRank/js/axios.min.js",
+            "url": "https://fstatic.cat1314.com/js/axios.min.js"
+          }
+        ]
+      },
+      {
+        "sha256": "50d2470f806d538dc6256f9f0a49bdab03702f810659f925d9719a7e90e2fa57",
+        "copies": [
+          {
+            "page": "giftWall",
+            "path": "assets-archive/h5/giftWall/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "task",
+            "path": "assets-archive/h5/task/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "my_level",
+            "path": "assets-archive/h5/my_level/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "luckyBag",
+            "path": "assets-archive/h5/luckyBag/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "luckyDraw",
+            "path": "assets-archive/h5/luckyDraw/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "luckyGift",
+            "path": "assets-archive/h5/luckyGift/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "announcement",
+            "path": "assets-archive/h5/announcement/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "announcementFamily",
+            "path": "assets-archive/h5/announcementFamily/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "roomRule",
+            "path": "assets-archive/h5/roomRule/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "roomGroupRule",
+            "path": "assets-archive/h5/roomGroupRule/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "cp",
+            "path": "assets-archive/h5/cp/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "wealth_grade",
+            "path": "assets-archive/h5/wealth_grade/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "anchor",
+            "path": "assets-archive/h5/anchor/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "magicBox",
+            "path": "assets-archive/h5/magicBox/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "pkRank",
+            "path": "assets-archive/h5/pkRank/js/svga.lite.min.js",
+            "url": "https://ufile.sodfachat.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "svip",
+            "path": "assets-archive/h5/svip/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "totalRank",
+            "path": "assets-archive/h5/totalRank/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "friendCenter",
+            "path": "assets-archive/h5/friendCenter/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "cpReward",
+            "path": "assets-archive/h5/cpReward/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "roomScoreRank",
+            "path": "assets-archive/h5/roomScoreRank/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "vipScoreRank",
+            "path": "assets-archive/h5/vipScoreRank/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "coinsMerchant",
+            "path": "assets-archive/h5/coinsMerchant/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "luckyBox",
+            "path": "assets-archive/h5/luckyBox/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "roomParty",
+            "path": "assets-archive/h5/roomParty/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "pkReward",
+            "path": "assets-archive/h5/pkReward/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "pkRule",
+            "path": "assets-archive/h5/pkRule/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          },
+          {
+            "page": "medalRank",
+            "path": "assets-archive/h5/medalRank/js/svga.lite.min.js",
+            "url": "https://fstatic.cat1314.com/js/svga.lite.min.js"
+          }
+        ]
+      },
+      {
+        "sha256": "8f6f3882d246bdd5b9c540fda7ff5622a6eac11471a958a95912d26f679ca50e",
+        "copies": [
+          {
+            "page": "giftWall",
+            "path": "assets-archive/h5/giftWall/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "task",
+            "path": "assets-archive/h5/task/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "my_level",
+            "path": "assets-archive/h5/my_level/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "luckyBag",
+            "path": "assets-archive/h5/luckyBag/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "luckyDraw",
+            "path": "assets-archive/h5/luckyDraw/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "luckyGift",
+            "path": "assets-archive/h5/luckyGift/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "announcement",
+            "path": "assets-archive/h5/announcement/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "announcementFamily",
+            "path": "assets-archive/h5/announcementFamily/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "roomRule",
+            "path": "assets-archive/h5/roomRule/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "roomGroupRule",
+            "path": "assets-archive/h5/roomGroupRule/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "cp",
+            "path": "assets-archive/h5/cp/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "wealth_grade",
+            "path": "assets-archive/h5/wealth_grade/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "anchor",
+            "path": "assets-archive/h5/anchor/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "magicBox",
+            "path": "assets-archive/h5/magicBox/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "pkRank",
+            "path": "assets-archive/h5/pkRank/js/vue-lazyload.js",
+            "url": "https://ufile.sodfachat.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "svip",
+            "path": "assets-archive/h5/svip/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "totalRank",
+            "path": "assets-archive/h5/totalRank/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "friendCenter",
+            "path": "assets-archive/h5/friendCenter/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "cpReward",
+            "path": "assets-archive/h5/cpReward/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "roomScoreRank",
+            "path": "assets-archive/h5/roomScoreRank/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "vipScoreRank",
+            "path": "assets-archive/h5/vipScoreRank/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "coinsMerchant",
+            "path": "assets-archive/h5/coinsMerchant/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "luckyBox",
+            "path": "assets-archive/h5/luckyBox/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "roomParty",
+            "path": "assets-archive/h5/roomParty/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "pkReward",
+            "path": "assets-archive/h5/pkReward/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "pkRule",
+            "path": "assets-archive/h5/pkRule/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          },
+          {
+            "page": "medalRank",
+            "path": "assets-archive/h5/medalRank/js/vue-lazyload.js",
+            "url": "https://fstatic.cat1314.com/js/vue-lazyload.js"
+          }
+        ]
+      },
+      {
+        "sha256": "bd3e1770a58b7da1a8af4209829de700ece5561dc1dbdc8b27ba5a33e6d881aa",
+        "copies": [
+          {
+            "page": "giftWall",
+            "path": "assets-archive/h5/giftWall/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "task",
+            "path": "assets-archive/h5/task/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "my_level",
+            "path": "assets-archive/h5/my_level/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "luckyBag",
+            "path": "assets-archive/h5/luckyBag/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "luckyDraw",
+            "path": "assets-archive/h5/luckyDraw/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "luckyGift",
+            "path": "assets-archive/h5/luckyGift/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "announcement",
+            "path": "assets-archive/h5/announcement/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "announcementFamily",
+            "path": "assets-archive/h5/announcementFamily/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "roomRule",
+            "path": "assets-archive/h5/roomRule/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "roomGroupRule",
+            "path": "assets-archive/h5/roomGroupRule/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "cp",
+            "path": "assets-archive/h5/cp/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "wealth_grade",
+            "path": "assets-archive/h5/wealth_grade/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "anchor",
+            "path": "assets-archive/h5/anchor/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "magicBox",
+            "path": "assets-archive/h5/magicBox/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "pkRank",
+            "path": "assets-archive/h5/pkRank/js/vue.runtime.min.js",
+            "url": "https://ufile.sodfachat.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "svip",
+            "path": "assets-archive/h5/svip/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "totalRank",
+            "path": "assets-archive/h5/totalRank/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "friendCenter",
+            "path": "assets-archive/h5/friendCenter/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "cpReward",
+            "path": "assets-archive/h5/cpReward/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "roomScoreRank",
+            "path": "assets-archive/h5/roomScoreRank/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "vipScoreRank",
+            "path": "assets-archive/h5/vipScoreRank/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "coinsMerchant",
+            "path": "assets-archive/h5/coinsMerchant/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "luckyBox",
+            "path": "assets-archive/h5/luckyBox/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "roomParty",
+            "path": "assets-archive/h5/roomParty/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "pkReward",
+            "path": "assets-archive/h5/pkReward/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "pkRule",
+            "path": "assets-archive/h5/pkRule/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          },
+          {
+            "page": "medalRank",
+            "path": "assets-archive/h5/medalRank/js/vue.runtime.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue.runtime.min.js"
+          }
+        ]
+      },
+      {
+        "sha256": "3c28a5e22a0bd8df2845298cd8969f98d74de5ddc0cdfdd2411f419f608ec212",
+        "copies": [
+          {
+            "page": "giftWall",
+            "path": "assets-archive/h5/giftWall/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "task",
+            "path": "assets-archive/h5/task/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "my_level",
+            "path": "assets-archive/h5/my_level/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "luckyBag",
+            "path": "assets-archive/h5/luckyBag/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "luckyDraw",
+            "path": "assets-archive/h5/luckyDraw/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "luckyGift",
+            "path": "assets-archive/h5/luckyGift/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "announcement",
+            "path": "assets-archive/h5/announcement/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "announcementFamily",
+            "path": "assets-archive/h5/announcementFamily/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "roomRule",
+            "path": "assets-archive/h5/roomRule/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "roomGroupRule",
+            "path": "assets-archive/h5/roomGroupRule/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "cp",
+            "path": "assets-archive/h5/cp/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "wealth_grade",
+            "path": "assets-archive/h5/wealth_grade/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "anchor",
+            "path": "assets-archive/h5/anchor/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "magicBox",
+            "path": "assets-archive/h5/magicBox/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "pkRank",
+            "path": "assets-archive/h5/pkRank/js/vuex.min.js",
+            "url": "https://ufile.sodfachat.com/js/vuex.min.js"
+          },
+          {
+            "page": "svip",
+            "path": "assets-archive/h5/svip/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "totalRank",
+            "path": "assets-archive/h5/totalRank/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "friendCenter",
+            "path": "assets-archive/h5/friendCenter/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "cpReward",
+            "path": "assets-archive/h5/cpReward/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "roomScoreRank",
+            "path": "assets-archive/h5/roomScoreRank/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "vipScoreRank",
+            "path": "assets-archive/h5/vipScoreRank/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "coinsMerchant",
+            "path": "assets-archive/h5/coinsMerchant/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "luckyBox",
+            "path": "assets-archive/h5/luckyBox/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "roomParty",
+            "path": "assets-archive/h5/roomParty/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "pkReward",
+            "path": "assets-archive/h5/pkReward/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "pkRule",
+            "path": "assets-archive/h5/pkRule/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          },
+          {
+            "page": "medalRank",
+            "path": "assets-archive/h5/medalRank/js/vuex.min.js",
+            "url": "https://fstatic.cat1314.com/js/vuex.min.js"
+          }
+        ]
+      },
+      {
+        "sha256": "c8683f268d783234de260e4818c0754881622e182cd7dc0d98959f7081f64a1d",
+        "copies": [
+          {
+            "page": "giftWall",
+            "path": "assets-archive/h5/giftWall/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "task",
+            "path": "assets-archive/h5/task/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "my_level",
+            "path": "assets-archive/h5/my_level/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "luckyBag",
+            "path": "assets-archive/h5/luckyBag/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "luckyDraw",
+            "path": "assets-archive/h5/luckyDraw/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "announcement",
+            "path": "assets-archive/h5/announcement/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "announcementFamily",
+            "path": "assets-archive/h5/announcementFamily/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "roomRule",
+            "path": "assets-archive/h5/roomRule/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "roomGroupRule",
+            "path": "assets-archive/h5/roomGroupRule/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "cp",
+            "path": "assets-archive/h5/cp/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "wealth_grade",
+            "path": "assets-archive/h5/wealth_grade/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "anchor",
+            "path": "assets-archive/h5/anchor/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "magicBox",
+            "path": "assets-archive/h5/magicBox/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "pkRank",
+            "path": "assets-archive/h5/pkRank/js/vue-router.min.js",
+            "url": "https://ufile.sodfachat.com/js/vue-router.min.js"
+          },
+          {
+            "page": "svip",
+            "path": "assets-archive/h5/svip/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "totalRank",
+            "path": "assets-archive/h5/totalRank/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "friendCenter",
+            "path": "assets-archive/h5/friendCenter/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "cpReward",
+            "path": "assets-archive/h5/cpReward/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "roomScoreRank",
+            "path": "assets-archive/h5/roomScoreRank/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "vipScoreRank",
+            "path": "assets-archive/h5/vipScoreRank/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "coinsMerchant",
+            "path": "assets-archive/h5/coinsMerchant/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "luckyBox",
+            "path": "assets-archive/h5/luckyBox/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "roomParty",
+            "path": "assets-archive/h5/roomParty/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "pkReward",
+            "path": "assets-archive/h5/pkReward/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "pkRule",
+            "path": "assets-archive/h5/pkRule/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          },
+          {
+            "page": "medalRank",
+            "path": "assets-archive/h5/medalRank/js/vue-router.min.js",
+            "url": "https://fstatic.cat1314.com/js/vue-router.min.js"
+          }
+        ]
+      },
+      {
+        "sha256": "75e1505e74b18753c7a391fe411306118bf7260c8f89218ab9a95ef969e14b39",
+        "copies": [
+          {
+            "page": "task",
+            "path": "assets-archive/h5/task/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "luckyBag",
+            "path": "assets-archive/h5/luckyBag/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "luckyGift",
+            "path": "assets-archive/h5/luckyGift/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "announcement",
+            "path": "assets-archive/h5/announcement/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "announcementFamily",
+            "path": "assets-archive/h5/announcementFamily/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "roomGroupRule",
+            "path": "assets-archive/h5/roomGroupRule/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "wealth_grade",
+            "path": "assets-archive/h5/wealth_grade/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "anchor",
+            "path": "assets-archive/h5/anchor/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "magicBox",
+            "path": "assets-archive/h5/magicBox/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "svip",
+            "path": "assets-archive/h5/svip/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "roomScoreRank",
+            "path": "assets-archive/h5/roomScoreRank/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "vipScoreRank",
+            "path": "assets-archive/h5/vipScoreRank/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "coinsMerchant",
+            "path": "assets-archive/h5/coinsMerchant/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "luckyBox",
+            "path": "assets-archive/h5/luckyBox/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "roomParty",
+            "path": "assets-archive/h5/roomParty/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          },
+          {
+            "page": "medalRank",
+            "path": "assets-archive/h5/medalRank/js/es6-promise.auto.min.js",
+            "url": "https://fstatic.cat1314.com/js/es6-promise.auto.min.js"
+          }
+        ]
+      },
+      {
+        "sha256": "a9f56404f76386d049a6769d2cd948a98148196c536a0aa52f741bf32242c341",
+        "copies": [
+          {
+            "page": "task",
+            "path": "assets-archive/h5/task/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "luckyBag",
+            "path": "assets-archive/h5/luckyBag/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "luckyGift",
+            "path": "assets-archive/h5/luckyGift/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "announcement",
+            "path": "assets-archive/h5/announcement/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "announcementFamily",
+            "path": "assets-archive/h5/announcementFamily/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "wealth_grade",
+            "path": "assets-archive/h5/wealth_grade/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "anchor",
+            "path": "assets-archive/h5/anchor/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "magicBox",
+            "path": "assets-archive/h5/magicBox/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "svip",
+            "path": "assets-archive/h5/svip/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "roomScoreRank",
+            "path": "assets-archive/h5/roomScoreRank/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "vipScoreRank",
+            "path": "assets-archive/h5/vipScoreRank/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "coinsMerchant",
+            "path": "assets-archive/h5/coinsMerchant/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "luckyBox",
+            "path": "assets-archive/h5/luckyBox/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "roomParty",
+            "path": "assets-archive/h5/roomParty/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          },
+          {
+            "page": "medalRank",
+            "path": "assets-archive/h5/medalRank/js/runtime.js",
+            "url": "https://fstatic.cat1314.com/js/runtime.js"
+          }
+        ]
+      },
+      {
+        "sha256": "341885ebd1db9f578514e86279a449c0a698be8826d94941808d6b556283ea16",
+        "copies": [
+          {
+            "page": "giftWall",
+            "path": "assets-archive/h5/giftWall/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "my_level",
+            "path": "assets-archive/h5/my_level/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "luckyDraw",
+            "path": "assets-archive/h5/luckyDraw/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "roomRule",
+            "path": "assets-archive/h5/roomRule/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "roomGroupRule",
+            "path": "assets-archive/h5/roomGroupRule/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "cp",
+            "path": "assets-archive/h5/cp/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "pkRank",
+            "path": "assets-archive/h5/pkRank/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "totalRank",
+            "path": "assets-archive/h5/totalRank/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "friendCenter",
+            "path": "assets-archive/h5/friendCenter/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "cpReward",
+            "path": "assets-archive/h5/cpReward/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "pkReward",
+            "path": "assets-archive/h5/pkReward/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          },
+          {
+            "page": "pkRule",
+            "path": "assets-archive/h5/pkRule/js/vconsole.min.js",
+            "url": "https://unpkg.com/vconsole@latest/dist/vconsole.min.js"
+          }
+        ]
+      },
+      {
+        "sha256": "bbd25e42bab6c4278032f3985efb5325de16e88d2d78f81418abdf85ca88348c",
+        "copies": [
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP10/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_ef489d1e.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP11/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_5d4f15b3.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP12/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_e131f17d.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP13/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_f2d85cc3.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP14/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_f082a71b.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP15/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_c2f29d4d.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP3/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_69db1216.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP4/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_b471b3da.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP5/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_48f8bcf3.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP6/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_beb00e4d.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP7/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_22a6a938.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP8/vapc.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/vapc_dd76ed61.json",
+            "url": "https://fstatic.hk.ufileos.com/uc/video/zaffalive/vipCard/VIP9/vapc.json"
+          }
+        ]
+      },
+      {
+        "sha256": "b6bcd60cab0c466b74ace45e9728c9dec7f4364232bb540200390dd224e2c66e",
+        "copies": [
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/car_7e4367f2.json",
+            "url": "https://fstatic.cat1314.com/uc/video/zaffalive/vipCar/V09/car.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/car_37e64a57.json",
+            "url": "https://fstatic.cat1314.com/uc/video/zaffalive/vipCar/V10/car.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/car_09777910.json",
+            "url": "https://fstatic.cat1314.com/uc/video/zaffalive/vipCar/V11/car.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/car_9c33954a.json",
+            "url": "https://fstatic.cat1314.com/uc/video/zaffalive/vipCar/V14/car.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/car_c3661287.json",
+            "url": "https://fstatic.cat1314.com/uc/video/zaffalive/vipCar/V15/car.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/car_199f29b6.json",
+            "url": "https://fstatic.cat1314.com/uc/video/zaffalive/vipCar/V13/car.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/car_59b7266d.json",
+            "url": "https://fstatic.cat1314.com/uc/video/zaffalive/vipCar/V12/car.json"
+          }
+        ]
+      },
+      {
+        "sha256": "54350a1297d38332f8d26cca81f9f740755003debe95df32f293fdac61da1e55",
+        "copies": [
+          {
+            "page": "luckyDraw",
+            "path": "assets-archive/h5/luckyDraw/css/vendor.css",
+            "url": "https://api.zaffalive.com/html/luckyDraw/css/vendor.css?c1efa7b8"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/css/vendor.css",
+            "url": "https://api.zaffalive.com/html/noble/css/vendor.css?c1efa7b8"
+          },
+          {
+            "page": "friendCenter",
+            "path": "assets-archive/h5/friendCenter/css/vendor.css",
+            "url": "https://api.zaffalive.com/html/friendCenter/css/vendor.css?c1efa7b8"
+          },
+          {
+            "page": "pkReward",
+            "path": "assets-archive/h5/pkReward/css/vendor.css",
+            "url": "https://api.zaffalive.com/html/pkReward/css/vendor.css?c1efa7b8"
+          },
+          {
+            "page": "pkRule",
+            "path": "assets-archive/h5/pkRule/css/vendor.css",
+            "url": "https://api.zaffalive.com/html/pkRule/css/vendor.css?c1efa7b8"
+          }
+        ]
+      },
+      {
+        "sha256": "b75d44b2b2c263c960661de24cf029fec9bd4ec252392e573f7d0fa035abf68e",
+        "copies": [
+          {
+            "page": "giftWall",
+            "path": "assets-archive/h5/giftWall/css/vendor.css",
+            "url": "https://api.zaffalive.com/html/giftWall/css/vendor.css?c71a441d"
+          },
+          {
+            "page": "roomRule",
+            "path": "assets-archive/h5/roomRule/css/vendor.css",
+            "url": "https://api.zaffalive.com/html/roomRule/css/vendor.css?c71a441d"
+          },
+          {
+            "page": "pkRank",
+            "path": "assets-archive/h5/pkRank/css/vendor.css",
+            "url": "https://api.zaffalive.com/html/pkRank/css/vendor.css?c71a441d"
+          },
+          {
+            "page": "cpReward",
+            "path": "assets-archive/h5/cpReward/css/vendor.css",
+            "url": "https://api.zaffalive.com/html/cpReward/css/vendor.css?c71a441d"
+          }
+        ]
+      },
+      {
+        "sha256": "6812fdfa148c5b93dfc0e5403c2d10d82d988b7c14fd482de7447efb66ff5e7c",
+        "copies": [
+          {
+            "page": "luckyDraw",
+            "path": "assets-archive/h5/luckyDraw/js/vendor.js",
+            "url": "https://api.zaffalive.com/html/luckyDraw/js/vendor.js?3cb2956c"
+          },
+          {
+            "page": "friendCenter",
+            "path": "assets-archive/h5/friendCenter/js/vendor.js",
+            "url": "https://api.zaffalive.com/html/friendCenter/js/vendor.js?3cb2956c"
+          },
+          {
+            "page": "pkReward",
+            "path": "assets-archive/h5/pkReward/js/vendor.js",
+            "url": "https://api.zaffalive.com/html/pkReward/js/vendor.js?3cb2956c"
+          },
+          {
+            "page": "pkRule",
+            "path": "assets-archive/h5/pkRule/js/vendor.js",
+            "url": "https://api.zaffalive.com/html/pkRule/js/vendor.js?3cb2956c"
+          }
+        ]
+      },
+      {
+        "sha256": "467437bd7c317746a4a203c5d884e6d89ce2ab9acd920aabfb3c92eb3cabd624",
+        "copies": [
+          {
+            "page": "giftWall",
+            "path": "assets-archive/h5/giftWall/js/vendor.js",
+            "url": "https://api.zaffalive.com/html/giftWall/js/vendor.js?03bc2c96"
+          },
+          {
+            "page": "roomRule",
+            "path": "assets-archive/h5/roomRule/js/vendor.js",
+            "url": "https://api.zaffalive.com/html/roomRule/js/vendor.js?03bc2c96"
+          },
+          {
+            "page": "cpReward",
+            "path": "assets-archive/h5/cpReward/js/vendor.js",
+            "url": "https://api.zaffalive.com/html/cpReward/js/vendor.js?03bc2c96"
+          }
+        ]
+      },
+      {
+        "sha256": "60ef607003ee4cb3d471150274caf1f3c988ea6ebd5cffa2c746337c10e72a2c",
+        "copies": [
+          {
+            "page": "pay",
+            "path": "assets-archive/h5/pay/js/font.js",
+            "url": "https://api.zaffalive.com/html/pay/js/font.js"
+          },
+          {
+            "page": "report",
+            "path": "assets-archive/h5/report/js/font.js",
+            "url": "https://api.zaffalive.com/html/report/js/font.js"
+          }
+        ]
+      },
+      {
+        "sha256": "8af93bd675e1cfd9ecc850e862819fdac6e3ad1f5d761f970e409c7d9c63bdc3",
+        "copies": [
+          {
+            "page": "pay",
+            "path": "assets-archive/h5/pay/js/jquery-2.1.3.min.js",
+            "url": "https://api.zaffalive.com/html/pay/js/jquery-2.1.3.min.js"
+          },
+          {
+            "page": "report",
+            "path": "assets-archive/h5/report/js/jquery-2.1.3.min.js",
+            "url": "https://api.zaffalive.com/html/report/js/jquery-2.1.3.min.js"
+          }
+        ]
+      },
+      {
+        "sha256": "e83ddbd34568b3107fce50df1db5ce9180ae99c616dc43280b3728754a5f7b0a",
+        "copies": [
+          {
+            "page": "pay",
+            "path": "assets-archive/h5/pay/js/template-web.js",
+            "url": "https://api.zaffalive.com/html/pay/js/template-web.js"
+          },
+          {
+            "page": "report",
+            "path": "assets-archive/h5/report/js/template-web.js",
+            "url": "https://api.zaffalive.com/html/report/js/template-web.js"
+          }
+        ]
+      },
+      {
+        "sha256": "b946cff9036d92953fb31dac87ebdd9a6df44c0760f5af21f95265b6b4337d91",
+        "copies": [
+          {
+            "page": "pay",
+            "path": "assets-archive/h5/pay/css/base.css",
+            "url": "https://api.zaffalive.com/html/pay/css/base.css"
+          },
+          {
+            "page": "report",
+            "path": "assets-archive/h5/report/css/base.css",
+            "url": "https://api.zaffalive.com/html/report/css/base.css"
+          }
+        ]
+      },
+      {
+        "sha256": "a9cda7ea6392f72edeb893ad055a4d08e09849a217b6de69759da131e73f4efb",
+        "copies": [
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/car_e12e575f.json",
+            "url": "https://fstatic.cat1314.com/uc/video/zaffalive/vipCar/V07/car.json"
+          },
+          {
+            "page": "noble",
+            "path": "assets-archive/h5/noble/assets/car_b1c90a3e.json",
+            "url": "https://fstatic.cat1314.com/uc/video/zaffalive/vipCar/V08/car.json"
+          }
+        ]
+      }
+    ]
+  },
+  "pages": {
+    "noble": {
+      "assets": 123,
+      "bytes": 138293253,
+      "types": {
+        "svga": 75,
+        "json": 23,
+        "mp4": 25
+      }
+    },
+    "cp": {
+      "assets": 22,
+      "bytes": 59519744,
+      "types": {
+        "mp4": 12,
+        "png": 10
+      }
+    },
+    "svip": {
+      "assets": 3,
+      "bytes": 12950044,
+      "types": {
+        "mp4": 2,
+        "json": 1
+      }
+    },
+    "anchor": {
+      "assets": 72,
+      "bytes": 5023772,
+      "types": {
+        "png": 68,
+        "svga": 2,
+        "woff": 1,
+        "gif": 1
+      }
+    },
+    "friendCenter": {
+      "assets": 65,
+      "bytes": 2061062,
+      "types": {
+        "png": 65
+      }
+    },
+    "cpReward": {
+      "assets": 13,
+      "bytes": 920194,
+      "types": {
+        "png": 13
+      }
+    },
+    "wealth_grade": {
+      "assets": 19,
+      "bytes": 821407,
+      "types": {
+        "svga": 16,
+        "png": 3
+      }
+    },
+    "luckyBox": {
+      "assets": 9,
+      "bytes": 719883,
+      "types": {
+        "png": 9
+      }
+    },
+    "magicBox": {
+      "assets": 14,
+      "bytes": 394291,
+      "types": {
+        "png": 12,
+        "svga": 2
+      }
+    },
+    "roomParty": {
+      "assets": 9,
+      "bytes": 192531,
+      "types": {
+        "png": 9
+      }
+    },
+    "giftWall": {
+      "assets": 4,
+      "bytes": 177624,
+      "types": {
+        "woff": 2,
+        "ttf": 2
+      }
+    },
+    "coinsMerchant": {
+      "assets": 8,
+      "bytes": 175177,
+      "types": {
+        "png": 8
+      }
+    },
+    "pkReward": {
+      "assets": 5,
+      "bytes": 130671,
+      "types": {
+        "png": 5
+      }
+    },
+    "luckyDraw": {
+      "assets": 1,
+      "bytes": 119168,
+      "types": {
+        "mp3": 1
+      }
+    },
+    "pkRule": {
+      "assets": 2,
+      "bytes": 107251,
+      "types": {
+        "png": 2
+      }
+    },
+    "roomScoreRank": {
+      "assets": 10,
+      "bytes": 106465,
+      "types": {
+        "png": 10
+      }
+    },
+    "vipScoreRank": {
+      "assets": 1,
+      "bytes": 89754,
+      "types": {
+        "png": 1
+      }
+    },
+    "pkRank": {
+      "assets": 2,
+      "bytes": 86052,
+      "types": {
+        "png": 2
+      }
+    },
+    "medalRank": {
+      "assets": 3,
+      "bytes": 83007,
+      "types": {
+        "png": 3
+      }
+    },
+    "totalRank": {
+      "assets": 2,
+      "bytes": 4194,
+      "types": {
+        "png": 2
+      }
+    }
+  },
+  "stillNeedsMirror": [
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "giftWall",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "giftWall",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "task",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "my_level",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "my_level",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "luckyBag",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "luckyDraw",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "luckyDraw",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "luckyGift",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "announcement",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "announcementFamily",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "roomRule",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "roomRule",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "roomGroupRule",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "roomGroupRule",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "noble",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "noble",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "cp",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "cp",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "wealth_grade",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "anchor",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "magicBox",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "pkRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "pkRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "svip",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "totalRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "totalRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "friendCenter",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "friendCenter",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "cpReward",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "cpReward",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "roomScoreRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "vipScoreRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "coinsMerchant",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "luckyBox",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "roomParty",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "pkReward",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "pkReward",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "pkRule",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "pkRule",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "medalRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "announcementFamily",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "noble",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "noble",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "cp",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "cp",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "wealth_grade",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "anchor",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "magicBox",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "pkRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "pkRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "svip",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "totalRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "totalRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "friendCenter",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "friendCenter",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "cpReward",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "cpReward",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "roomScoreRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "vipScoreRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "coinsMerchant",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "luckyBox",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "roomParty",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "pkReward",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "pkReward",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "pkRule",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/miyouCallApp.js",
+      "page": "pkRule",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "medalRank",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "url": "https://api.zaffalive.com/js/env.js",
+      "page": "announcementFamily",
+      "reason": "HTTPError: HTTP Error 404: Not Found"
+    }
+  ],
+  "READY_FOR_R2": [
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/reward_bg_4f9fac.png",
+      "extension": "png",
+      "size": 71477
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_top2_aa5ef1.png",
+      "extension": "png",
+      "size": 8886
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_reward_list_top2_adeb17.png",
+      "extension": "png",
+      "size": 6215
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_reward_list_bg_217744.png",
+      "extension": "png",
+      "size": 224757
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_top1_4c9bf3.png",
+      "extension": "png",
+      "size": 10345
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_reward_bg_d65eb2.png",
+      "extension": "png",
+      "size": 210256
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_reward_list_bg2_f56b5e.png",
+      "extension": "png",
+      "size": 249438
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_reward_list_top1_936a07.png",
+      "extension": "png",
+      "size": 6300
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_top0_170435.png",
+      "extension": "png",
+      "size": 18420
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_reward_top1bg_3308e0.png",
+      "extension": "png",
+      "size": 86012
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_reward_img_love_97363e.png",
+      "extension": "png",
+      "size": 6663
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/cp_reward_list_top0_b724fc.png",
+      "extension": "png",
+      "size": 9307
+    },
+    {
+      "page": "cpReward",
+      "path": "assets-archive/h5/cpReward/assets/avatar_fc4acf.png",
+      "extension": "png",
+      "size": 12118
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/0f84ef49bd52a74de81426b51542cad1_1641452351_7197a3cc.svga",
+      "extension": "svga",
+      "size": 60051
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/412034.png",
+      "extension": "png",
+      "size": 39885
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/3604e65ba11e636de52fa34773c7c98e_1612324328.svga",
+      "extension": "svga",
+      "size": 43140
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/43be38.png",
+      "extension": "png",
+      "size": 40042
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/62e5de7fe9fb145ac911c6a677d3a49e_1612324306_46219472.svga",
+      "extension": "svga",
+      "size": 19915
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/98cc296ae42ad7d9f0044889bb08c207_1612324293_f62fbd3b.svga",
+      "extension": "svga",
+      "size": 14271
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/98cc296ae42ad7d9f0044889bb08c207_1612324293.svga",
+      "extension": "svga",
+      "size": 14271
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/3604e65ba11e636de52fa34773c7c98e_1612324328_751c8afd.svga",
+      "extension": "svga",
+      "size": 43140
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/80384069767a19c7f8985f7cd7c2a6df_1686189308.svga",
+      "extension": "svga",
+      "size": 66460
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/aafa8100f4285171ca1b91f528e4b856_1612324339.svga",
+      "extension": "svga",
+      "size": 51382
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/62e5de7fe9fb145ac911c6a677d3a49e_1612324306.svga",
+      "extension": "svga",
+      "size": 19915
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/0f84ef49bd52a74de81426b51542cad1_1641452351.svga",
+      "extension": "svga",
+      "size": 60051
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/aafa8100f4285171ca1b91f528e4b856_1612324339_79b028fa.svga",
+      "extension": "svga",
+      "size": 51382
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/6f7bf2724fe5f6956aec30f482cd244e_1686189299.svga",
+      "extension": "svga",
+      "size": 66196
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/667fe883f269c70067ae83ef483aa27d_1612324316.svga",
+      "extension": "svga",
+      "size": 23053
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/6f7bf2724fe5f6956aec30f482cd244e_1686189299_a3dacd7d.svga",
+      "extension": "svga",
+      "size": 66196
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/667fe883f269c70067ae83ef483aa27d_1612324316_01af4d79.svga",
+      "extension": "svga",
+      "size": 23053
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/2ea76c.png",
+      "extension": "png",
+      "size": 52544
+    },
+    {
+      "page": "wealth_grade",
+      "path": "assets-archive/h5/wealth_grade/assets/80384069767a19c7f8985f7cd7c2a6df_1686189308_83cd096a.svga",
+      "extension": "svga",
+      "size": 66460
+    },
+    {
+      "page": "luckyBox",
+      "path": "assets-archive/h5/luckyBox/assets/2d81e9.png",
+      "extension": "png",
+      "size": 522623
+    },
+    {
+      "page": "luckyBox",
+      "path": "assets-archive/h5/luckyBox/assets/683d23.png",
+      "extension": "png",
+      "size": 34170
+    },
+    {
+      "page": "luckyBox",
+      "path": "assets-archive/h5/luckyBox/assets/adb936.png",
+      "extension": "png",
+      "size": 6046
+    },
+    {
+      "page": "luckyBox",
+      "path": "assets-archive/h5/luckyBox/assets/37ce9a.png",
+      "extension": "png",
+      "size": 18785
+    },
+    {
+      "page": "luckyBox",
+      "path": "assets-archive/h5/luckyBox/assets/bfbc47.png",
+      "extension": "png",
+      "size": 22084
+    },
+    {
+      "page": "luckyBox",
+      "path": "assets-archive/h5/luckyBox/assets/2995d0.png",
+      "extension": "png",
+      "size": 31846
+    },
+    {
+      "page": "luckyBox",
+      "path": "assets-archive/h5/luckyBox/assets/0a1ca3.png",
+      "extension": "png",
+      "size": 51129
+    },
+    {
+      "page": "luckyBox",
+      "path": "assets-archive/h5/luckyBox/assets/2022f1.png",
+      "extension": "png",
+      "size": 7546
+    },
+    {
+      "page": "luckyBox",
+      "path": "assets-archive/h5/luckyBox/assets/fcaa46.png",
+      "extension": "png",
+      "size": 25654
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/8f32866ca449b355d08737aed3c8baa8.mp4",
+      "extension": "mp4",
+      "size": 4666492
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/641439ffc242f05f6dfcc0c644b8c213.mp4",
+      "extension": "mp4",
+      "size": 5065339
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/1e3c0126f7aa2f8020a9f0223c68009e_1716176352_a22d1834.png",
+      "extension": "png",
+      "size": 44014
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/c1e3e3df537a888d6a804a15fa8a0433_028a5f42.mp4",
+      "extension": "mp4",
+      "size": 5140866
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/412710859af4bf135a9baaa26c1133a7_1715847815.png",
+      "extension": "png",
+      "size": 43934
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/8c0158825176a34b8155b71551d4f148_1716176564.png",
+      "extension": "png",
+      "size": 48166
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/1715563ab282fd671fcaafdc710d52d9.mp4",
+      "extension": "mp4",
+      "size": 4338896
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/ac006299cf4876c53d1bb39243a33bc6_3dcb86ed.mp4",
+      "extension": "mp4",
+      "size": 5133501
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/8c0158825176a34b8155b71551d4f148_1716176564_fb394b78.png",
+      "extension": "png",
+      "size": 48166
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/ed294ece2ab4d901bc405c73b01fc919_b7179955.mp4",
+      "extension": "mp4",
+      "size": 5186286
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/c1e3e3df537a888d6a804a15fa8a0433.mp4",
+      "extension": "mp4",
+      "size": 5140866
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/8f32866ca449b355d08737aed3c8baa8_19657ac5.mp4",
+      "extension": "mp4",
+      "size": 4666492
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/1e3c0126f7aa2f8020a9f0223c68009e_1716176352.png",
+      "extension": "png",
+      "size": 44014
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/d7c836567295dca308521e2ffe47b401_1715847911.png",
+      "extension": "png",
+      "size": 50918
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/d5487cc3c5b0ef171593bde791a61689_1715847764.png",
+      "extension": "png",
+      "size": 41460
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/ed294ece2ab4d901bc405c73b01fc919.mp4",
+      "extension": "mp4",
+      "size": 5186286
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/641439ffc242f05f6dfcc0c644b8c213_f7823ca8.mp4",
+      "extension": "mp4",
+      "size": 5065339
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/ac006299cf4876c53d1bb39243a33bc6.mp4",
+      "extension": "mp4",
+      "size": 5133501
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/412710859af4bf135a9baaa26c1133a7_1715847815_295b8101.png",
+      "extension": "png",
+      "size": 43934
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/1715563ab282fd671fcaafdc710d52d9_46652938.mp4",
+      "extension": "mp4",
+      "size": 4338896
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/d5487cc3c5b0ef171593bde791a61689_1715847764_ae755fbb.png",
+      "extension": "png",
+      "size": 41460
+    },
+    {
+      "page": "cp",
+      "path": "assets-archive/h5/cp/assets/d7c836567295dca308521e2ffe47b401_1715847911_8eaf2bdf.png",
+      "extension": "png",
+      "size": 50918
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/5_dd6251.png",
+      "extension": "png",
+      "size": 34424
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/mp4_e8b57a.png",
+      "extension": "png",
+      "size": 15180
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/0_6b57f6.png",
+      "extension": "png",
+      "size": 21818
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/bg_wall_gift_ed02eb.png",
+      "extension": "png",
+      "size": 16359
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/4_46e75c.png",
+      "extension": "png",
+      "size": 16041
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/0_04ea76.png",
+      "extension": "png",
+      "size": 12388
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/bg_privilege_gift_d19a80.png",
+      "extension": "png",
+      "size": 39707
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/3_408be8.png",
+      "extension": "png",
+      "size": 10244
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/friend_img_2f49c1.png",
+      "extension": "png",
+      "size": 19890
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/5_8b4b49.png",
+      "extension": "png",
+      "size": 23896
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/3_82d180.png",
+      "extension": "png",
+      "size": 65650
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/0_6d0ca9.png",
+      "extension": "png",
+      "size": 29531
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/1_d2ff64.png",
+      "extension": "png",
+      "size": 11317
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/0_2ce056.png",
+      "extension": "png",
+      "size": 37897
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/4_fa32fc.png",
+      "extension": "png",
+      "size": 35275
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/0_12dd86.png",
+      "extension": "png",
+      "size": 28633
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/1_4dd073.png",
+      "extension": "png",
+      "size": 9560
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/banner_ec865d.png",
+      "extension": "png",
+      "size": 100370
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/2_6b16c7.png",
+      "extension": "png",
+      "size": 33567
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/friend_banner_8251f7.png",
+      "extension": "png",
+      "size": 159941
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/bg_honor_3be6a8.png",
+      "extension": "png",
+      "size": 211932
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/1_b88406.png",
+      "extension": "png",
+      "size": 59323
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/1_a5e5fd.png",
+      "extension": "png",
+      "size": 22591
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/3_af3d6b.png",
+      "extension": "png",
+      "size": 34550
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/4_4da6c0.png",
+      "extension": "png",
+      "size": 44807
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/bg_privileges_f772a3.png",
+      "extension": "png",
+      "size": 50963
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/1_bed617.png",
+      "extension": "png",
+      "size": 30264
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/3_661606.png",
+      "extension": "png",
+      "size": 32915
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/3_d88fe8.png",
+      "extension": "png",
+      "size": 23619
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/5_cee14b.png",
+      "extension": "png",
+      "size": 13523
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/5_08a43c.png",
+      "extension": "png",
+      "size": 17205
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/1_8cc8d3.png",
+      "extension": "png",
+      "size": 29008
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/null_9caf03.png",
+      "extension": "png",
+      "size": 15318
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/0_e99e57.png",
+      "extension": "png",
+      "size": 26753
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/honor_title_7abbfa.png",
+      "extension": "png",
+      "size": 13722
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/2_d541ae.png",
+      "extension": "png",
+      "size": 13910
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/5_8069ec.png",
+      "extension": "png",
+      "size": 34525
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/4_d98e76.png",
+      "extension": "png",
+      "size": 24481
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/bg_days_a9786c.png",
+      "extension": "png",
+      "size": 8185
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/2_a33929.png",
+      "extension": "png",
+      "size": 12968
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/4_883b81.png",
+      "extension": "png",
+      "size": 14486
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/4_b494ee.png",
+      "extension": "png",
+      "size": 34572
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/2_41e791.png",
+      "extension": "png",
+      "size": 13437
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/2_ebb5f8.png",
+      "extension": "png",
+      "size": 23764
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/2_931200.png",
+      "extension": "png",
+      "size": 11245
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/friend_progress_12f4fd.png",
+      "extension": "png",
+      "size": 7443
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/4_7f9985.png",
+      "extension": "png",
+      "size": 11083
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/2_953b73.png",
+      "extension": "png",
+      "size": 51257
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/5_b60550.png",
+      "extension": "png",
+      "size": 14612
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/2_c18bdf.png",
+      "extension": "png",
+      "size": 31881
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/3_a61521.png",
+      "extension": "png",
+      "size": 18539
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/1_1ac048.png",
+      "extension": "png",
+      "size": 32081
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/0_4a5e32.png",
+      "extension": "png",
+      "size": 10567
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/5_56ca02.png",
+      "extension": "png",
+      "size": 35800
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/4_15f192.png",
+      "extension": "png",
+      "size": 35387
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/2_352d08.png",
+      "extension": "png",
+      "size": 32342
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/5_f599b1.png",
+      "extension": "png",
+      "size": 62304
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/btn_tab_select_6e71fb.png",
+      "extension": "png",
+      "size": 7047
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/3_0617e0.png",
+      "extension": "png",
+      "size": 33851
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/0_4ad689.png",
+      "extension": "png",
+      "size": 7806
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/3_b4ee3e.png",
+      "extension": "png",
+      "size": 13872
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/3_1fd31e.png",
+      "extension": "png",
+      "size": 13965
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/1_55af17.png",
+      "extension": "png",
+      "size": 12554
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/4_8b60cd.png",
+      "extension": "png",
+      "size": 60548
+    },
+    {
+      "page": "friendCenter",
+      "path": "assets-archive/h5/friendCenter/assets/1_600186.png",
+      "extension": "png",
+      "size": 28369
+    },
+    {
+      "page": "luckyDraw",
+      "path": "assets-archive/h5/luckyDraw/assets/da6808a9dd23eaeff13242beaf63723b.MP3",
+      "extension": "mp3",
+      "size": 119168
+    },
+    {
+      "page": "pkReward",
+      "path": "assets-archive/h5/pkReward/assets/bg_list_2db221.png",
+      "extension": "png",
+      "size": 54030
+    },
+    {
+      "page": "pkReward",
+      "path": "assets-archive/h5/pkReward/assets/tie_fb6dba.png",
+      "extension": "png",
+      "size": 6448
+    },
+    {
+      "page": "pkReward",
+      "path": "assets-archive/h5/pkReward/assets/lost_6eeb4b.png",
+      "extension": "png",
+      "size": 6672
+    },
+    {
+      "page": "pkReward",
+      "path": "assets-archive/h5/pkReward/assets/win_c99da4.png",
+      "extension": "png",
+      "size": 6207
+    },
+    {
+      "page": "pkReward",
+      "path": "assets-archive/h5/pkReward/assets/bg_rate_77a14e.png",
+      "extension": "png",
+      "size": 57314
+    },
+    {
+      "page": "pkRule",
+      "path": "assets-archive/h5/pkRule/assets/3_d0813e.png",
+      "extension": "png",
+      "size": 57270
+    },
+    {
+      "page": "pkRule",
+      "path": "assets-archive/h5/pkRule/assets/1_0ad846.png",
+      "extension": "png",
+      "size": 49981
+    },
+    {
+      "page": "svip",
+      "path": "assets-archive/h5/svip/assets/web_vap_mp4_1724923273_a190b318.mp4",
+      "extension": "mp4",
+      "size": 6474921
+    },
+    {
+      "page": "svip",
+      "path": "assets-archive/h5/svip/assets/web_vap_mp4_1724923273.mp4",
+      "extension": "mp4",
+      "size": 6474921
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/c2efc5.png",
+      "extension": "png",
+      "size": 21503
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/e44b55.png",
+      "extension": "png",
+      "size": 20222
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/dc00ac.png",
+      "extension": "png",
+      "size": 22083
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/b13add.png",
+      "extension": "png",
+      "size": 20782
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/bf4737adeac077bc2cd46a75fd716abf_1614933002.svga",
+      "extension": "svga",
+      "size": 96489
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/849a3f.png",
+      "extension": "png",
+      "size": 7695
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/279209.png",
+      "extension": "png",
+      "size": 11689
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/4907f5.png",
+      "extension": "png",
+      "size": 20418
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/763aee.png",
+      "extension": "png",
+      "size": 18189
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/589681.png",
+      "extension": "png",
+      "size": 12878
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/b6c35b.png",
+      "extension": "png",
+      "size": 20329
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/f539ae.png",
+      "extension": "png",
+      "size": 7082
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/22ffce.png",
+      "extension": "png",
+      "size": 18443
+    },
+    {
+      "page": "magicBox",
+      "path": "assets-archive/h5/magicBox/assets/bf4737adeac077bc2cd46a75fd716abf_1614933002_d19380d5.svga",
+      "extension": "svga",
+      "size": 96489
+    },
+    {
+      "page": "coinsMerchant",
+      "path": "assets-archive/h5/coinsMerchant/assets/a97f80.png",
+      "extension": "png",
+      "size": 5279
+    },
+    {
+      "page": "coinsMerchant",
+      "path": "assets-archive/h5/coinsMerchant/assets/70f0de.png",
+      "extension": "png",
+      "size": 10351
+    },
+    {
+      "page": "coinsMerchant",
+      "path": "assets-archive/h5/coinsMerchant/assets/0a8eb8.png",
+      "extension": "png",
+      "size": 17463
+    },
+    {
+      "page": "coinsMerchant",
+      "path": "assets-archive/h5/coinsMerchant/assets/897aa2.png",
+      "extension": "png",
+      "size": 22658
+    },
+    {
+      "page": "coinsMerchant",
+      "path": "assets-archive/h5/coinsMerchant/assets/88b61c.png",
+      "extension": "png",
+      "size": 15024
+    },
+    {
+      "page": "coinsMerchant",
+      "path": "assets-archive/h5/coinsMerchant/assets/312103.png",
+      "extension": "png",
+      "size": 8778
+    },
+    {
+      "page": "coinsMerchant",
+      "path": "assets-archive/h5/coinsMerchant/assets/074f96.png",
+      "extension": "png",
+      "size": 56578
+    },
+    {
+      "page": "coinsMerchant",
+      "path": "assets-archive/h5/coinsMerchant/assets/f84a54.png",
+      "extension": "png",
+      "size": 39046
+    },
+    {
+      "page": "roomParty",
+      "path": "assets-archive/h5/roomParty/assets/985348.png",
+      "extension": "png",
+      "size": 14546
+    },
+    {
+      "page": "roomParty",
+      "path": "assets-archive/h5/roomParty/assets/2ad056.png",
+      "extension": "png",
+      "size": 13192
+    },
+    {
+      "page": "roomParty",
+      "path": "assets-archive/h5/roomParty/assets/7629b7.png",
+      "extension": "png",
+      "size": 7856
+    },
+    {
+      "page": "roomParty",
+      "path": "assets-archive/h5/roomParty/assets/487587.png",
+      "extension": "png",
+      "size": 10727
+    },
+    {
+      "page": "roomParty",
+      "path": "assets-archive/h5/roomParty/assets/bb7c0c.png",
+      "extension": "png",
+      "size": 12785
+    },
+    {
+      "page": "roomParty",
+      "path": "assets-archive/h5/roomParty/assets/5c5737.png",
+      "extension": "png",
+      "size": 11794
+    },
+    {
+      "page": "roomParty",
+      "path": "assets-archive/h5/roomParty/assets/415581.png",
+      "extension": "png",
+      "size": 7171
+    },
+    {
+      "page": "roomParty",
+      "path": "assets-archive/h5/roomParty/assets/940ee8.png",
+      "extension": "png",
+      "size": 100209
+    },
+    {
+      "page": "roomParty",
+      "path": "assets-archive/h5/roomParty/assets/8af207.png",
+      "extension": "png",
+      "size": 14251
+    },
+    {
+      "page": "medalRank",
+      "path": "assets-archive/h5/medalRank/assets/f73110.png",
+      "extension": "png",
+      "size": 6467
+    },
+    {
+      "page": "medalRank",
+      "path": "assets-archive/h5/medalRank/assets/3e42a5.png",
+      "extension": "png",
+      "size": 40352
+    },
+    {
+      "page": "medalRank",
+      "path": "assets-archive/h5/medalRank/assets/c889bc.png",
+      "extension": "png",
+      "size": 36188
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/af2ad9.png",
+      "extension": "png",
+      "size": 49433
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/097081.png",
+      "extension": "png",
+      "size": 47302
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/2e66c2.png",
+      "extension": "png",
+      "size": 92161
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/759f2a.png",
+      "extension": "png",
+      "size": 91896
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/c19dbe.png",
+      "extension": "png",
+      "size": 19564
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/9e46e5.png",
+      "extension": "png",
+      "size": 10695
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/58b847.png",
+      "extension": "png",
+      "size": 47491
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/acd986.png",
+      "extension": "png",
+      "size": 46412
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/279a0a.png",
+      "extension": "png",
+      "size": 19336
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/9e5e24669ca19f1b64aa399e463d3d42_0dfd632b.svga",
+      "extension": "svga",
+      "size": 126504
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/font_2553510_kfwma2yq1rs.woff",
+      "extension": "woff",
+      "size": 32000
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/719f7d.png",
+      "extension": "png",
+      "size": 5507
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/44afe1.png",
+      "extension": "png",
+      "size": 9658
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/b890da.png",
+      "extension": "png",
+      "size": 45090
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/4fcb41.png",
+      "extension": "png",
+      "size": 270542
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/7d01cc.png",
+      "extension": "png",
+      "size": 46023
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/9aede8.png",
+      "extension": "png",
+      "size": 45959
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/80760f.png",
+      "extension": "png",
+      "size": 12084
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/4508aa.png",
+      "extension": "png",
+      "size": 46620
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/4e63b8.png",
+      "extension": "png",
+      "size": 47533
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/044574.png",
+      "extension": "png",
+      "size": 9474
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/9087ad.png",
+      "extension": "png",
+      "size": 9445
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/023eb2.png",
+      "extension": "png",
+      "size": 49102
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/102771.png",
+      "extension": "png",
+      "size": 19327
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/4ced5d.png",
+      "extension": "png",
+      "size": 46419
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/8b9b08.png",
+      "extension": "png",
+      "size": 45466
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/7aacd6.png",
+      "extension": "png",
+      "size": 45580
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/52a3a9.png",
+      "extension": "png",
+      "size": 46920
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/aa9aa7.png",
+      "extension": "png",
+      "size": 46566
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/43913d.png",
+      "extension": "png",
+      "size": 5825
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/5b76cf.png",
+      "extension": "png",
+      "size": 18875
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/0a4364.png",
+      "extension": "png",
+      "size": 90885
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/a391d8.png",
+      "extension": "png",
+      "size": 381531
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/bfe9fa.png",
+      "extension": "png",
+      "size": 92139
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/7909fc.png",
+      "extension": "png",
+      "size": 45458
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/bd5e14.png",
+      "extension": "png",
+      "size": 229954
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/582417.png",
+      "extension": "png",
+      "size": 88641
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/0f5c71.png",
+      "extension": "png",
+      "size": 45931
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/2f73c2.png",
+      "extension": "png",
+      "size": 6185
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/8bbeb5.png",
+      "extension": "png",
+      "size": 534837
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/03e3f8.png",
+      "extension": "png",
+      "size": 46767
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/3e6b7d.png",
+      "extension": "png",
+      "size": 46043
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/bb0c26.png",
+      "extension": "png",
+      "size": 12094
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/8f84a8.png",
+      "extension": "png",
+      "size": 47575
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/becd90.png",
+      "extension": "png",
+      "size": 47385
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/bab647.png",
+      "extension": "png",
+      "size": 47749
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/b32ff9.png",
+      "extension": "png",
+      "size": 9648
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/a36bcb.png",
+      "extension": "png",
+      "size": 48928
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/87793e.png",
+      "extension": "png",
+      "size": 18222
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/64605b.png",
+      "extension": "png",
+      "size": 46885
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/9a07e5.png",
+      "extension": "png",
+      "size": 46161
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/7fd91c.png",
+      "extension": "png",
+      "size": 45581
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/9e5e24669ca19f1b64aa399e463d3d42.svga",
+      "extension": "svga",
+      "size": 126504
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/3f917f.png",
+      "extension": "png",
+      "size": 45784
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/0809f5.png",
+      "extension": "png",
+      "size": 18993
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/011d89.png",
+      "extension": "png",
+      "size": 46293
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/91ae8a.png",
+      "extension": "png",
+      "size": 6941
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/59b918.gif",
+      "extension": "gif",
+      "size": 697068
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/5f07c2.png",
+      "extension": "png",
+      "size": 18720
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/5a4f18.png",
+      "extension": "png",
+      "size": 47731
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/7b08ab.png",
+      "extension": "png",
+      "size": 6206
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/a33ea3.png",
+      "extension": "png",
+      "size": 46888
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/a42fed.png",
+      "extension": "png",
+      "size": 94725
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/5301b1.png",
+      "extension": "png",
+      "size": 45590
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/32c056.png",
+      "extension": "png",
+      "size": 47442
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/1acf87.png",
+      "extension": "png",
+      "size": 19061
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/0f097d.png",
+      "extension": "png",
+      "size": 45771
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/441ebd.png",
+      "extension": "png",
+      "size": 45732
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/82c26b.png",
+      "extension": "png",
+      "size": 45641
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/9f1e5a.png",
+      "extension": "png",
+      "size": 91291
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/093a5b.png",
+      "extension": "png",
+      "size": 47597
+    },
+    {
+      "page": "anchor",
+      "path": "assets-archive/h5/anchor/assets/2966e6.png",
+      "extension": "png",
+      "size": 46386
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/bf3982.png",
+      "extension": "png",
+      "size": 9889
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/7191ec.png",
+      "extension": "png",
+      "size": 8952
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/6c82d9.png",
+      "extension": "png",
+      "size": 13279
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/5e57ef.png",
+      "extension": "png",
+      "size": 11165
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/acabda.png",
+      "extension": "png",
+      "size": 11360
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/2f5ec8.png",
+      "extension": "png",
+      "size": 9082
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/eadd1a.png",
+      "extension": "png",
+      "size": 9666
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/fa8c4c.png",
+      "extension": "png",
+      "size": 11458
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/a07cba.png",
+      "extension": "png",
+      "size": 10149
+    },
+    {
+      "page": "roomScoreRank",
+      "path": "assets-archive/h5/roomScoreRank/assets/31ed15.png",
+      "extension": "png",
+      "size": 11465
+    },
+    {
+      "page": "giftWall",
+      "path": "assets-archive/h5/giftWall/assets/font_2553510_61agzg96wm8.woff",
+      "extension": "woff",
+      "size": 29596
+    },
+    {
+      "page": "giftWall",
+      "path": "assets-archive/h5/giftWall/assets/font_2553510_61agzg96wm8.ttf",
+      "extension": "ttf",
+      "size": 59216
+    },
+    {
+      "page": "giftWall",
+      "path": "assets-archive/h5/giftWall/assets/font_2553510_61agzg96wm8_8fcbb647.woff",
+      "extension": "woff",
+      "size": 29596
+    },
+    {
+      "page": "giftWall",
+      "path": "assets-archive/h5/giftWall/assets/font_2553510_61agzg96wm8_d4e8e35b.ttf",
+      "extension": "ttf",
+      "size": 59216
+    },
+    {
+      "page": "vipScoreRank",
+      "path": "assets-archive/h5/vipScoreRank/assets/31e091.png",
+      "extension": "png",
+      "size": 89754
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP04.svga",
+      "extension": "svga",
+      "size": 418659
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip03_d503ae6e.svga",
+      "extension": "svga",
+      "size": 589571
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP11_9e05f5ee.svga",
+      "extension": "svga",
+      "size": 639978
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip01.svga",
+      "extension": "svga",
+      "size": 531499
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP05_2848701d.svga",
+      "extension": "svga",
+      "size": 440133
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_0140fabf.mp4",
+      "extension": "mp4",
+      "size": 2223915
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/24a76c118d11d3aacab0c60338be5146_1628072700.svga",
+      "extension": "svga",
+      "size": 4824
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip12_77506754.svga",
+      "extension": "svga",
+      "size": 1263113
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip01_02e6ca3d.svga",
+      "extension": "svga",
+      "size": 531499
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_e5665edf.mp4",
+      "extension": "mp4",
+      "size": 3668951
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP10_9afc2b14.svga",
+      "extension": "svga",
+      "size": 638008
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip10_6e99d30f.svga",
+      "extension": "svga",
+      "size": 731414
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip07_91ebd4df.svga",
+      "extension": "svga",
+      "size": 871193
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_aff7404e.mp4",
+      "extension": "mp4",
+      "size": 5467293
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_76c1ef60.mp4",
+      "extension": "mp4",
+      "size": 2270943
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip08_96c071a5.svga",
+      "extension": "svga",
+      "size": 700136
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_16ff466d.mp4",
+      "extension": "mp4",
+      "size": 5484392
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip14_fc9fbfd6.svga",
+      "extension": "svga",
+      "size": 824415
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_188f8180.mp4",
+      "extension": "mp4",
+      "size": 2258907
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip11_f462fdbf.svga",
+      "extension": "svga",
+      "size": 764317
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip13_61dd77cc.svga",
+      "extension": "svga",
+      "size": 800663
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip09_02f074a4.svga",
+      "extension": "svga",
+      "size": 730486
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip14_7f664420.svga",
+      "extension": "svga",
+      "size": 1346536
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip15.svga",
+      "extension": "svga",
+      "size": 1447303
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_5c6ba2af.mp4",
+      "extension": "mp4",
+      "size": 5438114
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP08.svga",
+      "extension": "svga",
+      "size": 599947
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP07_c71bc7c0.svga",
+      "extension": "svga",
+      "size": 546005
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP14.svga",
+      "extension": "svga",
+      "size": 703641
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip06_1761508e.svga",
+      "extension": "svga",
+      "size": 638893
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip12_6c783040.svga",
+      "extension": "svga",
+      "size": 776196
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP10.svga",
+      "extension": "svga",
+      "size": 638008
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip06_06021252.svga",
+      "extension": "svga",
+      "size": 778280
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP13_2fcb0363.svga",
+      "extension": "svga",
+      "size": 670676
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip14.svga",
+      "extension": "svga",
+      "size": 1346536
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP01.svga",
+      "extension": "svga",
+      "size": 283522
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip09.svga",
+      "extension": "svga",
+      "size": 938318
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip10_ef5470e0.svga",
+      "extension": "svga",
+      "size": 1003623
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip04.svga",
+      "extension": "svga",
+      "size": 685727
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc.mp4",
+      "extension": "mp4",
+      "size": 2261207
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_4f86e7f0.mp4",
+      "extension": "mp4",
+      "size": 5455252
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_8611dc18.mp4",
+      "extension": "mp4",
+      "size": 2269491
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP09_35f8bc8b.svga",
+      "extension": "svga",
+      "size": 612028
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_7eced038.mp4",
+      "extension": "mp4",
+      "size": 2271156
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_c80aa4ee.mp4",
+      "extension": "mp4",
+      "size": 5386436
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP07.svga",
+      "extension": "svga",
+      "size": 546005
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip13.svga",
+      "extension": "svga",
+      "size": 1290333
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP06_706f4a25.svga",
+      "extension": "svga",
+      "size": 505875
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_c76e8fa7.mp4",
+      "extension": "mp4",
+      "size": 2228425
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip03.svga",
+      "extension": "svga",
+      "size": 607473
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP01_ffed2c04.svga",
+      "extension": "svga",
+      "size": 283522
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_9aa3d8fb.mp4",
+      "extension": "mp4",
+      "size": 2276915
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip11_8320943b.svga",
+      "extension": "svga",
+      "size": 1066571
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip10.svga",
+      "extension": "svga",
+      "size": 1003623
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip08_71f0ac43.svga",
+      "extension": "svga",
+      "size": 891902
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip05.svga",
+      "extension": "svga",
+      "size": 687539
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip07_6d5f1c65.svga",
+      "extension": "svga",
+      "size": 680605
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip08.svga",
+      "extension": "svga",
+      "size": 891902
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP15.svga",
+      "extension": "svga",
+      "size": 768389
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_772bfde7.mp4",
+      "extension": "mp4",
+      "size": 4236089
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP02_2a2f450d.svga",
+      "extension": "svga",
+      "size": 271516
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_ee697bac.mp4",
+      "extension": "mp4",
+      "size": 5423166
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_136f0f57.mp4",
+      "extension": "mp4",
+      "size": 2011421
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip04_34351434.svga",
+      "extension": "svga",
+      "size": 685727
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip13_de1f5360.svga",
+      "extension": "svga",
+      "size": 1290333
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip02_7103f37d.svga",
+      "extension": "svga",
+      "size": 578028
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_32153d6d.mp4",
+      "extension": "mp4",
+      "size": 4262272
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_95fd844a.mp4",
+      "extension": "mp4",
+      "size": 2218073
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP09.svga",
+      "extension": "svga",
+      "size": 612028
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car.mp4",
+      "extension": "mp4",
+      "size": 3668951
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP13.svga",
+      "extension": "svga",
+      "size": 670676
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip09_e126899b.svga",
+      "extension": "svga",
+      "size": 938318
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip11.svga",
+      "extension": "svga",
+      "size": 1066571
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip02.svga",
+      "extension": "svga",
+      "size": 578028
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP12.svga",
+      "extension": "svga",
+      "size": 655397
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip04_a41b3290.svga",
+      "extension": "svga",
+      "size": 640042
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP04_10771a16.svga",
+      "extension": "svga",
+      "size": 418659
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_c3a76d23.mp4",
+      "extension": "mp4",
+      "size": 2231227
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_6d6c5f4d.mp4",
+      "extension": "mp4",
+      "size": 2192329
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP03.svga",
+      "extension": "svga",
+      "size": 284674
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip15_26e6bba0.svga",
+      "extension": "svga",
+      "size": 876386
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP15_c7b0c34e.svga",
+      "extension": "svga",
+      "size": 768389
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP14_10d7c334.svga",
+      "extension": "svga",
+      "size": 703641
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP05.svga",
+      "extension": "svga",
+      "size": 440133
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_832fa1b0.mp4",
+      "extension": "mp4",
+      "size": 5381371
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip03_8c80aa80.svga",
+      "extension": "svga",
+      "size": 607473
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/24a76c118d11d3aacab0c60338be5146_1628072700_1d2a4e54.svga",
+      "extension": "svga",
+      "size": 4824
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP11.svga",
+      "extension": "svga",
+      "size": 639978
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_4f34ffce.mp4",
+      "extension": "mp4",
+      "size": 1992674
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip07.svga",
+      "extension": "svga",
+      "size": 871193
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_268f2cfe.mp4",
+      "extension": "mp4",
+      "size": 2261207
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip15_f7eac900.svga",
+      "extension": "svga",
+      "size": 1447303
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip05_01faff87.svga",
+      "extension": "svga",
+      "size": 687539
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip06.svga",
+      "extension": "svga",
+      "size": 778280
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP12_72106f26.svga",
+      "extension": "svga",
+      "size": 655397
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP08_4c2e3984.svga",
+      "extension": "svga",
+      "size": 599947
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP02.svga",
+      "extension": "svga",
+      "size": 271516
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip05_25079733.svga",
+      "extension": "svga",
+      "size": 635082
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP03_c2c9152d.svga",
+      "extension": "svga",
+      "size": 284674
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vip12.svga",
+      "extension": "svga",
+      "size": 1263113
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/TOP06.svga",
+      "extension": "svga",
+      "size": 505875
+    },
+    {
+      "page": "totalRank",
+      "path": "assets-archive/h5/totalRank/assets/4a0e2602077537e105114f9a04ca095f.png",
+      "extension": "png",
+      "size": 2097
+    },
+    {
+      "page": "totalRank",
+      "path": "assets-archive/h5/totalRank/assets/4a0e2602077537e105114f9a04ca095f_a76477b8.png",
+      "extension": "png",
+      "size": 2097
+    },
+    {
+      "page": "pkRank",
+      "path": "assets-archive/h5/pkRank/assets/2ad233165abf6989a4c75e8e61e9c707.png",
+      "extension": "png",
+      "size": 43026
+    },
+    {
+      "page": "pkRank",
+      "path": "assets-archive/h5/pkRank/assets/2ad233165abf6989a4c75e8e61e9c707_09f0ee36.png",
+      "extension": "png",
+      "size": 43026
+    }
+  ],
+  "NEEDS_REVIEW": [
+    {
+      "page": "svip",
+      "path": "assets-archive/h5/svip/assets/web_vap_json_1724923273.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 202,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "giftWall",
+      "path": "assets-archive/h5/giftWall/assets/index_0da4f368",
+      "extension": "bin",
+      "sniffed": "markup",
+      "size": 41606,
+      "issue": "HTTP error page or markup stored under a non-HTML extension"
+    },
+    {
+      "page": "giftWall",
+      "path": "assets-archive/h5/giftWall/assets/index",
+      "extension": "bin",
+      "sniffed": "markup",
+      "size": 208116,
+      "issue": "HTTP error page or markup stored under a non-HTML extension"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_e131f17d.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_22a6a938.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_f2d85cc3.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_c3661287.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_dd76ed61.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_69db1216.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_ef489d1e.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_9c33954a.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_37e64a57.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_48f8bcf3.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_59b7266d.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_e12e575f.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_f082a71b.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_b1c90a3e.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_5d4f15b3.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_c2f29d4d.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_beb00e4d.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/vapc_b471b3da.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_7e4367f2.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_09777910.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "noble",
+      "path": "assets-archive/h5/noble/assets/car_199f29b6.json",
+      "extension": "json",
+      "sniffed": "json",
+      "size": 150,
+      "issue": "json sitting in assets/ — a payload, not art"
+    },
+    {
+      "page": "announcement",
+      "path": "assets-archive/h5/announcement/assets/index",
+      "extension": "bin",
+      "sniffed": "markup",
+      "size": 21518,
+      "issue": "HTTP error page or markup stored under a non-HTML extension"
+    }
+  ]
+}

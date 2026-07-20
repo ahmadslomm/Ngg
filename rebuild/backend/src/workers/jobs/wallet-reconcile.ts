@@ -128,10 +128,23 @@ export const walletReconcileProcessor = async (job?: { name?: string }) => {
   return runWalletReconcile();
 };
 
+/**
+ * The `reconcile` queue serves TWO job kinds, so its single processor dispatches by job name — the
+ * one-processor-per-queue rule makes a second `registerWorker` on this queue throw by design.
+ *
+ *   reconcile:wallet             → the read-only nightly drift shadow (above)
+ *   reconcile:withdrawal-expire  → returns stale pending withdrawals to their owners
+ */
+export const reconcileDispatcher = async (job?: { name?: string }) => {
+  const { WITHDRAWAL_EXPIRE_JOB, runWithdrawalExpireSweep } = await import('./withdrawal-expire.js');
+  if (job?.name === WITHDRAWAL_EXPIRE_JOB) return runWithdrawalExpireSweep();
+  return walletReconcileProcessor(job);
+};
+
 // Register the consumer (T1.3 registerWorker). Exposed for boot wiring — NOT called from
 // workers/index.ts main here (deferred, like T2.2/T2.4).
 export function registerWalletReconcileWorker(): void {
-  registerWorker({ name: QUEUE.reconcile, processor: walletReconcileProcessor });
+  registerWorker({ name: QUEUE.reconcile, processor: reconcileDispatcher });
 }
 
 // Create/upsert the nightly repeatable schedule. Exposed for boot wiring (deferred; idempotent).

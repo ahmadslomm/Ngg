@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { sendGift, listGiftCatalogue, listGiftCatalogueGrouped, giftWall, AppError } from './gift.service.js';
+import { sendGift, listGiftCatalogue, listGiftCatalogueGrouped, listGiftTabs, giftWall, AppError } from './gift.service.js';
 import { ok, serialize, pageArgs } from '../../lib/errors.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
 import { charmUpdated, roomRankEvent } from '../rooms/room.events.js';
@@ -47,6 +47,11 @@ export async function giftRoutes(app: FastifyInstance) {
   // carries no `rid`, so no room-scoped variant is implemented). Read-only, newest first, one row
   // per transaction. Owned by the gifts module (it owns GiftTransaction) though the path is
   // user-namespaced — same pattern as P3a's /users/:id/couple living in the couple module.
+  // `gift.getClientGiftTabs` — a real endpoint in the original's surface. The service was written
+  // and never routed, so the tab list the client needs to lay out the gift panel was unreachable.
+  // Public like `/gifts`: the tab list carries no per-user data.
+  app.get('/gifts/tabs', async () => ({ code: 0, message: 'ok', data: await listGiftTabs() }));
+
   app.get('/users/:id/gift-wall', { preHandler: [app.authenticate] }, async (req, reply) => {
     try {
       const { id } = z.object({ id: z.coerce.bigint() }).parse(req.params);

@@ -1,16 +1,28 @@
 {
-  "generatedAt": "2026-07-20T05:53:08.954Z",
+  "generatedAt": "2026-07-20T10:23:15.375Z",
   "method": "Static analysis of src/modules/**/*.routes.ts. No server boot, no DB, no network.",
   "totals": {
-    "routes": 199,
+    "routes": 216,
     "admin": 56,
-    "authenticated": 134,
+    "authenticated": 150,
     "public-by-design": 8,
-    "UNGUARDED-REVIEW": 1,
-    "validated": 91,
-    "rateLimited": 19
+    "UNGUARDED-REVIEW": 2,
+    "validated": 97,
+    "rateLimited": 23
   },
   "needsReview": [
+    {
+      "module": "gifts",
+      "method": "GET",
+      "path": "/gifts/tabs",
+      "file": "src/modules/gifts/gift.routes.ts",
+      "auth": false,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "UNGUARDED-REVIEW"
+    },
     {
       "module": "payments",
       "method": "GET",
@@ -1228,6 +1240,18 @@
     {
       "module": "gifts",
       "method": "GET",
+      "path": "/gifts/tabs",
+      "file": "src/modules/gifts/gift.routes.ts",
+      "auth": false,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "UNGUARDED-REVIEW"
+    },
+    {
+      "module": "gifts",
+      "method": "GET",
       "path": "/users/:id/gift-wall",
       "file": "src/modules/gifts/gift.routes.ts",
       "auth": true,
@@ -1244,7 +1268,7 @@
       "file": "src/modules/gifts/gift.routes.ts",
       "auth": true,
       "admin": false,
-      "rateLimit": null,
+      "rateLimit": "60/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "authenticated"
@@ -1277,6 +1301,18 @@
       "module": "medals",
       "method": "GET",
       "path": "/users/:id/medals",
+      "file": "src/modules/medals/medal.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "medals",
+      "method": "GET",
+      "path": "/medals/achievement-rank",
       "file": "src/modules/medals/medal.routes.ts",
       "auth": true,
       "admin": false,
@@ -1502,6 +1538,78 @@
       "exposure": "authenticated"
     },
     {
+      "module": "noble",
+      "method": "GET",
+      "path": "/noble",
+      "file": "src/modules/noble/noble.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "noble",
+      "method": "GET",
+      "path": "/noble/integral",
+      "file": "src/modules/noble/noble.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "noble",
+      "method": "GET",
+      "path": "/noble/privileges",
+      "file": "src/modules/noble/noble.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "noble",
+      "method": "POST",
+      "path": "/noble/buy",
+      "file": "src/modules/noble/noble.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": "10/1 minute",
+      "validated": true,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "noble",
+      "method": "GET",
+      "path": "/noble/history",
+      "file": "src/modules/noble/noble.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "noble",
+      "method": "GET",
+      "path": "/noble/rebate-card",
+      "file": "src/modules/noble/noble.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
       "module": "notifications",
       "method": "GET",
       "path": "/notifications",
@@ -1632,6 +1740,114 @@
       "validated": true,
       "roles": [],
       "exposure": "admin"
+    },
+    {
+      "module": "pk",
+      "method": "POST",
+      "path": "/rooms/:roomId/pk/match",
+      "file": "src/modules/pk/pk-battle.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "pk",
+      "method": "POST",
+      "path": "/rooms/:roomId/pk/:pkId/start",
+      "file": "src/modules/pk/pk-battle.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "pk",
+      "method": "POST",
+      "path": "/rooms/:roomId/pk/:pkId/cancel",
+      "file": "src/modules/pk/pk-battle.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "pk",
+      "method": "POST",
+      "path": "/rooms/:roomId/pk/:pkId/refuse",
+      "file": "src/modules/pk/pk-battle.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "pk",
+      "method": "POST",
+      "path": "/rooms/:roomId/pk/:pkId/break-off",
+      "file": "src/modules/pk/pk-battle.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "pk",
+      "method": "GET",
+      "path": "/rooms/:roomId/pk/live",
+      "file": "src/modules/pk/pk-battle.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "pk",
+      "method": "GET",
+      "path": "/rooms/:roomId/pk/stats",
+      "file": "src/modules/pk/pk-battle.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "pk",
+      "method": "GET",
+      "path": "/rooms/:roomId/pk/records",
+      "file": "src/modules/pk/pk-battle.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "pk",
+      "method": "GET",
+      "path": "/pk/rank",
+      "file": "src/modules/pk/pk-battle.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "authenticated"
     },
     {
       "module": "pk",
@@ -2300,7 +2516,7 @@
       "file": "src/modules/vip/vip.routes.ts",
       "auth": true,
       "admin": false,
-      "rateLimit": null,
+      "rateLimit": "10/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "authenticated"
@@ -2312,7 +2528,7 @@
       "file": "src/modules/vip/vip.routes.ts",
       "auth": true,
       "admin": false,
-      "rateLimit": null,
+      "rateLimit": "10/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "authenticated"

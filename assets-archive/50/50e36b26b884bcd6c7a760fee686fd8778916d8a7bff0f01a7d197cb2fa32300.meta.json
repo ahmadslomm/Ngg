@@ -1,0 +1,14 @@
+{
+  "sourceUrl": "https://ufile.zaffalive.com/uc/img/image_1773993731.png",
+  "sha256": "50e36b26b884bcd6c7a760fee686fd8778916d8a7bff0f01a7d197cb2fa32300",
+  "detectedType": "png",
+  "mimeType": "image/png",
+  "originalFilename": "image_1773993731.png",
+  "sourceEtag": "\"47b9e5b338562e8180cdc4766119c02f\"",
+  "downloadedAt": "2026-07-20T04:39:11.962Z",
+  "seenIn": [
+    "capture:couple.cpGiftList",
+    "capture:user.getUserinfo",
+    "db:Gift.iconUrl#3022"
+  ]
+}

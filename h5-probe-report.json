@@ -1,0 +1,1907 @@
+{
+  "generatedAt": "2026-07-19T21:59:54Z",
+  "host": "api.zaffalive.com",
+  "method": "HEAD only. No body read or stored. No token sent. No asset requested.",
+  "counts": {
+    "exists": 32,
+    "not_found": 79
+  },
+  "pages": [
+    {
+      "pageName": "anchor",
+      "url": "https://api.zaffalive.com/html/anchor/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "6491",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "operator guess list",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 1,
+      "assetsDownloaded": 69
+    },
+    {
+      "pageName": "announcement",
+      "url": "https://api.zaffalive.com/html/announcement/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5450",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle",
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "announcementFamily",
+      "url": "https://api.zaffalive.com/html/announcementFamily/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5433",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "coinsMerchant",
+      "url": "https://api.zaffalive.com/html/coinsMerchant/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "6571",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 9
+    },
+    {
+      "pageName": "cp",
+      "url": "https://api.zaffalive.com/html/cp/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5588",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle"
+      ],
+      "assetUrlsInBundle": 11,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "cpReward",
+      "url": "https://api.zaffalive.com/html/cpReward/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "6031",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 14
+    },
+    {
+      "pageName": "friendCenter",
+      "url": "https://api.zaffalive.com/html/friendCenter/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5897",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 68
+    },
+    {
+      "pageName": "giftWall",
+      "url": "https://api.zaffalive.com/html/giftWall/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "6031",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle",
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "luckyBag",
+      "url": "https://api.zaffalive.com/html/luckyBag/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5629",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "luckyBox",
+      "url": "https://api.zaffalive.com/html/luckyBox/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5471",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 9
+    },
+    {
+      "pageName": "luckyDraw",
+      "url": "https://api.zaffalive.com/html/luckyDraw/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5897",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "luckyGift",
+      "url": "https://api.zaffalive.com/html/luckyGift/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5752",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "magicBox",
+      "url": "https://api.zaffalive.com/html/magicBox/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "6388",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 1,
+      "assetsDownloaded": 13
+    },
+    {
+      "pageName": "medalRank",
+      "url": "https://api.zaffalive.com/html/medalRank/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5424",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 3
+    },
+    {
+      "pageName": "my_level",
+      "url": "https://api.zaffalive.com/html/my_level/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "28282",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "noble",
+      "url": "https://api.zaffalive.com/html/noble/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5897",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "JS/CSS/HTML reference",
+        "local bundle",
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 67,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "pay",
+      "url": "https://api.zaffalive.com/html/pay/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "1748",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle",
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "pkRank",
+      "url": "https://api.zaffalive.com/html/pkRank/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "6031",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle"
+      ],
+      "assetUrlsInBundle": 1,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "pkReward",
+      "url": "https://api.zaffalive.com/html/pkReward/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5897",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 8
+    },
+    {
+      "pageName": "pkRule",
+      "url": "https://api.zaffalive.com/html/pkRule/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5897",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 5
+    },
+    {
+      "pageName": "rank",
+      "url": "https://api.zaffalive.com/html/rank/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "1811",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle",
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "report",
+      "url": "https://api.zaffalive.com/html/report/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "13739",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local bundle",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "roomGroupRule",
+      "url": "https://api.zaffalive.com/html/roomGroupRule/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5789",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "JS/CSS/HTML reference",
+        "local bundle"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "roomParty",
+      "url": "https://api.zaffalive.com/html/roomParty/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5633",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 9
+    },
+    {
+      "pageName": "roomRule",
+      "url": "https://api.zaffalive.com/html/roomRule/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "6031",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "roomScoreRank",
+      "url": "https://api.zaffalive.com/html/roomScoreRank/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5485",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "JS/CSS/HTML reference",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 10
+    },
+    {
+      "pageName": "svip",
+      "url": "https://api.zaffalive.com/html/svip/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5591",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle",
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 1,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "task",
+      "url": "https://api.zaffalive.com/html/task/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "6465",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle",
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "totalRank",
+      "url": "https://api.zaffalive.com/html/totalRank/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "28249",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "H5 API contract",
+        "local bundle"
+      ],
+      "assetUrlsInBundle": 1,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "vipScoreRank",
+      "url": "https://api.zaffalive.com/html/vipScoreRank/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5508",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "JS/CSS/HTML reference",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 10
+    },
+    {
+      "pageName": "wealth_grade",
+      "url": "https://api.zaffalive.com/html/wealth_grade/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "5757",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "confirmed",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "H5 API contract",
+        "local asset dir",
+        "local bundle",
+        "local raw page dir",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 8,
+      "assetsDownloaded": 3
+    },
+    {
+      "pageName": "mobiChecker",
+      "url": "https://api.zaffalive.com/html/mobiChecker/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "highly_likely",
+      "discoveredFrom": [
+        "API_SCHEMA endpoint",
+        "APK decrypted string",
+        "recovered php path list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "wallet",
+      "url": "https://api.zaffalive.com/html/wallet/index.html",
+      "httpStatus": 200,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "3407",
+      "requiresAuth": false,
+      "verdict": "exists",
+      "confidence": "highly_likely",
+      "discoveredFrom": [
+        "JS-bridge goXxxPage",
+        "JS/CSS/HTML reference",
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "achievement",
+      "url": "https://api.zaffalive.com/html/achievement/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "activity",
+      "url": "https://api.zaffalive.com/html/activity/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "activityCenter",
+      "url": "https://api.zaffalive.com/html/activityCenter/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "agency",
+      "url": "https://api.zaffalive.com/html/agency/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "avatar",
+      "url": "https://api.zaffalive.com/html/avatar/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "background",
+      "url": "https://api.zaffalive.com/html/background/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "badge",
+      "url": "https://api.zaffalive.com/html/badge/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "bag",
+      "url": "https://api.zaffalive.com/html/bag/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "balance",
+      "url": "https://api.zaffalive.com/html/balance/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "bubble",
+      "url": "https://api.zaffalive.com/html/bubble/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "car",
+      "url": "https://api.zaffalive.com/html/car/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "center",
+      "url": "https://api.zaffalive.com/html/center/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "charge",
+      "url": "https://api.zaffalive.com/html/charge/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "chat",
+      "url": "https://api.zaffalive.com/html/chat/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "checkin",
+      "url": "https://api.zaffalive.com/html/checkin/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "coin",
+      "url": "https://api.zaffalive.com/html/coin/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "creator",
+      "url": "https://api.zaffalive.com/html/creator/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "decorate",
+      "url": "https://api.zaffalive.com/html/decorate/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "decoration",
+      "url": "https://api.zaffalive.com/html/decoration/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "diamond",
+      "url": "https://api.zaffalive.com/html/diamond/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "draw",
+      "url": "https://api.zaffalive.com/html/draw/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "editProfile",
+      "url": "https://api.zaffalive.com/html/editProfile/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "event",
+      "url": "https://api.zaffalive.com/html/event/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "exchange",
+      "url": "https://api.zaffalive.com/html/exchange/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "family",
+      "url": "https://api.zaffalive.com/html/family/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "fans",
+      "url": "https://api.zaffalive.com/html/fans/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "faq",
+      "url": "https://api.zaffalive.com/html/faq/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "follow",
+      "url": "https://api.zaffalive.com/html/follow/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "frame",
+      "url": "https://api.zaffalive.com/html/frame/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "friend",
+      "url": "https://api.zaffalive.com/html/friend/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "friends",
+      "url": "https://api.zaffalive.com/html/friends/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "furniture",
+      "url": "https://api.zaffalive.com/html/furniture/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "game",
+      "url": "https://api.zaffalive.com/html/game/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "games",
+      "url": "https://api.zaffalive.com/html/games/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "gift",
+      "url": "https://api.zaffalive.com/html/gift/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "giftList",
+      "url": "https://api.zaffalive.com/html/giftList/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "giftRank",
+      "url": "https://api.zaffalive.com/html/giftRank/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "gifts",
+      "url": "https://api.zaffalive.com/html/gifts/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "giftwall",
+      "url": "https://api.zaffalive.com/html/giftwall/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "guild",
+      "url": "https://api.zaffalive.com/html/guild/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "help",
+      "url": "https://api.zaffalive.com/html/help/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "income",
+      "url": "https://api.zaffalive.com/html/income/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "leaderboard",
+      "url": "https://api.zaffalive.com/html/leaderboard/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "level",
+      "url": "https://api.zaffalive.com/html/level/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "lottery",
+      "url": "https://api.zaffalive.com/html/lottery/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "lucky",
+      "url": "https://api.zaffalive.com/html/lucky/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "medal",
+      "url": "https://api.zaffalive.com/html/medal/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "member",
+      "url": "https://api.zaffalive.com/html/member/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "membership",
+      "url": "https://api.zaffalive.com/html/membership/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "mic",
+      "url": "https://api.zaffalive.com/html/mic/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "mine",
+      "url": "https://api.zaffalive.com/html/mine/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "mission",
+      "url": "https://api.zaffalive.com/html/mission/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "notice",
+      "url": "https://api.zaffalive.com/html/notice/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "personal",
+      "url": "https://api.zaffalive.com/html/personal/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "privilege",
+      "url": "https://api.zaffalive.com/html/privilege/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "privileges",
+      "url": "https://api.zaffalive.com/html/privileges/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "profile",
+      "url": "https://api.zaffalive.com/html/profile/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "ranking",
+      "url": "https://api.zaffalive.com/html/ranking/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "recharge",
+      "url": "https://api.zaffalive.com/html/recharge/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "robMic",
+      "url": "https://api.zaffalive.com/html/robMic/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "JS-bridge goXxxPage"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "room",
+      "url": "https://api.zaffalive.com/html/room/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "JS-bridge goXxxPage",
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "roomTheme",
+      "url": "https://api.zaffalive.com/html/roomTheme/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "seat",
+      "url": "https://api.zaffalive.com/html/seat/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "setting",
+      "url": "https://api.zaffalive.com/html/setting/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "settings",
+      "url": "https://api.zaffalive.com/html/settings/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "sign",
+      "url": "https://api.zaffalive.com/html/sign/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "tasks",
+      "url": "https://api.zaffalive.com/html/tasks/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "theme",
+      "url": "https://api.zaffalive.com/html/theme/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "title",
+      "url": "https://api.zaffalive.com/html/title/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "treasure",
+      "url": "https://api.zaffalive.com/html/treasure/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "treasureBox",
+      "url": "https://api.zaffalive.com/html/treasureBox/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "user",
+      "url": "https://api.zaffalive.com/html/user/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "userCenter",
+      "url": "https://api.zaffalive.com/html/userCenter/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "vehicle",
+      "url": "https://api.zaffalive.com/html/vehicle/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "vip",
+      "url": "https://api.zaffalive.com/html/vip/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "wealth",
+      "url": "https://api.zaffalive.com/html/wealth/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "wheel",
+      "url": "https://api.zaffalive.com/html/wheel/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    },
+    {
+      "pageName": "withdraw",
+      "url": "https://api.zaffalive.com/html/withdraw/index.html",
+      "httpStatus": 404,
+      "redirect": null,
+      "contentType": "text/html",
+      "contentLength": "564",
+      "requiresAuth": false,
+      "verdict": "not_found",
+      "confidence": "possible",
+      "discoveredFrom": [
+        "operator guess list"
+      ],
+      "assetUrlsInBundle": 0,
+      "assetsDownloaded": 0
+    }
+  ]
+}
