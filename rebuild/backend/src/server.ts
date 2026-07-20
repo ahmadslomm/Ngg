@@ -3,9 +3,8 @@ import { randomUUID } from 'node:crypto';
 import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
 import rateLimit from '@fastify/rate-limit';
-import { ZodError } from 'zod';
 import { env, isProd } from './lib/env.js';
-import { AppError } from './lib/errors.js';
+import { registerErrorHandling } from './lib/error-handler.js';
 import { verifySignature } from './lib/sign.js';
 import { prisma } from './lib/prisma.js';
 import { redis, pubClient, subClient } from './lib/redis.js';
@@ -15,9 +14,16 @@ import { configRoutes } from './modules/config/config.routes.js';
 import { giftRoutes } from './modules/gifts/gift.routes.js';
 import { roomRoutes } from './modules/rooms/room.routes.js';
 import { discoveryRoutes } from './modules/rooms/discovery.routes.js';
+import { favoriteRoutes } from './modules/rooms/favorite.routes.js';
+import { nobleRoutes } from './modules/noble/noble.routes.js';
+import { pkRoutes } from './modules/pk/pk.routes.js';
+import { pkBattleRoutes } from './modules/pk/pk-battle.routes.js';
+import { notificationRoutes } from './modules/notifications/notification.routes.js';
+import { taskRoutes } from './modules/tasks/task.routes.js';
 import { RoomService } from './modules/rooms/room.service.js';
 import { PrismaRoomRepo } from './modules/rooms/room.prisma-repo.js';
 import { walletRoutes } from './modules/wallet/wallet.routes.js';
+import { paymentRoutes, paymentAdminRoutes } from './modules/payments/payment.routes.js';
 import { vipRoutes } from './modules/vip/vip.routes.js';
 import { rankingRoutes } from './modules/ranking/ranking.routes.js';
 import { agencyRoutes } from './modules/agency/agency.routes.js';
@@ -44,7 +50,16 @@ declare module '@fastify/jwt' {
 }
 
 // A request path is exempt from auth/signature when it is a health probe.
-const isHealthPath = (url: string) => url.startsWith('/health') || url.startsWith('/docs');
+/**
+ * Paths exempt from the request-signature gate.
+ *
+ * `/metrics` is here because a Prometheus scraper cannot sign requests — behind the gate it
+ * returned 400 to every scrape, which makes the endpoint useless to the monitoring system it
+ * exists for. It stays ADMIN-AUTHENTICATED; only the app-signature requirement is lifted.
+ * (`/health/invariants` is already covered by the `/health` prefix.)
+ */
+const isHealthPath = (url: string) =>
+  url.startsWith('/health') || url.startsWith('/docs') || url.startsWith('/metrics');
 
 async function build() {
   const app = Fastify({
@@ -71,19 +86,8 @@ async function build() {
   await app.register(jwt, { secret: env.JWT_ACCESS_SECRET });
   await app.register(rateLimit, { max: 300, timeWindow: '1 minute', redis });
 
-  // Consistent error envelope. Validation errors are 400 (never a 500 that leaks the
-  // internal schema); AppError carries its own status; anything else is a generic 500
-  // (the details are logged server-side, never returned to the client).
-  app.setErrorHandler((err, req, reply) => {
-    if (err instanceof ZodError) {
-      return reply.code(400).send({ code: 4000, message: 'invalid_request', issues: err.issues.map((i) => ({ path: i.path.join('.'), message: i.message })) });
-    }
-    if (err instanceof AppError) return reply.code(err.status).send({ code: err.status * 10, message: err.code });
-    if ((err as any).validation) return reply.code(400).send({ code: 4000, message: 'invalid_request' });
-    if ((err as any).statusCode === 429) return reply.code(429).send({ code: 4290, message: 'rate_limited' });
-    req.log.error({ err }, 'unhandled_error');
-    return reply.code(500).send({ code: 5000, message: 'internal_error' });
-  });
+  // Consistent error envelope + 404 + request-id (extracted to lib/error-handler for reuse & tests).
+  registerErrorHandling(app);
 
   // Auth decorator — resolves req.user from a VERIFIED JWT and blocks suspended accounts.
   app.decorate('authenticate', async (req: any, reply: any) => {
@@ -133,6 +137,22 @@ async function build() {
     }
   });
 
+  // Operational invariants: is the system CORRECT, not merely up. Admin-guarded — the checks
+  // reveal money-drift and moderation state, and are heavier than a liveness probe.
+  app.get('/health/invariants', { preHandler: [app.authenticateAdmin] }, async (_req, reply) => {
+    const { runInvariantChecks } = await import('./modules/ops/invariants.service.js');
+    const report = await runInvariantChecks();
+    // A critical invariant returns 503 so an alerting rule keyed on status code fires without
+    // having to parse the body.
+    return reply.code(report.status === 'critical' ? 503 : 200).send({ code: 0, data: report });
+  });
+
+  // Prometheus scrape of the same checks.
+  app.get('/metrics', { preHandler: [app.authenticateAdmin] }, async (_req, reply) => {
+    const { runInvariantChecks, toPrometheus } = await import('./modules/ops/invariants.service.js');
+    return reply.type('text/plain; version=0.0.4').send(toPrometheus(await runInvariantChecks()));
+  });
+
   // Room vertical: Prisma-backed repo; service broadcasts through the realtime gateway.
   const roomService = new RoomService(
     new PrismaRoomRepo(),
@@ -167,8 +187,14 @@ async function build() {
           return { uid: String(p.uid), nick: p.nick, avatar_url: p.avatar_url, avatar_frame_url: p.avatar_frame_url };
         } catch { return null; }
       },
+      // F2: batch profile resolver for the online-member list (single query; failure → ids only).
+      async (userIds) => {
+        try { return await usersService.getCompactCards(userIds.map((id) => BigInt(id))); }
+        catch { return new Map(); }
+      },
     )(v1);
     await walletRoutes(v1);
+    await paymentRoutes(v1);
     await vipRoutes(v1);
     await rankingRoutes(v1);
     await agencyRoutes(v1);
@@ -178,6 +204,17 @@ async function build() {
     await momentRoutes(v1);
     await chatRoutes(v1);
     await discoveryRoutes(v1);
+    await favoriteRoutes(v1);
+    await nobleRoutes(v1);
+    await pkRoutes(v1);
+    // Room-vs-room PK (the evidenced shape). Ownership is injected rather than imported, keeping
+    // the PK context free of any dependency on the Rooms module.
+    await pkBattleRoutes(async (roomId) => {
+      const room = await prisma.room.findUnique({ where: { id: roomId }, select: { ownerId: true } });
+      return room?.ownerId ?? null;
+    })(v1);
+    await notificationRoutes(v1);
+    await taskRoutes(v1);
     await dmRoutes(v1);
     await bottleRoutes(v1);
     await uploadRoutes(v1);
@@ -185,6 +222,7 @@ async function build() {
     await adminMedalRoutes(v1);
     await adminAuthRoutes(v1);
     await adminRoutes(v1);
+    await paymentAdminRoutes(v1);
   }, { prefix: '/v1' });
 
   return app;
@@ -232,7 +270,10 @@ async function main() {
     try {
       io.close();                 // stop accepting sockets, close existing
       await app.close();          // stop HTTP, run onClose hooks, finish in-flight
-      await prisma.$disconnect();
+      // disconnectDb closes the write client AND the read replica; `prisma.$disconnect()` alone
+      // left the replica connection open on every shutdown.
+      const { disconnectDb } = await import('./lib/db.js');
+      await disconnectDb();
       redis.disconnect(); pubClient.disconnect(); subClient.disconnect();
       app.log.info('shutdown complete');
       process.exit(0);

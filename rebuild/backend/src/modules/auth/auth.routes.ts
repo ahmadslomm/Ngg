@@ -1,151 +1,52 @@
-// Auth — JWT access + rotating refresh, OAuth/phone adapters (stubs to fill per provider).
-// The RTC-token endpoint mints an Agora token with the server's own credentials.
+// Auth controller — HTTP only. Validates input, calls AuthService, maps outcomes to the wire
+// envelope. No business logic, no Prisma, no signing details (all in AuthService).
 import type { FastifyInstance } from 'fastify';
-import { z } from 'zod';
-import { createHash, randomUUID } from 'node:crypto';
-import { prisma } from '../../lib/prisma.js';
-import { redis } from '../../lib/redis.js';
-import { issueRtcToken } from '../../lib/agora.js';
-import { env, isProd } from '../../lib/env.js';
-import { AppError } from '../../lib/errors.js';
-import { moderationService } from '../moderation/moderation.service.js';
+import { ok } from '../../lib/errors.js';
+import { env } from '../../lib/env.js';
+import { authService } from './auth.service.js';
+import { authResult } from './auth.dto.js';
+import { loginSchema, refreshSchema, googleSchema } from './auth.schema.js';
 
-const loginSchema = z.object({
-  type: z.enum(['google', 'facebook', 'apple', 'phone']),
-  credential: z.string().min(1),
-  nick: z.string().max(64).optional(),
-});
-const refreshSchema = z.object({ refresh_token: z.string().min(1) });
-
-// Refresh-token revocation store (item 7): a revoked jti is denylisted in Redis until it would
-// expire anyway. /auth/refresh rejects a denylisted token; /auth/logout adds one.
-const REVOKED_KEY = (jti: string) => `revoked:rt:${jti}`;
-async function isRefreshRevoked(jti: string | undefined): Promise<boolean> {
-  return jti ? (await redis.exists(REVOKED_KEY(jti))) === 1 : false;
-}
-// Revoke a refresh token by denylisting its jti until the token's own expiry (so the denylist
-// self-cleans). Shared by /auth/logout and the single-use rotation in /auth/refresh. A token
-// with no jti/exp (older tokens) falls back to the configured refresh TTL.
-async function revokeRefresh(payload: any): Promise<void> {
-  if (payload?.t === 'r' && payload.jti) {
-    const ttl = typeof payload.exp === 'number'
-      ? Math.max(1, payload.exp - Math.floor(Date.now() / 1000))
-      : env.JWT_REFRESH_TTL;
-    await redis.set(REVOKED_KEY(payload.jti), '1', 'EX', ttl);
-  }
-}
-// Brute-force protection (item 6): a strict per-route limit on the credential endpoints.
+// Brute-force protection: a strict per-route limit on the credential endpoints.
 const loginRateLimit = { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } };
 
 export async function authRoutes(app: FastifyInstance) {
   app.post('/auth/login', loginRateLimit, async (req) => {
     const { type, credential, nick } = loginSchema.parse(req.body);
-    // TODO: verify `credential` with the provider SDK (Google/FB/Apple) or OTP store.
-    const providerUid = await verifyProvider(type, credential);
-    const userId = await resolveIdentityUser(type, providerUid, nick);
-    return { code: 0, message: 'ok', data: { ...issueTokens(app, userId), uid: String(userId) } };
+    const providerUid = await authService.verifyProvider(type, credential);
+    const userId = await authService.resolveIdentityUser(type, providerUid, nick);
+    return ok(authResult(authService.issueTokens(app.jwt, userId), userId));
   });
 
-  // Refresh — the client depends on this to keep sessions alive past the 15-min access TTL.
-  // Single-use rotation (item 7): verify the refresh token's signature + `t:'r'` marker, then
-  // revoke the presented token as the new pair is minted, so a captured/replayed refresh token
-  // is dead after one use.
+  // Google Sign-In — real ID-token verification, then our own JWT pair (same session as /auth/login).
+  app.post('/auth/google', loginRateLimit, async (req, reply) => {
+    if (!env.GOOGLE_CLIENT_ID) return reply.code(503).send({ code: 5031, message: 'google_signin_not_configured' });
+    const { id_token, nick } = googleSchema.parse(req.body);
+    const claims = await authService.verifyGoogleIdToken(id_token, nick);
+    if (!claims) return reply.code(401).send({ code: 4011, message: 'google_token_invalid' });
+    const userId = await authService.resolveGoogleUser(claims);
+    return ok(authResult(authService.issueTokens(app.jwt, userId), userId));
+  });
+
+  // Refresh — single-use rotation: verify + revoke the presented token as the new pair is minted.
   app.post('/auth/refresh', loginRateLimit, async (req, reply) => {
     const { refresh_token } = refreshSchema.parse(req.body);
-    let payload: any;
-    try {
-      payload = app.jwt.verify(refresh_token);
-      if (payload.t !== 'r' || !payload.id) throw new Error('not_a_refresh_token');
-      if (await isRefreshRevoked(payload.jti)) throw new Error('revoked'); // item 7
-    } catch {
-      return reply.code(401).send({ code: 4010, message: 'invalid_refresh_token' });
-    }
-    const userId = BigInt(payload.id);
-    if (await moderationService.isSuspended(userId)) return reply.code(403).send({ code: 4030, message: 'account_suspended' });
-    await revokeRefresh(payload); // the presented refresh token cannot be reused after rotation
-    return { code: 0, message: 'ok', data: { ...issueTokens(app, userId), uid: String(userId) } };
+    const verified = await authService.verifyRefresh(app.jwt, refresh_token);
+    if (!verified) return reply.code(401).send({ code: 4010, message: 'invalid_refresh_token' });
+    if (await authService.isSuspended(verified.userId)) return reply.code(403).send({ code: 4030, message: 'account_suspended' });
+    await authService.revokeRefresh(verified.payload); // the presented refresh token cannot be reused
+    return ok(authResult(authService.issueTokens(app.jwt, verified.userId), verified.userId));
   });
 
-  // Logout — revoke a refresh token so it can no longer mint access tokens (item 7). The jti is
-  // denylisted in Redis until the token's own expiry, so the denylist self-cleans. Idempotent.
+  // Logout — revoke a refresh token so it can no longer mint access tokens. Idempotent.
   app.post('/auth/logout', async (req) => {
     const { refresh_token } = refreshSchema.parse(req.body);
-    try {
-      await revokeRefresh(app.jwt.verify(refresh_token));
-    } catch {
-      // A malformed/expired token is already unusable — logout is a no-op success.
-    }
-    return { code: 0, message: 'ok', data: { revoked: true } };
+    await authService.logout(app.jwt, refresh_token);
+    return ok({ revoked: true });
   });
 
   app.get('/auth/rtc-token', { preHandler: [app.authenticate] }, async (req) => {
     const roomId = (req.query as any).room as string;
-    const uid = req.user.id as bigint;
-    // Publish role follows SEAT occupancy (M7) — matching computeRtcRole and the client's own
-    // publish decision — not RoomMember.role. A seated non-admin speaker must receive a
-    // broadcaster token; an admin-muted seat and everyone in the audience get an audience token.
-    const seat = roomId
-      ? await prisma.seat.findFirst({ where: { roomId: BigInt(roomId), userId: uid, state: 1 } })
-      : null;
-    const role = seat && !seat.micMutedByAdmin ? 'broadcaster' : 'audience';
-    const token = issueRtcToken({ channel: `room:${roomId}`, uid: Number(uid), role });
-    return { code: 0, message: 'ok', data: token };
+    return ok(await authService.rtcToken(roomId, req.user.id as bigint));
   });
-}
-
-function issueTokens(app: FastifyInstance, userId: bigint) {
-  const access = app.jwt.sign({ id: String(userId) }, { expiresIn: env.JWT_ACCESS_TTL });
-  // Refresh carries a unique jti so it can be individually revoked (logout / item 7).
-  const refresh = app.jwt.sign({ id: String(userId), t: 'r', jti: randomUUID() }, { expiresIn: env.JWT_REFRESH_TTL });
-  return { access_token: access, refresh_token: refresh };
-}
-
-// Provider→identity upsert (contract §1): return the user for an existing (provider, providerUid)
-// identity, or create user+identity+profile+wallet on first login. Race-safe — two concurrent
-// first-logins for the same credential can both miss the lookup, so a unique-constraint violation
-// (P2002) is read as "another request just created it" and we re-read instead of 500-ing.
-async function resolveIdentityUser(type: string, providerUid: string, nick?: string): Promise<bigint> {
-  const existing = await prisma.userIdentity.findUnique({
-    where: { provider_providerUid: { provider: type, providerUid } },
-    select: { userId: true },
-  });
-  if (existing) return existing.userId;
-  try {
-    const user = await prisma.user.create({
-      data: {
-        account: `${type}:${providerUid}`.slice(0, 64),
-        identities: { create: { provider: type, providerUid } },
-        profile: { create: { nick: nick ?? `user_${Date.now() % 100000}` } },
-        wallet: { create: {} },
-      },
-      select: { id: true },
-    });
-    return user.id;
-  } catch (e) {
-    if (isUniqueViolation(e)) {
-      const raced = await prisma.userIdentity.findUnique({
-        where: { provider_providerUid: { provider: type, providerUid } },
-        select: { userId: true },
-      });
-      if (raced) return raced.userId;
-    }
-    throw e;
-  }
-}
-
-// Duck-typed Prisma unique-constraint check (P2002) — avoids importing the Prisma error class.
-function isUniqueViolation(e: unknown): boolean {
-  return typeof e === 'object' && e !== null && (e as { code?: string }).code === 'P2002';
-}
-
-async function verifyProvider(type: string, credential: string): Promise<string> {
-  // FAIL CLOSED IN PRODUCTION. This dev stub accepts ANY credential as a valid identity —
-  // acceptable only for local/testing. A production build must verify the provider token
-  // (Google/Facebook/Apple SDK) or OTP before this returns. Shipping the open stub would
-  // let anyone authenticate as anyone, so we refuse unless explicitly overridden (and env
-  // already forbids the override when NODE_ENV=production).
-  if (isProd && !env.ALLOW_INSECURE_DEV_AUTH) {
-    throw new AppError('provider_verification_not_configured', 501);
-  }
-  return createHash('sha256').update(`${type}:${credential}`).digest('hex');
 }

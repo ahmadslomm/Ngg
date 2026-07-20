@@ -21,9 +21,25 @@ const KIND_TYPES: Record<string, Record<string, string>> = {
   voice: AUDIO_TYPES, bottle: AUDIO_TYPES,
 };
 
+// P2a — CATALOG art (gift icons/animations, frames, room skins, medals, banners). Distinct from the
+// user-content kinds above: platform-admin only, a wider allowlist (animation formats), and a
+// catalog-namespaced key. Effect formats are explicit vendor types so the extension is deterministic
+// — the server never trusts a client-supplied key or extension.
+const CATALOG_TYPES: Record<string, string> = {
+  ...IMAGE_TYPES,
+  'image/gif': 'gif',
+  'video/mp4': 'mp4',
+  'application/x-svga': 'svga', // SVGA animation
+  'application/x-pag': 'pag',   // PAG animation
+};
+
+// The catalog asset slots an upload may target — bounds the key namespace (no arbitrary folders).
+const CATALOG_ASSET_TYPES = new Set(['gift', 'frame', 'theme', 'medal', 'banner', 'effect', 'decoration']);
+
 const PRESIGN_TTL_SECONDS = 300;
 
 export interface PresignInput { kind: string; contentType: string }
+export interface CatalogPresignInput { assetType: string; contentType: string }
 export interface PresignResult {
   key: string;
   uploadUrl: string;
@@ -61,6 +77,36 @@ export class UploadService {
     const mm = String(now.getUTCMonth() + 1).padStart(2, '0');
     // Server-decided key: kind-namespaced, date-partitioned, owner-scoped, random basename.
     const key = `uploads/${input.kind}/${yyyy}/${mm}/${userId}/${randomUUID()}.${ext}`;
+
+    return {
+      key,
+      uploadUrl: presignPutUrl(cfg, { key, expiresIn: PRESIGN_TTL_SECONDS, now }),
+      publicUrl: publicUrlFor(cfg, key),
+      method: 'PUT',
+      headers: { 'Content-Type': input.contentType },
+      expiresAt: Math.floor(now.getTime() / 1000) + PRESIGN_TTL_SECONDS,
+      maxBytes: env.UPLOAD_MAX_BYTES,
+    };
+  }
+
+  /**
+   * P2a — presign a CATALOG art upload (platform-admin only; the caller enforces that gate).
+   * Same fail-closed + server-decided-key guarantees as `presign`, but namespaced under
+   * `catalog/{assetType}/…` and admin-scoped for provenance. The returned `publicUrl` is what an
+   * admin then writes into the catalog row (e.g. Gift.animUrl) via the catalog editors.
+   */
+  presignCatalog(adminId: bigint, input: CatalogPresignInput): PresignResult {
+    if (!CATALOG_ASSET_TYPES.has(input.assetType)) throw new AppError('unsupported_asset_type', 400);
+    const ext = CATALOG_TYPES[input.contentType];
+    if (!ext) throw new AppError('unsupported_content_type', 415);
+
+    const cfg = this.resolveR2();
+    if (!cfg) throw new AppError('uploads_not_configured', 503);
+
+    const now = new Date();
+    const yyyy = now.getUTCFullYear();
+    const mm = String(now.getUTCMonth() + 1).padStart(2, '0');
+    const key = `catalog/${input.assetType}/${yyyy}/${mm}/${adminId}/${randomUUID()}.${ext}`;
 
     return {
       key,

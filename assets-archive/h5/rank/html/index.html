@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="format-detection" content="telephone=no">
+		<meta http-eouiv="Cache-Control" content="no-cache, must-revalidate">
+		<title></title>
+		<style type="text/css">
+			iframe{
+				padding: 0;
+				margin: 0;
+				border: 0;
+				position: fixed;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				display: block;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			// 支持的语言列表，支持不同的域名使用相同的默认语言（健和值全用小写字母）
+            const langs = ['en','ar','id','tr','vi','zh']
+
+			function getMainHost() {
+				const parts = location.host.split('.');
+				const len = parts.length;
+				if (len >= 2) {
+					return parts[len - 2].toLowerCase() + '.' + parts[len - 1].toLowerCase();
+				}
+				return location.host;
+			}
+			function getUrlString(key) {
+				const vars = {};
+				window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, (m, k, v) => {
+					vars[k] = v;
+				});
+				if (key && typeof vars[key] != 'undefined') {
+					return decodeURIComponent(vars[key]);
+				}
+				return null;
+			}
+
+
+            let lang = getUrlString('lang').replace('in','id');
+			lang = lang ? lang.toLowerCase().slice(0,2) : '';
+			lang = langs.indexOf(lang) != -1 ? lang : langs[0];
+			var score = getUrlString('score');
+			// location.href='./index_'+lang+'.html?score='+score;
+			document.write('<iframe src="./index_'+lang+'.html?score='+score+'" id="iframe"></iframe>');
+			var obj=document.getElementById("iframe"); 
+			obj.onload=function(){
+				document.title = obj.contentWindow.document.title
+			}
+		</script>
+	</body>
+</html>

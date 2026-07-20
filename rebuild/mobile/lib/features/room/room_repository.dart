@@ -19,6 +19,11 @@ class RoomRepository {
     return RoomMeta.fromJson((res.data['data'] as Map).cast<String, dynamic>());
   }
 
+  /// `POST /rooms/:id/cover` — set (or clear) the room cover image. Owner/EDIT_ROOM only
+  /// (server-enforced). [url] is an already-uploaded R2 public URL.
+  Future<void> setCover(String roomId, String? url) =>
+      _api.post('/rooms/$roomId/cover', data: {'cover_url': url});
+
   Future<({List<Seat> seats, String rtcRole})> join(String roomId) async {
     final res = await _api.post('/rooms/$roomId/join');
     final data = res.data['data'];
@@ -63,6 +68,64 @@ class RoomRepository {
   /// Maps to the existing `POST /rooms/:id/roles`; the server is authoritative on permission.
   Future<void> setRole(String roomId, String userId, int role) =>
       _api.post('/rooms/$roomId/roles', data: {'user_id': userId, 'role': role});
+
+  /// Ban a user from the room — a kick ALSO bars re-entry, which a kick alone does not.
+  Future<void> ban(String roomId, String userId) =>
+      _api.post('/rooms/$roomId/ban', data: {'user_id': userId});
+
+  Future<void> unban(String roomId, String userId) =>
+      _api.delete('/rooms/$roomId/ban/$userId');
+
+  /// Self-mute: a speaker silencing their OWN mic. Distinct from `setMute`, which is an admin
+  /// muting someone else — the server tracks them separately so an admin mute survives a
+  /// self-unmute.
+  Future<void> setSelfMute(String roomId, int pos, bool muted) =>
+      _api.post('/rooms/$roomId/seats/$pos/self-mute', data: {'muted': muted});
+
+  // ---- apply-to-mic queue ----------------------------------------------------------------
+
+  /// Request a seat. `position` null asks for any free seat.
+  Future<void> applyForMic(String roomId, {int? position}) =>
+      _api.post('/rooms/$roomId/seats/apply', data: {if (position != null) 'position': position});
+
+  Future<void> cancelMicApply(String roomId) =>
+      _api.post('/rooms/$roomId/seats/apply/cancel');
+
+  /// Pending requests, for the host panel.
+  Future<List<Map<String, dynamic>>> micApplies(String roomId) async {
+    final res = await _api.get('/rooms/$roomId/seats/applies');
+    final data = res.data['data'];
+    final items = data is List ? data : (data?['items'] as List? ?? const []);
+    return items.cast<Map<String, dynamic>>();
+  }
+
+  /// Host grants a pending request, seating the applicant at [pos].
+  Future<void> grantMic(String roomId, int pos, String userId) =>
+      _api.post('/rooms/$roomId/seats/$pos/grant', data: {'user_id': userId});
+
+  Future<void> rejectMicApply(String roomId, String userId) =>
+      _api.post('/rooms/$roomId/seats/applies/reject', data: {'user_id': userId});
+
+  /// Host invites a specific user onto a seat (the inverse of an apply).
+  Future<void> inviteToSeat(String roomId, int pos, String userId) =>
+      _api.post('/rooms/$roomId/seats/$pos/invite', data: {'user_id': userId});
+
+  /// Play a room emoji. The animations are recovered from the original bundle; the wire is
+  /// rebuild-owned — see the provenance note in the backend's room.events.ts.
+  Future<void> playEmoji(String roomId, int faceId) =>
+      _api.post('/rooms/$roomId/emoji', data: {'face_id': faceId});
+
+  /// Top contributors for this room (`GET /rooms/:id/rank`).
+  Future<List<Map<String, dynamic>>> roomRank(String roomId, {int period = 0}) async {
+    final res = await _api.get('/rooms/$roomId/rank', query: {'period': period});
+    final data = res.data['data'];
+    final items = data is List ? data : (data?['top'] as List? ?? data?['items'] as List? ?? const []);
+    return items.cast<Map<String, dynamic>>();
+  }
+
+  /// Equip a room theme (`POST /rooms/:id/theme`).
+  Future<void> setTheme(String roomId, int themeId) =>
+      _api.post('/rooms/$roomId/theme', data: {'theme_id': themeId});
 
   Future<RtcToken> rtcToken(String roomId) async {
     final res = await _api.get('/auth/rtc-token', query: {'room': roomId});
@@ -115,11 +178,15 @@ class RoomRepository {
     required String giftId,
     required int qty,
     required List<String> recipientIds,
+    bool useBag = false,
   }) =>
       _api.post('/gifts/send', data: {
         'gift_id': giftId,
         'qty': qty,
         'room_id': roomId,
         'recipient_ids': recipientIds,
+        // T1.15: spend from the backpack instead of the coin balance. Omitted when false so the
+        // request stays byte-identical to the pre-backpack one.
+        if (useBag) 'use_bag': true,
       });
 }

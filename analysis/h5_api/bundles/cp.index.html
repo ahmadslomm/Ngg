@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title></title>
+    <script>!function(n,e){var t=n.documentElement,i="orientationchange"in window?"orientationchange":"resize",d=function(){var n=t.clientWidth;if(n){var e=Math.min(n,750)/750*100;t.style.fontSize=e+"px"}};n.addEventListener&&(e.addEventListener(i,d,!1),n.addEventListener("DOMContentLoaded",d,!1))}(document,window)</script>
+    <!-- <script src="/js/env.js"></script> -->
+    <!-- <script src="/js/miyouCallApp.js"></script> -->
+    <script src="//fstatic.cat1314.com/js/axios.min.js"></script>
+    <script src="//fstatic.cat1314.com/js/vue.runtime.min.js"></script>
+    <script src="//fstatic.cat1314.com/js/vuex.min.js"></script>
+    <script src="//fstatic.cat1314.com/js/vue-router.min.js"></script>
+    <script src="//fstatic.cat1314.com/js/vue-lazyload.js"></script>
+    <script src="//fstatic.cat1314.com/js/svga.lite.min.js"></script>
+    <script>_hash={"listcss":"b5e607c2","listjs":"ea6c603d","encss":"ddc23040","enjs":"76f9755e","arcss":"d5a1041f","arjs":"170148ce","trcss":"ddc23040","trjs":"fde5ff57","escss":"ddc23040","esjs":"e536657f","ptcss":"3c58a1cf","ptjs":"75585f5d","idcss":"ddc23040","idjs":"9acd07df","vendorcss":"2630b858","vendorjs":"072c448e"}</script>
+    <!-- <script type="module">
+        import * as callApps from "/js/miyouCallApp.js";
+        window._callApp = callApps
+    </script> -->
+<link href="css/vendor.css?2630b858" rel="stylesheet"><link href="css/app.css?465b2b5d" rel="stylesheet"></head>
+<body>
+    <div id="app"></div>
+<script>/*!
+ * Created by Guohui
+ * User: webflash2007@gmail.com
+ * Version: 1.0.0
+ */
+(()=>{"use strict";var e,r={},o={};function t(e){var a=o[e];if(void 0!==a)return a.exports;var n=o[e]={exports:{}};return r[e].call(n.exports,n,n.exports,t),n.exports}t.m=r,e=[],t.O=(r,o,a,n)=>{if(!o){var l=1/0;for(f=0;f<e.length;f++){for(var[o,a,n]=e[f],i=!0,p=0;p<o.length;p++)(!1&n||l>=n)&&Object.keys(t.O).every((e=>t.O[e](o[p])))?o.splice(p--,1):(i=!1,n<l&&(l=n));if(i){e.splice(f--,1);var u=a();void 0!==u&&(r=u)}}return r}n=n||0;for(var f=e.length;f>0&&e[f-1][2]>n;f--)e[f]=e[f-1];e[f]=[o,a,n]},t.n=e=>{var r=e&&e.__esModule?()=>e.default:()=>e;return t.d(r,{a:r}),r},t.d=(e,r)=>{for(var o in r)t.o(r,o)&&!t.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:r[o]})},t.o=(e,r)=>Object.prototype.hasOwnProperty.call(e,r),t.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},t.p="",(()=>{var e={121:0};t.O.j=r=>0===e[r];var r=(r,o)=>{var a,n,[l,i,p]=o,u=0;if(l.some((r=>0!==e[r]))){for(a in i)t.o(i,a)&&(t.m[a]=i[a]);if(p)var f=p(t)}for(r&&r(o);u<l.length;u++)n=l[u],t.o(e,n)&&e[n]&&e[n][0](),e[n]=0;return t.O(f)},o=globalThis.webpackChunkwebpack_project=globalThis.webpackChunkwebpack_project||[];o.forEach(r.bind(null,0)),o.push=r.bind(null,o.push.bind(o))})()})()</script><script src="js/vendor.js?072c448e"></script><script>/*!
+ * Created by Guohui
+ * User: webflash2007@gmail.com
+ * Version: 1.0.0
+ */
+"use strict";(globalThis.webpackChunkwebpack_project=globalThis.webpackChunkwebpack_project||[]).push([[176],{1667(t,e,n){n(7495),n(5440),n(4979);const s=location.host;function o(t){const e={};return window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,((t,n,s)=>{e[n]=s})),t&&void 0!==e[t]?decodeURIComponent(e[t]):null}window.__area={TW:"tw",VI:"vi",VN:"vn",ID:"id",AR:"ar",IN:"in",TR:"tr"};const a=/localhost/i.test(s)||/\d+\.\d+\.\d+\.\d+/.test(s),i=/^t(est)?\./i.test(s),c=null!==o("test");window._test=a||i||c,window._localTest=a,window._platform=function(){let t="pc";const e=navigator.userAgent;return e.match(/iPhone|iPod|ios|iPad/i)?t="ios":e.match(/Android/i)&&(t="android"),t}(),window._app="taman",window._area="tw";let d=["en","ar","tr","es","pt","id"];const l=function(){const t=s.split("."),e=t.length;return e>=2&&!/:\d+$/.test(s)?(t[e-2]+"."+t[e-1]).toLowerCase():s}();if("undefined"!=typeof hosts){const t=hosts[l]||hosts[btoa(l)]||"";if(t){const e=t.split(",");3==e.length&&-1!=d.indexOf(e[2])&&(_app=e[0],_area=e[1],d=[e[2]].concat(d))}}void 0!==window._env&&(_env=Object.assign({},_env),_env.app&&(_app=_env.app),_env.area&&(_area=_env.area),_env.lang&&(d=[_env.lang].concat(d)),void 0!==_env.test&&(_test=_env.test));let r=d[0];const p=o("lang").replace("in","id")||navigator.language||"",w=p.toLowerCase(),_=w.split("-"),h=-1!=d.indexOf(w),u=-1!=d.indexOf(_[0]);(h||u)&&(r=p),window.__lang=r;const v=h?w:u?_[0]:d[0];window._local=v,window._host=l;let g="",m="";if("undefined"!=typeof _hash){const t=v+"css";void 0!==_hash[t]&&(g="?"+_hash[t]),m="?"+_hash[v+"js"]}const f=document.documentElement;if(f.className=f.className?f.className+" "+v:v,g){const t=document.createElement("link");t.href=`css/${v}.css${g}`,t.rel="stylesheet",document.getElementsByTagName("head")[0].appendChild(t)}document.write(`<script type="text/javascript" src="js/${v}.js${m}"><\/script>`),window._debug=null!==o("debug"),_debug&&(document.write('<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"><\/script>'),document.write("<script>new VConsole()<\/script>"))}},t=>{t.O(0,[502],(()=>(1667,t(t.s=1667)))),t.O()}])</script><script src="js/app.js?1a231c4b"></script></body>
+</html>

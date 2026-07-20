@@ -1,6 +1,7 @@
 // Repository boundary for the room vertical. The service depends on this interface,
 // not on Prisma — so the exact same service logic is exercised by API tests through an
 // in-memory repo (no Postgres needed) and runs on Prisma in production.
+import type { DbClient } from '../../lib/db.js';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import type { RoomState, Seat } from './seat-state.js';
 import { SeatState, Role } from './seat-state.js';
@@ -38,6 +39,30 @@ export interface RoomTheme {
   bubbleUrl: string | null;
 }
 
+// F1 (P1): the full room-info projection for `GET /rooms/:id`. A read-only superset of RoomRecord
+// that also surfaces the "storage-only" columns already on Room (announcement, roomLevel/roomExp,
+// tags, welcomeText, bgMusicUrl, onlineCount) — no schema change, just reading what's already there.
+export interface RoomInfoRecord {
+  id: string;
+  publicId: string;
+  ownerId: string;
+  name: string;
+  type: number;
+  mode: number;
+  seatCount: number;
+  onlineCount: number;
+  countryCode: string | null;
+  coverUrl: string | null;
+  themeId: number | null;
+  announcement: string | null;
+  welcomeText: string | null;
+  bgMusicUrl: string | null;
+  roomLevel: number;
+  roomExp: bigint;
+  tags: unknown; // Room.tags (Json?) — array/object/null, passed through untouched
+  status: number;
+}
+
 // Room-password hashing (T1.9). A keyed HMAC (server secret) — fast, and a DB leak alone can't
 // reverse a room code. Room passwords are low-value join codes, not user credentials; kept out
 // of the schema (the passwordHash column already exists) and shared by both repos + the service.
@@ -54,13 +79,59 @@ export function verifyRoomPassword(pw: string, hash: string | null): boolean {
 // A member's coarse role + fine-grained permission bitmap (T1.11), fed to requireRoomAdmin.
 export interface Membership { role: number; permissions: number }
 
+// F2 (P1): one row of the online-members list — the member's id + coarse role. Profile data is
+// hydrated separately (via the route's injected ProfileBatchLookup), so the repo stays user-agnostic.
+export interface MemberRow { userId: string; role: number }
+
+// F5 (P1): apply-to-mic request lifecycle. One row per (room, user) — re-applying reuses the row.
+export const ApplyStatus = { Pending: 0, Granted: 1, Rejected: 2, Cancelled: 3 } as const;
+export type ApplyStatusValue = (typeof ApplyStatus)[keyof typeof ApplyStatus];
+
+/** F5: a mic-application row (profile hydration happens at the route, like MemberRow). */
+export interface ApplyRow {
+  id: string;
+  roomId: string;
+  userId: string;
+  position: number | null; // requested seat (null = any)
+  status: number;
+  createdAt: Date;
+}
+
+/** Result of a seat mutation: a domain rejection, or the layout to persist plus events to emit. */
+export type SeatMutation =
+  | { ok: false; error: string }
+  | { ok: true; seats: Seat[]; events: Array<{ ev: string; data: Record<string, unknown> }> };
+
 export interface RoomRepo {
   createRoom(input: CreateRoomInput): Promise<RoomRecord>;
   getRoom(roomId: string): Promise<RoomRecord | null>;
-  getRoomState(roomId: string): Promise<RoomState | null>;
+  // F1 (P1): full read-only room info for `GET /rooms/:id` (null when the room doesn't exist).
+  getRoomInfo(roomId: string): Promise<RoomInfoRecord | null>;
+  getRoomState(roomId: string, client?: DbClient): Promise<RoomState | null>;
+  /**
+   * ATOMIC read-modify-write of the seat map. `decide` receives the current state (null when the
+   * room is gone) and returns either a rejection or the next seat layout; the implementation
+   * guarantees the read and the write observe no interleaved change. Without this, two users
+   * claiming one seat both saw it empty and both were told they had won.
+   */
+  mutateSeats(
+    roomId: string,
+    decide: (state: RoomState | null) => SeatMutation,
+  ): Promise<SeatMutation>;
   // T1.11: a single member's role + permissions bitmap (null when not a member).
   getMembership(roomId: string, userId: string): Promise<Membership | null>;
-  persistSeats(roomId: string, seats: Seat[]): Promise<void>;
+  // F2 (P1): a page of the room's members (join order), and the total member count. Source of truth
+  // for the online list (Room.onlineCount is only a denormalized cache).
+  listMembers(roomId: string, opts: { skip: number; take: number }): Promise<MemberRow[]>;
+  countMembers(roomId: string): Promise<number>;
+  // F5 (P1): apply-to-mic queue. `applyForMic` upserts ONE pending row per (room,user) — race-safe on
+  // the unique key; re-applying reuses the row. `resolveApply` is a status-guarded flip (exactly-once).
+  applyForMic(roomId: string, userId: string, position: number | null): Promise<ApplyRow>;
+  findApplyByUser(roomId: string, userId: string): Promise<ApplyRow | null>;
+  listApplies(roomId: string, status: number): Promise<ApplyRow[]>;
+  countApplies(roomId: string, status: number): Promise<number>;
+  resolveApply(id: string, fromStatus: number, toStatus: number, resolvedById: string | null): Promise<{ count: number }>;
+  persistSeats(roomId: string, seats: Seat[], client?: DbClient): Promise<void>;
   persistRoles(roomId: string, roles: Record<string, Role>): Promise<void>;
   addMember(roomId: string, userId: string, role: Role): Promise<void>;
   removeMember(roomId: string, userId: string): Promise<void>;
@@ -70,20 +141,36 @@ export interface RoomRepo {
   // service validates against getTheme before calling setRoomTheme; the DB FK is the backstop.
   getTheme(themeId: number): Promise<RoomTheme | null>;
   setRoomTheme(roomId: string, themeId: number | null): Promise<void>;
+  // Persist a room's cover image URL (per-room background). Existing column — no migration.
+  setRoomCover(roomId: string, coverUrl: string | null): Promise<void>;
 }
 
 export function freshSeats(n: number): Seat[] {
   return Array.from({ length: n }, (_, i) => ({
-    position: i, userId: null, state: SeatState.Empty, micMuted: false, micMutedByAdmin: false,
+    position: i, userId: null, state: SeatState.Empty, micMuted: false, micMutedByAdmin: false, charm: 0,
   }));
 }
 
 // -------- In-memory implementation (tests / local dev) --------
+// The "storage-only" Room columns the in-memory repo tracks so F1 can be exercised end-to-end
+// (the FSM/RoomRecord path doesn't need them). Defaults mirror the schema defaults.
+interface RoomInfoExtras {
+  publicId: string;
+  countryCode: string | null;
+  tags: unknown;
+  announcement: string | null;
+  welcomeText: string | null;
+  bgMusicUrl: string | null;
+  roomLevel: number;
+  roomExp: bigint;
+}
+
 export class InMemoryRoomRepo implements RoomRepo {
   private rooms = new Map<string, RoomRecord>();
   private states = new Map<string, RoomState>();
   private members = new Map<string, Set<string>>();
   private themes = new Map<number, RoomTheme & { enabled: boolean }>(); // T2.6 catalog
+  private info = new Map<string, RoomInfoExtras>(); // F1 storage-only columns
   private seq = 1;
 
   async createRoom(input: CreateRoomInput): Promise<RoomRecord> {
@@ -98,9 +185,31 @@ export class InMemoryRoomRepo implements RoomRepo {
     this.rooms.set(id, rec);
     this.states.set(id, { ownerId: input.ownerId, roles: {}, seats: freshSeats(seatCount) });
     this.members.set(id, new Set([input.ownerId]));
+    this.info.set(id, {
+      publicId: `pub-${id}`, countryCode: input.countryCode ?? null, tags: null,
+      announcement: null, welcomeText: null, bgMusicUrl: null, roomLevel: 0, roomExp: 0n,
+    });
     return rec;
   }
   async getRoom(roomId: string) { return this.rooms.get(roomId) ?? null; }
+
+  // F1: assemble the full room info from the base record + storage-only extras + live member count.
+  async getRoomInfo(roomId: string): Promise<RoomInfoRecord | null> {
+    const r = this.rooms.get(roomId);
+    const x = this.info.get(roomId);
+    if (!r || !x) return null;
+    return {
+      id: r.id, publicId: x.publicId, ownerId: r.ownerId, name: r.name,
+      type: r.type, mode: r.mode, seatCount: r.seatCount, onlineCount: this.memberCount(roomId),
+      countryCode: x.countryCode, coverUrl: r.coverUrl, themeId: r.themeId,
+      announcement: x.announcement, welcomeText: x.welcomeText, bgMusicUrl: x.bgMusicUrl,
+      roomLevel: x.roomLevel, roomExp: x.roomExp, tags: x.tags, status: r.status,
+    };
+  }
+  // Test helper: set the storage-only columns so F1 assertions can cover non-default values.
+  setRoomInfo(roomId: string, patch: Partial<RoomInfoExtras>) {
+    const x = this.info.get(roomId); if (x) this.info.set(roomId, { ...x, ...patch });
+  }
   async getRoomState(roomId: string) {
     const s = this.states.get(roomId);
     return s ? { ownerId: s.ownerId, roles: { ...s.roles }, seats: s.seats.map((x) => ({ ...x })) } : null;
@@ -116,6 +225,74 @@ export class InMemoryRoomRepo implements RoomRepo {
     if (this.members.get(roomId)?.has(userId)) return { role: Role.Listener, permissions: 0 };
     return null;
   }
+  // Coarse role for a member (owner > explicit admin/roles > listener). Mirrors getMembership.
+  private roleOf(roomId: string, userId: string): number {
+    const s = this.states.get(roomId);
+    if (!s) return Role.Listener;
+    if (userId === s.ownerId) return Role.Owner;
+    return s.roles[userId] ?? Role.Listener;
+  }
+  // F2: a page of members in join order (Set preserves insertion order — owner first, then joiners).
+  async listMembers(roomId: string, opts: { skip: number; take: number }): Promise<MemberRow[]> {
+    const set = this.members.get(roomId);
+    if (!set) return [];
+    return [...set].slice(opts.skip, opts.skip + opts.take).map((userId) => ({ userId, role: this.roleOf(roomId, userId) }));
+  }
+  async countMembers(roomId: string): Promise<number> {
+    return this.members.get(roomId)?.size ?? 0;
+  }
+
+  // ----- F5: apply-to-mic queue -----
+  private applies = new Map<string, { id: string; roomId: string; userId: string; position: number | null; status: number; resolvedById: string | null; createdAt: Date }>();
+  private applySeq = 1;
+  private applyKey(roomId: string, userId: string) { return `${roomId}:${userId}`; }
+  private toApplyRow(r: { id: string; roomId: string; userId: string; position: number | null; status: number; createdAt: Date }): ApplyRow {
+    return { id: r.id, roomId: r.roomId, userId: r.userId, position: r.position, status: r.status, createdAt: r.createdAt };
+  }
+  // Upsert one pending row per (room,user) — re-applying (any prior status) flips it back to pending.
+  async applyForMic(roomId: string, userId: string, position: number | null): Promise<ApplyRow> {
+    const key = this.applyKey(roomId, userId);
+    const existing = this.applies.get(key);
+    if (existing) { existing.position = position; existing.status = ApplyStatus.Pending; existing.resolvedById = null; return this.toApplyRow(existing); }
+    const row = { id: String(this.applySeq++), roomId, userId, position, status: ApplyStatus.Pending as number, resolvedById: null as string | null, createdAt: new Date() };
+    this.applies.set(key, row);
+    return this.toApplyRow(row);
+  }
+  async findApplyByUser(roomId: string, userId: string): Promise<ApplyRow | null> {
+    const r = this.applies.get(this.applyKey(roomId, userId));
+    return r ? this.toApplyRow(r) : null;
+  }
+  async listApplies(roomId: string, status: number): Promise<ApplyRow[]> {
+    return [...this.applies.values()]
+      .filter((r) => r.roomId === roomId && r.status === status)
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime() || Number(BigInt(a.id) - BigInt(b.id)))
+      .map((r) => this.toApplyRow(r));
+  }
+  async countApplies(roomId: string, status: number): Promise<number> {
+    return [...this.applies.values()].filter((r) => r.roomId === roomId && r.status === status).length;
+  }
+  // Status-guarded flip: succeeds for exactly ONE caller (the first to move it off `fromStatus`).
+  async resolveApply(id: string, fromStatus: number, toStatus: number, resolvedById: string | null): Promise<{ count: number }> {
+    const r = [...this.applies.values()].find((x) => x.id === id);
+    if (!r || r.status !== fromStatus) return { count: 0 };
+    r.status = toStatus; r.resolvedById = resolvedById;
+    return { count: 1 };
+  }
+  /**
+   * In-memory rooms are mutated synchronously with no awaits between read and write, so the
+   * decide-then-persist sequence is already atomic with respect to other callers. The interface
+   * is honoured so services behave identically against either repo.
+   */
+  async mutateSeats(
+    roomId: string,
+    decide: (state: RoomState | null) => SeatMutation,
+  ): Promise<SeatMutation> {
+    const state = await this.getRoomState(roomId);
+    const outcome = decide(state);
+    if (outcome.ok) await this.persistSeats(roomId, outcome.seats);
+    return outcome;
+  }
+
   async persistSeats(roomId: string, seats: Seat[]) {
     const s = this.states.get(roomId); if (s) s.seats = seats.map((x) => ({ ...x }));
   }
@@ -138,5 +315,8 @@ export class InMemoryRoomRepo implements RoomRepo {
   }
   async setRoomTheme(roomId: string, themeId: number | null) {
     const r = this.rooms.get(roomId); if (r) r.themeId = themeId;
+  }
+  async setRoomCover(roomId: string, coverUrl: string | null) {
+    const r = this.rooms.get(roomId); if (r) r.coverUrl = coverUrl;
   }
 }

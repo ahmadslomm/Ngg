@@ -4,6 +4,8 @@ import { moderationService } from './moderation.service.js';
 import { prisma } from '../../lib/prisma.js';
 import { ok, replyError, serialize } from '../../lib/errors.js';
 import { requireRoomAdmin, RoomRole, RoomPermission } from '../../lib/authz.js';
+import { emitRoomEvent } from '../../realtime/gateway.js';
+import { roomBanned } from '../rooms/room.events.js';
 
 // Room moderation authorization (T1.11 extension): assert the actor holds the room-admin
 // authority + the required permission bit before any ban mutation. Owner bypasses; an Admin
@@ -44,7 +46,13 @@ export async function moderationRoutes(app: FastifyInstance) {
       const roomId = BigInt((req.params as any).id);
       await assertRoomPermission(roomId, uid(req), RoomPermission.KICK);
       const b = z.object({ user_id: z.coerce.bigint(), reason: z.string().max(255).optional() }).parse(req.body);
-      return ok(serialize(await moderationService.banFromRoom(uid(req), roomId, b.user_id, { reason: b.reason })));
+      const ban = await moderationService.banFromRoom(uid(req), roomId, b.user_id, { reason: b.reason });
+      // F8 (P1): announce the ban to the room ONLY AFTER the ban write succeeded (a rejected
+      // authz check or a failed write throws above, so no event is emitted). Room-scoped only —
+      // the broadcast reaches the banned user's socket too; no direct user-channel push.
+      // Best-effort: a dropped broadcast never undoes the committed ban.
+      emitRoomEvent(`room:${roomId}`, roomBanned({ roomId: String(roomId), userId: String(b.user_id), by: String(uid(req)) }));
+      return ok(serialize(ban));
     } catch (e) { return replyError(reply, e); }
   });
 

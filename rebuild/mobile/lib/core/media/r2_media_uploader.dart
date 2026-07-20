@@ -25,8 +25,8 @@ class R2MediaUploader implements MediaUploader {
   final Dio _put;
 
   @override
-  Future<String> uploadImage(LocalFile file) =>
-      _upload(file, kind: 'moment', fallbackType: 'image/jpeg');
+  Future<String> uploadImage(LocalFile file, {String kind = 'moment'}) =>
+      _upload(file, kind: kind, fallbackType: 'image/jpeg');
 
   @override
   Future<String> uploadAudio(LocalFile file, {int seconds = 0}) =>

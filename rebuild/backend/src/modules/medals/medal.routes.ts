@@ -6,7 +6,7 @@ import { medalService } from './medal.service.js';
 const uid = (req: any) => req.user.id as bigint;
 
 export async function medalRoutes(app: FastifyInstance) {
-  app.get('/medals', async () => ok(serialize(await medalService.listCatalogue())));
+  app.get('/medals', { preHandler: [app.authenticate] }, async () => ok(serialize(await medalService.listCatalogue())));
 
   app.get('/medals/me', { preHandler: [app.authenticate] }, async (req) => {
     await medalService.syncDerived(uid(req)).catch(() => {}); // best-effort refresh of derived badges
@@ -15,6 +15,10 @@ export async function medalRoutes(app: FastifyInstance) {
 
   app.get('/users/:id/medals', { preHandler: [app.authenticate] }, async (req) =>
     ok(serialize(await medalService.adornedMedals(BigInt((req.params as any).id)))));
+
+  // medal.getAchievementMedalRank — the captured shape (ranking/score/level1..level4).
+  app.get('/medals/achievement-rank', { preHandler: [app.authenticate] }, async (req: any) =>
+    ok(serialize(await medalService.achievementRank(req.user.id))));
 
   app.post('/medals/:id/adorn', { preHandler: [app.authenticate] }, async (req, reply) => {
     try { return ok(serialize(await medalService.adorn(uid(req), BigInt((req.params as any).id), true))); }
@@ -29,7 +33,10 @@ export async function medalRoutes(app: FastifyInstance) {
 
 // Admin can grant an event/manual medal by code.
 export async function adminMedalRoutes(app: FastifyInstance) {
-  app.post('/admin/medals/award', { preHandler: [app.authenticateAdmin] }, async (req, reply) => {
+  app.post('/admin/medals/award', {
+    preHandler: [app.authenticateAdmin],
+    config: { rateLimit: { max: 60, timeWindow: '1 minute' } },
+  }, async (req, reply) => {
     try {
       const b = z.object({ user_id: z.coerce.bigint(), code: z.string().min(1) }).parse(req.body);
       const awarded = await medalService.award(b.user_id, b.code);

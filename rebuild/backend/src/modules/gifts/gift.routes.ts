@@ -1,8 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { sendGift, listGiftCatalogue, listGiftCatalogueGrouped, AppError } from './gift.service.js';
+import { sendGift, listGiftCatalogue, listGiftCatalogueGrouped, listGiftTabs, giftWall, AppError } from './gift.service.js';
+import { ok, serialize, pageArgs } from '../../lib/errors.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
-import { rankingService, Board } from '../ranking/ranking.service.js';
+import { charmUpdated, roomRankEvent } from '../rooms/room.events.js';
+import { rankingService, Board, Period } from '../ranking/ranking.service.js';
+
+// F7: how many top contributors the room.rank push carries (kept small — the WS payload is light;
+// clients pull the full list from GET /rooms/:id/rank).
+const ROOM_RANK_EVENT_TOP = 3;
 import { coupleService } from '../couple/couple.service.js';
 import { bumpCombo, addRocketProgress, addBombPool } from './gift-effects.service.js';
 import { medalService, MEDAL_CODES } from '../medals/medal.service.js';
@@ -19,7 +25,7 @@ export async function giftRoutes(app: FastifyInstance) {
   // Catalogue — public, unchanged shape. When the caller is authenticated we merge their
   // backpack quantity per gift (T1.14); anonymous callers get bag_qty 0. Optional auth: a
   // best-effort token verify never blocks the public catalog.
-  app.get('/gifts', async (req) => {
+  app.get('/gifts', { preHandler: [app.authenticate] }, async (req) => {
     const q = req.query as any;
     const category = q?.category;
     let userId: bigint | undefined;
@@ -37,8 +43,33 @@ export async function giftRoutes(app: FastifyInstance) {
     return { code: 0, message: 'ok', data: { items } };
   });
 
+  // P4a — gift wall for a user (⇐ legacy `room.giftWallList`: USER-scoped, `uid` + `page`; it
+  // carries no `rid`, so no room-scoped variant is implemented). Read-only, newest first, one row
+  // per transaction. Owned by the gifts module (it owns GiftTransaction) though the path is
+  // user-namespaced — same pattern as P3a's /users/:id/couple living in the couple module.
+  // `gift.getClientGiftTabs` — a real endpoint in the original's surface. The service was written
+  // and never routed, so the tab list the client needs to lay out the gift panel was unreachable.
+  // Authenticated, matching its sibling `GET /gifts`: leaving it open would be an inconsistency in
+  // the same feature, which is exactly what the route auditor flagged it for.
+  app.get('/gifts/tabs', { preHandler: [app.authenticate] }, async () =>
+    ({ code: 0, message: 'ok', data: await listGiftTabs() }));
+
+  app.get('/users/:id/gift-wall', { preHandler: [app.authenticate] }, async (req, reply) => {
+    try {
+      const { id } = z.object({ id: z.coerce.bigint() }).parse(req.params);
+      const { page, pageSize } = pageArgs(req.query);
+      return ok(serialize(await giftWall(id, page, pageSize)));
+    } catch (e) {
+      if (e instanceof AppError) return reply.code(400).send({ code: 4001, message: e.code });
+      throw e;
+    }
+  });
+
   // Send — authenticated, idempotent, server-priced.
-  app.post('/gifts/send', { preHandler: [app.authenticate] }, async (req, reply) => {
+  // The highest-volume spend path in the app. It cannot mint value (balance-checked and
+  // idempotency-anchored), but an unbounded send loop is both an abuse vector and the fastest way
+  // for a hijacked session to drain a wallet before the owner notices.
+  app.post('/gifts/send', { preHandler: [app.authenticate], config: { rateLimit: { max: 60, timeWindow: '1 minute' } } }, async (req, reply) => {
     const body = sendGiftSchema.parse(req.body);
     const senderId = req.user.id as bigint;
     const idempotencyKey = req.headers['idempotency-key'] as string | undefined;
@@ -77,6 +108,21 @@ export async function giftRoutes(app: FastifyInstance) {
         const roomChan = `room:${body.room_id}`;
         rankingService.addScore(Board.Room, body.room_id, total).catch(() => {});
         emitRoomEvent(roomChan, { ev: 'rank.update', data: { boards: [Board.Charm, Board.Wealthy, Board.Room, Board.Gift] } });
+        // F7 (P1): push the room's fresh top contributors (daily). Best-effort + async: the cache-aside
+        // read keeps this cheap under rapid gifting, and a failure never blocks the gift response.
+        // Additive — the payload-less rank.update above is unchanged.
+        rankingService.roomContribution(body.room_id, Period.Day, ROOM_RANK_EVENT_TOP)
+          .then((top) => emitRoomEvent(roomChan, roomRankEvent({
+            roomId: String(body.room_id), period: Period.Day, ts: Date.now(),
+            top: top.map((e) => ({ uid: e.subjectId, contribution: e.contribution, rank: e.rank })),
+          })))
+          .catch(() => {});
+        // F3 (P1): additive charm.updated per recipient — the charm each just gained (⇐ the existing
+        // Profile.charmExp mutation; `perRecipient` is that delta since CHARM_PER_COIN=1). Wired at the
+        // existing emit seam; no new economy logic, no room-module coupling beyond the pure builder.
+        for (const rid of body.recipient_ids) {
+          emitRoomEvent(roomChan, charmUpdated({ roomId: String(body.room_id), userId: String(rid), charm: perRecipient }));
+        }
         bumpCombo(senderId, body.gift_id, body.room_id).then((c) => {
           if (c.count >= 2) emitRoomEvent(roomChan, { ev: 'gift.combo', data: { senderId: String(senderId), giftId: String(body.gift_id), combo: c.count, comboId: c.comboId } });
         }).catch(() => {});

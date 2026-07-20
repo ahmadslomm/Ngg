@@ -1,15 +1,16 @@
 // Room service — applies pure seat-state transitions, persists via the repo, and emits
 // realtime events. No direct Prisma/Redis import: infrastructure is injected, so the
 // same code path is unit/API-tested in memory and runs on real infra in production.
-import type { RoomRepo, CreateRoomInput, RoomRecord, RoomTheme } from './room.repo.js';
+import type { RoomRepo, CreateRoomInput, RoomRecord, RoomInfoRecord, RoomTheme, MemberRow } from './room.repo.js';
 import { verifyRoomPassword } from './room.repo.js';
 import {
   RoomState, Role, Seat, Result,
   takeSeat, leaveSeat, switchSeat, setSeatLock, setMute, setSelfMute, setRole, kickUser, inviteToSeat,
-  computeRtcRole,
+  computeRtcRole, findUserSeat,
 } from './seat-state.js';
 import { requireRoomAdmin, RoomPermission } from '../../lib/authz.js';
-import { roomUpdated } from './room.events.js';
+import { roomUpdated, micApplied, roomEmoji, type MicApplyAction } from './room.events.js';
+import { ApplyStatus, type ApplyRow } from './room.repo.js';
 import { AppError } from '../../lib/errors.js';
 
 export type Emit = (room: string, event: { ev: string; data: Record<string, unknown> }) => void | Promise<void>;
@@ -99,17 +100,39 @@ export class RoomService {
   }
 
   // Generic apply for the seat transitions that return { seats, events }.
+  /**
+   * Read the seat map, compute the next layout, persist it — as ONE serializable transaction.
+   *
+   * This used to read, compute and write without a transaction. Under contention that loses
+   * writes: two users claiming the same seat both read "empty", both compute "mine", and the
+   * second write silently overwrote the first, so the service told BOTH they had succeeded while
+   * the database held one occupant. In a voice room that means users believing they hold a mic
+   * they do not own. `seat-concurrency.test.ts` pins the behaviour (it reproduced 6 winners for 1
+   * seat before this change).
+   *
+   * Two details matter:
+   *  - the state read and the seat write share the transaction client, so Postgres SERIALIZABLE
+   *    can detect the conflict and abort the loser; `serializableTx` then retries it, and on the
+   *    retry the loser sees the seat as taken and fails cleanly with a domain error.
+   *  - events are emitted AFTER the transaction commits. Emitting inside would broadcast a seat
+   *    change that a retry might roll back, and would double-emit on every retry.
+   */
   private async applySeat(
     roomId: string,
     fn: (state: RoomState) => Result,
   ): Promise<ServiceResult<{ seats: Seat[] }>> {
-    const state = await this.repo.getRoomState(roomId);
-    if (!state) return { ok: false, error: 'room_unavailable' };
-    const r = fn(state);
-    if (!r.ok) return { ok: false, error: r.error };
-    await this.repo.persistSeats(roomId, r.seats);
-    for (const e of r.events) await this.emit(this.channel(roomId), e);
-    return { ok: true, data: { seats: r.seats } };
+    // The transaction is owned by the REPO: this service must not import infrastructure
+    // (architecture Rule 3 keeps prisma out of everything but repositories).
+    const outcome = await this.repo.mutateSeats(roomId, (state) => {
+      if (!state) return { ok: false as const, error: 'room_unavailable' };
+      const r = fn(state);
+      if (!r.ok) return { ok: false as const, error: r.error };
+      return { ok: true as const, seats: r.seats, events: r.events };
+    });
+
+    if (!outcome.ok) return { ok: false, error: outcome.error };
+    for (const e of outcome.events) await this.emit(this.channel(roomId), e);
+    return { ok: true, data: { seats: outcome.seats } };
   }
 
   takeSeat(roomId: string, userId: string, pos: number) {
@@ -184,6 +207,33 @@ export class RoomService {
     return { ok: true };
   }
 
+  // F1 (P1): full room info for `GET /rooms/:id`. Read-only; resolves the equipped theme (only when
+  // still enabled — same rule as setTheme's getTheme) so the client can skin without a second call.
+  // No WS event, no mutation. Returns `room_unavailable` when the room doesn't exist.
+  async getRoomInfo(roomId: string): Promise<ServiceResult<{ info: RoomInfoRecord; theme: RoomTheme | null }>> {
+    const info = await this.repo.getRoomInfo(roomId);
+    if (!info) return { ok: false, error: 'room_unavailable' };
+    const theme = info.themeId != null ? await this.repo.getTheme(info.themeId) : null;
+    return { ok: true, data: { info, theme } };
+  }
+
+  // F2 (P1): paginated online members for `GET /rooms/:id/online`. Lists from RoomMember (the source
+  // of truth) and returns `total` from countMembers — Room.onlineCount is only a denormalized cache.
+  // Read-only; no WS event. Profile hydration happens at the route via the injected batch lookup, so
+  // the room module never imports users. Returns `room_unavailable` when the room doesn't exist.
+  async getOnlineMembers(
+    roomId: string,
+    opts: { page: number; pageSize: number },
+  ): Promise<ServiceResult<{ members: MemberRow[]; total: number; page: number; pageSize: number }>> {
+    const room = await this.repo.getRoom(roomId);
+    if (!room) return { ok: false, error: 'room_unavailable' };
+    const [members, total] = await Promise.all([
+      this.repo.listMembers(roomId, { skip: (opts.page - 1) * opts.pageSize, take: opts.pageSize }),
+      this.repo.countMembers(roomId),
+    ]);
+    return { ok: true, data: { members, total, page: opts.page, pageSize: opts.pageSize } };
+  }
+
   async getSeats(roomId: string): Promise<ServiceResult<{ seats: Seat[] }>> {
     const [room, state] = await Promise.all([this.repo.getRoom(roomId), this.repo.getRoomState(roomId)]);
     if (!room || !state) return { ok: false, error: 'room_unavailable' };
@@ -195,6 +245,33 @@ export class RoomService {
   // it); null clears the theme back to the client default. On success the new theme is persisted and
   // broadcast via `room.updated` so every client re-skins, and it is reflected in subsequent room
   // payloads (roomMeta.theme_id). Returns the resolved theme (null when cleared) for the HTTP reply.
+  /// The face ids shipped in the original `assets/roomEmoji/waitio_faceConfig.txt`. A play is
+  /// only broadcast for an id that actually has an animation in the bundle — otherwise a client
+  /// could make every other client try to render an asset that does not exist.
+  private static readonly EMOJI_FACE_IDS: ReadonlySet<number> = new Set([11, 58, 59]);
+
+  /**
+   * Broadcast a room emoji play. Any member may play one; the emoji renders over the sender's seat
+   * if they hold one, and over nothing if they do not, which is the client's decision.
+   *
+   * See the provenance note in room.events.ts — the ANIMATIONS are recovered, the wire is ours.
+   */
+  async playEmoji(roomId: string, actorId: string, faceId: number): Promise<ServiceResult<{ face_id: number }>> {
+    const room = await this.repo.getRoom(roomId);
+    if (!room) return { ok: false, error: 'room_unavailable' };
+    if (!RoomService.EMOJI_FACE_IDS.has(faceId)) return { ok: false, error: 'invalid_emoji' };
+
+    // A banned or absent user must not be able to animate a room they cannot see.
+    const state = await this.repo.getRoomState(roomId);
+    const seat = state?.seats.find((s) => s.userId === actorId);
+
+    await this.emit(
+      this.channel(roomId),
+      roomEmoji({ roomId, userId: actorId, faceId, position: seat?.position ?? null }),
+    );
+    return { ok: true, data: { face_id: faceId } };
+  }
+
   async setTheme(roomId: string, actorId: string, themeId: number | null): Promise<ServiceResult<{ theme_id: number | null; theme: RoomTheme | null }>> {
     const room = await this.repo.getRoom(roomId);
     if (!room) return { ok: false, error: 'room_unavailable' };
@@ -209,5 +286,96 @@ export class RoomService {
     await this.repo.setRoomTheme(roomId, themeId);
     await this.emit(this.channel(roomId), roomUpdated({ room_id: roomId, theme_id: themeId, theme }));
     return { ok: true, data: { theme_id: themeId, theme } };
+  }
+
+  // ---------- F5: apply-to-mic queue ----------
+  // Emit mic.applied carrying the room's current pending count (folds in mic.apply.count).
+  private async emitMicApplied(roomId: string, userId: string, action: MicApplyAction, position: number | null): Promise<number> {
+    const pending = await this.repo.countApplies(roomId, ApplyStatus.Pending);
+    await this.emit(this.channel(roomId), micApplied({ roomId, userId, action, position, pending }));
+    return pending;
+  }
+
+  /** A user requests a mic seat. Must be a member and not already seated. Upserts one pending row. */
+  async applyForMic(roomId: string, userId: string, position: number | null): Promise<ServiceResult<{ pending: number }>> {
+    const room = await this.repo.getRoom(roomId);
+    if (!room || room.status !== 1) return { ok: false, error: 'room_unavailable' };
+    if (!(await this.repo.getMembership(roomId, userId))) return { ok: false, error: 'not_in_room' };
+    const state = await this.repo.getRoomState(roomId);
+    if (state && findUserSeat(state.seats, userId)) return { ok: false, error: 'already_seated' };
+    await this.repo.applyForMic(roomId, userId, position);
+    const pending = await this.emitMicApplied(roomId, userId, 'request', position);
+    return { ok: true, data: { pending } };
+  }
+
+  /** Host views the pending queue (oldest first). Requires MANAGE_ROLES (owner bypasses). */
+  async listApplies(roomId: string, hostId: string): Promise<ServiceResult<{ applies: ApplyRow[]; pending: number }>> {
+    if (!(await this.repo.getRoom(roomId))) return { ok: false, error: 'room_unavailable' };
+    const denied = await this.requirePermission(roomId, hostId, RoomPermission.MANAGE_ROLES);
+    if (denied) return { ok: false, error: denied };
+    const [applies, pending] = await Promise.all([
+      this.repo.listApplies(roomId, ApplyStatus.Pending),
+      this.repo.countApplies(roomId, ApplyStatus.Pending),
+    ]);
+    return { ok: true, data: { applies, pending } };
+  }
+
+  /**
+   * Host approves an application and SEATS the applicant at `position` via the EXISTING invite FSM
+   * (no new seat logic). Exactly-once: the pending→granted status flip selects a single winner; if
+   * the subsequent seating fails (seat taken/locked), the flip is reverted so the request stays
+   * pending for a retry.
+   */
+  async grantApply(roomId: string, hostId: string, applicantId: string, position: number): Promise<ServiceResult<{ seats: Seat[]; pending: number }>> {
+    if (!(await this.repo.getRoom(roomId))) return { ok: false, error: 'room_unavailable' };
+    const denied = await this.requirePermission(roomId, hostId, RoomPermission.MANAGE_ROLES);
+    if (denied) return { ok: false, error: denied };
+    const apply = await this.repo.findApplyByUser(roomId, applicantId);
+    if (!apply || apply.status !== ApplyStatus.Pending) return { ok: false, error: 'apply_not_pending' };
+    const won = await this.repo.resolveApply(apply.id, ApplyStatus.Pending, ApplyStatus.Granted, hostId);
+    if (won.count === 0) return { ok: false, error: 'apply_not_pending' }; // lost the race
+    // Reuse the invite transition (emits seat.update + seat.invited) — the existing seat/mic flow.
+    const res = await this.applySeat(roomId, (s) => inviteToSeat(s, hostId, applicantId, position));
+    if (!res.ok) {
+      await this.repo.resolveApply(apply.id, ApplyStatus.Granted, ApplyStatus.Pending, null); // revert
+      return { ok: false, error: res.error };
+    }
+    const pending = await this.emitMicApplied(roomId, applicantId, 'grant', position);
+    return { ok: true, data: { seats: res.data!.seats, pending } };
+  }
+
+  /** Host rejects a pending application. Requires MANAGE_ROLES (owner bypasses). */
+  async rejectApply(roomId: string, hostId: string, applicantId: string): Promise<ServiceResult<{ pending: number }>> {
+    if (!(await this.repo.getRoom(roomId))) return { ok: false, error: 'room_unavailable' };
+    const denied = await this.requirePermission(roomId, hostId, RoomPermission.MANAGE_ROLES);
+    if (denied) return { ok: false, error: denied };
+    const apply = await this.repo.findApplyByUser(roomId, applicantId);
+    if (!apply || apply.status !== ApplyStatus.Pending) return { ok: false, error: 'apply_not_pending' };
+    const won = await this.repo.resolveApply(apply.id, ApplyStatus.Pending, ApplyStatus.Rejected, hostId);
+    if (won.count === 0) return { ok: false, error: 'apply_not_pending' };
+    const pending = await this.emitMicApplied(roomId, applicantId, 'reject', apply.position);
+    return { ok: true, data: { pending } };
+  }
+
+  /** A user cancels their own pending application. Self-only (no room-admin needed). */
+  async cancelApply(roomId: string, userId: string): Promise<ServiceResult<{ pending: number }>> {
+    const apply = await this.repo.findApplyByUser(roomId, userId);
+    if (!apply || apply.status !== ApplyStatus.Pending) return { ok: false, error: 'apply_not_pending' };
+    const won = await this.repo.resolveApply(apply.id, ApplyStatus.Pending, ApplyStatus.Cancelled, null);
+    if (won.count === 0) return { ok: false, error: 'apply_not_pending' };
+    const pending = await this.emitMicApplied(roomId, userId, 'cancel', apply.position);
+    return { ok: true, data: { pending } };
+  }
+
+  // Set (or clear) the room's cover image (per-room background). Requires EDIT_ROOM (owner
+  // bypasses). Mirrors setTheme: persists Room.coverUrl and broadcasts a room_updated event.
+  async setCover(roomId: string, actorId: string, coverUrl: string | null): Promise<ServiceResult<{ cover_url: string | null }>> {
+    const room = await this.repo.getRoom(roomId);
+    if (!room) return { ok: false, error: 'room_unavailable' };
+    const denied = await this.requirePermission(roomId, actorId, RoomPermission.EDIT_ROOM);
+    if (denied) return { ok: false, error: denied };
+    await this.repo.setRoomCover(roomId, coverUrl);
+    await this.emit(this.channel(roomId), roomUpdated({ room_id: roomId, cover_url: coverUrl }));
+    return { ok: true, data: { cover_url: coverUrl } };
   }
 }

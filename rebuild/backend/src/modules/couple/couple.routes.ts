@@ -12,7 +12,18 @@ export async function coupleRoutes(app: FastifyInstance) {
   app.get('/couple/invites', { preHandler: [app.authenticate] }, async (req) =>
     ok(serialize(await coupleService.listInvites(uid(req)))));
 
-  app.get('/couple/rank', async (req) => {
+  // P3a — public CP badge for any user (⇐ old `couple.cpHouse(to_uid)`). Owned by the couple module
+  // (it owns Couple serialization) though the path is user-namespaced. Auth required. A malformed id
+  // is a bad request; a valid-but-unknown id returns `{ paired: false }` — identical to a real user
+  // with no couple, so the endpoint never reveals whether an account exists.
+  app.get('/users/:id/couple', { preHandler: [app.authenticate] }, async (req, reply) => {
+    try {
+      const { id } = z.object({ id: z.coerce.bigint() }).parse(req.params);
+      return ok(serialize(await coupleService.publicCoupleOf(id)));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.get('/couple/rank', { preHandler: [app.authenticate] }, async (req) => {
     const limit = Number((req.query as any)?.limit) || 50;
     return ok(serialize(await coupleService.rank(limit)));
   });

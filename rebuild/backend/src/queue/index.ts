@@ -39,6 +39,7 @@ export const QUEUE = {
   rooms: 'rooms',
   moderation: 'moderation',
   reconcile: 'reconcile',
+  tasks: 'tasks',
 } as const;
 export type QueueName = (typeof QUEUE)[keyof typeof QUEUE];
 

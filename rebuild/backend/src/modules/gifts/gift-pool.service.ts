@@ -18,6 +18,7 @@
 // exercised directly by tests and driven by the pool-settle worker.
 import { serializableTx } from '../../lib/tx.js';
 import { prisma } from '../../lib/prisma.js';
+import { walletService } from '../wallet/wallet.service.js';
 import { emitRoomEvent, emitToUser } from '../../realtime/gateway.js';
 
 // Ledger reason for a jackpot payout. Local constant (mirrors gift.service.ts's local LEDGER map) so
@@ -82,15 +83,11 @@ export async function settle(poolId: number): Promise<SettleResult> {
     // Credit the winner (coins) + the audit ledger row. A pool with no recorded contributor yet still
     // resets (the amount is retired) but pays nobody — no ledger row is written.
     if (winnerId != null) {
-      const w = await tx.wallet.upsert({ where: { userId: winnerId }, update: {}, create: { userId: winnerId } });
-      const coinsAfter = w.coins + payout;
-      await tx.wallet.update({ where: { userId: winnerId }, data: { coins: coinsAfter, version: { increment: 1 } } });
-      await tx.walletLedger.create({
-        data: {
-          userId: winnerId, currency: CURRENCY_COINS, delta: payout, balanceAfter: coinsAfter,
-          reason: POOL_PAYOUT_REASON, refType: 'gift_pool', refId: BigInt(poolId),
-        },
-      });
+      // Credit the winner through the sole balance mutator (composed in this transaction).
+      await walletService.applyDelta(
+        { userId: winnerId, currency: CURRENCY_COINS, delta: payout, bumpVersion: true, reason: POOL_PAYOUT_REASON, refType: 'gift_pool', refId: BigInt(poolId) },
+        { tx },
+      );
     }
     return { settled: true as const, amount: payout, winnerId };
   });

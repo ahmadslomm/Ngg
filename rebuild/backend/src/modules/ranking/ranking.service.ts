@@ -1,16 +1,23 @@
-// Ranking module — charm / wealthy / room / host boards over day/week/month/total
-// periods. Live scores in Redis sorted sets (O(logN) increments, instant top-N reads);
-// snapshots persisted to the Ranking table for durability/history.
-import { prisma } from '../../lib/prisma.js';
-import { redis } from '../../lib/redis.js';
+// Ranking module — charm / wealthy / room / host / gift boards over day/week/month/total periods.
+//
+// Read path (getBoard) is a snapshot-CACHE read (single Redis GET); on a miss it computes the top-N
+// from the live board once and caches it. Writes (addScore) INVALIDATE the affected cache key, so a
+// read after a score change recomputes. Heavy work — durable aggregation into the Ranking table and
+// proactive snapshot/cache refresh — runs on BACKGROUND WORKERS only (ranking-agg, ranking-snapshot),
+// never in the request path. Persistence is delegated to RankingRepository (no direct Redis/Prisma).
 import { QUEUE, enqueue, jobName } from '../../queue/index.js';
+import { rankingRepo, RANK_CACHE_TTL, type RankEntry, type RoomRankEntry } from './ranking.repo.js';
 
 export enum Board { Charm = 0, Wealthy = 1, Room = 2, Host = 3, Gift = 4 }
 export enum Period { Day = 0, Week = 1, Month = 2, Total = 3 }
+export type { RankEntry, RoomRankEntry } from './ranking.repo.js';
 
 // T2.8 — durable-aggregation job on the `ranking` queue (consumed by workers/jobs/ranking-agg).
 export const RANKING_AGG_ACTION = 'agg';
 export const RANKING_AGG_JOB = jobName(QUEUE.ranking, RANKING_AGG_ACTION); // "ranking:agg"
+
+// The top-N cached per board/period (a getBoard for any limit ≤ this slices the cache).
+export const CACHE_TOP_N = 100;
 
 const TTL: Record<number, number> = {
   [Period.Day]: 3 * 86400,
@@ -20,12 +27,8 @@ const TTL: Record<number, number> = {
 };
 
 // ---------- pure period-key helpers (unit-tested) ----------
-export function dayKey(d: Date): string {
-  return d.toISOString().slice(0, 10); // YYYY-MM-DD (UTC)
-}
-export function monthKey(d: Date): string {
-  return d.toISOString().slice(0, 7); // YYYY-MM
-}
+export function dayKey(d: Date): string { return d.toISOString().slice(0, 10); } // YYYY-MM-DD (UTC)
+export function monthKey(d: Date): string { return d.toISOString().slice(0, 7); } // YYYY-MM
 export function weekKey(d: Date): string {
   const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
   const dayNum = (date.getUTCDay() + 6) % 7; // Mon=0
@@ -42,64 +45,74 @@ export function periodKeyFor(period: Period, at: Date): string {
     case Period.Total: return 'all';
   }
 }
-const ALL_PERIODS = [Period.Day, Period.Week, Period.Month, Period.Total];
-
-export interface RankEntry { rank: number; subject_id: string; score: number }
+// F7: the lower time bound for a period's aggregation window (null = all-time). Aligned with the
+// periodKeyFor buckets: start of UTC day / ISO-week Monday / UTC month; Total = no bound.
+export function periodSince(period: Period, at: Date = new Date()): Date | null {
+  const y = at.getUTCFullYear(), mo = at.getUTCMonth(), d = at.getUTCDate();
+  switch (period) {
+    case Period.Day: return new Date(Date.UTC(y, mo, d));
+    case Period.Week: { const dow = (at.getUTCDay() + 6) % 7; return new Date(Date.UTC(y, mo, d - dow)); }
+    case Period.Month: return new Date(Date.UTC(y, mo, 1));
+    case Period.Total: return null;
+  }
+}
+export const ALL_PERIODS = [Period.Day, Period.Week, Period.Month, Period.Total];
+export const ALL_BOARDS = [Board.Charm, Board.Wealthy, Board.Room, Board.Host, Board.Gift];
 
 export class RankingService {
-  private key(board: Board, period: Period, pk: string) { return `rank:${board}:${period}:${pk}`; }
-
-  // Increment a subject's score across all period buckets.
+  // Increment a subject's live score across all period buckets and INVALIDATE those caches so the
+  // next read recomputes. (Fire-and-forget from producers; cheap Redis ops.)
   async addScore(board: Board, subjectId: bigint | number, delta: number, at: Date = new Date()): Promise<void> {
     if (delta === 0) return;
     for (const period of ALL_PERIODS) {
       const pk = periodKeyFor(period, at);
-      const k = this.key(board, period, pk);
-      await redis.zincrby(k, delta, String(subjectId));
-      if (TTL[period] > 0) await redis.expire(k, TTL[period]);
+      await rankingRepo.incrLive(board, period, pk, String(subjectId), delta, TTL[period]);
+      await rankingRepo.invalidateCache(board, period, pk);
     }
   }
 
+  // Cache-aside board read: serve the cached top-N (single GET); on a miss, compute once + cache.
   async getBoard(board: Board, period: Period, limit = 50, at: Date = new Date()): Promise<RankEntry[]> {
     const pk = periodKeyFor(period, at);
-    const raw = await redis.zrevrange(this.key(board, period, pk), 0, limit - 1, 'WITHSCORES');
-    const out: RankEntry[] = [];
-    for (let i = 0; i < raw.length; i += 2) {
-      out.push({ rank: i / 2 + 1, subject_id: raw[i], score: Number(raw[i + 1]) });
+    let top = await rankingRepo.getCachedTop(board, period, pk);
+    if (!top) {
+      top = await rankingRepo.topLive(board, period, pk, CACHE_TOP_N);
+      await rankingRepo.setCachedTop(board, period, pk, top);
     }
-    return out;
+    return top.slice(0, limit);
+  }
+
+  // F7: room-scoped contributor rank — top spenders in ONE room over a period. Cache-aside (mirrors
+  // getBoard): serve the cached top-N; on a miss aggregate GiftTransaction once + cache. Does NOT
+  // touch Board.Room or any global board — it is a separate, derived read.
+  async roomContribution(roomId: bigint, period: Period, limit = 50, at: Date = new Date()): Promise<RoomRankEntry[]> {
+    const pk = periodKeyFor(period, at);
+    let top = await rankingRepo.getCachedRoomRank(roomId, period, pk);
+    if (!top) {
+      const rows = await rankingRepo.roomContributionTop(roomId, periodSince(period, at), CACHE_TOP_N);
+      top = rows.map((r, i) => ({ subjectId: r.subjectId, contribution: r.contribution, rank: i + 1 }));
+      await rankingRepo.setCachedRoomRank(roomId, period, pk, top);
+    }
+    return top.slice(0, limit);
   }
 
   async myRank(board: Board, period: Period, subjectId: bigint | number, at: Date = new Date()): Promise<{ rank: number | null; score: number }> {
     const pk = periodKeyFor(period, at);
-    const k = this.key(board, period, pk);
     const [rank, score] = await Promise.all([
-      redis.zrevrank(k, String(subjectId)),
-      redis.zscore(k, String(subjectId)),
+      rankingRepo.rankLive(board, period, pk, String(subjectId)),
+      rankingRepo.scoreLive(board, period, pk, String(subjectId)),
     ]);
     return { rank: rank == null ? null : rank + 1, score: score == null ? 0 : Number(score) };
   }
 
-  // ---------- T2.8: durable board-period aggregation (queue-driven) ----------
-  // Increment a subject's DURABLE score in the Ranking table across every period bucket
-  // (day/week/month/total). This is the coin-flow/charm board rows the ranking-agg worker maintains
-  // from gift-send jobs — distinct from addScore() (Redis live board). `rank` is left 0 on create (a
-  // later snapshot/ranking pass computes ranks); we only move `score` here so the counter is durable
-  // and idempotent-per-delta. Upsert on the unique (board, period, periodKey, subjectId) row.
+  // ---------- durable aggregation (queue-driven; worker only) ----------
   async applyScore(board: Board, subjectId: bigint, delta: bigint, at: Date = new Date()): Promise<void> {
     if (delta === 0n) return;
     for (const period of ALL_PERIODS) {
-      const periodKey = periodKeyFor(period, at);
-      await prisma.ranking.upsert({
-        where: { board_period_periodKey_subjectId: { board, period, periodKey, subjectId } },
-        update: { score: { increment: delta } },
-        create: { board, period, periodKey, subjectId, score: delta, rank: 0 },
-      });
+      await rankingRepo.upsertScore(board, period, periodKeyFor(period, at), subjectId, delta);
     }
   }
 
-  // The board contributions of one gift send: the sender's coin-flow (Wealthy + Gift boards) and
-  // each recipient's charm. Applied durably across all periods. Called by the ranking-agg worker.
   async aggregateGiftSend(input: { senderId: bigint; coins: bigint; recipients: Array<{ id: bigint; charm: bigint }>; at?: Date }): Promise<void> {
     const at = input.at ?? new Date();
     await this.applyScore(Board.Wealthy, input.senderId, input.coins, at);
@@ -107,8 +120,6 @@ export class RankingService {
     for (const r of input.recipients) await this.applyScore(Board.Charm, r.id, r.charm, at);
   }
 
-  // Producer: enqueue a gift-send aggregation job onto the `ranking` queue (BigInt→string for JSON).
-  // This is the queue seam a gift-send producer calls; the ranking-agg worker consumes it.
   async enqueueGiftSend(input: { senderId: bigint; coins: bigint; recipients: Array<{ id: bigint; charm: bigint }>; at?: Date }) {
     return enqueue(QUEUE.ranking, RANKING_AGG_ACTION, {
       kind: 'gift-send',
@@ -119,18 +130,23 @@ export class RankingService {
     });
   }
 
-  // Persist current top-N to the Ranking table (durable snapshot / history).
-  async snapshot(board: Board, period: Period, limit = 100, at: Date = new Date()): Promise<number> {
+  // Persist current top-N to the Ranking table (durable snapshot / history) AND warm the cache.
+  async snapshot(board: Board, period: Period, limit = CACHE_TOP_N, at: Date = new Date()): Promise<number> {
     const pk = periodKeyFor(period, at);
-    const entries = await this.getBoard(board, period, limit, at);
+    const entries = await rankingRepo.topLive(board, period, pk, limit);
     for (const e of entries) {
-      await prisma.ranking.upsert({
-        where: { board_period_periodKey_subjectId: { board, period, periodKey: pk, subjectId: BigInt(e.subject_id) } },
-        update: { score: BigInt(Math.round(e.score)), rank: e.rank },
-        create: { board, period, periodKey: pk, subjectId: BigInt(e.subject_id), score: BigInt(Math.round(e.score)), rank: e.rank },
-      });
+      await rankingRepo.upsertSnapshotRow(board, period, pk, BigInt(e.subject_id), BigInt(Math.round(e.score)), e.rank);
     }
+    await rankingRepo.setCachedTop(board, period, pk, entries); // warm cache from the same computation
     return entries.length;
+  }
+
+  // Background refresh (worker only): recompute + cache + persist snapshots for the given boards/
+  // periods. This is the proactive snapshot computation kept OUT of the request path.
+  async refreshBoards(boards: Board[] = ALL_BOARDS, periods: Period[] = ALL_PERIODS, at: Date = new Date()): Promise<number> {
+    let n = 0;
+    for (const board of boards) for (const period of periods) n += await this.snapshot(board, period, CACHE_TOP_N, at);
+    return n;
   }
 }
 

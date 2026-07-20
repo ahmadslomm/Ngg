@@ -4,11 +4,25 @@ import { adminService } from './admin.service.js';
 import { catalogAdminService } from './catalog-admin.service.js';
 import { Board, Period } from '../ranking/ranking.service.js';
 import { ok, replyError, serialize, pageArgs } from '../../lib/errors.js';
+import { emitRoomEvent } from '../../realtime/gateway.js';
+import { systemMessage } from '../rooms/room.events.js';
 
 // All routes require admin auth (app.authenticateAdmin sets req.admin).
 export async function adminRoutes(app: FastifyInstance) {
   const aid = (req: any) => req.admin.id as bigint;
-  const guard = { preHandler: [app.authenticateAdmin] };
+  /**
+   * The default admin guard.
+   *
+   * A rate limit is part of it, not an afterthought per route. 32 admin WRITE routes had none —
+   * including `POST /admin/orders/:id/refund`, which claws back coins, and the catalogue DELETEs.
+   * Admin auth is the control; the limit bounds the blast radius of a stolen admin token and of a
+   * script looping over a destructive endpoint. Individual routes may still tighten it (the
+   * withdrawal review and coin adjustment do), because a route-level `config` overrides this.
+   */
+  const guard = {
+    preHandler: [app.authenticateAdmin],
+    config: { rateLimit: { max: 120, timeWindow: '1 minute' } },
+  };
 
   // users
   app.get('/admin/users', guard, async (req) => {
@@ -22,17 +36,158 @@ export async function adminRoutes(app: FastifyInstance) {
   app.post('/admin/users/:id/unsuspend', guard, async (req) => ok(await adminService.unsuspendUser(aid(req), BigInt((req.params as any).id))));
 
   // wallet
-  app.post('/admin/coins/adjust', guard, async (req, reply) => {
+  // Coin adjustment MINTS currency from nothing — the highest-impact route in the system. Admin auth
+  // is the control; the rate limit bounds the blast radius of a stolen admin token.
+  app.post('/admin/coins/adjust', { preHandler: [app.authenticateAdmin], config: { rateLimit: { max: 20, timeWindow: '1 minute' } } }, async (req, reply) => {
     try {
       const b = z.object({ user_id: z.coerce.bigint(), delta: z.coerce.bigint(), reason: z.string().min(1).max(255) }).parse(req.body);
       return ok(serialize(await adminService.adjustCoins(aid(req), b.user_id, b.delta, b.reason)));
     } catch (e) { return replyError(reply, e); }
   });
+  // ---- economy: revenue split + financial reports ----
+  // The split lives in the database so an operator can change it WITHOUT a code deploy. Publishing
+  // appends a new row; the old one is never edited, because a refund must reverse at the rate that
+  // applied when the gift was sent.
+  app.get('/admin/economy/revenue-config', guard, async (req, reply) => {
+    try {
+      const { revenueService } = await import('../economy/revenue.service.js');
+      return ok(serialize(await revenueService.activeConfig()));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.post('/admin/economy/revenue-config', {
+    preHandler: [app.authenticateAdmin],
+    config: { rateLimit: { max: 10, timeWindow: '1 minute' } },
+  }, async (req, reply) => {
+    try {
+      const b = z.object({
+        host_bps: z.coerce.number().int().min(0).max(10000),
+        agency_bps: z.coerce.number().int().min(0).max(10000),
+        platform_bps: z.coerce.number().int().min(0).max(10000),
+        effective_from: z.coerce.date().optional(),
+        note: z.string().max(255).optional(),
+      }).parse(req.body);
+      const { revenueService } = await import('../economy/revenue.service.js');
+      const row = await revenueService.setConfig({
+        hostBps: b.host_bps, agencyBps: b.agency_bps, platformBps: b.platform_bps,
+        effectiveFrom: b.effective_from, createdBy: `admin:${aid(req)}`, note: b.note,
+      });
+      return ok(serialize(row));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.get('/admin/economy/reports/daily', guard, async (req, reply) => {
+    try {
+      const q = z.object({
+        from: z.coerce.date().optional(), to: z.coerce.date().optional(),
+        agency_id: z.coerce.bigint().optional(), limit: z.coerce.number().int().min(1).max(366).optional(),
+      }).parse(req.query ?? {});
+      const { reportsService } = await import('../economy/reports.service.js');
+      return ok(serialize(await reportsService.daily({ from: q.from, to: q.to, agencyId: q.agency_id, limit: q.limit })));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.get('/admin/economy/reports/monthly', guard, async (req, reply) => {
+    try {
+      const q = z.object({
+        from: z.coerce.date().optional(), to: z.coerce.date().optional(),
+        agency_id: z.coerce.bigint().optional(), limit: z.coerce.number().int().min(1).max(366).optional(),
+      }).parse(req.query ?? {});
+      const { reportsService } = await import('../economy/reports.service.js');
+      return ok(serialize(await reportsService.monthly({ from: q.from, to: q.to, agencyId: q.agency_id, limit: q.limit })));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.get('/admin/economy/reports/platform-ledger', guard, async (req, reply) => {
+    try {
+      const q = z.object({
+        granularity: z.enum(['day', 'month']).default('day'),
+        from: z.coerce.date().optional(), to: z.coerce.date().optional(),
+      }).parse(req.query ?? {});
+      const { reportsService } = await import('../economy/reports.service.js');
+      return ok(serialize(await reportsService.platformLedger(q.granularity, { from: q.from, to: q.to })));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.get('/admin/economy/reports/top-hosts', guard, async (req, reply) => {
+    try {
+      const q = z.object({
+        from: z.coerce.date().optional(), to: z.coerce.date().optional(),
+        limit: z.coerce.number().int().min(1).max(200).optional(),
+      }).parse(req.query ?? {});
+      const { reportsService } = await import('../economy/reports.service.js');
+      return ok(serialize(await reportsService.topHosts({ from: q.from, to: q.to, limit: q.limit })));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  // withdrawals — cash-out review queue
+  app.get('/admin/withdrawals', guard, async (req, reply) => {
+    try {
+      const q = z.object({ status: z.coerce.number().int().min(0).max(6).default(0), take: z.coerce.number().int().min(1).max(200).default(100) }).parse(req.query);
+      return ok(serialize(await adminService.listWithdrawals(aid(req), q.status, q.take)));
+    } catch (e) { return replyError(reply, e); }
+  });
+  app.get('/admin/withdrawals/:id/history', guard, async (req, reply) => {
+    try { return ok(serialize(await adminService.withdrawalHistory(aid(req), BigInt((req.params as any).id)))); }
+    catch (e) { return replyError(reply, e); }
+  });
+  // Written out one by one, NOT registered from a loop. A templated path is invisible to the route
+  // auditor, and cash-out approval is the last place to hide routes from the tool that checks their
+  // guards. The rate limit is deliberately low: these move real money and are human-driven.
+  // preHandler written out rather than spread from `guard`: the route auditor resolves a hoisted
+  // alias but not a spread of one, and these showed as UNGUARDED while actually being guarded —
+  // a false negative on a money route is worse than the repetition.
+  const wdGuard = {
+    preHandler: [app.authenticateAdmin],
+    config: { rateLimit: { max: 30, timeWindow: '1 minute' } },
+  };
+  const wdBody = (body: unknown) => z.object({ reason: z.string().max(255).optional() }).parse(body ?? {});
+
+  app.post('/admin/withdrawals/:id/approve', wdGuard, async (req, reply) => {
+    try {
+      const b = wdBody(req.body);
+      return ok(serialize(await adminService.approveWithdrawal(aid(req), BigInt((req.params as any).id), b.reason)));
+    } catch (e) { return replyError(reply, e); }
+  });
+  app.post('/admin/withdrawals/:id/reject', wdGuard, async (req, reply) => {
+    try {
+      const b = wdBody(req.body);
+      return ok(serialize(await adminService.rejectWithdrawal(aid(req), BigInt((req.params as any).id), b.reason)));
+    } catch (e) { return replyError(reply, e); }
+  });
+  app.post('/admin/withdrawals/:id/pay', wdGuard, async (req, reply) => {
+    try {
+      const b = wdBody(req.body);
+      return ok(serialize(await adminService.markWithdrawalPaid(aid(req), BigInt((req.params as any).id), b.reason)));
+    } catch (e) { return replyError(reply, e); }
+  });
+  app.post('/admin/withdrawals/:id/fail', wdGuard, async (req, reply) => {
+    try {
+      const b = wdBody(req.body);
+      return ok(serialize(await adminService.markWithdrawalFailed(aid(req), BigInt((req.params as any).id), b.reason)));
+    } catch (e) { return replyError(reply, e); }
+  });
+
   app.get('/admin/orders', guard, async (req) => ok(serialize(await adminService.listOrders(pageArgs(req.query)))));
 
   // rooms
   app.get('/admin/rooms', guard, async (req) => ok(serialize(await adminService.listRooms(pageArgs(req.query)))));
   app.post('/admin/rooms/:id/close', guard, async (req) => ok(await adminService.closeRoom(aid(req), BigInt((req.params as any).id))));
+
+  // F8 (P1): broadcast a room-scoped system notice (⇐ old onSystemMsg). Platform-admin gated in the
+  // service; transient (audited, never stored as a message). Emitted only after the service returns.
+  app.post('/admin/rooms/:id/system-message', guard, async (req, reply) => {
+    try {
+      const b = z.object({
+        text: z.string().min(1).max(500),
+        kind: z.enum(['notice', 'warning', 'announcement']).optional().default('notice'),
+      }).parse(req.body);
+      const roomId = BigInt((req.params as any).id);
+      const payload = await adminService.sendRoomSystemMessage(aid(req), roomId, b.text, b.kind);
+      emitRoomEvent(`room:${roomId}`, systemMessage(payload));
+      return ok(payload);
+    } catch (e) { return replyError(reply, e); }
+  });
 
   // gifts
   app.get('/admin/gifts', guard, async () => ok(serialize(await adminService.listGifts())));
@@ -42,14 +197,42 @@ export async function adminRoutes(app: FastifyInstance) {
       return ok(serialize(await adminService.createGift(aid(req), { name: b.name, category: b.category, priceCoins: b.price_coins, iconUrl: b.icon_url, animUrl: b.anim_url, sort: b.sort })));
     } catch (e) { return replyError(reply, e); }
   });
+  // P2a: art fields are now updatable (icon/anim/combo/preview/banner) — previously only
+  // enabled/price/sort, so an existing gift could never be given art through the API. `null`
+  // explicitly clears a slot; omitted fields are left untouched.
   app.patch('/admin/gifts/:id', guard, async (req, reply) => {
     try {
-      const b = z.object({ enabled: z.boolean().optional(), price_coins: z.number().int().optional(), sort: z.number().int().optional() }).parse(req.body);
+      const url = z.string().max(512).nullable().optional();
+      const b = z.object({
+        enabled: z.boolean().optional(), price_coins: z.number().int().optional(), sort: z.number().int().optional(),
+        icon_url: url, anim_url: url, combo_url: url, preview_url: url, banner_url: url,
+      }).parse(req.body);
       const patch: any = {};
       if (b.enabled != null) patch.enabled = b.enabled;
       if (b.price_coins != null) patch.priceCoins = b.price_coins;
       if (b.sort != null) patch.sort = b.sort;
+      if (b.icon_url !== undefined) patch.iconUrl = b.icon_url;
+      if (b.anim_url !== undefined) patch.animUrl = b.anim_url;
+      if (b.combo_url !== undefined) patch.comboUrl = b.combo_url;
+      if (b.preview_url !== undefined) patch.previewUrl = b.preview_url;
+      if (b.banner_url !== undefined) patch.bannerUrl = b.banner_url;
       return ok(serialize(await adminService.updateGift(aid(req), BigInt((req.params as any).id), patch)));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  // P2a: presign a CATALOG art upload (platform-admin only, gated in the service). The admin PUTs
+  // the bytes to R2, then writes the returned public_url into a catalog row via the editors above.
+  app.post('/admin/uploads/presign', guard, async (req, reply) => {
+    try {
+      const b = z.object({
+        asset_type: z.string().min(1).max(32),
+        content_type: z.string().min(1).max(128),
+      }).parse(req.body);
+      const r = await adminService.presignCatalogAsset(aid(req), b.asset_type, b.content_type);
+      return ok(serialize({
+        key: r.key, upload_url: r.uploadUrl, public_url: r.publicUrl,
+        method: r.method, headers: r.headers, expires_at: r.expiresAt, max_bytes: r.maxBytes,
+      }));
     } catch (e) { return replyError(reply, e); }
   });
 

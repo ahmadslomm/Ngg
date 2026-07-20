@@ -25,6 +25,10 @@ dependencies:
   svgaplayer_flutter: ^2.2.0    # renders the restored original .svga gift/room/effect assets (owned)
   pag:                          # Tencent libpag (com.tencent.tav:libpag) — the engine the ORIGINAL app
     path: third_party/pag       # used for .pag effects (org.libpag in the decompiled APK). VENDORED &
+  firebase_core: ^4.11.0
+  firebase_messaging: ^16.4.1
+  image_picker: ^1.2.1
+  google_sign_in: ^6.2.2        # Google Sign-In — native account chooser → ID token → /v1/auth/google
                                 # patched: upstream 1.0.7 references Flutter's removed v1 embedding and
                                 # pre-AGP-8 build config. See third_party/pag + PAG_RUNTIME_RECOVERY_REPORT.md
 
@@ -43,7 +47,12 @@ flutter:
     - assets/images/nav/
     - assets/images/room/seats/
     - assets/room/
+    # Flutter's directory declaration is NOT recursive, so each emoji folder needs its own line —
+    # without these six files were bundled-but-unreachable at runtime.
     - assets/roomEmoji/
+    - assets/roomEmoji/face_11/
+    - assets/roomEmoji/face_58/
+    - assets/roomEmoji/face_59/
     # Recovered original H5 room-ecosystem assets (owned) — see ROOM_ASSET_MAPPING.md
     - assets/room_ext/pk/
     - assets/room_ext/party/
@@ -69,6 +78,22 @@ flutter:
     - assets/anim/svga/yinbo/
     # Salvaged from the original app's on-device cache (owned) — see assets/anim/salvaged/README.md
     - assets/anim/salvaged/
+    # R2.2 — recovered H5 corpus from act.zaffalive.com (owned). Content-hash named in the
+    # original, so these are classified by DOMAIN via the page that loaded them; see
+    # lib/core/assets/asset_registry_h5.g.dart.
+    - assets/h5/anchor/
+    - assets/h5/coinsMerchant/
+    - assets/h5/cpReward/
+    - assets/h5/friendCenter/
+    - assets/h5/luckyBox/
+    - assets/h5/magicBox/
+    - assets/h5/medalRank/
+    - assets/h5/pkReward/
+    - assets/h5/pkRule/
+    - assets/h5/roomParty/
+    - assets/h5/roomScoreRank/
+    - assets/h5/vipScoreRank/
+    - assets/h5/wealth_grade/
     # Restored original PAG assets (owned), by feature
     - assets/anim/pag/bomb/
     - assets/anim/pag/cp/

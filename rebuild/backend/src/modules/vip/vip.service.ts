@@ -141,16 +141,13 @@ export class VipService {
     };
   }
 
-  // Maintenance: reset denormalized vipLevel for users whose VIP has lapsed.
-  async expireSweep(): Promise<number> {
-    const stale = await prisma.profile.findMany({ where: { vipLevel: { gt: 0 } }, select: { userId: true } });
-    let reset = 0;
-    for (const p of stale) {
-      const active = await prisma.vipHistory.findFirst({ where: { userId: p.userId, expiresAt: { gt: new Date() } } });
-      if (!active) { await prisma.profile.update({ where: { userId: p.userId }, data: { vipLevel: 0 } }); reset++; }
-    }
-    return reset;
-  }
+  // NOTE: the VIP expiry sweep lives in `workers/jobs/vip-expire.ts`, not here.
+  //
+  // This module used to carry its own `expireSweep()`. It was a strictly WORSE duplicate — it reset
+  // `vipLevel` but never revoked the decorations an expired tier granted and never repaired
+  // `vipExpireAt`, and it carried the same O(all members) scan that made the worker version slow.
+  // Nothing called it but a test. Two sweeps for one job means one of them silently rots, so it was
+  // deleted rather than fixed twice.
 }
 
 export const vipService = new VipService();

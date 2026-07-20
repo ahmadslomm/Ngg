@@ -17,7 +17,8 @@ afterAll(async () => { await app.close(); await prisma.$disconnect(); });
 
 describe('Medals & badges', () => {
   it('catalogue lists the seeded enabled medals', async () => {
-    const cat = await inject(app, null, 'GET', '/medals');
+    const u = await makeUser({});
+    const cat = await inject(app, u, 'GET', '/medals');
     expect(cat.status).toBe(200);
     expect(cat.body.data.some((m: any) => m.code === 'first_gift')).toBe(true);
   });

@@ -10,6 +10,10 @@ const schema = z.object({
   PORT: z.coerce.number().default(8080),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
   DATABASE_URL: z.string(),
+  // Optional read-replica DSN. When set, repositories route heavy/read-only queries here via
+  // `db.read`; writes always go to the primary (`DATABASE_URL`). Unset ⇒ the primary serves reads
+  // too (single-node dev/test). Enables horizontal read scaling without code changes.
+  DATABASE_READ_URL: z.string().optional(),
   REDIS_URL: z.string().default('redis://localhost:6379'),
   JWT_ACCESS_SECRET: z.string().min(8),
   JWT_REFRESH_SECRET: z.string().min(8),
@@ -25,6 +29,9 @@ const schema = z.object({
   AGORA_APP_ID: z.string().default(''),
   AGORA_APP_CERTIFICATE: z.string().default(''),
   AGORA_TOKEN_TTL: z.coerce.number().default(3600),
+  // Google Sign-In: the OAuth Web client id (client_type 3 in google-services.json). Verified as
+  // the expected `aud` of the app's Google ID token. Empty ⇒ /auth/google fails closed with 503.
+  GOOGLE_CLIENT_ID: z.string().default(''),
   // Cloudflare R2 (S3-compatible) object storage for user uploads (avatars, moment images,
   // voice clips). All optional: if unset, the presign endpoint fails closed with 503 and the
   // app falls back to its placeholder uploader. Endpoint is derived from the account id unless
@@ -73,7 +80,32 @@ export function productionConfigErrors(e: typeof env): string[] {
   for (const [name, val] of secrets) {
     if (val.length < 32) problems.push(`${name} must be ≥32 chars in production`);
     if (KNOWN_PLACEHOLDERS.has(val)) problems.push(`${name} is a known placeholder`);
+    // Length alone passes 'aaaa…'. A secret with almost no distinct characters is padding, not
+    // entropy, and reads as configured to every other check.
+    if (val.length >= 32 && new Set(val).size < 8) {
+      problems.push(`${name} has too little variety to be a real secret`);
+    }
   }
+
+  // Credentials whose absence currently fails at REQUEST time, not at boot. A deploy that is
+  // missing them looks healthy — the health check passes, the process stays up — and then every
+  // voice join or every asset upload fails in production. Fail at boot instead.
+  if (!e.AGORA_APP_ID) problems.push('AGORA_APP_ID must be set (voice would fail at join time)');
+  if (!e.AGORA_APP_CERTIFICATE) {
+    problems.push('AGORA_APP_CERTIFICATE must be set (voice would fail at join time)');
+  } else if (!/^[0-9a-fA-F]{32}$/.test(e.AGORA_APP_CERTIFICATE)) {
+    // agora.ts already refuses to mint from a placeholder; catching it at boot turns a per-request
+    // 500 into a deploy that never starts.
+    problems.push('AGORA_APP_CERTIFICATE is not a 32-char hex certificate');
+  }
+  for (const [name, val] of [
+    ['R2_ACCESS_KEY_ID', e.R2_ACCESS_KEY_ID],
+    ['R2_SECRET_ACCESS_KEY', e.R2_SECRET_ACCESS_KEY],
+    ['R2_BUCKET', e.R2_BUCKET],
+  ] as Array<[string, string]>) {
+    if (!val) problems.push(`${name} must be set (uploads would fail at request time)`);
+  }
+
   return problems;
 }
 

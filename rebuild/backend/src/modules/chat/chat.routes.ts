@@ -1,34 +1,26 @@
+// Chat controller — HTTP only. Validates input, calls the service, and performs the realtime
+// broadcast (the ONE place Socket.io is touched; the service stays socket-free). No business logic.
 import type { FastifyInstance } from 'fastify';
-import { z } from 'zod';
-import { ok, replyError, pageArgs, AppError } from '../../lib/errors.js';
+import { ok, replyError } from '../../lib/errors.js';
 import { emitRoomEvent } from '../../realtime/gateway.js';
-import { moderationService } from '../moderation/moderation.service.js';
 import { chatService } from './chat.service.js';
+import { chatBroadcast } from './chat.dto.js';
+import { sendChatSchema, historyQuerySchema } from './chat.schema.js';
 
 const uid = (req: any) => req.user.id as bigint;
-// Length is enforced in the service (clean 400 via AppError); zod only guarantees a string.
-const sendSchema = z.object({ text: z.string() });
 
 export async function chatRoutes(app: FastifyInstance) {
-  // Send a public room message. Persisted (authoritative), then broadcast on the owned
-  // gateway as `chat.message` (same path as gift.received). Flood protection: a tighter
-  // per-route limit via the existing @fastify/rate-limit plugin (rebuild [DEFAULT];
-  // the original's exact policy is UNKNOWN — Tencent IM internal).
+  // Send a public room message. Persisted (authoritative) by the service, then broadcast on the
+  // owned gateway as `chat.message`. Flood protection: tighter per-route rate limit.
   app.post(
     '/rooms/:id/chat',
-    {
-      preHandler: [app.authenticate],
-      config: { rateLimit: { max: 20, timeWindow: '10 seconds' } },
-    },
+    { preHandler: [app.authenticate], config: { rateLimit: { max: 20, timeWindow: '10 seconds' } } },
     async (req, reply) => {
       try {
         const roomId = BigInt((req.params as any).id);
-        const { text } = sendSchema.parse(req.body);
+        const { text } = sendChatSchema.parse(req.body);
         const msg = await chatService.send(uid(req), roomId, text);
-        await emitRoomEvent(`room:${msg.room_id}`, {
-          ev: 'chat.message',
-          data: { id: msg.id, roomId: msg.room_id, senderId: msg.sender_id, text: msg.text },
-        });
+        await emitRoomEvent(`room:${msg.room_id}`, chatBroadcast(msg));
         return ok(msg);
       } catch (e) {
         return replyError(reply, e);
@@ -36,16 +28,13 @@ export async function chatRoutes(app: FastifyInstance) {
     },
   );
 
-  // Newest-first history; `before` (message id) pages older messages for scroll-up.
-  // Authorization (H2): a room-banned user cannot read history either — mirrors the send gate.
+  // Newest-first history; `before` (message id) pages older messages. The room-ban gate is enforced
+  // in the service.
   app.get('/rooms/:id/chat', { preHandler: [app.authenticate] }, async (req, reply) => {
     try {
       const roomId = BigInt((req.params as any).id);
-      if (await moderationService.isRoomBanned(uid(req), roomId)) throw new AppError('room_banned', 403);
-      const q = req.query as any;
-      const { pageSize } = pageArgs(q); // reuse the shared page-size clamp as the limit
-      const before = q.before ? BigInt(q.before) : undefined;
-      const items = await chatService.history(roomId, { limit: pageSize, before });
+      const q = historyQuerySchema.parse(req.query);
+      const items = await chatService.history(uid(req), roomId, { limit: q.page_size ?? 20, before: q.before });
       return ok({ items });
     } catch (e) {
       return replyError(reply, e);

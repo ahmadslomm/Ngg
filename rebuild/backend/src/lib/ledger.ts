@@ -17,4 +17,6 @@ export enum LedgerReason {
   Commission = 7,
   LuckyWin = 8, // coins returned by a lucky gift's random payout
   DecorationBuy = 9, // coins debited to purchase a cosmetic decoration (T1.13)
+  TaskReward = 10, // reward credited for completing a task (P3 Tasks; currency per TaskConfig)
+  Refund = 11, // coins clawed back when a fulfilled order is refunded (P3 Payments)
 }

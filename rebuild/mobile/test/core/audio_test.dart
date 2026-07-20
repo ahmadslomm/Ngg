@@ -10,7 +10,8 @@ class FailingUploader implements MediaUploader {
       throw const MediaUploadException('bucket unreachable');
 
   @override
-  Future<String> uploadImage(LocalFile file) async => throw const MediaUploadException('nope');
+  Future<String> uploadImage(LocalFile file, {String kind = 'moment'}) async =>
+      throw const MediaUploadException('nope');
 }
 
 void main() {

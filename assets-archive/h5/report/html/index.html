@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="format-detection" content="telephone=no">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./css/base.css">
+		<link rel="stylesheet" type="text/css" href="./css/index.css?v=1.3">
+		<script type="text/javascript" src="./js/font.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div id="main">
+				<div class="container">
+					<p class="con_title"></p>
+					<ul class="ulList">
+						<!-- <li type="1"><i></i><span>暴力，色情</span></li>
+						<li type="2"><i></i><span>欺騙，廣告</span></li>
+						<li type="3"><i></i><span>語言攻擊</span></li>
+						<li type="4"><i></i><span>聲音瓶沒有聲音，質量差</span></li>
+						<li type="5"><i></i><span>其他</span></li> -->
+					</ul>
+					<div class="submit"></div>
+				</div>
+			</div>
+			<div class="promptBox">
+				<p></p>
+				<div class="ok">
+					<a href="javascript:;" class="okTxt"></a>
+				</div>
+			</div>
+			<div class="mask" style="display: none"></div>
+			<div class="loading">
+				<img src="./img/loading.gif" alt="">
+			</div>
+		</div>
+		<script type="text/javascript" src="./js/jquery-2.1.3.min.js"></script>
+		<!-- <script type="text/javascript" src="./js/template-web.js"></script> -->
+		<script>
+			function GetQueryString(name) {
+				var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null) {
+					return decodeURIComponent(r[2]);
+				} else {
+					return null;
+				}
+			}
+
+			var langTemp = GetQueryString('lang');
+			var langss = '';
+			if(langTemp){
+				langss = langTemp.slice(0,2).replace('id','in');
+			}
+			var title_type = '';
+			var successTxt = '';
+			var errorTxt = '';
+			var reasonTxt = '';
+			if(langss=='zh'){
+				title_type = '舉報';
+				$('.con_title').html('選擇舉報原因');
+				$('.submit').html('提交');
+				$('.okTxt').html('確定');
+				successTxt='舉報已收到，謝謝你，讓我們變的更好(*^▽^*)';
+				errorTxt='系統繁忙，請稍後再試';
+				reasonTxt='請先選擇舉報內容！';
+			}else if(langss=='vi'){
+				title_type='Tố cáo';
+				$('.con_title').html('Chọn lí do');
+				$('.submit').html('Gửi');
+				$('.okTxt').html('Xác nhận');
+				successTxt='Đã nhận tố cáo, cảm ơn bạn đã giúp chúng tôi hoàn thiện(*^▽^*)';
+				errorTxt='Hệ thống bận, mời thử lại sau~';
+				reasonTxt='Mời chọn lý do tố cáo！';
+			}else if(langss=='in'){
+				title_type = 'Melaporkan';
+				$('.con_title').html('Pilih alasan pelaporan');
+				$('.submit').html('Kirim');
+				$('.okTxt').html('Konfirmasi');
+				successTxt='Laporan telah diterima, terima kasih atas membuat kami lebih baik(*^▽^*)';
+				errorTxt='Sistem sedang sibuk, silakan coba lagi nanti';
+				reasonTxt='Silakan pilih konten laporan dulu!';
+			}else if(langss=='ar'){
+				title_type = 'تقرير';
+				$('.con_title').html('حدد سبب التقرير');
+				$('.submit').html('يُقدِّم');
+				$('.okTxt').html('بالتأكيد');
+				successTxt='تم استلام التقرير ، شكرًا لكم ، فلنصبح أفضل!';
+				errorTxt='النظام مشغول ، يرجى المحاولة مرة أخرى لاحقًا';
+				reasonTxt='الرجاء تحديد محتوى التقرير أولا!';
+			}else if(langss=='tr'){
+				title_type = 'Rapor';
+				$('.con_title').html('Rapor nedenini seçin');
+				$('.submit').html('Gönder');
+				$('.okTxt').html('Gönder');
+				successTxt='Rapor alındı, teşekkürler, daha iyi olalım!';
+				errorTxt='Sistem meşgul, lütfen daha sonra tekrar deneyiniz.';
+				reasonTxt='Lütfen önce rapor içeriğini seçin!';
+			}else{ //默认英文
+                title_type = 'report';
+				$('.con_title').html('Select reason for report');
+				$('.submit').html('submit');
+				$('.okTxt').html('Sure');
+				successTxt='The report has been received, thank you, let us become better (*^▽^*)';
+				errorTxt='The system is busy, please try again later';
+				reasonTxt='Please select the report content first!';
+            }
+
+			document.title=title_type;
+
+
+			var host;
+			var token = GetQueryString('token');
+			var uid = GetQueryString('uid');
+			var touid = GetQueryString('touid');
+			var source = GetQueryString('source')?GetQueryString('source'):'';//source=1,usid漂流瓶,source=2个人页
+			var usid = GetQueryString('usid')?GetQueryString('usid'):'';
+			var ios = navigator.userAgent.match(/iPhone|iPod|ios|iPad/i);
+			var appData;
+			var successFlag=false;
+			var reason= '';
+			var appRes;
+			if(ios){
+				function finishSign(res) {
+					appRes = res;
+					if(JSON.parse(appRes).callbackId=='render'){
+						// alert(JSON.parse(appRes).data.sign);
+						// alert(JSON.parse(appRes).data.timestamp);
+						var xmlhttp = new XMLHttpRequest();
+						xmlhttp.open("GET", "/index.php?lang=" + langTemp + "&uid=" + uid + "&token=" + token +
+							"&action=report.getReportReason", true);
+						xmlhttp.setRequestHeader("sign", JSON.parse(appRes).data.sign);
+						xmlhttp.setRequestHeader("timestamp", JSON.parse(appRes).data.timestamp);
+						xmlhttp.send(null);
+						// readyState == 4 为请求完成，status == 200为请求成功返回的状态
+						xmlhttp.onreadystatechange = function() {
+							if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+								var res = JSON.parse(xmlhttp.responseText);
+								var reportHmtl = '';
+								$.each(res.response_data, function(index) {
+									// reportHmtl += '<li reason="' + (index) + '">' + res.response_data[index] + '<i></i></li>'
+									reportHmtl += '<li reason="' + (index) + '"><i></i><span>' + res.response_data[index] + '</span></li>'
+								});
+								$('.ulList').html(reportHmtl);
+							}
+						}
+					}
+					if(JSON.parse(appRes).callbackId=='reportUser'){
+						var xmlhttp = new XMLHttpRequest();
+						if(source==1){
+							xmlhttp.open("GET", "/index.php?lang=" + langTemp + "&reason="+ reason+"&touid="+touid+"&uid=" + uid + "&token=" + token +"&action=report.reportUser"+"&source="+source+"&usid="+usid,true);
+						}else if(source==2){
+						xmlhttp.open("GET", "/index.php?reason="+ reason+"&touid="+touid+"&uid=" + uid + "&token=" + token +"&action=report.reportUser"+"&source="+source,true);
+						}else{
+							xmlhttp.open("GET", "/index.php?reason="+ reason+"&touid="+touid+"&uid=" + uid + "&token=" + token +"&action=report.reportUser",true);
+						}
+						// xmlhttp.open("GET", "/index.php?reason="+ reason+"&touid="+touid+"&uid=" + uid + "&token=" + token +"&action=report.reportUser",true);
+						xmlhttp.setRequestHeader("sign", JSON.parse(appRes).data.sign);
+						xmlhttp.setRequestHeader("timestamp", JSON.parse(appRes).data.timestamp);
+						xmlhttp.send(null);
+						// readyState == 4 为请求完成，status == 200为请求成功返回的状态
+						xmlhttp.onreadystatechange = function() {
+							if(xmlhttp.readyState == 4){
+								if(xmlhttp.status >=200 && xmlhttp.status < 300 ||xmlhttp.status ==304){
+									var res = JSON.parse(xmlhttp.responseText);
+									$('.loading').hide();
+									successFlag=true;
+
+									dataerror(successTxt);
+								}
+								else {
+									$('.loading').hide();
+									dataerror(errorTxt);
+								}
+							}
+// 							if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+// 								var res = JSON.parse(xmlhttp.responseText);
+// 								$('.loading').hide();
+// 								successFlag=true;
+// 								dataerror("舉報已收到，謝謝你，讓我們變的更好(*^▽^*)");
+// 							}
+						}
+					}
+				}
+			}
+			var fdata = {
+				'callbackId': 'render',
+				'data': {
+						'uid': uid,
+						'token': token,
+						'action':'report.getReportReason',
+						'lang':langTemp,
+				}
+			}
+			var reportUserData = {
+				'callbackId': 'reportUser',
+				'data': {
+						'uid': uid,
+						'token': token,
+						'reason': reason,
+						'touid': touid,
+						'action':'report.reportUser',
+						'lang':langTemp,
+				}
+			}
+			//appData = JSON.parse('{"uid":"' + uid + '","token":"' + token + '","action":"report.getReportReason"}');
+			function onClientReady(){
+				var appRes = getSign(JSON.stringify(fdata));
+			}
+			if(ios){
+				//var appRes = getSign(JSON.stringify(fdata));
+			}else{
+				// var appRes = window.JSInterface.getSign(JSON.stringify(fdata));
+				var appRes = window.JSInterface.parseData(`{"method":'getSign',"data":${JSON.stringify(fdata)}}`);;
+				//alert(appRes);
+				//appRes='{"sign":"eb39d8f455a8446a4ed82c603c3dde88","timestamp":1564057263545,"callbackId":"render"}'
+				getDate(appRes);
+			}
+			//var appRes=JSON.parse(appResString);
+			//var appRes={'sign':'234','timestamp':'11434334'};
+			function getDate(appRes) {
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.open("GET", "/index.php?lang=" + langTemp + "&uid=" + uid + "&token=" + token +
+					"&action=report.getReportReason", true);
+				xmlhttp.setRequestHeader("sign", JSON.parse(appRes).sign);
+				xmlhttp.setRequestHeader("timestamp", JSON.parse(appRes).timestamp);
+				xmlhttp.send(null);
+				// readyState == 4 为请求完成，status == 200为请求成功返回的状态
+				xmlhttp.onreadystatechange = function() {
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						var res = JSON.parse(xmlhttp.responseText);
+						var reportHmtl = '';
+						$.each(res.response_data, function(index) {
+							// reportHmtl += '<li reason="' + (index) + '">' + res.response_data[index] + '<i></i></li>'
+							reportHmtl += '<li reason="' + (index) + '"><i></i><span>' + res.response_data[index] + '</span></li>'
+						});
+						$('.ulList').html(reportHmtl);
+					}
+				}
+			}
+
+			$('.ulList').on('click', 'li', function() {
+					$('i').removeClass('i_act');
+					$(this).find('i').addClass('i_act');
+					$('span').removeClass('span_act');
+					$(this).find('span').addClass('span_act');
+					reason = $(this).attr('reason');
+					if(ios){
+						reportUserOptionClick();
+					}else{
+						// window.JSInterface.reportUserOptionClick();
+						window.JSInterface.parseData(`{"method":'reportUserOptionClick'},"data":''`)
+					}
+				})
+			$('.submit').on('click', function() {
+				if(reason==''){
+					dataerror(reasonTxt);
+					return;
+				}
+				$('.loading').show();
+				if(source==1){//漂流瓶,带usid
+					reportUserData = {
+						'callbackId': 'reportUser',
+						'data': {
+							'uid': uid,
+							'token': token,
+							'reason': reason,
+							'touid': touid,
+							'action':'report.reportUser',
+							'source':1,
+							'usid':usid,
+						}
+					}
+				}else if(source==2){
+					reportUserData = {
+						'callbackId': 'reportUser',
+						'data': {
+							'uid': uid,
+							'token': token,
+							'reason': reason,
+							'touid': touid,
+							'action':'report.reportUser',
+							'source':2,
+						}
+					}
+				}else{
+					reportUserData = {
+						'callbackId': 'reportUser',
+						'data': {
+							'uid': uid,
+							'token': token,
+							'reason': reason,
+							'touid': touid,
+							'action':'report.reportUser',
+						}
+					}
+				}
+				if (ios) {
+					var aRes = getSign(JSON.stringify(reportUserData));
+				} else {
+					//var aRes = window.JSInterface.getSign('{"reason":"' + reason + '","touid":"' + touid + '","uid":"' + uid + '","token":"' + token +'","action":"report.reportUser"}');
+					
+					// var aRes = window.JSInterface.getSign(JSON.stringify(reportUserData));
+					var aRes = window.JSInterface.parseData(`{"method":'getSign',"data":${JSON.stringify(reportUserData)}}`);
+					var xmlhttp = new XMLHttpRequest();
+					if(source==1){
+						xmlhttp.open("GET", "/index.php?reason="+ reason+"&touid="+touid+"&uid=" + uid + "&token=" + token +"&action=report.reportUser"+"&source="+source+"&usid="+usid,true);
+					}else if(source==2){
+						xmlhttp.open("GET", "/index.php?reason="+ reason+"&touid="+touid+"&uid=" + uid + "&token=" + token +"&action=report.reportUser"+"&source="+source,true);
+					}else{
+						xmlhttp.open("GET", "/index.php?reason="+ reason+"&touid="+touid+"&uid=" + uid + "&token=" + token +"&action=report.reportUser",true);
+					}
+					// xmlhttp.open("GET", "/index.php?reason="+reason+"&touid="+touid+"&uid=" + uid + "&token=" + token +"&action=report.reportUser", true);
+					xmlhttp.setRequestHeader("sign", JSON.parse(aRes).sign);
+					xmlhttp.setRequestHeader("timestamp", JSON.parse(aRes).timestamp);
+					xmlhttp.send(null);
+					// readyState == 4 为请求完成，status == 200为请求陈宫返回的状态
+					xmlhttp.onreadystatechange = function() {
+						if(xmlhttp.readyState == 4){
+							if(xmlhttp.status >=200 && xmlhttp.status < 300 ||xmlhttp.status ==304){
+								var res = JSON.parse(xmlhttp.responseText);
+								$('.loading').hide();
+								successFlag=true;
+								dataerror(successTxt);
+							}
+							else {
+								$('.loading').hide();
+								dataerror(errorTxt);
+							}
+						}
+// 						if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+// 							var res = JSON.parse(xmlhttp.responseText);
+// 							$('.loading').hide();
+// 							successFlag=true;
+// 							dataerror("舉報已收到，謝謝你，讓我們變的更好(*^▽^*)");
+// 						}
+					}
+				}
+			})
+			
+			var successFlag = false;
+
+			function dataerror(text) {
+				$('.promptBox p').html(text);
+				$('.promptBox').show();
+				$('.mask').show();
+				$('.ok a').click(function() {
+					$('.promptBox').hide();
+					$('.mask').hide();
+					if (successFlag) {
+						if (ios) {
+							onReportComplete();
+						} else {
+							// window.JSInterface.onReportComplete();
+							window.JSInterface.parseData(`{"method":'onReportComplete'},"data":''`)
+						}
+					}
+				});
+			}
+
+
+		</script>
+	</body>
+</html>

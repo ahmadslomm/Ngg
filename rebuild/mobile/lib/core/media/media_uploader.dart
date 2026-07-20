@@ -8,8 +8,9 @@ import 'dart:typed_data';
 /// Swap [PlaceholderMediaUploader] for a real implementation (signed-URL PUT to S3 /
 /// GCS / R2) without touching any feature code.
 abstract class MediaUploader {
-  /// Uploads an image and returns its public URL.
-  Future<String> uploadImage(LocalFile file);
+  /// Uploads an image, namespaced by [kind] (e.g. 'avatar' / 'room' / 'moment'), and returns
+  /// its public URL. [kind] selects the backend upload allowlist + key namespace.
+  Future<String> uploadImage(LocalFile file, {String kind = 'moment'});
 
   /// Uploads an audio clip and returns its public URL.
   Future<String> uploadAudio(LocalFile file, {int seconds = 0});
@@ -52,7 +53,7 @@ class PlaceholderMediaUploader implements MediaUploader {
   final Duration latency;
 
   @override
-  Future<String> uploadImage(LocalFile file) => _fakeUpload('images', file, 'jpg');
+  Future<String> uploadImage(LocalFile file, {String kind = 'moment'}) => _fakeUpload('images', file, 'jpg');
 
   @override
   Future<String> uploadAudio(LocalFile file, {int seconds = 0}) => _fakeUpload('audio', file, 'm4a');

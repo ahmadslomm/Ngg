@@ -72,10 +72,39 @@ export async function sweepUser(userId: bigint, now = new Date()): Promise<{ dow
   return { downgraded, revoked };
 }
 
-// The sweep: re-evaluate every member with a cached VIP tier. An active-VIP member is a no-op
-// (nothing to downgrade or revoke). Returns counts for observability.
+/**
+ * The sweep.
+ *
+ * PERFORMANCE: this used to scan EVERY profile with `vipLevel > 0` and run `sweepUser` — roughly six
+ * queries each — sequentially. For an active member that whole round trip is a guaranteed no-op, so
+ * the cost grew with total VIP membership rather than with the work actually to be done. On a
+ * database with a few thousand members it took long enough to blow a 5s timeout.
+ *
+ * The candidate set is now derived the other way round: start from `VipHistory` rows that have
+ * ACTUALLY LAPSED (indexed on `[userId, expiresAt]`), then keep only those whose profile still
+ * claims a tier. That is the exact set with work to do —
+ *   * a member with nothing expired cannot need a downgrade or a revoke, and
+ *   * a member already swept to level 0 drops out on the next run,
+ * so the set shrinks naturally instead of growing forever.
+ *
+ * Correctness is unchanged: a user with a lapsed LOWER tier while a higher one is still active is
+ * still a candidate (they have an expired row), which is why the filter keys off expired history
+ * rather than the `vipExpireAt` cache — that cache tracks only the TOP tier and would miss them.
+ */
 export async function runVipExpireSweep(now = new Date()): Promise<{ scanned: number; downgraded: number; revoked: number }> {
-  const members = await prisma.profile.findMany({ where: { vipLevel: { gt: 0 } }, select: { userId: true } });
+  const lapsed = await prisma.vipHistory.findMany({
+    where: { expiresAt: { lte: now } },
+    select: { userId: true },
+    distinct: ['userId'],
+  });
+  if (lapsed.length === 0) return { scanned: 0, downgraded: 0, revoked: 0 };
+
+  // Only those whose cache still claims a tier — the rest have already been swept.
+  const members = await prisma.profile.findMany({
+    where: { vipLevel: { gt: 0 }, userId: { in: lapsed.map((r) => r.userId) } },
+    select: { userId: true },
+  });
+
   let downgraded = 0, revoked = 0;
   for (const m of members) {
     const r = await sweepUser(m.userId, now);
@@ -91,9 +120,24 @@ export const vipExpireProcessor = async (job?: { name?: string }) => {
   return runVipExpireSweep();
 };
 
+/**
+ * The `vip` queue serves TWO expiry sweeps, so its single processor dispatches by job name:
+ *   vip:expire-sweep  → VIP tier downgrade + decoration revoke (above)
+ *   vip:noble-expire  → recompute the denormalised Profile.nobleLevel cache
+ * Noble shares this queue because both are the same kind of work (paid-tier expiry maintenance) and
+ * the one-processor-per-queue rule makes a separate registration on `vip` throw.
+ */
+export const vipQueueDispatcher = async (job?: { name?: string }) => {
+  const [{ NOBLE_EXPIRE_JOB, runNobleExpireSweep }, { VIP_RENEW_JOB, runVipRenewSweep }] =
+    await Promise.all([import('./noble-expire.js'), import('./vip-renew.js')]);
+  if (job?.name === NOBLE_EXPIRE_JOB) return runNobleExpireSweep();
+  if (job?.name === VIP_RENEW_JOB) return runVipRenewSweep();
+  return vipExpireProcessor(job);
+};
+
 // Register the consumer (T1.3 registerWorker) so the worker process runs the sweep. Called at boot.
 export function registerVipExpireWorker(): void {
-  registerWorker({ name: QUEUE.vip, processor: vipExpireProcessor });
+  registerWorker({ name: QUEUE.vip, processor: vipQueueDispatcher });
 }
 
 // Create/upsert the hourly repeatable schedule. Called at boot (idempotent).

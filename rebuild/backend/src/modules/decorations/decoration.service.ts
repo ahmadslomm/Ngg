@@ -23,8 +23,14 @@ function serializeOwned(r: { id: bigint; itemId: bigint; equipped: boolean; expi
 export class DecorationService {
   constructor(private repo: DecorationRepo = decorationRepo) {}
 
-  async listCatalogue() {
-    return (await this.repo.listCatalogue()).map(serializeItem);
+  async listCatalogue(opts: { kind?: number; page?: number; pageSize?: number } = {}) {
+    const pageSize = Math.min(200, Math.max(1, opts.pageSize ?? 100));
+    const page = Math.max(1, opts.page ?? 1);
+    const [rows, total] = await Promise.all([
+      this.repo.listCatalogue({ kind: opts.kind, skip: (page - 1) * pageSize, take: pageSize }),
+      this.repo.countCatalogue(opts.kind),
+    ]);
+    return { items: rows.map(serializeItem), total, page, page_size: pageSize };
   }
 
   // Self-only: the route always passes the authenticated user's id — there is no path to

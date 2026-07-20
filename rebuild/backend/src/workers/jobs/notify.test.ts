@@ -5,6 +5,7 @@
 import { describe, it, expect, afterAll } from 'vitest';
 import { notifyProcessor } from './notify.js';
 import { notificationService, NOTIFY_JOB } from '../../modules/notifications/notification.service.js';
+import { deliver } from '../../modules/notifications/notification.delivery.js';
 import { QUEUE, getQueue, closeQueues } from '../../queue/index.js';
 import { makeUser } from '../../testing/harness.js';
 import { prisma } from '../../lib/prisma.js';
@@ -55,8 +56,8 @@ describe('notify worker (T2.8)', () => {
 
   it('deliver persists a generic notification (direct service call)', async () => {
     const u = await makeUser({});
-    const row = await notificationService.deliver({ userId: String(u), kind: 'system', title: 'Hi', body: 'Welcome' });
-    expect(row.kind).toBe('system');
+    const out = await deliver({ userId: String(u), kind: 'system', title: 'Hi', body: 'Welcome' });
+    expect(out.created).toBe(true);
     expect((await notifsOf(u))).toHaveLength(1);
   });
 

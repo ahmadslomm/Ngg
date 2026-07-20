@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "449857729413",
+    "project_id": "newo-23516",
+    "storage_bucket": "newo-23516.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449857729413:android:cd982107cb90640d048aec",
+        "android_client_info": {
+          "package_name": "com.zaffalive.voxa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449857729413-0qgd2cf0tda9dc966g8diu8ppm8bvdv9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zaffalive.voxa",
+            "certificate_hash": "6f8b84979c507beee912e8f4005ac07c9058dc29"
+          }
+        },
+        {
+          "client_id": "449857729413-u9rmi422cv2igs67gkhi9b14kcpq26mt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgB6sB3Tuw6WJQ8Cy53ZbvbHSg9TUJYc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "449857729413-u9rmi422cv2igs67gkhi9b14kcpq26mt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

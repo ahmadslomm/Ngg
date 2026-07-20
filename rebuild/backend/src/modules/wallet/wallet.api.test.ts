@@ -1,3 +1,5 @@
+// Wallet API — balances, ledger, exchange, withdrawals. The recharge/store flow (products, orders,
+// verify) lives in the Payments module now; see modules/payments/payment.api.test.ts.
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 import { buildTestApp, makeUser, inject } from '../../testing/harness.js';
@@ -5,14 +7,9 @@ import { walletRoutes } from './wallet.routes.js';
 import { prisma } from '../../lib/prisma.js';
 
 let app: FastifyInstance;
-let productId: bigint;
 
 beforeAll(async () => {
   app = await buildTestApp(walletRoutes);
-  const p = await prisma.product.create({
-    data: { sku: `test-sku-${Date.now()}`, title: '300 Coins', priceCents: 499, currency: 'USD', coins: 300n, bonusCoins: 30n },
-  });
-  productId = p.id;
 });
 afterAll(async () => { await app.close(); await prisma.$disconnect(); });
 
@@ -35,12 +32,19 @@ describe('wallet API', () => {
 
   it('GET /wallet/ledger paginates newest-first (T1.12)', async () => {
     const u = await makeUser(); // no opening balances → clean ledger slate
-    // Seed five ledger rows with increasing createdAt + balanceAfter (test fixture, not economy logic).
+    // Seed five ledger rows with increasing createdAt + balanceAfter.
+    //
+    // The wallet is moved WITH them. This fixture used to write ledger rows only, leaving the
+    // wallet at 0 while its ledger summed to 50 — a state the economy can never legitimately reach.
+    // Harmless for the pagination assertion, but it left a permanently-drifting wallet behind on
+    // every run, and 550 of them had accumulated in the shared database: enough to bury a REAL
+    // drift in noise and make the ledger_drift monitor useless.
     for (let i = 0; i < 5; i++) {
       await prisma.walletLedger.create({
         data: { userId: BigInt(u), currency: 0, delta: 10n, balanceAfter: BigInt((i + 1) * 10), reason: 5, refType: 'test', createdAt: new Date(Date.now() + i * 1000) },
       });
     }
+    await prisma.wallet.update({ where: { userId: BigInt(u) }, data: { coins: 50n } });
     const p1 = await inject(app, u, 'GET', '/wallet/ledger?page=1&page_size=3');
     expect(p1.status).toBe(200);
     expect(p1.body.data.total).toBe(5);
@@ -53,41 +57,16 @@ describe('wallet API', () => {
     // A real ledgered mutation (existing exchange) — asserts balances stay in lockstep with the
     // ledger's latest balanceAfter, the observable invariant of consistent money-writing.
     const u = await makeUser({ beans: 1000n });
-    await inject(app, u, 'POST', '/exchange', { beans: '400' }); // 1:1 → coins +400, beans -400
+    // RECOVERED rate is 50% (2 beans = 1 coin), not 1:1: 400 beans -> 200 coins.
+    await inject(app, u, 'POST', '/exchange', { beans: '400' });
     const w = (await inject(app, u, 'GET', '/wallet')).body.data;
     const items = (await inject(app, u, 'GET', '/wallet/ledger')).body.data.items; // newest-first
     const latestCoins = items.find((r: any) => r.currency === 0);
     const latestBeans = items.find((r: any) => r.currency === 1);
-    expect(w.coins).toBe('400');
+    expect(w.coins).toBe('200');
     expect(w.beans).toBe('600');
     expect(latestCoins.balanceAfter).toBe(w.coins); // balance == last balanceAfter (coins)
     expect(latestBeans.balanceAfter).toBe(w.beans); // balance == last balanceAfter (beans)
-  });
-
-  it('purchase flow: create order -> verify grants coins; re-verify is idempotent', async () => {
-    const u = await makeUser();
-    const create = await inject(app, u, 'POST', '/store/orders', { product_id: String(productId), provider: 0, purchase_token: `tok-${u}` });
-    expect(create.status).toBe(200);
-    const orderId = create.body.data.order_id;
-
-    const v1 = await inject(app, u, 'POST', `/store/orders/${orderId}/verify`);
-    expect(v1.status).toBe(200);
-    expect(v1.body.data.granted).toBe(true);
-    expect(v1.body.data.coinsAfter).toBe('330'); // 300 + 30 bonus
-
-    const v2 = await inject(app, u, 'POST', `/store/orders/${orderId}/verify`);
-    expect(v2.body.data.alreadyGranted).toBe(true);
-
-    const w = await inject(app, u, 'GET', '/wallet');
-    expect(w.body.data.coins).toBe('330'); // not doubled
-  });
-
-  it('duplicate purchase token returns the same order (fraud guard)', async () => {
-    const u = await makeUser();
-    const tok = `dup-${u}`;
-    const a = await inject(app, u, 'POST', '/store/orders', { product_id: String(productId), provider: 0, purchase_token: tok });
-    const b = await inject(app, u, 'POST', '/store/orders', { product_id: String(productId), provider: 0, purchase_token: tok });
-    expect(a.body.data.order_id).toBe(b.body.data.order_id);
   });
 
   it('exchange converts beans to coins and ledgers both sides', async () => {
@@ -95,7 +74,7 @@ describe('wallet API', () => {
     const r = await inject(app, u, 'POST', '/exchange', { beans: '200' });
     expect(r.status).toBe(200);
     expect(r.body.data.beansAfter).toBe('300');
-    expect(r.body.data.coinsAfter).toBe('200');
+    expect(r.body.data.coinsAfter).toBe('100');
     const rec = await inject(app, u, 'GET', '/wallet/reconcile');
     expect(rec.body.data.ok).toBe(true);
   });

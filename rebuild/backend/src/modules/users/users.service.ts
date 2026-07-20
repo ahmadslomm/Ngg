@@ -1,15 +1,22 @@
 // Users module — public/own profile, profile edit, and the social graph (follow / fans /
 // friends). Follow edges reuse UserRelation (type 1); blocks are type 2 (moderation).
 // Denormalized Profile.fansCount / followingCount are kept correct transactionally.
-import { prisma } from '../../lib/prisma.js';
+// Persistence is delegated to UsersRepository (no direct Prisma here).
 import { serializableTx } from '../../lib/tx.js';
 import { AppError } from '../../lib/errors.js';
 import { moderationService } from '../moderation/moderation.service.js';
 import { medalService } from '../medals/medal.service.js';
 import { vipService } from '../vip/vip.service.js';
 import { emitToUser } from '../../realtime/gateway.js';
+import { usersRepo } from './users.repo.js';
+import { levelService } from './level.service.js';
 
 const FOLLOW = 1;
+// P4a friend-card enrichment: mirror the owning modules' enum values (CoupleStatus.Active,
+// BanScope.Account) as local constants so this module reads their tables without importing
+// their services — the reads are batched in UsersRepository.
+const COUPLE_ACTIVE = 1;
+const BAN_SCOPE_ACCOUNT = 0;
 
 export interface ProfilePatch {
   nick?: string;
@@ -43,7 +50,7 @@ function serializeProfile(p: any) {
 
 export class UsersService {
   private async requireProfile(userId: bigint) {
-    const p = await prisma.profile.findUnique({ where: { userId } });
+    const p = await usersRepo.getProfile(userId);
     if (!p) throw new AppError('user_not_found', 404);
     return p;
   }
@@ -67,10 +74,7 @@ export class UsersService {
   // UserDecoration.equipped (contract §6: the card aggregates worn decorations from the Profile
   // cache). Only populated slots are returned; an unequipped kind is simply absent.
   private async wornDecorations(userId: bigint): Promise<Array<{ slot: string; url: string }>> {
-    const p = await prisma.profile.findUnique({
-      where: { userId },
-      select: { avatarFrameUrl: true, entryEffectUrl: true, bubbleUrl: true },
-    });
+    const p = await usersRepo.getProfileDecorations(userId);
     if (!p) return [];
     const out: Array<{ slot: string; url: string }> = [];
     if (p.avatarFrameUrl) out.push({ slot: 'avatar_frame', url: p.avatarFrameUrl });
@@ -109,6 +113,27 @@ export class UsersService {
     return { ...card, is_self: false, is_following: iFollow, is_followed_by: followsMe, is_friend: iFollow && followsMe };
   }
 
+  /**
+   * P3a — user lookup (⇐ old `search.searchFriendByUid`, whose only captured params were
+   * `['token','uid']`). EVERY search action in the recovered catalog takes a `uid` and nothing
+   * else — there is no evidence of nick/free-text search anywhere — so this is an EXACT UID
+   * lookup, not a fuzzy query. A non-numeric or unknown `q` yields an empty page rather than an
+   * error, so the endpoint cannot be used to probe which accounts exist.
+   *
+   * Results reuse the standard profile card (`getProfile`), so a search hit parses exactly like
+   * `GET /users/:id`. An exact lookup returns at most one row, which keeps that card cheap.
+   */
+  async search(viewerId: bigint, q: string, page: number, pageSize: number) {
+    const empty = { items: [] as unknown[], total: 0, page, page_size: pageSize };
+    if (!/^\d{1,20}$/.test(q)) return empty; // not a uid → no results (and no existence signal)
+    let targetId: bigint;
+    try { targetId = BigInt(q); } catch { return empty; }
+    const profile = await usersRepo.getProfile(targetId);
+    if (!profile) return empty;
+    if (page > 1) return { ...empty, total: 1 }; // single hit lives on page 1
+    return { items: [await this.getProfile(viewerId, targetId)], total: 1, page, page_size: pageSize };
+  }
+
   async updateProfile(userId: bigint, patch: ProfilePatch) {
     await this.requireProfile(userId);
     const data: Record<string, unknown> = {};
@@ -116,13 +141,13 @@ export class UsersService {
       if (patch[k] !== undefined) data[k] = patch[k];
     }
     if (Object.keys(data).length === 0) throw new AppError('no_fields', 400);
-    const updated = await prisma.profile.update({ where: { userId }, data });
+    const updated = await usersRepo.updateProfile(userId, data);
     return serializeProfile(updated);
   }
 
   // ----- social graph -----
   async isFollowing(userId: bigint, targetId: bigint): Promise<boolean> {
-    return (await prisma.userRelation.count({ where: { userId, targetId, type: FOLLOW } })) > 0;
+    return (await usersRepo.countFollow(userId, targetId, FOLLOW)) > 0;
   }
 
   async follow(userId: bigint, targetId: bigint) {
@@ -133,13 +158,11 @@ export class UsersService {
     if (await moderationService.isBlocked(targetId, userId)) throw new AppError('blocked_by_target', 403);
 
     const created = await serializableTx(async (tx) => {
-      const existing = await tx.userRelation.findUnique({
-        where: { userId_targetId_type: { userId, targetId, type: FOLLOW } },
-      });
+      const existing = await usersRepo.findFollow(tx, userId, targetId, FOLLOW);
       if (existing) return false; // idempotent — no double count
-      await tx.userRelation.create({ data: { userId, targetId, type: FOLLOW } });
-      await tx.profile.update({ where: { userId }, data: { followingCount: { increment: 1 } } });
-      await tx.profile.update({ where: { userId: targetId }, data: { fansCount: { increment: 1 } } });
+      await usersRepo.createFollow(tx, userId, targetId, FOLLOW);
+      await usersRepo.bumpProfileCounter(tx, userId, 'followingCount', 1);
+      await usersRepo.bumpProfileCounter(tx, targetId, 'fansCount', 1);
       return true;
     });
 
@@ -150,22 +173,33 @@ export class UsersService {
 
   async unfollow(userId: bigint, targetId: bigint) {
     await serializableTx(async (tx) => {
-      const existing = await tx.userRelation.findUnique({
-        where: { userId_targetId_type: { userId, targetId, type: FOLLOW } },
-      });
+      const existing = await usersRepo.findFollow(tx, userId, targetId, FOLLOW);
       if (!existing) return;
-      await tx.userRelation.delete({ where: { userId_targetId_type: { userId, targetId, type: FOLLOW } } });
-      await tx.profile.update({ where: { userId }, data: { followingCount: { decrement: 1 } } });
-      await tx.profile.update({ where: { userId: targetId }, data: { fansCount: { decrement: 1 } } });
+      await usersRepo.deleteFollow(tx, userId, targetId, FOLLOW);
+      await usersRepo.bumpProfileCounter(tx, userId, 'followingCount', -1);
+      await usersRepo.bumpProfileCounter(tx, targetId, 'fansCount', -1);
     });
     return { ok: true, following: false };
+  }
+
+  // Compact profile cards for a batch of user ids — one query, missing ids omitted. Read-only.
+  // Consumed by the rooms online-list (F2) via DI so the rooms module never imports users.
+  async getCompactCards(ids: bigint[]): Promise<Map<string, { uid: string; nick: string; avatar_url: string | null; avatar_frame_url: string | null; vip_level: number }>> {
+    if (ids.length === 0) return new Map();
+    const profiles = await usersRepo.findProfilesByIds(ids);
+    return new Map(
+      profiles.map((p) => [
+        String(p.userId),
+        { uid: String(p.userId), nick: p.nick, avatar_url: p.avatarUrl ?? null, avatar_frame_url: p.avatarFrameUrl ?? null, vip_level: p.vipLevel },
+      ]),
+    );
   }
 
   private async hydrate(ids: bigint[], viewerId: bigint) {
     if (ids.length === 0) return [];
     const [profiles, myFollows] = await Promise.all([
-      prisma.profile.findMany({ where: { userId: { in: ids } } }),
-      prisma.userRelation.findMany({ where: { userId: viewerId, type: FOLLOW, targetId: { in: ids } } }),
+      usersRepo.findProfilesByIds(ids),
+      usersRepo.findMyFollowsAmong(viewerId, ids, FOLLOW),
     ]);
     const followSet = new Set(myFollows.map((r) => String(r.targetId)));
     const byId = new Map(profiles.map((p) => [String(p.userId), p]));
@@ -178,32 +212,90 @@ export class UsersService {
 
   // Followers of `userId` (people whose edge points at userId).
   async listFollowers(userId: bigint, viewerId: bigint, page: number, pageSize: number) {
-    const rels = await prisma.userRelation.findMany({
-      where: { targetId: userId, type: FOLLOW }, orderBy: { createdAt: 'desc' },
-      skip: (page - 1) * pageSize, take: pageSize,
-    });
+    const rels = await usersRepo.listFollowerRels(userId, FOLLOW, (page - 1) * pageSize, pageSize);
     return this.hydrate(rels.map((r) => r.userId), viewerId);
   }
 
   // Users that `userId` follows.
   async listFollowing(userId: bigint, viewerId: bigint, page: number, pageSize: number) {
-    const rels = await prisma.userRelation.findMany({
-      where: { userId, type: FOLLOW }, orderBy: { createdAt: 'desc' },
-      skip: (page - 1) * pageSize, take: pageSize,
-    });
+    const rels = await usersRepo.listFollowingRels(userId, FOLLOW, (page - 1) * pageSize, pageSize);
     return this.hydrate(rels.map((r) => r.targetId), viewerId);
   }
 
   // Friends = mutual follow.
   async listFriends(userId: bigint, page: number, pageSize: number) {
-    const iFollow = await prisma.userRelation.findMany({ where: { userId, type: FOLLOW }, select: { targetId: true } });
+    const iFollow = await usersRepo.listMyFollowTargetIds(userId, FOLLOW);
     const targetIds = iFollow.map((r) => r.targetId);
     if (targetIds.length === 0) return [];
-    const back = await prisma.userRelation.findMany({
-      where: { userId: { in: targetIds }, targetId: userId, type: FOLLOW }, select: { userId: true },
-    });
+    const back = await usersRepo.listBackFollowerIds(targetIds, userId, FOLLOW);
     const friendIds = back.map((r) => r.userId).slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-    return this.hydrate(friendIds, userId);
+    const cards = await this.hydrate(friendIds, userId);
+    return this.enrichFriendCards(cards, friendIds);
+  }
+
+  /**
+   * P4a — friend-card enrichment (⇐ legacy `user.getFriendList`, captured as
+   * `{ uid, nick, avatar, sign, symbol, tag, in_room, online, isBanned, cp_name }`).
+   * Applied ONLY to the friends list — `hydrate` itself is untouched, so the followers/following
+   * contracts are unchanged. Every added field has a real native source, batched (no N+1):
+   *   in_room  ⇐ RoomMember          · cp_name  ⇐ active Couple partner's nick
+   *   is_banned ⇐ active account Ban · online   ⇐ SEE THE CAVEAT BELOW
+   *
+   * `online` CAVEAT: there is no global session presence in this backend — presence is recorded
+   * per room (`room:{id}:presence`) only. So `online` here means exactly "currently present in a
+   * room" (`in_room !== null`), which is NARROWER than the legacy field. It is derived, not
+   * invented: no new presence system was added. `symbol` and `tag` are omitted entirely — their
+   * meaning was never captured and they have no native source.
+   */
+  private async enrichFriendCards(cards: Array<Record<string, unknown>>, friendIds: bigint[]) {
+    if (cards.length === 0) return cards;
+    const [rooms, couples, bans] = await Promise.all([
+      usersRepo.findCurrentRoomsOf(friendIds),
+      usersRepo.findActiveCouplesOf(friendIds, COUPLE_ACTIVE),
+      usersRepo.findActiveAccountBansOf(friendIds, BAN_SCOPE_ACCOUNT, new Date()),
+    ]);
+    // Most recent membership wins when a user somehow holds more than one.
+    const roomOf = new Map<string, string>();
+    for (const r of rooms) if (!roomOf.has(String(r.userId))) roomOf.set(String(r.userId), String(r.roomId));
+    const bannedSet = new Set(bans.map((b) => String(b.userId)));
+    // Resolve each friend's partner id, then batch the partner nicks in one more query.
+    const partnerOf = new Map<string, bigint>();
+    for (const c of couples) {
+      const a = String(c.aUserId), b = String(c.bUserId);
+      if (friendIds.some((f) => String(f) === a)) partnerOf.set(a, c.bUserId);
+      if (friendIds.some((f) => String(f) === b)) partnerOf.set(b, c.aUserId);
+    }
+    const partnerProfiles = await usersRepo.findProfilesByIds([...new Set(partnerOf.values())]);
+    const nickOf = new Map(partnerProfiles.map((p) => [String(p.userId), p.nick]));
+
+    return cards.map((c) => {
+      const uid = String(c.uid);
+      const inRoom = roomOf.get(uid) ?? null;
+      const partnerId = partnerOf.get(uid);
+      return {
+        ...c,
+        in_room: inRoom,
+        online: inRoom !== null, // room presence only — see the caveat above
+        is_banned: bannedSet.has(uid),
+        cp_name: partnerId != null ? nickOf.get(String(partnerId)) ?? null : null,
+      };
+    });
+  }
+
+  /**
+   * P4a — charm/wealth ladder progress (⇐ legacy `user.getWealthCfg`). Reads only Profile exp +
+   * LevelConfig through the existing resolver. Charm mirrors wealth by symmetry: `MyLevel.levelInfo`
+   * confirms a Charm axis exists and `Profile.charmExp` + LevelConfig kind 0 are already stored,
+   * though only wealth's field names were captured. The `Active` and `Game` axes from that capture
+   * are NOT built — no native columns exist and inventing them is out of scope.
+   */
+  async getLevels(userId: bigint) {
+    const p = await this.requireProfile(userId);
+    const [charm, wealth] = await Promise.all([
+      levelService.resolveProgress(levelService.LEVEL_KIND.CHARM, p.charmExp),
+      levelService.resolveProgress(levelService.LEVEL_KIND.WEALTH, p.wealthExp),
+    ]);
+    return { uid: String(userId), charm, wealth };
   }
 }
 

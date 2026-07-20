@@ -107,15 +107,26 @@ describe('T1.17 core-loop e2e smoke', () => {
 
     // === Assert 1: balance delta ===
     expect(coinsBefore - (await coinsOf(host.uid))).toBe(total);        // host debited exactly total
-    expect((await beansOf(guest.uid)) - beansBefore).toBe(200n);        // guest beans += unitPrice×qty
+    // 70% host share — the agency/platform legs land separately (economy/revenue.split.ts).
+    expect((await beansOf(guest.uid)) - beansBefore).toBe(140n);
 
     // === Assert 2: ledger pair + gift transaction ===
     const sendRow = await prisma.walletLedger.findFirst({ where: { userId: BigInt(host.uid), reason: 1, refType: 'gift', refId: gift.id }, orderBy: { id: 'desc' } });
-    const recvRow = await prisma.walletLedger.findFirst({ where: { userId: BigInt(guest.uid), reason: 2, refType: 'gift', refId: gift.id }, orderBy: { id: 'desc' } });
+    // The receive leg now flows through the revenue distributor, so it carries refType
+    // 'gift-revenue' and references the gift TRANSACTION (not the gift) — the split rows and the
+    // platform ledger hang off that same id.
+    const recvRow = await prisma.walletLedger.findFirst({ where: { userId: BigInt(guest.uid), reason: 2, refType: 'gift-revenue' }, orderBy: { id: 'desc' } });
     expect(sendRow?.delta).toBe(-total);   // gift_send, coins
     expect(sendRow?.currency).toBe(0);
-    expect(recvRow?.delta).toBe(200n);     // gift_recv, beans
+    expect(recvRow?.delta).toBe(140n);     // gift_recv, beans (70% of the 200 gross)
     expect(recvRow?.currency).toBe(1);
+    // The whole point of the split: the sender's debit is fully accounted for across three legs.
+    const splits = await prisma.giftRevenueSplit.findMany({ where: { giftTransactionId: BigInt(txId) } });
+    expect(splits.length).toBeGreaterThan(0);
+    for (const sp of splits) {
+      expect(sp.hostAmount + sp.agencyAmount + sp.platformAmount).toBe(sp.grossAmount);
+    }
+
     const gt = await prisma.giftTransaction.findUnique({ where: { id: BigInt(txId) } });
     expect(gt?.totalCoins).toBe(total);
     expect(gt?.senderId).toBe(BigInt(host.uid));
@@ -130,6 +141,26 @@ describe('T1.17 core-loop e2e smoke', () => {
     expect(gifts[0].data.senderId).toBe(host.uid);
     expect(gifts[0].data.recipientIds).toContain(guest.uid);
     expect(gifts[0].data.totalCoins).toBe('200');
+
+    // === Assert 4 (F3): the additive charm.updated fires for the recipient, in-room ===
+    // charm gained = unitPrice(100) × qty(2) × CHARM_PER_COIN(1) = 200 for the single recipient.
+    const charm = received.filter((e) => e.ev === 'charm.updated');
+    expect(charm.length).toBeGreaterThanOrEqual(1);
+    const forGuest = charm.find((e) => e.data.userId === guest.uid);
+    expect(forGuest).toBeTruthy();
+    expect(forGuest.room).toBe(`room:${roomId}`);
+    expect(forGuest.data.roomId).toBe(String(roomId));
+    expect(forGuest.data.charm).toBe(200);
+
+    // === Assert 5 (F7): the additive room.rank fires with the sender as top contributor ===
+    // The host spent 200 coins in this room → they are rank 1 in the daily contribution board.
+    const rank = received.filter((e) => e.ev === 'room.rank');
+    expect(rank.length).toBeGreaterThanOrEqual(1);
+    const rr = rank.at(-1)!;
+    expect(rr.room).toBe(`room:${roomId}`);
+    expect(rr.data.roomId).toBe(String(roomId));
+    expect(rr.data.period).toBe(0); // day
+    expect(rr.data.top[0]).toMatchObject({ uid: host.uid, contribution: '200', rank: 1 });
 
     client.close();
   });

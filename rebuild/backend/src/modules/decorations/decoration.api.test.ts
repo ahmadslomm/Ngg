@@ -17,11 +17,37 @@ function mkItem(kind: number, url: string, price = 0n) {
 }
 
 describe('decorations API (T1.13)', () => {
-  it('GET /decorations lists enabled catalog items', async () => {
-    const item = await mkItem(1, 'entry.png');
-    const cat = await inject(app, null, 'GET', '/decorations');
+  it('GET /decorations returns a bounded, paginated catalogue', async () => {
+    // The catalogue holds thousands of enabled items. It used to be returned whole on every call —
+    // hundreds of kB per request, per user — so it is paginated now. Asserting that ONE specific
+    // item appears on page 1 would depend on every other row in the shared database; the contract
+    // is what is pinned instead.
+    await mkItem(1, 'entry.png');
+    const u = await makeUser({});
+    const cat = await inject(app, u, 'GET', '/decorations');
+
     expect(cat.status).toBe(200);
-    expect(cat.body.data.some((d: any) => d.id === String(item.id))).toBe(true);
+    const d = cat.body.data;
+    expect(Array.isArray(d.items)).toBe(true);
+    expect(d.items.length).toBeGreaterThan(0);
+    expect(d.items.length).toBeLessThanOrEqual(d.page_size);
+    expect(d.total).toBeGreaterThanOrEqual(d.items.length);
+    expect(d.page).toBe(1);
+  });
+
+  it('GET /decorations?kind= narrows to one slot', async () => {
+    const u = await makeUser({});
+    await mkItem(1, 'entry2.png');
+    const res = await inject(app, u, 'GET', '/decorations?kind=1&page_size=50');
+    expect(res.status).toBe(200);
+    expect(res.body.data.items.every((i: any) => i.kind === 1)).toBe(true);
+  });
+
+  it('GET /decorations caps an oversized page_size instead of honouring it', async () => {
+    // Otherwise `?page_size=100000` reinstates the unbounded query the pagination exists to prevent.
+    const u = await makeUser({});
+    const res = await inject(app, u, 'GET', '/decorations?page_size=100000');
+    expect(res.status).toBeGreaterThanOrEqual(400); // rejected by validation
   });
 
   it('inventory is self-only: a bought decoration appears only in the buyer’s /decorations/me', async () => {

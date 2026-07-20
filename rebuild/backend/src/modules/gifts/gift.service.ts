@@ -5,6 +5,10 @@
 // The whole thing is ONE serializable transaction that also writes append-only ledger rows.
 import { serializableTx } from '../../lib/tx.js';
 import { prisma } from '../../lib/prisma.js';
+import { revenueService } from '../economy/revenue.service.js';
+import { walletService } from '../wallet/wallet.service.js';
+import { giftRepo } from './gift.repo.js';
+import { toGiftWallRow } from './gift.dto.js';
 
 // Client-facing catalog item shape. Preserves every existing field of the old inline
 // serializeGift verbatim and only ADDS `bag_qty` (T1.14).
@@ -171,15 +175,13 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
         data: { qty: bag!.qty - need },
       });
 
-      const wallet = await tx.wallet.findUnique({ where: { userId: senderId } });
-      const coinsNow = wallet?.coins ?? 0n;
-      await tx.walletLedger.create({
-        data: {
-          userId: senderId, currency: CURRENCY.COINS, delta: 0n,
-          balanceAfter: coinsNow, reason: LEDGER.GIFT_SEND,
-          refType: 'gift_bag', refId: giftId, idempotencyKey: input.idempotencyKey ?? null,
-        },
-      });
+      // Audit-only ledger row (delta 0): a backpack gift moves no coins. Routed through the sole
+      // balance mutator so all ledger writes flow through WalletService.
+      const audit = await walletService.applyDelta(
+        { userId: senderId, currency: CURRENCY.COINS, delta: 0n, allowZero: true, reason: LEDGER.GIFT_SEND, refType: 'gift_bag', refId: giftId, idempotencyKey: input.idempotencyKey ?? null },
+        { tx },
+      );
+      const coinsNow = audit.balanceAfter;
 
       const bagPerRecipient = BigInt(unitPrice) * BigInt(qty);
       for (const rid of recipientIds) {
@@ -214,23 +216,27 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
       };
     }
 
+    // The transaction row is created BEFORE distribution so the revenue splits can reference it —
+    // the split rows are the audit trail and must not be orphaned.
+    const txn = await tx.giftTransaction.create({
+      data: {
+        senderId, roomId: roomId ?? null, giftId, qty, unitPrice, totalCoins,
+        recipients: recipientIds.map(String),
+      },
+    });
+    const txnId = txn.id;
+
     // Debit sender (optimistic lock via version; CHECK(coins>=0) is the DB backstop).
     const sender = await tx.wallet.findUnique({ where: { userId: senderId } });
     if (!sender) throw new AppError('wallet_missing');
     if (sender.coins < totalCoins) throw new AppError('insufficient_coins');
 
-    const senderCoinsAfter = sender.coins - totalCoins;
-    await tx.wallet.update({
-      where: { userId: senderId },
-      data: { coins: senderCoinsAfter, version: { increment: 1 } },
-    });
-    await tx.walletLedger.create({
-      data: {
-        userId: senderId, currency: CURRENCY.COINS, delta: -totalCoins,
-        balanceAfter: senderCoinsAfter, reason: LEDGER.GIFT_SEND,
-        refType: 'gift', refId: giftId, idempotencyKey: input.idempotencyKey ?? null,
-      },
-    });
+    // Debit the sender through the sole balance mutator (serializable + ledgered + version bump).
+    const debit = await walletService.applyDelta(
+      { userId: senderId, currency: CURRENCY.COINS, delta: -totalCoins, bumpVersion: true, reason: LEDGER.GIFT_SEND, refType: 'gift', refId: giftId, idempotencyKey: input.idempotencyKey ?? null },
+      { tx },
+    );
+    const senderCoinsAfter = debit.balanceAfter;
 
     // Sender wealth progression.
     await tx.profile.update({
@@ -239,18 +245,16 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
     });
 
     // Credit each receiver: beans + charm.
+    //
+    // The gift value is now SPLIT rather than credited whole to the host — 70% host / 15% agency /
+    // 15% platform by default (PROJECT-DEFINED; see economy/revenue.split.ts). CHARM still tracks
+    // the FULL gift value: charm measures how much was given to a performer, not what they banked,
+    // so a host must not lose progression because of a revenue policy.
     const perRecipientCoins = BigInt(unitPrice) * BigInt(qty);
+    const shareCfg = await revenueService.activeConfig(tx);
     for (const rid of recipientIds) {
-      const rWallet = await tx.wallet.upsert({
-        where: { userId: rid }, update: {}, create: { userId: rid },
-      });
-      const beansAfter = rWallet.beans + perRecipientCoins;
-      await tx.wallet.update({ where: { userId: rid }, data: { beans: beansAfter } });
-      await tx.walletLedger.create({
-        data: {
-          userId: rid, currency: CURRENCY.BEANS, delta: perRecipientCoins,
-          balanceAfter: beansAfter, reason: LEDGER.GIFT_RECV, refType: 'gift', refId: giftId,
-        },
+      await revenueService.distribute(tx, {
+        giftTransactionId: txnId, recipientId: rid, gross: perRecipientCoins, cfg: shareCfg,
       });
       // updateMany (not update) so a recipient without a Profile row no-ops instead of aborting
       // the whole gift transaction (L6). Wallet is already upserted above; charm is best-effort.
@@ -268,26 +272,19 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
       const multiplier = rollLucky(gift.luckyConfig as unknown as LuckyConfig, input.luckyRand);
       if (multiplier > 0) {
         const coinsWon = (totalCoins * BigInt(Math.round(multiplier * 100))) / 100n;
-        finalCoins = senderCoinsAfter + coinsWon;
-        await tx.wallet.update({ where: { userId: senderId }, data: { coins: finalCoins, version: { increment: 1 } } });
-        await tx.walletLedger.create({
-          data: {
-            userId: senderId, currency: CURRENCY.COINS, delta: coinsWon,
-            balanceAfter: finalCoins, reason: LEDGER.LUCKY_WIN, refType: 'gift_lucky', refId: giftId,
-          },
-        });
+        // Credit the lucky winnings back to the sender through the sole balance mutator.
+        const win = await walletService.applyDelta(
+          { userId: senderId, currency: CURRENCY.COINS, delta: coinsWon, bumpVersion: true, reason: LEDGER.LUCKY_WIN, refType: 'gift_lucky', refId: giftId },
+          { tx },
+        );
+        finalCoins = win.balanceAfter;
         lucky = { multiplier, coinsWon };
       } else {
         lucky = { multiplier: 0, coinsWon: 0n };
       }
     }
 
-    const txn = await tx.giftTransaction.create({
-      data: {
-        senderId, roomId: roomId ?? null, giftId, qty, unitPrice, totalCoins,
-        recipients: recipientIds.map(String),
-      },
-    });
+
 
     const event: GiftReceivedEvent = {
       ev: 'gift.received',
@@ -308,4 +305,36 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
 
 export class AppError extends Error {
   constructor(public code: string) { super(code); }
+}
+
+/**
+ * P4a — gift wall for a user (⇐ legacy `room.giftWallList`, which is USER-scoped: `uid` + `page`,
+ * no `rid`). Shows gifts the user RECEIVED, newest first, ONE ROW PER TRANSACTION (no aggregation
+ * into counts). Read-only: no economy logic, nothing written.
+ *
+ * Direction note: the captured shape carries both a sender and a receiver per row, which is only
+ * self-consistent for a "gifts received by this user" wall (sender varies, receiver is the wall
+ * owner). A "sent" direction is NOT distinguishable from the captured evidence, so it is not built.
+ */
+export async function giftWall(userId: bigint, page: number, pageSize: number) {
+  const [txns, total] = await Promise.all([
+    giftRepo.listReceivedGifts(userId, (page - 1) * pageSize, pageSize),
+    giftRepo.countReceivedGifts(userId),
+  ]);
+  if (txns.length === 0) return { items: [], total, page, page_size: pageSize };
+
+  // Batch the two lookups the rows need (no N+1): gift catalog + sender/receiver profiles.
+  const giftIds = [...new Set(txns.map((t) => t.giftId))];
+  const profileIds = [...new Set([...txns.map((t) => t.senderId), userId])];
+  const [gifts, profiles] = await Promise.all([
+    giftRepo.findGiftsByIds(giftIds),
+    giftRepo.findProfilesByIds(profileIds),
+  ]);
+  const giftById = new Map(gifts.map((g) => [String(g.id), g]));
+  const profileById = new Map(profiles.map((p) => [String(p.userId), p]));
+
+  const items = txns.map((t) =>
+    toGiftWallRow(t, userId, profileById.get(String(t.senderId)), profileById.get(String(userId)), giftById.get(String(t.giftId))),
+  );
+  return { items, total, page, page_size: pageSize };
 }

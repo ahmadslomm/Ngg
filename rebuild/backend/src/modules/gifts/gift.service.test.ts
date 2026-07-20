@@ -117,8 +117,8 @@ describe('gift send — money + broadcast core (T1.15)', () => {
     expect(res.totalCoins).toBe(60n);               // 10×3×2
     expect(await coinsOf(s)).toBe(940n);            // 1000 − 60
     for (const r of [r1, r2]) {
-      expect(await beansOf(r)).toBe(30n);           // 10×3 each
-      expect(await charmOf(r)).toBe(30n);
+      expect(await beansOf(r)).toBe(21n);           // 10x3 gross, 70% host share
+      expect(await charmOf(r)).toBe(30n);           // charm tracks the FULL gift value, not the host's cut
     }
   });
 

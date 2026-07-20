@@ -12,6 +12,10 @@ export interface Seat {
   state: SeatState;
   micMuted: boolean;        // self-mute
   micMutedByAdmin: boolean; // forced mute by host/admin
+  // F3 (P1): read-only per-seat charm counter (⇐ Seat.charmCounter). Surfaced for parity; it is
+  // NOT mutated here (no seat-charm economy exists yet), so it reads 0 today. The pure FSM ignores
+  // it; clone() preserves it via spread, so it survives seat transitions untouched.
+  charm?: number;
 }
 
 export interface RoomState {

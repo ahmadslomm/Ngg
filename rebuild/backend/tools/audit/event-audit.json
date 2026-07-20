@@ -1,0 +1,597 @@
+{
+  "generatedAt": "2026-07-20T10:57:10.243Z",
+  "method": "Static analysis: each `ev:` paired with its sibling `data:` literal; client `case` labels.",
+  "totals": {
+    "serverEvents": 37,
+    "consumed": 33,
+    "unconsumed": 4,
+    "withKnownPayload": 37,
+    "clientHandlersWithoutEmitter": 4
+  },
+  "events": [
+    {
+      "event": "bomb.explode",
+      "emitSites": [
+        "src/modules/gifts/gift.routes.ts:134"
+      ],
+      "payloadKeys": [
+        "pool",
+        "triggeredBy"
+      ],
+      "clientHandlers": [
+        "lib/features/gift/gift_effect_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "bomb.tick",
+      "emitSites": [
+        "src/modules/gifts/gift.routes.ts:135"
+      ],
+      "payloadKeys": [
+        "pool"
+      ],
+      "clientHandlers": [
+        "lib/features/gift/gift_effect_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "bottle.reaction",
+      "emitSites": [
+        "src/modules/bottle/bottle.service.ts:74"
+      ],
+      "payloadKeys": [
+        "bottle_id",
+        "from"
+      ],
+      "clientHandlers": [],
+      "status": "UNCONSUMED"
+    },
+    {
+      "event": "charm.updated",
+      "emitSites": [
+        "src/modules/gifts/gift.routes.ts:124"
+      ],
+      "payloadKeys": [
+        "charm",
+        "roomId",
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "chat.message",
+      "emitSites": [
+        "src/modules/chat/chat.dto.ts:17"
+      ],
+      "payloadKeys": [
+        "id",
+        "roomId",
+        "senderId",
+        "text"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "couple.accepted",
+      "emitSites": [
+        "src/modules/couple/couple.service.ts:88"
+      ],
+      "payloadKeys": [
+        "by",
+        "couple_id"
+      ],
+      "clientHandlers": [
+        "lib/core/realtime/personal_events.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "couple.broken",
+      "emitSites": [
+        "src/modules/couple/couple.service.ts:99"
+      ],
+      "payloadKeys": [
+        "by"
+      ],
+      "clientHandlers": [
+        "lib/core/realtime/personal_events.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "couple.invite",
+      "emitSites": [
+        "src/modules/couple/couple.service.ts:68"
+      ],
+      "payloadKeys": [
+        "couple_id",
+        "from"
+      ],
+      "clientHandlers": [
+        "lib/core/realtime/personal_events.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "dm.message",
+      "emitSites": [
+        "src/modules/dm/dm.routes.ts:29"
+      ],
+      "payloadKeys": [
+        "conversationId",
+        "id",
+        "recipientId",
+        "senderId",
+        "text"
+      ],
+      "clientHandlers": [
+        "lib/core/realtime/personal_events.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "follow.new",
+      "emitSites": [
+        "src/modules/users/users.service.ts:169"
+      ],
+      "payloadKeys": [
+        "uid"
+      ],
+      "clientHandlers": [
+        "lib/core/realtime/personal_events.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "gift.combo",
+      "emitSites": [
+        "src/modules/gifts/gift.routes.ts:127"
+      ],
+      "payloadKeys": [
+        "combo",
+        "comboId",
+        "giftId",
+        "senderId"
+      ],
+      "clientHandlers": [
+        "lib/features/gift/gift_effect_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "gift.lucky",
+      "emitSites": [
+        "src/modules/gifts/gift.routes.ts:103"
+      ],
+      "payloadKeys": [
+        "coinsWon",
+        "giftId",
+        "multiplier",
+        "senderId"
+      ],
+      "clientHandlers": [
+        "lib/features/gift/gift_effect_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "gift.received",
+      "emitSites": [
+        "src/modules/gifts/gift.service.ts:125",
+        "src/modules/gifts/gift.service.ts:202",
+        "src/modules/gifts/gift.service.ts:280"
+      ],
+      "payloadKeys": [
+        "animType",
+        "animUrl",
+        "comboEnabled",
+        "giftId",
+        "recipientIds",
+        "senderId",
+        "totalCoins"
+      ],
+      "clientHandlers": [
+        "lib/features/gift/gift_effect_controller.dart",
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "mic.applied",
+      "emitSites": [
+        "src/modules/rooms/room.service.ts:295"
+      ],
+      "payloadKeys": [
+        "<spread/variable>"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "mic.update",
+      "emitSites": [
+        "src/modules/rooms/seat-state.ts:160",
+        "src/modules/rooms/seat-state.ts:177"
+      ],
+      "payloadKeys": [
+        "byAdmin",
+        "canSpeak"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "notification.new",
+      "emitSites": [
+        "src/modules/notifications/notification.dto.ts:33"
+      ],
+      "payloadKeys": [
+        "body",
+        "id",
+        "kind",
+        "payload",
+        "title"
+      ],
+      "clientHandlers": [
+        "lib/core/realtime/personal_events.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.created",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:96"
+      ],
+      "payloadKeys": [
+        "<indirect>"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.finished",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:156",
+        "src/modules/pk/pk-battle.service.ts:163",
+        "src/modules/pk/pk-battle.service.ts:238",
+        "src/modules/pk/pk-battle.service.ts:247"
+      ],
+      "payloadKeys": [
+        "aborted",
+        "cancelled",
+        "draw",
+        "reason",
+        "refused",
+        "win_uid"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.rewarded",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:271"
+      ],
+      "payloadKeys": [
+        "coins",
+        "pk_id",
+        "win_uid"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.started",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:146"
+      ],
+      "payloadKeys": [
+        "<indirect>"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.timer",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:294"
+      ],
+      "payloadKeys": [
+        "ends_at",
+        "pk_id",
+        "remaining_sec"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.updated",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:183",
+        "src/modules/pk/pk.service.ts:51",
+        "src/modules/pk/pk.service.ts:83",
+        "src/modules/pk/pk.service.ts:104"
+      ],
+      "payloadKeys": [
+        "<spread/variable>",
+        "phase",
+        "winner_id"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pool.payout",
+      "emitSites": [
+        "src/modules/gifts/gift-pool.service.ts:96"
+      ],
+      "payloadKeys": [
+        "amount",
+        "winnerId"
+      ],
+      "clientHandlers": [],
+      "status": "UNCONSUMED"
+    },
+    {
+      "event": "pool.updated",
+      "emitSites": [
+        "src/modules/gifts/gift-pool.service.ts:50"
+      ],
+      "payloadKeys": [
+        "amount"
+      ],
+      "clientHandlers": [],
+      "status": "UNCONSUMED"
+    },
+    {
+      "event": "rank.update",
+      "emitSites": [
+        "src/modules/gifts/gift.routes.ts:110"
+      ],
+      "payloadKeys": [
+        "boards"
+      ],
+      "clientHandlers": [],
+      "status": "UNCONSUMED"
+    },
+    {
+      "event": "role.changed",
+      "emitSites": [
+        "src/modules/rooms/seat-state.ts:187"
+      ],
+      "payloadKeys": [
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "room.banned",
+      "emitSites": [
+        "src/modules/moderation/moderation.routes.ts:54"
+      ],
+      "payloadKeys": [
+        "by",
+        "roomId",
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "room.emoji",
+      "emitSites": [
+        "src/modules/rooms/room.service.ts:270"
+      ],
+      "payloadKeys": [
+        "position",
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "room.joined",
+      "emitSites": [
+        "src/modules/rooms/room.service.ts:83",
+        "src/realtime/gateway.ts:72"
+      ],
+      "payloadKeys": [
+        "data",
+        "ok",
+        "uid"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "room.left",
+      "emitSites": [
+        "src/modules/rooms/room.service.ts:98",
+        "src/realtime/gateway.ts:98"
+      ],
+      "payloadKeys": [
+        "<spread/variable>",
+        "uid"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "room.rank",
+      "emitSites": [
+        "src/modules/gifts/gift.routes.ts:115"
+      ],
+      "payloadKeys": [
+        "period",
+        "roomId",
+        "top",
+        "ts"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "room.updated",
+      "emitSites": [
+        "src/modules/rooms/room.service.ts:287",
+        "src/modules/rooms/room.service.ts:378"
+      ],
+      "payloadKeys": [
+        "cover_url",
+        "room_id",
+        "theme_id"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "seat.invited",
+      "emitSites": [
+        "src/modules/rooms/seat-state.ts:226"
+      ],
+      "payloadKeys": [
+        "by",
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "seat.update",
+      "emitSites": [
+        "src/modules/rooms/seat-state.ts:72",
+        "src/modules/rooms/seat-state.ts:92",
+        "src/modules/rooms/seat-state.ts:112",
+        "src/modules/rooms/seat-state.ts:113",
+        "src/modules/rooms/seat-state.ts:137",
+        "src/modules/rooms/seat-state.ts:199",
+        "src/modules/rooms/seat-state.ts:225"
+      ],
+      "payloadKeys": [
+        "position",
+        "state",
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "system.message",
+      "emitSites": [
+        "src/modules/admin/admin.routes.ts:99"
+      ],
+      "payloadKeys": [
+        "<indirect>"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "user.kicked",
+      "emitSites": [
+        "src/modules/rooms/seat-state.ts:198"
+      ],
+      "payloadKeys": [
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "vip.purchased",
+      "emitSites": [
+        "src/modules/vip/vip.events.ts:6",
+        "src/modules/vip/vip.events.ts:22"
+      ],
+      "payloadKeys": [
+        "expires_at",
+        "granted_decorations",
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/core/realtime/personal_events.dart"
+      ],
+      "status": "consumed"
+    }
+  ],
+  "clientOnly": [
+    {
+      "event": "rocket.update",
+      "clientHandlers": [
+        "lib/features/gift/gift_effect_controller.dart"
+      ],
+      "status": "NO-SERVER-EMITTER"
+    },
+    {
+      "event": "rocket.launch",
+      "clientHandlers": [
+        "lib/features/gift/gift_effect_controller.dart"
+      ],
+      "status": "NO-SERVER-EMITTER"
+    },
+    {
+      "event": "moment.like",
+      "clientHandlers": [
+        "lib/features/moments/moments_controller.dart"
+      ],
+      "status": "NO-SERVER-EMITTER"
+    },
+    {
+      "event": "moment.comment",
+      "clientHandlers": [
+        "lib/features/moments/moments_controller.dart"
+      ],
+      "status": "NO-SERVER-EMITTER"
+    }
+  ],
+  "declaredNeverEmitted": [
+    "room.level"
+  ]
+}

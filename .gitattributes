@@ -1,0 +1,7 @@
+# Git LFS — large binary assets recovered from the original app.
+# These are stored verbatim (no transform), so several are tens of megabytes; keeping them out of
+# the git object history is what stops a clone from ballooning.
+*.mp4  filter=lfs diff=lfs merge=lfs -text
+*.zip  filter=lfs diff=lfs merge=lfs -text
+*.svga filter=lfs diff=lfs merge=lfs -text
+*.pag  filter=lfs diff=lfs merge=lfs -text

@@ -7,7 +7,7 @@
 // deferral as T2.2/T2.4.
 import { QUEUE } from '../../queue/index.js';
 import { registerWorker } from '../index.js';
-import { settle, PK_SETTLE_JOB } from '../../modules/rooms/pk.service.js';
+import { settle, PK_SETTLE_JOB } from '../../modules/pk/pk.service.js';
 
 // Settle the battle named in the job payload. Returns the settle result for observability.
 export async function runPkSettle(pkId: bigint) {
@@ -22,7 +22,27 @@ export const pkSettleProcessor = async (job?: { name?: string; data?: { pkId?: s
   return runPkSettle(BigInt(pkId));
 };
 
+/**
+ * The `rooms` queue serves the legacy per-battle delayed settle AND the room-vs-room engine's
+ * settle sweep, so its single processor dispatches by job name:
+ *   rooms:pk-settle          → the delayed settle for ONE battle (fast path)
+ *   rooms:pk-battle-settle   → the same, for the room-vs-room engine
+ *   rooms:pk-sweep           → the periodic safety net for battles whose delayed job was lost
+ */
+export const roomsQueueDispatcher = async (job?: { name?: string; data?: { pkId?: string } }) => {
+  const [{ PK_SWEEP_JOB, runPkSweep }, battle] = await Promise.all([
+    import('./pk-sweep.js'),
+    import('../../modules/pk/pk-battle.service.js'),
+  ]);
+  if (job?.name === PK_SWEEP_JOB) return runPkSweep();
+  if (job?.name === battle.PK_BATTLE_SETTLE_JOB) {
+    const id = job?.data?.pkId;
+    return id == null ? undefined : battle.settleBattle(BigInt(id));
+  }
+  return pkSettleProcessor(job);
+};
+
 // Register the consumer (T1.3 registerWorker) so the worker process settles battles. Called at boot.
 export function registerPkSettleWorker(): void {
-  registerWorker({ name: QUEUE.rooms, processor: pkSettleProcessor });
+  registerWorker({ name: QUEUE.rooms, processor: roomsQueueDispatcher });
 }

@@ -1,0 +1,2 @@
+
+{"response_status":{"error":""},"response_data":{"energyExchangeOne":200,"energy":0,"taskList":[{"type":1,"unit":100,"limit":200,"waitCollect":200,"collect":0},{"type":2,"unit":10,"limit":200,"waitCollect":200,"collect":0},{"type":3,"unit":10,"limit":200,"waitCollect":200,"collect":0},{"type":4,"unit":1,"limit":400,"waitCollect":0,"collect":0}]}}

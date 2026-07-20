@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title></title>
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    var size = 100 * (Math.min(clientWidth, 750) / 750);
+                    docEl.style.fontSize = size + 'px';
+                };
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+    </script>
+       <script src="/js/env.js"></script>
+    <script src="//fstatic.cat1314.com/js/es6-promise.auto.min.js"></script>
+    <script src="//fstatic.cat1314.com/js/runtime.js"></script>
+    <script src="//fstatic.cat1314.com/js/axios.min.js"></script>
+    <script src="//fstatic.cat1314.com/js/vue.runtime.min.js"></script>
+    <script src="//fstatic.cat1314.com/js/vuex.min.js"></script>
+    <script src="//fstatic.cat1314.com/js/vue-router.min.js"></script>
+    <script src="//fstatic.cat1314.com/js/vue-lazyload.js"></script>
+    <!-- <script src="//fstatic.cat1314.com/js/svga.lite.min.js"></script> -->
+    <script>_hash={"arcss":"f17588c9","arjs":"8e2b7a92","enjs":"24342171","esjs":"fedd2de9","facss":"77e60e73","fajs":"a7237db0","idjs":"2d3c5d54","ptjs":"13d3559f","trjs":"1e45fdf5","vendors~exifjs":"0331c7d5","vijs":"105e42fe","zhjs":"8eb19ed6"};</script>
+<link href="css/app.css?7a900a32" rel="stylesheet"></head>
+<body>
+    <div id="app"></div>
+<script>/*!
+ * Created by Guohui
+ * User: webflash2007@gmail.com
+ * Version: 1.0.0
+ */!function(e){function r(r){for(var n,i,a=r[0],c=r[1],f=r[2],s=0,p=[];s<a.length;s++)i=a[s],Object.prototype.hasOwnProperty.call(o,i)&&o[i]&&p.push(o[i][0]),o[i]=0;for(n in c)Object.prototype.hasOwnProperty.call(c,n)&&(e[n]=c[n]);for(l&&l(r);p.length;)p.shift()();return u.push.apply(u,f||[]),t()}function t(){for(var e,r=0;r<u.length;r++){for(var t=u[r],n=!0,a=1;a<t.length;a++){var c=t[a];0!==o[c]&&(n=!1)}n&&(u.splice(r--,1),e=i(i.s=t[0]))}return e}var n={},o={runtime:0},u=[];function i(r){if(n[r])return n[r].exports;var t=n[r]={i:r,l:!1,exports:{}};return e[r].call(t.exports,t,t.exports,i),t.l=!0,t.exports}i.e=function(e){var r=[],t=o[e];if(0!==t)if(t)r.push(t[2]);else{var n=new Promise((function(r,n){t=o[e]=[r,n]}));r.push(t[2]=n);var u,a=document.createElement("script");a.charset="utf-8",a.timeout=120,i.nc&&a.setAttribute("nonce",i.nc),a.src=function(e){return i.p+"js/"+({"vendors~exif":"vendors~exif"}[e]||e)+".js?"+{"vendors~exif":"0331c7d5"}[e]}(e);var c=new Error;u=function(r){a.onerror=a.onload=null,clearTimeout(f);var t=o[e];if(0!==t){if(t){var n=r&&("load"===r.type?"missing":r.type),u=r&&r.target&&r.target.src;c.message="Loading chunk "+e+" failed.\n("+n+": "+u+")",c.name="ChunkLoadError",c.type=n,c.request=u,t[1](c)}o[e]=void 0}};var f=setTimeout((function(){u({type:"timeout",target:a})}),12e4);a.onerror=a.onload=u,document.head.appendChild(a)}return Promise.all(r)},i.m=e,i.c=n,i.d=function(e,r,t){i.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},i.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.t=function(e,r){if(1&r&&(e=i(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var t=Object.create(null);if(i.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var n in e)i.d(t,n,function(r){return e[r]}.bind(null,n));return t},i.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return i.d(r,"a",r),r},i.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},i.p="",i.oe=function(e){throw console.error(e),e};var a=window.webpackJsonp=window.webpackJsonp||[],c=a.push.bind(a);a.push=r,a=a.slice();for(var f=0;f<a.length;f++)r(a[f]);var l=c;t()}([]);</script><script>/*!
+ * Created by Guohui
+ * User: webflash2007@gmail.com
+ * Version: 1.0.0
+ */
+(window.webpackJsonp=window.webpackJsonp||[]).push([["local"],{KrUS:function(e,a){var t=Object.assign||function(e){for(var a=1;a<arguments.length;a++){var t=arguments[a];for(var n in t)Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n])}return e},n=location.host;function o(e){var a={};return window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,(function(e,t,n){a[t]=n})),e&&void 0!==a[e]?decodeURIComponent(a[e]):null}window.__area={TW:"tw",VI:"vi",VN:"vn",ID:"id",AR:"ar",IN:"in"};var i,s,r=/localhost/i.test(n)||/\d+\.\d+\.\d+\.\d+/.test(n),d=/^t(est)?\./i.test(n),c=null!==o("test");window._test=r||d||c,window._localTest=r,window._platform=(i="pc",(s=navigator.userAgent).match(/iPhone|iPod|ios|iPad/i)?i="ios":s.match(/Android/i)&&(i="android"),i),window._app="miyou",window._area="tw";var l=["en","pt","zh","vi","id","ar","tr","es","fa"],v=function(){var e=n.split("."),a=e.length;return a>=2&&!/:\d+$/.test(n)?(e[a-2]+"."+e[a-1]).toLowerCase():n}();if("undefined"!=typeof hosts){var p=hosts[v]||hosts[btoa(v)]||"";if(p){var w=p.split(",");3==w.length&&-1!=l.indexOf(w[2])&&(_app=w[0],_area=w[1],l=[w[2]].concat(l))}}void 0!==window._env&&(_env=t({},_env),_env.app&&(_app=_env.app),_env.area&&(_area=_env.area),_env.lang,void 0!==_env.test&&(_test=_env.test)),_area="id";var _=l[0],h=o("lang")||navigator.language||"",u=h.toLowerCase(),f=u.split("-"),m=-1!=l.indexOf(u),g=-1!=l.indexOf(f[0]);(m||g)&&(_=h),window.__lang=_;var y=m?u:g?f[0]:l[0];window._local=y,window._host=v;var j="",N="";if("undefined"!=typeof _hash){var O=y+"css";void 0!==_hash[O]&&(j="?"+_hash[O]),N="?"+_hash[y+"js"]}var b=document.documentElement;if(b.className=b.className?b.className+" "+y:y,j){var x=document.createElement("link");x.href="css/"+y+".css"+j,x.rel="stylesheet",document.getElementsByTagName("head")[0].appendChild(x)}document.write('<script type="text/javascript" src="js/'+y+".js"+N+'"><\/script>')}},[["KrUS","runtime"]]]);</script><script type="text/javascript" src="js/app.js?147b3017"></script></body>
+</html>
