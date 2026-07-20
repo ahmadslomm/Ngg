@@ -33,6 +33,7 @@ model User {
   wallet       Wallet?
   identities   UserIdentity[]
   vipHistory   VipHistory[]
+  nobleHistory NobleHistory[]
   orders       Order[]
   ledger       WalletLedger[]
   sentGifts    GiftTransaction[] @relation("sender")
@@ -507,6 +508,51 @@ model VipLevel {
   benefits     Json?
   sort         Int     @default(0)
   history      VipHistory[]
+}
+
+// ---------------------------------------------------------------------------------------------
+// NOBLE — a system the original ran ALONGSIDE VIP, not as part of it.
+//
+// Evidence: four decompiled user DTOs (t43, bn0, C5619a, C5697rf) carry `noble_level` AND vip
+// fields simultaneously, so a user holds both at once. `Action/Noble.*` is its own endpoint family.
+// Sharing VipLevel would therefore misrepresent the original, which is why this is a separate model.
+//
+// Tiers below are RECOVERED, not designed: `Action/Noble.getUserNoble` was captured live and
+// returned 15 levels with exact prices. Fields the capture did not carry (name, art, duration,
+// benefits) are nullable and stay NULL — the original's values for them are UNKNOWN and are not
+// invented here.
+model NobleLevel {
+  level      Int      @id
+  /// Display name. UNKNOWN — the captured level_list carries only level + price.
+  name       String?  @db.VarChar(32)
+  /// Recovered verbatim from Action/Noble.getUserNoble.level_list[].price.
+  priceCoins BigInt
+  /// UNKNOWN: the capture exposes an absolute `expire_time` per tier, not a duration.
+  durationDays Int?
+  badgeUrl   String?
+  frameUrl   String?
+  entryEffectUrl String?
+  benefits   Json?
+  sort       Int      @default(0)
+  history    NobleHistory[]
+  @@index([sort])
+}
+
+/// A user's noble purchases/grants. Mirrors VipHistory so both systems are auditable the same way.
+model NobleHistory {
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt
+  level     Int
+  /// Absolute expiry, matching the original's `expire_time` semantics.
+  expiresAt DateTime
+  /// The original distinguishes a trial ("experience") noble via `is_experience_noble`.
+  isExperience Boolean @default(false)
+  source    Int      @default(0) // 0 purchase, 1 grant, 2 renewal
+  createdAt DateTime @default(now())
+  user      User       @relation(fields: [userId], references: [id])
+  tier      NobleLevel @relation(fields: [level], references: [level])
+  @@index([userId, expiresAt])
+  @@index([level])
 }
 
 model VipHistory {
