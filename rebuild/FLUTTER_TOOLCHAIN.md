@@ -112,7 +112,53 @@ None of these block the suite — each is a component that degrades to a stub un
 
 ---
 
-## 5. Status
+## 5. 🔴 Production build finding: APK size
+
+The release build **succeeds**, which is the point of the exercise — but the artefact is too large
+to ship as-is.
+
+| Artefact | Size |
+|---|---|
+| Universal APK (all ABIs) | **332.8 MB** |
+| App Bundle (`.aab`) | 232.5 MB |
+| **Split APK — arm64-v8a** | **151.9 MB** ← what a modern phone actually downloads |
+| Split APK — armeabi-v7a | 129.7 MB |
+| Split APK — x86_64 | 127.0 MB |
+
+**Google Play rejects an APK over 150 MB.** Even the arm64 split is 1.9 MB over.
+
+### Where the weight is
+
+**271 MB of the 332 MB is native libraries, tripled across three ABIs:**
+
+| ABI | Native libs |
+|---|---|
+| arm64-v8a | 106.0 MB |
+| armeabi-v7a | 83.8 MB |
+| x86_64 | 81.0 MB |
+
+The single largest contributor is the **Agora RTC SDK** — 20–28 MB *per ABI*. Bundled assets are
+only **45 MB** (30 MB animations, 14 MB H5), so trimming assets alone would not fix this.
+
+### What to do (each verifiable, none guesswork)
+
+1. **Ship the App Bundle, not a universal APK.** Play then serves per-device splits. This is
+   required for new apps anyway and is the single biggest win.
+2. **Drop `x86_64`.** It exists for emulators; production phones are ARM. Removes ~81 MB from the
+   bundle.
+3. **Ask Agora for the slim/voice-only SDK.** This app uses voice rooms — the full RTC SDK carries
+   video encoders it never invokes. Vendor-dependent, so it is a question to put to Agora rather
+   than something to assume.
+4. **Move the 30 MB of animations to CDN/R2 with on-demand fetch.** The asset pipeline and the
+   content-addressed mirror already exist; the client would resolve them at runtime instead of
+   bundling them.
+
+Steps 1 + 2 alone bring the arm64 download comfortably under the limit. **Not done here** because
+each is a product/vendor decision with a real trade-off, not a defect to silently patch.
+
+---
+
+## 6. Status
 
 | Check | Result |
 |---|---|

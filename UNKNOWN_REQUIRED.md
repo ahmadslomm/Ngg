@@ -108,6 +108,23 @@ client-side SDK with no server contract for us to reconstruct.
 Firebase/Amplitude SDK in the client), not a recoverable behaviour. Monitoring — which IS ours to
 build — is covered by `/health/invariants` and `/metrics`.
 
+## 3c. Decisions needed on APK size (product/vendor, not evidence)
+
+The release APK builds successfully at **332.8 MB universal / 151.9 MB arm64 split**. Google Play
+rejects an APK over **150 MB**, so the arm64 split is 1.9 MB over.
+
+271 MB of it is native libraries across three ABIs; the Agora RTC SDK alone is 20–28 MB per ABI.
+Bundled assets are only 45 MB.
+
+Four options, all verifiable, each needing a decision rather than a guess:
+
+1. Ship the **App Bundle** instead of a universal APK (required for new Play apps anyway).
+2. **Drop `x86_64`** — emulator-only; removes ~81 MB.
+3. Ask **Agora** whether a voice-only/slim SDK variant is available. This app never uses video.
+4. Move the **30 MB of animations to R2** with on-demand fetch — the mirror already exists.
+
+(1) + (2) alone bring arm64 under the limit. See `rebuild/FLUTTER_TOOLCHAIN.md` §5.
+
 ## 4. Environment blockers (not evidence)
 
 - **`R2_PUBLIC_BASE_URL` is an `r2.dev` subdomain** — Cloudflare rate-limits it; not for production.
