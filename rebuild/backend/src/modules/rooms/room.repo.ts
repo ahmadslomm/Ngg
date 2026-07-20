@@ -1,6 +1,7 @@
 // Repository boundary for the room vertical. The service depends on this interface,
 // not on Prisma — so the exact same service logic is exercised by API tests through an
 // in-memory repo (no Postgres needed) and runs on Prisma in production.
+import type { DbClient } from '../../lib/db.js';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import type { RoomState, Seat } from './seat-state.js';
 import { SeatState, Role } from './seat-state.js';
@@ -96,12 +97,27 @@ export interface ApplyRow {
   createdAt: Date;
 }
 
+/** Result of a seat mutation: a domain rejection, or the layout to persist plus events to emit. */
+export type SeatMutation =
+  | { ok: false; error: string }
+  | { ok: true; seats: Seat[]; events: Array<{ ev: string; data: Record<string, unknown> }> };
+
 export interface RoomRepo {
   createRoom(input: CreateRoomInput): Promise<RoomRecord>;
   getRoom(roomId: string): Promise<RoomRecord | null>;
   // F1 (P1): full read-only room info for `GET /rooms/:id` (null when the room doesn't exist).
   getRoomInfo(roomId: string): Promise<RoomInfoRecord | null>;
-  getRoomState(roomId: string): Promise<RoomState | null>;
+  getRoomState(roomId: string, client?: DbClient): Promise<RoomState | null>;
+  /**
+   * ATOMIC read-modify-write of the seat map. `decide` receives the current state (null when the
+   * room is gone) and returns either a rejection or the next seat layout; the implementation
+   * guarantees the read and the write observe no interleaved change. Without this, two users
+   * claiming one seat both saw it empty and both were told they had won.
+   */
+  mutateSeats(
+    roomId: string,
+    decide: (state: RoomState | null) => SeatMutation,
+  ): Promise<SeatMutation>;
   // T1.11: a single member's role + permissions bitmap (null when not a member).
   getMembership(roomId: string, userId: string): Promise<Membership | null>;
   // F2 (P1): a page of the room's members (join order), and the total member count. Source of truth
@@ -115,7 +131,7 @@ export interface RoomRepo {
   listApplies(roomId: string, status: number): Promise<ApplyRow[]>;
   countApplies(roomId: string, status: number): Promise<number>;
   resolveApply(id: string, fromStatus: number, toStatus: number, resolvedById: string | null): Promise<{ count: number }>;
-  persistSeats(roomId: string, seats: Seat[]): Promise<void>;
+  persistSeats(roomId: string, seats: Seat[], client?: DbClient): Promise<void>;
   persistRoles(roomId: string, roles: Record<string, Role>): Promise<void>;
   addMember(roomId: string, userId: string, role: Role): Promise<void>;
   removeMember(roomId: string, userId: string): Promise<void>;
@@ -262,6 +278,21 @@ export class InMemoryRoomRepo implements RoomRepo {
     r.status = toStatus; r.resolvedById = resolvedById;
     return { count: 1 };
   }
+  /**
+   * In-memory rooms are mutated synchronously with no awaits between read and write, so the
+   * decide-then-persist sequence is already atomic with respect to other callers. The interface
+   * is honoured so services behave identically against either repo.
+   */
+  async mutateSeats(
+    roomId: string,
+    decide: (state: RoomState | null) => SeatMutation,
+  ): Promise<SeatMutation> {
+    const state = await this.getRoomState(roomId);
+    const outcome = decide(state);
+    if (outcome.ok) await this.persistSeats(roomId, outcome.seats);
+    return outcome;
+  }
+
   async persistSeats(roomId: string, seats: Seat[]) {
     const s = this.states.get(roomId); if (s) s.seats = seats.map((x) => ({ ...x }));
   }

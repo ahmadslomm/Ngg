@@ -17,7 +17,8 @@ afterAll(async () => { await app.close(); await prisma.$disconnect(); });
 
 describe('VIP API', () => {
   it('lists plans (badges/frames/privileges)', async () => {
-    const r = await inject(app, null, 'GET', '/vip/plans');
+    const u = await makeUser({});
+    const r = await inject(app, u, 'GET', '/vip/plans');
     expect(r.status).toBe(200);
     const p = r.body.data.find((x: any) => x.level === L1);
     expect(p.badgeUrl).toBe('b.png');
@@ -85,7 +86,8 @@ describe('VIP API', () => {
 
   // --- T2.1 additions ---
   it('GET /vip/levels returns the tier list (alias of /vip/plans)', async () => {
-    const r = await inject(app, null, 'GET', '/vip/levels');
+    const u = await makeUser({});
+    const r = await inject(app, u, 'GET', '/vip/levels');
     expect(r.status).toBe(200);
     expect(r.body.data.find((x: any) => x.level === L1).name).toBe('TestBronze');
   });

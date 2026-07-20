@@ -23,7 +23,7 @@ export async function coupleRoutes(app: FastifyInstance) {
     } catch (e) { return replyError(reply, e); }
   });
 
-  app.get('/couple/rank', async (req) => {
+  app.get('/couple/rank', { preHandler: [app.authenticate] }, async (req) => {
     const limit = Number((req.query as any)?.limit) || 50;
     return ok(serialize(await coupleService.rank(limit)));
   });

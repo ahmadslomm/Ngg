@@ -6,7 +6,7 @@ import { medalService } from './medal.service.js';
 const uid = (req: any) => req.user.id as bigint;
 
 export async function medalRoutes(app: FastifyInstance) {
-  app.get('/medals', async () => ok(serialize(await medalService.listCatalogue())));
+  app.get('/medals', { preHandler: [app.authenticate] }, async () => ok(serialize(await medalService.listCatalogue())));
 
   app.get('/medals/me', { preHandler: [app.authenticate] }, async (req) => {
     await medalService.syncDerived(uid(req)).catch(() => {}); // best-effort refresh of derived badges

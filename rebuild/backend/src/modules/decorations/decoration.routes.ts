@@ -9,7 +9,7 @@ const uid = (req: any) => req.user.id as bigint;
 
 export async function decorationRoutes(app: FastifyInstance) {
   // Public catalog.
-  app.get('/decorations', async () => ok(serialize(await decorationService.listCatalogue())));
+  app.get('/decorations', { preHandler: [app.authenticate] }, async () => ok(serialize(await decorationService.listCatalogue())));
 
   // Own inventory (self-only).
   app.get('/decorations/me', { preHandler: [app.authenticate] }, async (req) =>

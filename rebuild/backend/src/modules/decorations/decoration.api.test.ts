@@ -19,7 +19,8 @@ function mkItem(kind: number, url: string, price = 0n) {
 describe('decorations API (T1.13)', () => {
   it('GET /decorations lists enabled catalog items', async () => {
     const item = await mkItem(1, 'entry.png');
-    const cat = await inject(app, null, 'GET', '/decorations');
+    const u = await makeUser({});
+    const cat = await inject(app, u, 'GET', '/decorations');
     expect(cat.status).toBe(200);
     expect(cat.body.data.some((d: any) => d.id === String(item.id))).toBe(true);
   });

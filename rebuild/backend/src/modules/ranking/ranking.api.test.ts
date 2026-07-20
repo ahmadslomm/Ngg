@@ -10,6 +10,10 @@ const uniqBoard = () => 900000 + Math.floor(Math.random() * 100000);
 
 afterAll(async () => { redis.disconnect(); await prisma.$disconnect(); });
 
+// /rankings is authenticated (the original required a token on every read); any uid works
+// because the board is global, not viewer-relative.
+const RANK_TEST_UID = '424242';
+
 describe('ranking service (Redis sorted sets)', () => {
   it('orders by score desc with correct rank and myRank', async () => {
     const b = uniqBoard();
@@ -57,7 +61,7 @@ describe('ranking route', () => {
     await redis.del(`rank:${Board.Charm}:${Period.Day}:${dayKey(new Date())}`);
     await rankingService.addScore(Board.Charm, 11n, 5);
     await rankingService.addScore(Board.Charm, 12n, 9);
-    const r = await inject(app, null, 'GET', `/rankings?board=${Board.Charm}&period=${Period.Day}`);
+    const r = await inject(app, RANK_TEST_UID, 'GET', `/rankings?board=${Board.Charm}&period=${Period.Day}`);
     expect(r.status).toBe(200);
     const ids = r.body.data.items.map((e: any) => e.subject_id);
     expect(ids.indexOf('12')).toBeLessThan(ids.indexOf('11')); // 12 (score 9) ranks above 11 (score 5)

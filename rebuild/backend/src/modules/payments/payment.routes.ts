@@ -15,6 +15,10 @@ const uid = (req: any) => req.user.id as bigint;
 
 export async function paymentRoutes(app: FastifyInstance) {
   // Recharge catalog (public). Bare array shape preserved from the original wallet route.
+  // Deliberately PUBLIC. The evidence that the original required a token for every read covers the
+  // signed gateway actions (0 of 124 H5 actions omitted one); this route maps to
+  // `/googleplaySub/subProductList.php`, a separate PHP path NOT in that contract, so that evidence
+  // does not extend here. A coin-package price list is also not sensitive. Prior decision preserved.
   app.get('/store/products', async (_req, reply) => {
     try {
       return ok(serialize((await paymentService.listProducts()).map(toProductDTO)));

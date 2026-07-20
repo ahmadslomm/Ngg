@@ -21,13 +21,13 @@ export async function agencyRoutes(app: FastifyInstance) {
     } catch (e) { return replyError(reply, e); }
   });
 
-  app.get('/agencies/:id', async (req, reply) => {
+  app.get('/agencies/:id', { preHandler: [app.authenticate] }, async (req, reply) => {
     const a = await agencyService.getAgency(idOf(req));
     if (!a) return reply.code(404).send({ code: 4040, message: 'agency_not_found' });
     return ok(serialize(toAgencyDTO(a)));
   });
 
-  app.get('/agencies/:id/members', async (req) =>
+  app.get('/agencies/:id/members', { preHandler: [app.authenticate] }, async (req) =>
     ok(serialize((await agencyService.listMembers(idOf(req))).map(toMemberDTO))));
 
   // The caller's own resolved capability (owner/president/bd/member/none).

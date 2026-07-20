@@ -2,9 +2,11 @@
 // Untested against a live DB in this pass (no Postgres provisioned) — the same service
 // logic is verified through InMemoryRoomRepo. Bring up postgres + `prisma migrate` to
 // exercise this path end-to-end.
+import type { DbClient } from '../../lib/db.js';
+import { serializableTx } from '../../lib/tx.js';
 import { prisma } from '../../lib/prisma.js';
 import { Prisma } from '@prisma/client';
-import type { RoomRepo, CreateRoomInput, RoomRecord, RoomInfoRecord, RoomTheme, MemberRow, ApplyRow } from './room.repo.js';
+import type { RoomRepo, SeatMutation, CreateRoomInput, RoomRecord, RoomInfoRecord, RoomTheme, MemberRow, ApplyRow } from './room.repo.js';
 import { freshSeats, hashRoomPassword, ApplyStatus } from './room.repo.js';
 import { RoomState, Role, Seat, SeatState } from './seat-state.js';
 
@@ -134,13 +136,13 @@ export class PrismaRoomRepo implements RoomRepo {
     return { count: res.count };
   }
 
-  async getRoomState(roomId: string): Promise<RoomState | null> {
+  async getRoomState(roomId: string, client: DbClient = prisma): Promise<RoomState | null> {
     const id = BigInt(roomId);
-    const [room, members, seats] = await Promise.all([
-      prisma.room.findUnique({ where: { id } }),
-      prisma.roomMember.findMany({ where: { roomId: id } }),
-      prisma.seat.findMany({ where: { roomId: id }, orderBy: { position: 'asc' } }),
-    ]);
+    // Sequential, not Promise.all: inside an interactive transaction the three reads must share
+    // the same connection, and concurrent queries on one tx client are not allowed.
+    const room = await client.room.findUnique({ where: { id } });
+    const members = await client.roomMember.findMany({ where: { roomId: id } });
+    const seats = await client.seat.findMany({ where: { roomId: id }, orderBy: { position: 'asc' } });
     if (!room) return null;
     const roles: Record<string, Role> = {};
     for (const m of members) if (m.role >= Role.Admin && String(m.userId) !== String(room.ownerId)) {
@@ -157,11 +159,31 @@ export class PrismaRoomRepo implements RoomRepo {
     return { ownerId: String(room.ownerId), roles, seats: mapped };
   }
 
-  async persistSeats(roomId: string, seats: Seat[]): Promise<void> {
+  /**
+   * Atomic read-modify-write of the seat map (see RoomRepo.mutateSeats).
+   *
+   * SERIALIZABLE is what makes this correct: the state read and the seat write happen on one
+   * transaction client, so Postgres detects two claimants of the same seat as a conflict and
+   * aborts the loser, which `serializableTx` retries. On the retry the loser reads the seat as
+   * occupied and returns a clean domain rejection instead of silently overwriting the winner.
+   */
+  async mutateSeats(
+    roomId: string,
+    decide: (state: RoomState | null) => SeatMutation,
+  ): Promise<SeatMutation> {
+    return serializableTx(async (tx) => {
+      const state = await this.getRoomState(roomId, tx);
+      const outcome = decide(state);
+      if (outcome.ok) await this.persistSeats(roomId, outcome.seats, tx);
+      return outcome;
+    });
+  }
+
+  async persistSeats(roomId: string, seats: Seat[], client?: DbClient): Promise<void> {
     const id = BigInt(roomId);
-    await prisma.$transaction(
+    const write = (c: DbClient) => Promise.all(
       seats.map((s) =>
-        prisma.seat.update({
+        c.seat.update({
           where: { roomId_position: { roomId: id, position: s.position } },
           data: {
             userId: s.userId ? BigInt(s.userId) : null,
@@ -172,6 +194,9 @@ export class PrismaRoomRepo implements RoomRepo {
         }),
       ),
     );
+    // Already inside a caller's transaction -> just write; otherwise open our own.
+    if (client) await write(client);
+    else await prisma.$transaction((tx) => write(tx));
   }
 
   async persistRoles(roomId: string, roles: Record<string, Role>): Promise<void> {

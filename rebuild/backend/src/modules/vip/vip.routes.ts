@@ -6,11 +6,11 @@ import { AppError, ok, replyError, serialize } from '../../lib/errors.js';
 export async function vipRoutes(app: FastifyInstance) {
   const uid = (req: any) => req.user.id as bigint;
 
-  app.get('/vip/plans', async () => ok(serialize(await vipService.listPlans())));
+  app.get('/vip/plans', { preHandler: [app.authenticate] }, async () => ok(serialize(await vipService.listPlans())));
 
   // T2.1 alias for the tier list (the plan/level rows are the same data). /vip/plans kept for
   // Phase-1 compatibility.
-  app.get('/vip/levels', async () => ok(serialize(await vipService.listPlans())));
+  app.get('/vip/levels', { preHandler: [app.authenticate] }, async () => ok(serialize(await vipService.listPlans())));
 
   app.get('/vip/me', { preHandler: [app.authenticate] }, async (req) => ok(serialize(await vipService.getMyVip(uid(req)))));
 

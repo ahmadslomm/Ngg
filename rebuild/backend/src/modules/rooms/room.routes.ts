@@ -120,7 +120,7 @@ export function roomRoutes(
       return { code: 0, message: 'ok', data: { items, period: q.period } };
     });
 
-    app.get('/rooms/:id/seats', async (req, reply) => {
+    app.get('/rooms/:id/seats', { preHandler: [app.authenticate] }, async (req, reply) => {
       const r = await service.getSeats((req.params as any).id);
       if (!r.ok) return fail(reply, r.error!);
       return { code: 0, message: 'ok', data: await withOwner(r.data) };

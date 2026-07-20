@@ -83,12 +83,21 @@ export class WalletService {
   async applyDelta(input: BalanceMutation, opts: ApplyOptions = {}) {
     if (input.delta === 0n && !input.allowZero) throw new AppError('invalid_amount', 400);
     if (!(input.currency in CURRENCY_COLUMN)) throw new AppError('invalid_currency', 400);
-    const run = (client: DbClient) => this.applyDeltaIn(client, input);
-    if (opts.tx) return run(opts.tx);
+    if (opts.tx) return this.applyDeltaIn(opts.tx, input);
     if (opts.idempotencyKey) {
-      return withIdempotency({ key: opts.idempotencyKey, scope: `wallet:delta:${input.userId}` }, () => serializableTx(run));
+      const scope = `wallet:delta:${input.userId}`;
+      // Persist the SAME key on the ledger row, scoped so it is globally unique. Redis is the fast
+      // guard, but it fails OPEN: flush or lose the instance between a request and its retry and
+      // the operation runs twice with nothing to stop it. `WalletLedger.idempotencyKey` is unique,
+      // so writing it here makes the database the backstop that fails CLOSED. Without this the
+      // column existed but was never populated on this path — the constraint was inert.
+      const anchored = { ...input, idempotencyKey: input.idempotencyKey ?? `${scope}:${opts.idempotencyKey}` };
+      return withIdempotency(
+        { key: opts.idempotencyKey, scope },
+        () => serializableTx((client: DbClient) => this.applyDeltaIn(client, anchored)),
+      );
     }
-    return serializableTx(run);
+    return serializableTx((client: DbClient) => this.applyDeltaIn(client, input));
   }
 
   // Core mutation, always inside a tx client. Reads current balance, computes the new value for the

@@ -25,7 +25,7 @@ export async function giftRoutes(app: FastifyInstance) {
   // Catalogue — public, unchanged shape. When the caller is authenticated we merge their
   // backpack quantity per gift (T1.14); anonymous callers get bag_qty 0. Optional auth: a
   // best-effort token verify never blocks the public catalog.
-  app.get('/gifts', async (req) => {
+  app.get('/gifts', { preHandler: [app.authenticate] }, async (req) => {
     const q = req.query as any;
     const category = q?.category;
     let userId: bigint | undefined;

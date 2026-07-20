@@ -18,7 +18,7 @@ async function newAgency() {
 describe('Agency API', () => {
   it('create makes the owner a President member', async () => {
     const { president, agencyId } = await newAgency();
-    const members = await inject(app, null, 'GET', `/agencies/${agencyId}/members`);
+    const members = await inject(app, president, 'GET', `/agencies/${agencyId}/members`);
     const owner = members.body.data.find((m: any) => m.userId === String(president));
     expect(owner.role).toBe(AgencyRole.President);
   });
@@ -32,7 +32,7 @@ describe('Agency API', () => {
     expect(pending.body.data.length).toBe(1);
     const resp = await inject(app, host, 'POST', `/agencies/invites/${inv.body.data.id}/respond`, { accept: true });
     expect(resp.body.data.accepted).toBe(true);
-    const members = await inject(app, null, 'GET', `/agencies/${agencyId}/members`);
+    const members = await inject(app, host, 'GET', `/agencies/${agencyId}/members`);
     expect(members.body.data.some((m: any) => m.userId === String(host))).toBe(true);
   });
 

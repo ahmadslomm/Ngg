@@ -100,17 +100,39 @@ export class RoomService {
   }
 
   // Generic apply for the seat transitions that return { seats, events }.
+  /**
+   * Read the seat map, compute the next layout, persist it — as ONE serializable transaction.
+   *
+   * This used to read, compute and write without a transaction. Under contention that loses
+   * writes: two users claiming the same seat both read "empty", both compute "mine", and the
+   * second write silently overwrote the first, so the service told BOTH they had succeeded while
+   * the database held one occupant. In a voice room that means users believing they hold a mic
+   * they do not own. `seat-concurrency.test.ts` pins the behaviour (it reproduced 6 winners for 1
+   * seat before this change).
+   *
+   * Two details matter:
+   *  - the state read and the seat write share the transaction client, so Postgres SERIALIZABLE
+   *    can detect the conflict and abort the loser; `serializableTx` then retries it, and on the
+   *    retry the loser sees the seat as taken and fails cleanly with a domain error.
+   *  - events are emitted AFTER the transaction commits. Emitting inside would broadcast a seat
+   *    change that a retry might roll back, and would double-emit on every retry.
+   */
   private async applySeat(
     roomId: string,
     fn: (state: RoomState) => Result,
   ): Promise<ServiceResult<{ seats: Seat[] }>> {
-    const state = await this.repo.getRoomState(roomId);
-    if (!state) return { ok: false, error: 'room_unavailable' };
-    const r = fn(state);
-    if (!r.ok) return { ok: false, error: r.error };
-    await this.repo.persistSeats(roomId, r.seats);
-    for (const e of r.events) await this.emit(this.channel(roomId), e);
-    return { ok: true, data: { seats: r.seats } };
+    // The transaction is owned by the REPO: this service must not import infrastructure
+    // (architecture Rule 3 keeps prisma out of everything but repositories).
+    const outcome = await this.repo.mutateSeats(roomId, (state) => {
+      if (!state) return { ok: false as const, error: 'room_unavailable' };
+      const r = fn(state);
+      if (!r.ok) return { ok: false as const, error: r.error };
+      return { ok: true as const, seats: r.seats, events: r.events };
+    });
+
+    if (!outcome.ok) return { ok: false, error: outcome.error };
+    for (const e of outcome.events) await this.emit(this.channel(roomId), e);
+    return { ok: true, data: { seats: outcome.seats } };
   }
 
   takeSeat(roomId: string, userId: string, pos: number) {

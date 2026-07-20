@@ -7,7 +7,7 @@ import { boardQuerySchema } from './ranking.schema.js';
 import type { BoardResponseDTO, MyRankDTO } from './ranking.dto.js';
 
 export async function rankingRoutes(app: FastifyInstance) {
-  app.get('/rankings', async (req) => {
+  app.get('/rankings', { preHandler: [app.authenticate] }, async (req) => {
     const { board, period, limit } = boardQuerySchema.parse(req.query);
     const data: BoardResponseDTO = { board, period, items: await rankingService.getBoard(board, period, limit) };
     return ok(data);
