@@ -148,11 +148,15 @@ describe('realtime gateway (live WebSocket round-trip)', () => {
     http.close();
   });
 
-  it('M1: calls onRoomLeave for each joined room on an unclean disconnect', async () => {
+  it('M1: an unclean disconnect departs the room only AFTER the grace window', async () => {
+    // The drop no longer departs immediately: on a mobile network a dropped socket is far more
+    // often a tunnel than a user leaving, and departing frees their seat and broadcasts room.left.
+    // A short injected window exercises both sides without waiting out the real 30s.
     const http = createServer();
     const leaves: Array<[string, string]> = [];
     const server = initRealtime(http, async (t) => (t ? 8n : null), {
       onRoomLeave: async (uid, roomId) => { leaves.push([String(uid), roomId]); },
+      reconnectGraceMs: 250,
     });
     const port = await listen(http);
     const client = Client(`http://localhost:${port}`, { auth: { token: 'x' }, transports: ['websocket'] });
@@ -161,11 +165,47 @@ describe('realtime gateway (live WebSocket round-trip)', () => {
     client.emit('room.join', '8');
     await wait(120);
     client.close(); // unclean drop — no room.leave sent
-    // Wait for the server-side `disconnecting` handler to fire the hook.
-    for (let i = 0; i < 50 && leaves.length === 0; i++) await wait(20);
 
+    // Inside the window: still a member, seat still held.
+    await wait(80);
+    expect(leaves).toEqual([]);
+
+    // Past the window: the departure commits exactly as before.
+    for (let i = 0; i < 50 && leaves.length === 0; i++) await wait(20);
     expect(leaves).toContainEqual(['8', '8']);
 
+    await new Promise<void>((r) => server.close(() => r()));
+    http.close();
+  });
+
+  it('M1b: reconnecting inside the grace window never departs the room', async () => {
+    const http = createServer();
+    const leaves: Array<[string, string]> = [];
+    const server = initRealtime(http, async (t) => (t ? 9n : null), {
+      onRoomLeave: async (uid, roomId) => { leaves.push([String(uid), roomId]); },
+      reconnectGraceMs: 400,
+    });
+    const port = await listen(http);
+    const mk = () => Client(`http://localhost:${port}`, { auth: { token: 'x' }, transports: ['websocket'] });
+
+    const first = mk();
+    await new Promise<void>((r) => first.on('connect', () => r()));
+    first.emit('room.join', '9');
+    await wait(120);
+    first.close();
+
+    // Come back well inside the window and re-join the same room.
+    await wait(80);
+    const second = mk();
+    await new Promise<void>((r) => second.on('connect', () => r()));
+    second.emit('room.join', '9');
+    await wait(120);
+
+    // Let the original deadline pass; the departure must have been cancelled.
+    await wait(500);
+    expect(leaves).toEqual([]);
+
+    second.close();
     await new Promise<void>((r) => server.close(() => r()));
     http.close();
   });
@@ -175,6 +215,8 @@ describe('realtime gateway (live WebSocket round-trip)', () => {
     const leaves = new Set<string>();
     const server = initRealtime(http, async (t) => (t ? 5n : null), {
       onRoomLeave: async (_uid, roomId) => { leaves.add(roomId); },
+      // Short window: this test is about EVERY membership being released, not about the timing.
+      reconnectGraceMs: 150,
     });
     const port = await listen(http);
     const client = Client(`http://localhost:${port}`, { auth: { token: 'x' }, transports: ['websocket'] });

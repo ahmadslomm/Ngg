@@ -1,6 +1,7 @@
 // Realtime gateway — owned replacement for the 147-opcode Tencent-IM layer.
 // Named JSON events over Socket.IO, fanned out cluster-wide via the Redis adapter.
 // Authoritative state changes always arrive via REST; the server then broadcasts.
+import { scheduleDeparture, cancelDeparture } from './reconnect-grace.js';
 import { Server as IOServer } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
 import type { Server as HttpServer } from 'node:http';
@@ -20,6 +21,11 @@ export interface RealtimeHooks {
   // Called for each room a socket was in when it drops uncleanly (app killed / network loss),
   // so server-side membership + onlineCount don't ghost. Best-effort.
   onRoomLeave?: (uid: bigint, roomId: string) => Promise<void>;
+  /**
+   * Grace window before an unclean drop is committed as a departure. Defaults to GRACE_MS
+   * (30s). Injectable so tests can exercise both sides of the window without waiting it out.
+   */
+  reconnectGraceMs?: number;
 }
 
 export function initRealtime(
@@ -54,13 +60,17 @@ export function initRealtime(
   // Subscribe a socket to a room channel: authorize (H2 ban/suspend), join, record presence, and
   // announce the arrival. `reauthorize` is false only for a ticket auto-join, whose ban check
   // already ran on connect. A denied join is silent (the REST /join already 403s).
-  async function joinRoom(socket: any, uid: bigint, roomId: string, reauthorize: boolean) {
+  async function joinRoom(socket: any, uid: bigint, roomId: string, reauthorize: boolean, resumed = false) {
     const rid = String(roomId);
     if (reauthorize && hooks.authorizeJoin && !(await hooks.authorizeJoin(uid, rid))) return;
     const room = `room:${rid}`;
     await socket.join(room);
     await redis.zadd(`${room}:presence`, Date.now(), String(uid)); // presence heartbeat set
-    socket.to(room).emit('event', { ev: 'room.joined', room, ts: Date.now(), data: { uid: String(uid) } });
+    // A resume broadcasts nothing: the room never saw this user leave, so announcing an arrival
+    // would show a spurious entry effect and re-play the join banner on every flaky connection.
+    if (!resumed) {
+      socket.to(room).emit('event', { ev: 'room.joined', room, ts: Date.now(), data: { uid: String(uid) } });
+    }
   }
 
   io.on('connection', (socket) => {
@@ -75,7 +85,10 @@ export function initRealtime(
     if (ticketRoom) void joinRoom(socket, uid, ticketRoom, false);
 
     socket.on('room.join', async (roomId: string) => {
-      await joinRoom(socket, uid, String(roomId), true);
+      // A join inside the grace window is a RESUME, not an arrival: cancel the deferred departure
+      // so the user keeps the seat they never actually gave up.
+      const resumed = cancelDeparture(String(uid), String(roomId));
+      await joinRoom(socket, uid, String(roomId), true, resumed);
     });
 
     socket.on('room.leave', async (roomId: string) => {
@@ -98,8 +111,13 @@ export function initRealtime(
       for (const r of socket.rooms) {
         if (!r.startsWith('room:')) continue; // skip the personal `user:<uid>` + own socket id
         const roomId = r.slice('room:'.length);
+        // Presence is pruned immediately — it is a liveness signal and a dropped socket is not
+        // live. The DEPARTURE, which frees the seat and broadcasts room.left, waits out the grace
+        // window: on mobile networks a drop is far more often a tunnel than a user leaving.
         await redis.zrem(`${r}:presence`, String(uid)).catch(() => {});
-        if (hooks.onRoomLeave) await hooks.onRoomLeave(uid, roomId).catch(() => {});
+        scheduleDeparture(String(uid), roomId, async () => {
+          if (hooks.onRoomLeave) await hooks.onRoomLeave(uid, roomId);
+        }, hooks.reconnectGraceMs);
       }
     });
   });
