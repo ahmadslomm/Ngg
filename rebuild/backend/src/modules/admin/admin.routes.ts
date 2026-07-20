@@ -24,12 +24,62 @@ export async function adminRoutes(app: FastifyInstance) {
   app.post('/admin/users/:id/unsuspend', guard, async (req) => ok(await adminService.unsuspendUser(aid(req), BigInt((req.params as any).id))));
 
   // wallet
-  app.post('/admin/coins/adjust', guard, async (req, reply) => {
+  // Coin adjustment MINTS currency from nothing — the highest-impact route in the system. Admin auth
+  // is the control; the rate limit bounds the blast radius of a stolen admin token.
+  app.post('/admin/coins/adjust', { preHandler: [app.authenticateAdmin], config: { rateLimit: { max: 20, timeWindow: '1 minute' } } }, async (req, reply) => {
     try {
       const b = z.object({ user_id: z.coerce.bigint(), delta: z.coerce.bigint(), reason: z.string().min(1).max(255) }).parse(req.body);
       return ok(serialize(await adminService.adjustCoins(aid(req), b.user_id, b.delta, b.reason)));
     } catch (e) { return replyError(reply, e); }
   });
+  // withdrawals — cash-out review queue
+  app.get('/admin/withdrawals', guard, async (req, reply) => {
+    try {
+      const q = z.object({ status: z.coerce.number().int().min(0).max(6).default(0), take: z.coerce.number().int().min(1).max(200).default(100) }).parse(req.query);
+      return ok(serialize(await adminService.listWithdrawals(aid(req), q.status, q.take)));
+    } catch (e) { return replyError(reply, e); }
+  });
+  app.get('/admin/withdrawals/:id/history', guard, async (req, reply) => {
+    try { return ok(serialize(await adminService.withdrawalHistory(aid(req), BigInt((req.params as any).id)))); }
+    catch (e) { return replyError(reply, e); }
+  });
+  // Written out one by one, NOT registered from a loop. A templated path is invisible to the route
+  // auditor, and cash-out approval is the last place to hide routes from the tool that checks their
+  // guards. The rate limit is deliberately low: these move real money and are human-driven.
+  // preHandler written out rather than spread from `guard`: the route auditor resolves a hoisted
+  // alias but not a spread of one, and these showed as UNGUARDED while actually being guarded —
+  // a false negative on a money route is worse than the repetition.
+  const wdGuard = {
+    preHandler: [app.authenticateAdmin],
+    config: { rateLimit: { max: 30, timeWindow: '1 minute' } },
+  };
+  const wdBody = (body: unknown) => z.object({ reason: z.string().max(255).optional() }).parse(body ?? {});
+
+  app.post('/admin/withdrawals/:id/approve', wdGuard, async (req, reply) => {
+    try {
+      const b = wdBody(req.body);
+      return ok(serialize(await adminService.approveWithdrawal(aid(req), BigInt((req.params as any).id), b.reason)));
+    } catch (e) { return replyError(reply, e); }
+  });
+  app.post('/admin/withdrawals/:id/reject', wdGuard, async (req, reply) => {
+    try {
+      const b = wdBody(req.body);
+      return ok(serialize(await adminService.rejectWithdrawal(aid(req), BigInt((req.params as any).id), b.reason)));
+    } catch (e) { return replyError(reply, e); }
+  });
+  app.post('/admin/withdrawals/:id/pay', wdGuard, async (req, reply) => {
+    try {
+      const b = wdBody(req.body);
+      return ok(serialize(await adminService.markWithdrawalPaid(aid(req), BigInt((req.params as any).id), b.reason)));
+    } catch (e) { return replyError(reply, e); }
+  });
+  app.post('/admin/withdrawals/:id/fail', wdGuard, async (req, reply) => {
+    try {
+      const b = wdBody(req.body);
+      return ok(serialize(await adminService.markWithdrawalFailed(aid(req), BigInt((req.params as any).id), b.reason)));
+    } catch (e) { return replyError(reply, e); }
+  });
+
   app.get('/admin/orders', guard, async (req) => ok(serialize(await adminService.listOrders(pageArgs(req.query)))));
 
   // rooms

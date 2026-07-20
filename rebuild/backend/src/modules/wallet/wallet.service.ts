@@ -10,16 +10,27 @@ import { AppError } from '../../lib/errors.js';
 import { encryptField, decryptField } from '../../lib/crypto.js';
 import { Currency, LedgerReason } from '../../lib/ledger.js';
 import { walletRepo, CURRENCY_COLUMN } from './wallet.repo.js';
+import {
+  WithdrawalStatus, canTransition, refundsOnEntry, refundKeyFor,
+  actorUser, actorAdmin, ACTOR_SYSTEM, type WithdrawalStatusValue,
+} from './withdrawal.machine.js';
 
 // Configurable economy constants (defaults; overridable via `settings` later).
 export const EXCHANGE_RATE_BPS = 10000;      // 100% -> 1 bean = 1 coin
 export const MIN_WITHDRAWAL_BEANS = 1000n;
 export const MAX_WITHDRAWALS_PER_DAY = 3;
+/** A pending request older than this is swept back to the user rather than left hanging. */
+export const WITHDRAWAL_EXPIRY_DAYS = 30;
 
 // ---------- pure helpers (unit-tested) ----------
 export function coinsFromBeans(beans: bigint, rateBps: number = EXCHANGE_RATE_BPS): bigint {
   if (beans <= 0n) throw new AppError('invalid_amount', 400);
-  return (beans * BigInt(rateBps)) / 10000n;
+  const coins = (beans * BigInt(rateBps)) / 10000n;
+  // Integer basis-point maths rounds DOWN. At the default 1:1 rate that is never visible, but at any
+  // rate below 10000 a small enough amount converts to zero — which would debit the beans and credit
+  // nothing, taking the user's money for no coins. Refuse rather than round their balance away.
+  if (coins <= 0n) throw new AppError('amount_too_small', 400);
+  return coins;
 }
 
 export function assertWithdrawal(amount: bigint, walletBeans: bigint, todayCount: number): void {
@@ -148,18 +159,177 @@ export class WalletService {
     });
   }
 
-  async createWithdrawal(userId: bigint, input: { amount: bigint; method: string; account: string }) {
-    const todayCount = await walletRepo.countWithdrawalsSince(userId, startOfToday());
+  async createWithdrawal(
+    userId: bigint,
+    input: { amount: bigint; method: string; account: string; idempotencyKey?: string },
+  ) {
     return serializableTx(async (tx) => {
+      // The daily-cap count is read INSIDE the transaction. Read outside, it was a TOCTOU: two
+      // concurrent requests both saw "2 so far", both passed, and the user got 4 in a day. Under
+      // SERIALIZABLE the count is now part of the transaction's snapshot, so the loser is retried.
+      const todayCount = await walletRepo.countWithdrawalsSince(userId, startOfToday(), tx);
       const w = await walletRepo.upsertWallet(userId, tx);
       assertWithdrawal(input.amount, w.beans, todayCount); // fraud guards
       const beansAfter = w.beans - input.amount;
       await walletRepo.updateWallet(userId, { beans: beansAfter }, tx);
-      await walletRepo.createLedger({ userId, currency: Currency.Beans, delta: -input.amount, balanceAfter: beansAfter, reason: LedgerReason.Withdraw, refType: 'withdrawal' }, tx);
       // Encrypt the payout account at rest (financial PII). Decrypted only for the owner's list.
-      const req = await walletRepo.createWithdrawal({ userId, amount: input.amount, method: input.method, account: encryptField(input.account), status: 0 }, tx);
+      const req = await walletRepo.createWithdrawal({
+        userId,
+        amount: input.amount,
+        method: input.method,
+        account: encryptField(input.account),
+        status: WithdrawalStatus.Pending,
+        idempotencyKey: input.idempotencyKey ?? null,
+      }, tx);
+      // The ledger row references the request it belongs to. Without refId a withdrawal debit could
+      // not be tied back to what caused it, and a refund could not be proven to match it.
+      await walletRepo.createLedger({
+        userId, currency: Currency.Beans, delta: -input.amount, balanceAfter: beansAfter,
+        reason: LedgerReason.Withdraw, refType: 'withdrawal', refId: req.id,
+      }, tx);
+      await walletRepo.recordWithdrawalTransition({
+        withdrawalId: req.id, fromStatus: WithdrawalStatus.Pending, toStatus: WithdrawalStatus.Pending,
+        reason: 'created', actor: actorUser(userId),
+      }, tx);
       return { request: { ...req, account: input.account }, beansAfter };
     });
+  }
+
+  // ---------- withdrawal state machine ----------
+
+  /**
+   * Move a withdrawal from `expect` to `to`, refunding the beans if `to` is a refunding state.
+   *
+   * Everything happens in ONE serializable transaction: the status flip, the refund, the ledger row
+   * and the audit entry either all land or none do. A partial failure here is what leaves a request
+   * marked rejected with the money still gone.
+   *
+   * Exactly-once is enforced twice over — the status-guarded `updateMany` (0 rows == someone else
+   * already moved it) and the UNIQUE `refundKey` on both the request row and the ledger anchor. Two
+   * concurrent rejections therefore produce one refund, not two.
+   */
+  private async transitionWithdrawal(
+    id: bigint,
+    expect: WithdrawalStatusValue,
+    to: WithdrawalStatusValue,
+    opts: { actor: string; reason?: string | null },
+  ) {
+    if (!canTransition(expect, to)) throw new AppError('invalid_transition', 400);
+
+    return serializableTx(async (tx) => {
+      const req = await walletRepo.findWithdrawal(id, tx);
+      if (!req) throw new AppError('withdrawal_not_found', 404);
+      if (req.status !== expect) {
+        // Distinguish "you asked for the wrong edge" from "someone beat you to it": the second is a
+        // benign race, the first is a caller bug, and an operator needs to tell them apart.
+        throw new AppError(canTransition(req.status, to) ? 'withdrawal_conflict' : 'invalid_transition', 409);
+      }
+
+      const now = new Date();
+      const refunding = refundsOnEntry(to);
+      const patch: Prisma.WithdrawalRequestUpdateManyMutationInput = {
+        status: to,
+        reason: opts.reason ?? null,
+        processedAt: now,
+      };
+      if (to === WithdrawalStatus.Approved) patch.reviewedAt = now;
+      if (to === WithdrawalStatus.Paid) patch.paidAt = now;
+      if (refunding) {
+        patch.refundedAt = now;
+        patch.refundKey = refundKeyFor(id);
+      }
+
+      const { count } = await walletRepo.transitionWithdrawal(id, expect, patch, tx);
+      if (count === 0) throw new AppError('withdrawal_conflict', 409); // lost the race
+
+      if (refunding) {
+        // allowNegative is deliberately NOT set: a refund is a credit, so it cannot drive a balance
+        // below zero, and permitting it would mask a genuine accounting fault.
+        await this.applyDelta({
+          userId: req.userId,
+          currency: Currency.Beans,
+          delta: req.amount,
+          reason: LedgerReason.Withdraw,
+          refType: 'withdrawal-refund',
+          refId: id,
+          idempotencyKey: refundKeyFor(id),
+        }, { tx });
+      }
+
+      await walletRepo.recordWithdrawalTransition({
+        withdrawalId: id, fromStatus: expect, toStatus: to, reason: opts.reason ?? null, actor: opts.actor,
+      }, tx);
+
+      return { id, status: to, refunded: refunding, amount: req.amount };
+    });
+  }
+
+  /** Admin authorises the payout. No money moves yet — the transfer happens outside this system. */
+  approveWithdrawal(adminId: bigint, id: bigint, reason?: string) {
+    return this.transitionWithdrawal(id, WithdrawalStatus.Pending, WithdrawalStatus.Approved,
+      { actor: actorAdmin(adminId), reason });
+  }
+
+  /** Admin refuses the payout — the beans go back. */
+  rejectWithdrawal(adminId: bigint, id: bigint, reason?: string) {
+    return this.transitionWithdrawal(id, WithdrawalStatus.Pending, WithdrawalStatus.Rejected,
+      { actor: actorAdmin(adminId), reason });
+  }
+
+  /** The transfer completed. The ONLY terminal state that keeps the beans. */
+  markWithdrawalPaid(adminId: bigint, id: bigint, reason?: string) {
+    return this.transitionWithdrawal(id, WithdrawalStatus.Approved, WithdrawalStatus.Paid,
+      { actor: actorAdmin(adminId), reason });
+  }
+
+  /** The transfer bounced after approval — the beans go back. */
+  markWithdrawalFailed(adminId: bigint, id: bigint, reason?: string) {
+    return this.transitionWithdrawal(id, WithdrawalStatus.Approved, WithdrawalStatus.Failed,
+      { actor: actorAdmin(adminId), reason });
+  }
+
+  /**
+   * The user withdraws their own request while it is still pending. Ownership is checked HERE and
+   * not left to the route, so no future caller can cancel someone else's cash-out.
+   */
+  async cancelWithdrawal(userId: bigint, id: bigint, reason?: string) {
+    const req = await walletRepo.findWithdrawal(id);
+    if (!req) throw new AppError('withdrawal_not_found', 404);
+    if (req.userId !== userId) throw new AppError('forbidden', 403);
+    return this.transitionWithdrawal(id, WithdrawalStatus.Pending, WithdrawalStatus.Cancelled,
+      { actor: actorUser(userId), reason: reason ?? 'cancelled by user' });
+  }
+
+  /**
+   * Sweep pending requests older than the cutoff back to their owners. Without this a request an
+   * operator never actioned holds the user's beans indefinitely with no way to get them back.
+   * Each request is transitioned independently so one failure cannot strand the rest.
+   */
+  async expireStaleWithdrawals(olderThanDays = WITHDRAWAL_EXPIRY_DAYS, limit = 100) {
+    const cutoff = new Date(Date.now() - olderThanDays * 24 * 60 * 60 * 1000);
+    const stale = await walletRepo.listPendingBefore(cutoff, limit);
+    const expired: string[] = [];
+    const failed: Array<{ id: string; error: string }> = [];
+    for (const r of stale) {
+      try {
+        await this.transitionWithdrawal(r.id, WithdrawalStatus.Pending, WithdrawalStatus.Expired,
+          { actor: ACTOR_SYSTEM, reason: `pending > ${olderThanDays}d` });
+        expired.push(String(r.id));
+      } catch (e) {
+        failed.push({ id: String(r.id), error: e instanceof Error ? e.message : String(e) });
+      }
+    }
+    return { scanned: stale.length, expired, failed };
+  }
+
+  /** Admin queue for a given status. */
+  async listWithdrawalsByStatus(status: number, take = 100) {
+    const rows = await walletRepo.listWithdrawalsByStatus(status, take);
+    return rows.map((r) => ({ ...r, account: decryptField(r.account) }));
+  }
+
+  withdrawalHistory(id: bigint) {
+    return walletRepo.listWithdrawalTransitions(id);
   }
 
   async listWithdrawals(userId: bigint) {

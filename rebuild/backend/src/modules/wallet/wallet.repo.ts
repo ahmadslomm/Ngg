@@ -83,6 +83,53 @@ export class WalletRepository {
   listWithdrawals(userId: bigint, client: DbClient = db.read) {
     return client.withdrawalRequest.findMany({ where: { userId }, orderBy: { createdAt: 'desc' }, take: 50 });
   }
+  findWithdrawal(id: bigint, client: DbClient = db.read) {
+    return client.withdrawalRequest.findUnique({ where: { id } });
+  }
+
+  /**
+   * Status-guarded transition: flip a withdrawal from EXACTLY `fromStatus` to `toStatus`, stamping
+   * the lifecycle fields. Returns the affected count — 0 means it was not in the expected state, so
+   * a concurrent or duplicate caller lost the race. This is the exactly-once primitive that keeps a
+   * double-approve or double-refund from ever moving money twice.
+   */
+  transitionWithdrawal(
+    id: bigint,
+    fromStatus: number,
+    data: Prisma.WithdrawalRequestUpdateManyMutationInput,
+    client: DbClient = db.write,
+  ) {
+    return client.withdrawalRequest.updateMany({ where: { id, status: fromStatus }, data });
+  }
+
+  recordWithdrawalTransition(
+    input: { withdrawalId: bigint; fromStatus: number; toStatus: number; reason?: string | null; actor?: string | null },
+    client: DbClient = db.write,
+  ) {
+    return client.withdrawalTransition.create({
+      data: {
+        withdrawalId: input.withdrawalId, fromStatus: input.fromStatus, toStatus: input.toStatus,
+        reason: input.reason ?? null, actor: input.actor ?? null,
+      },
+    });
+  }
+  listWithdrawalTransitions(withdrawalId: bigint, client: DbClient = db.read) {
+    return client.withdrawalTransition.findMany({
+      where: { withdrawalId }, orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+    });
+  }
+
+  /** Admin queue: requests in a given state, oldest first. */
+  listWithdrawalsByStatus(status: number, take = 100, client: DbClient = db.read) {
+    return client.withdrawalRequest.findMany({ where: { status }, orderBy: { createdAt: 'asc' }, take });
+  }
+
+  /** The expiry sweep: pending requests created before `cutoff`. */
+  listPendingBefore(cutoff: Date, take = 100, client: DbClient = db.read) {
+    return client.withdrawalRequest.findMany({
+      where: { status: 0, createdAt: { lt: cutoff } }, orderBy: { createdAt: 'asc' }, take,
+    });
+  }
 }
 
 export const walletRepo = new WalletRepository();

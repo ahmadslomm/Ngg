@@ -59,7 +59,10 @@ export async function giftRoutes(app: FastifyInstance) {
   });
 
   // Send — authenticated, idempotent, server-priced.
-  app.post('/gifts/send', { preHandler: [app.authenticate] }, async (req, reply) => {
+  // The highest-volume spend path in the app. It cannot mint value (balance-checked and
+  // idempotency-anchored), but an unbounded send loop is both an abuse vector and the fastest way
+  // for a hijacked session to drain a wallet before the owner notices.
+  app.post('/gifts/send', { preHandler: [app.authenticate], config: { rateLimit: { max: 60, timeWindow: '1 minute' } } }, async (req, reply) => {
     const body = sendGiftSchema.parse(req.body);
     const senderId = req.user.id as bigint;
     const idempotencyKey = req.headers['idempotency-key'] as string | undefined;

@@ -13,17 +13,17 @@ datasource db {
 
 // ---------- Identity ----------
 model User {
-  id           BigInt   @id @default(autoincrement())
-  publicId     String   @unique @default(uuid())
-  account      String   @unique @db.VarChar(64)
+  id           BigInt    @id @default(autoincrement())
+  publicId     String    @unique @default(uuid())
+  account      String    @unique @db.VarChar(64)
   passwordHash String?
-  phone        String?  @db.VarChar(32)
-  email        String?  @db.VarChar(128)
-  status       Int      @default(0) // 0 active, 1 banned, 2 deleted
-  riskScore    Int      @default(0)
+  phone        String?   @db.VarChar(32)
+  email        String?   @db.VarChar(128)
+  status       Int       @default(0) // 0 active, 1 banned, 2 deleted
+  riskScore    Int       @default(0)
   lastLoginAt  DateTime?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
 
   profile      Profile?
@@ -37,7 +37,7 @@ model User {
   orders       Order[]
   ledger       WalletLedger[]
   sentGifts    GiftTransaction[] @relation("sender")
-  ownedRooms   Room[]           @relation("owner")
+  ownedRooms   Room[]            @relation("owner")
 
   @@index([phone])
   @@index([status])
@@ -49,38 +49,40 @@ model UserIdentity {
   provider    String @db.VarChar(16) // google|facebook|apple|phone
   providerUid String @db.VarChar(128)
   user        User   @relation(fields: [userId], references: [id])
+
   @@unique([provider, providerUid])
   @@index([userId])
 }
 
 model Profile {
-  userId        BigInt  @id
-  nick          String  @db.VarChar(64)
-  avatarUrl     String?
-  avatarFrameUrl String?          // equipped avatar-frame decoration cache (kind 0)
-  entryEffectUrl String?          // equipped entry-effect decoration cache (kind 1) — T1.13
-  bubbleUrl      String?          // equipped chat-bubble decoration cache (kind 2) — T1.13
-  gender        Int     @default(0)
-  birthday      DateTime?
-  signature     String? @db.VarChar(255)
-  countryCode   String? @db.VarChar(8)
-  language      String? @db.VarChar(8)
-  charmLevel    Int     @default(0)
-  charmExp      BigInt  @default(0)
-  wealthLevel   Int     @default(0)
-  wealthExp     BigInt  @default(0)
-  fansCount     Int     @default(0)
-  followingCount Int    @default(0)
-  vipLevel      Int     @default(0) // denormalized current tier (cache)
+  userId          BigInt    @id
+  nick            String    @db.VarChar(64)
+  avatarUrl       String?
+  avatarFrameUrl  String? // equipped avatar-frame decoration cache (kind 0)
+  entryEffectUrl  String? // equipped entry-effect decoration cache (kind 1) — T1.13
+  bubbleUrl       String? // equipped chat-bubble decoration cache (kind 2) — T1.13
+  gender          Int       @default(0)
+  birthday        DateTime?
+  signature       String?   @db.VarChar(255)
+  countryCode     String?   @db.VarChar(8)
+  language        String?   @db.VarChar(8)
+  charmLevel      Int       @default(0)
+  charmExp        BigInt    @default(0)
+  wealthLevel     Int       @default(0)
+  wealthExp       BigInt    @default(0)
+  fansCount       Int       @default(0)
+  followingCount  Int       @default(0)
+  vipLevel        Int       @default(0) // denormalized current tier (cache)
   // T1.16 Phase-1 fidelity columns (in-APK, nullable/defaulted, not read yet — storage only).
   // (entryEffectUrl added in T1.13; chatBubbleUrl == existing bubbleUrl — both skipped.)
-  nobleLevel      Int      @default(0) // noble/aristocracy tier
-  vipExpireAt     DateTime?            // current VIP expiry
-  mountUrl        String?              // equipped mount/vehicle asset
-  charmLevelName  String?              // display name of the charm tier
-  wealthLevelName String?              // display name of the wealth tier
-  updatedAt     DateTime @updatedAt
-  user          User    @relation(fields: [userId], references: [id])
+  nobleLevel      Int       @default(0) // noble/aristocracy tier
+  vipExpireAt     DateTime? // current VIP expiry
+  mountUrl        String? // equipped mount/vehicle asset
+  charmLevelName  String? // display name of the charm tier
+  wealthLevelName String? // display name of the wealth tier
+  updatedAt       DateTime  @updatedAt
+  user            User      @relation(fields: [userId], references: [id])
+
   @@index([countryCode])
   @@index([charmLevel])
   @@index([wealthLevel])
@@ -92,59 +94,60 @@ model Profile {
 // created lazily on first read/patch.
 model UserSetting {
   userId          BigInt   @id
-  voiceCallCoins  Int      @default(0)    // price per voice-call minute (OLD voice2UNeedCoins)
-  imMsgCoins      Int      @default(0)    // price a stranger pays to DM (OLD im2UNeedCoins)
+  voiceCallCoins  Int      @default(0) // price per voice-call minute (OLD voice2UNeedCoins)
+  imMsgCoins      Int      @default(0) // price a stranger pays to DM (OLD im2UNeedCoins)
   allowStrangerDm Boolean  @default(true)
   showOnlineState Boolean  @default(true) // OLD view_me — online visibility
   showInRoom      Boolean  @default(true) // reveal which room I'm currently in
-  whoCanGift      Int      @default(0)    // 0 everyone · 1 friends · 2 nobody
-  extra           Json?                   // forward-compat bag (OLD hiddenSettings / muteOp)
+  whoCanGift      Int      @default(0) // 0 everyone · 1 friends · 2 nobody
+  extra           Json? // forward-compat bag (OLD hiddenSettings / muteOp)
   updatedAt       DateTime @updatedAt
   user            User     @relation(fields: [userId], references: [id])
 }
 
 model UserRelation {
-  id        BigInt @id @default(autoincrement())
+  id        BigInt   @id @default(autoincrement())
   userId    BigInt
   targetId  BigInt
-  type      Int    // 1 follow, 2 block
+  type      Int // 1 follow, 2 block
   createdAt DateTime @default(now())
+
   @@unique([userId, targetId, type])
   @@index([targetId, type])
 }
 
 // ---------- Rooms ----------
 model Room {
-  id           BigInt  @id @default(autoincrement())
-  publicId     String  @unique @default(uuid())
+  id           BigInt   @id @default(autoincrement())
+  publicId     String   @unique @default(uuid())
   ownerId      BigInt
-  name         String  @db.VarChar(64)
+  name         String   @db.VarChar(64)
   coverUrl     String?
-  type         Int     @default(0)
-  mode         Int     @default(0)
-  countryCode  String? @db.VarChar(8)
+  type         Int      @default(0)
+  mode         Int      @default(0)
+  countryCode  String?  @db.VarChar(8)
   tags         Json?
-  status       Int     @default(0) // 0 closed, 1 live
-  isLocked     Boolean @default(false)
+  status       Int      @default(0) // 0 closed, 1 live
+  isLocked     Boolean  @default(false)
   passwordHash String?
-  seatCount    Int     @default(8)
-  onlineCount  Int     @default(0)
-  agoraChannel String? @db.VarChar(64)
+  seatCount    Int      @default(8)
+  onlineCount  Int      @default(0)
+  agoraChannel String?  @db.VarChar(64)
   // T1.16 Phase-1 fidelity columns (in-APK, nullable/defaulted, not read yet — storage only).
-  announcement String?          // room announcement text
-  roomLevel    Int     @default(0) // room progression tier
-  roomExp      BigInt  @default(0) // room progression exp
-  bgMusicUrl   String?          // background music asset
-  themeId      Int?             // room theme (T2.6: real FK → RoomTheme, ON DELETE SET NULL)
-  miniGameId   Int?             // active mini-game (scalar ref, no FK)
-  welcomeText  String?          // auto welcome message
+  announcement String? // room announcement text
+  roomLevel    Int      @default(0) // room progression tier
+  roomExp      BigInt   @default(0) // room progression exp
+  bgMusicUrl   String? // background music asset
+  themeId      Int? // room theme (T2.6: real FK → RoomTheme, ON DELETE SET NULL)
+  miniGameId   Int? // active mini-game (scalar ref, no FK)
+  welcomeText  String? // auto welcome message
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  owner        User        @relation("owner", fields: [ownerId], references: [id])
-  members      RoomMember[]
-  seats        Seat[]
-  theme        RoomTheme?  @relation(fields: [themeId], references: [id], onDelete: SetNull) // T2.6
+  owner   User         @relation("owner", fields: [ownerId], references: [id])
+  members RoomMember[]
+  seats   Seat[]
+  theme   RoomTheme?   @relation(fields: [themeId], references: [id], onDelete: SetNull) // T2.6
 
   @@index([status, countryCode])
   @@index([ownerId])
@@ -158,13 +161,14 @@ model Room {
 model RoomMember {
   roomId      BigInt
   userId      BigInt
-  role        Int      @default(0) // 0 guest, 1 admin, 2 owner
-  permissions Int      @default(0) // fine-grained room-admin bitmap (T1.11): KICK=1 LOCK_SEAT=2 MUTE=4 EDIT_ROOM=8 MANAGE_ROLES=16; 0 = unset → role fallback
+  role        Int       @default(0) // 0 guest, 1 admin, 2 owner
+  permissions Int       @default(0) // fine-grained room-admin bitmap (T1.11): KICK=1 LOCK_SEAT=2 MUTE=4 EDIT_ROOM=8 MANAGE_ROLES=16; 0 = unset → role fallback
   // T1.16 Phase-1 fidelity columns (in-APK, nullable, not read yet — storage only).
-  mutedUntil  DateTime?          // member mute expiry
-  invitedById BigInt?            // who invited this member (scalar ref, no FK)
-  joinedAt    DateTime @default(now())
-  room        Room     @relation(fields: [roomId], references: [id])
+  mutedUntil  DateTime? // member mute expiry
+  invitedById BigInt? // who invited this member (scalar ref, no FK)
+  joinedAt    DateTime  @default(now())
+  room        Room      @relation(fields: [roomId], references: [id])
+
   @@id([roomId, userId])
   @@index([userId])
 }
@@ -175,13 +179,14 @@ model RoomMember {
 // theme nulls referencing rooms (ON DELETE SET NULL). Seeded post-capture (#6); the catalog may ship
 // empty (a room with no theme uses the client default skin).
 model RoomTheme {
-  id        Int     @id             // explicit ids (match captured theme ids); config-as-data
+  id        Int     @id // explicit ids (match captured theme ids); config-as-data
   name      String  @db.VarChar(64)
-  skinUrl   String?                 // room background / skin asset
-  bubbleUrl String?                 // themed chat-bubble asset (optional)
+  skinUrl   String? // room background / skin asset
+  bubbleUrl String? // themed chat-bubble asset (optional)
   sort      Int     @default(0)
   enabled   Boolean @default(true)
   rooms     Room[]
+
   @@index([enabled, sort])
 }
 
@@ -194,17 +199,18 @@ model RoomTheme {
 // settle records the outcome only.
 model RoomPk {
   id        BigInt    @id @default(autoincrement())
-  roomId    BigInt    // scalar ref, no FK
+  roomId    BigInt // scalar ref, no FK
   status    Int       @default(0) // 0 active, 1 settled
-  aUserId   BigInt    // side A competitor (scalar ref, no FK)
-  bUserId   BigInt    // side B competitor (scalar ref, no FK)
+  aUserId   BigInt // side A competitor (scalar ref, no FK)
+  bUserId   BigInt // side B competitor (scalar ref, no FK)
   aScore    BigInt    @default(0)
   bScore    BigInt    @default(0)
-  winnerId  BigInt?   // set on settle; null = draw (or not yet settled)
+  winnerId  BigInt? // set on settle; null = draw (or not yet settled)
   version   Int       @default(0) // optimistic guard — settle computes the outcome exactly once
   startedAt DateTime  @default(now())
   endsAt    DateTime
   settledAt DateTime?
+
   @@index([roomId, status])
   @@index([status, endsAt])
 }
@@ -213,42 +219,44 @@ model Seat {
   roomId          BigInt
   position        Int
   userId          BigInt?
-  state           Int     @default(0) // 0 empty, 1 occupied, 2 locked
-  micMuted        Boolean @default(false)
-  micMutedByAdmin Boolean @default(false)
-  charmCounter    BigInt  @default(0)
+  state           Int      @default(0) // 0 empty, 1 occupied, 2 locked
+  micMuted        Boolean  @default(false)
+  micMutedByAdmin Boolean  @default(false)
+  charmCounter    BigInt   @default(0)
   updatedAt       DateTime @updatedAt
-  room            Room    @relation(fields: [roomId], references: [id])
+  room            Room     @relation(fields: [roomId], references: [id])
+
   @@id([roomId, position])
 }
 
 // ---------- Economy ----------
 model Gift {
-  id           BigInt  @id @default(autoincrement())
-  name         String  @db.VarChar(64)
-  category     Int     @default(0) // 0 normal,1 vip,2 lucky,3 rocket,4 bomb,5 backpack
+  id           BigInt            @id @default(autoincrement())
+  name         String            @db.VarChar(64)
+  category     Int               @default(0) // 0 normal,1 vip,2 lucky,3 rocket,4 bomb,5 backpack
   priceCoins   Int
-  level        Int     @default(1)
+  level        Int               @default(1)
   iconUrl      String?
   animUrl      String? // SVGA/PAG placeholder slot (owner-supplied)
-  animType     Int     @default(0)
-  comboEnabled Boolean @default(false)
+  animType     Int               @default(0)
+  comboEnabled Boolean           @default(false)
   luckyConfig  Json?
   subGifts     Json?
-  enabled      Boolean @default(true)
-  sort         Int     @default(0)
+  enabled      Boolean           @default(true)
+  sort         Int               @default(0)
   // T1.16 Phase-1 fidelity columns (in-APK, nullable, not read yet — storage only).
-  charmValue   Int?     // charm awarded per unit (catalog-configured; distinct from priceCoins)
-  comboUrl     String?  // combo-hit animation asset
-  previewUrl   String?  // catalog preview image
-  bannerUrl    String?  // full-screen banner animation asset
-  exclusiveUid BigInt?  // if set, gift is exclusive to this user (scalar ref, no FK)
-  validityDays Int?     // time-limited gift validity window
-  tabId        Int?     // catalog tab grouping (scalar ref, no FK)
-  poolId       Int?     // lucky/draw pool grouping (scalar ref, no FK)
-  createdAt    DateTime @default(now())
+  charmValue   Int? // charm awarded per unit (catalog-configured; distinct from priceCoins)
+  comboUrl     String? // combo-hit animation asset
+  previewUrl   String? // catalog preview image
+  bannerUrl    String? // full-screen banner animation asset
+  exclusiveUid BigInt? // if set, gift is exclusive to this user (scalar ref, no FK)
+  validityDays Int? // time-limited gift validity window
+  tabId        Int? // catalog tab grouping (scalar ref, no FK)
+  poolId       Int? // lucky/draw pool grouping (scalar ref, no FK)
+  createdAt    DateTime          @default(now())
   txns         GiftTransaction[]
   bagEntries   UserGiftBag[]
+
   @@index([category, enabled, sort])
 }
 
@@ -262,6 +270,7 @@ model GiftCategory {
   iconUrl String?
   sort    Int     @default(0)
   enabled Boolean @default(true)
+
   @@index([enabled, sort])
 }
 
@@ -273,17 +282,18 @@ model GiftCategory {
 // crossing pays out EXACTLY once under concurrency. The payout's audit trail is the WalletLedger row
 // (refType 'gift_pool') plus the lastPayout* fields below.
 model GiftPool {
-  id                Int       @id             // matches Gift.poolId scalar (config-as-data; explicit ids)
+  id                Int       @id // matches Gift.poolId scalar (config-as-data; explicit ids)
   name              String?   @db.VarChar(64)
-  amount            BigInt    @default(0)      // live accumulated jackpot
-  threshold         BigInt    @default(0)      // payout trigger (values blocked on capture #3)
-  version           Int       @default(0)      // optimistic lock — one settle per threshold crossing
-  enabled           Boolean   @default(false)  // ship DARK (flag off = inert)
-  lastContributorId BigInt?                    // pending winner = last accumulator (scalar ref, no FK)
-  lastPayoutAt      DateTime?                  // audit: when the pool last paid out
-  lastPayoutAmount  BigInt?                    // audit: how much the last payout was
-  payoutCount       Int       @default(0)      // audit: total payouts
+  amount            BigInt    @default(0) // live accumulated jackpot
+  threshold         BigInt    @default(0) // payout trigger (values blocked on capture #3)
+  version           Int       @default(0) // optimistic lock — one settle per threshold crossing
+  enabled           Boolean   @default(false) // ship DARK (flag off = inert)
+  lastContributorId BigInt? // pending winner = last accumulator (scalar ref, no FK)
+  lastPayoutAt      DateTime? // audit: when the pool last paid out
+  lastPayoutAmount  BigInt? // audit: how much the last payout was
+  payoutCount       Int       @default(0) // audit: total payouts
   updatedAt         DateTime  @updatedAt
+
   @@index([enabled])
 }
 
@@ -294,11 +304,12 @@ model GiftPool {
 // (or an exp below the lowest tier) resolves to level 0 safely. Read-only lookup — no FK to Profile.
 model LevelConfig {
   id      Int     @id @default(autoincrement())
-  kind    Int     // 0 charm, 1 wealth
-  level   Int     // tier number (1..N), ascending with minExp
-  minExp  BigInt  // inclusive lower bound: exp >= minExp qualifies for this tier
+  kind    Int // 0 charm, 1 wealth
+  level   Int // tier number (1..N), ascending with minExp
+  minExp  BigInt // inclusive lower bound: exp >= minExp qualifies for this tier
   name    String  @db.VarChar(64) // display name (source of Profile.charmLevelName / wealthLevelName)
   iconUrl String?
+
   @@unique([kind, level])
   @@index([kind, minExp])
 }
@@ -308,42 +319,44 @@ model LevelConfig {
 // time-limited grants. Rows with qty<=0 or a past `expiresAt` are excluded from the catalog merge.
 // This is READ-ONLY plumbing here; the send path that decrements the bag is T1.15.
 model UserGiftBag {
-  id        BigInt   @id @default(autoincrement())
+  id        BigInt    @id @default(autoincrement())
   userId    BigInt
   giftId    BigInt
-  qty       Int      @default(0)
+  qty       Int       @default(0)
   expiresAt DateTime?
-  updatedAt DateTime @updatedAt
-  user      User @relation(fields: [userId], references: [id])
-  gift      Gift @relation(fields: [giftId], references: [id])
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id])
+  gift      Gift      @relation(fields: [giftId], references: [id])
+
   @@unique([userId, giftId])
   @@index([userId])
 }
 
 model Wallet {
-  userId     BigInt  @id
-  coins      BigInt  @default(0)
-  coinsTotal BigInt  @default(0)
-  vipCoins   BigInt  @default(0)
-  beans      BigInt  @default(0)
-  balance    BigInt  @default(0)
-  version    Int     @default(0) // optimistic lock
+  userId     BigInt   @id
+  coins      BigInt   @default(0)
+  coinsTotal BigInt   @default(0)
+  vipCoins   BigInt   @default(0)
+  beans      BigInt   @default(0)
+  balance    BigInt   @default(0)
+  version    Int      @default(0) // optimistic lock
   updatedAt  DateTime @updatedAt
-  user       User    @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 }
 
 model WalletLedger {
-  id           BigInt  @id @default(autoincrement())
-  userId       BigInt
-  currency     Int     // 0 coins,1 beans,2 vipCoins,3 balance
-  delta        BigInt
-  balanceAfter BigInt
-  reason       Int     // recharge, gift_send, gift_recv, exchange, withdraw, admin_adj
-  refType      String? @db.VarChar(32)
-  refId        BigInt?
-  idempotencyKey String? @unique
-  createdAt    DateTime @default(now())
-  user         User    @relation(fields: [userId], references: [id])
+  id             BigInt   @id @default(autoincrement())
+  userId         BigInt
+  currency       Int // 0 coins,1 beans,2 vipCoins,3 balance
+  delta          BigInt
+  balanceAfter   BigInt
+  reason         Int // recharge, gift_send, gift_recv, exchange, withdraw, admin_adj
+  refType        String?  @db.VarChar(32)
+  refId          BigInt?
+  idempotencyKey String?  @unique
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id])
+
   @@index([userId, createdAt])
   @@index([refType, refId])
 }
@@ -354,17 +367,18 @@ model WalletLedger {
 // `waitio_session` fields. Text-only (media/voice/read-receipts = UNKNOWN, not built).
 // See PRIVATE_IM_RECOVERY_REPORT.md.
 model DmConversation {
-  id           BigInt    @id @default(autoincrement())
-  userLow      BigInt    // canonical pair: min(uidA, uidB)
-  userHigh     BigInt    // max(uidA, uidB)
+  id            BigInt    @id @default(autoincrement())
+  userLow       BigInt // canonical pair: min(uidA, uidB)
+  userHigh      BigInt // max(uidA, uidB)
   lastMessageId BigInt?
-  lastText     String?   @db.VarChar(500) // last-message preview (waitio_session.body)
-  lastSenderId BigInt?
-  lastAt       DateTime?
-  readLow      BigInt?   // last message id read by userLow (powers unread_count)
-  readHigh     BigInt?   // last message id read by userHigh
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  lastText      String?   @db.VarChar(500) // last-message preview (waitio_session.body)
+  lastSenderId  BigInt?
+  lastAt        DateTime?
+  readLow       BigInt? // last message id read by userLow (powers unread_count)
+  readHigh      BigInt? // last message id read by userHigh
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
   @@unique([userLow, userHigh])
   @@index([userLow, lastAt])
   @@index([userHigh, lastAt])
@@ -378,6 +392,7 @@ model DmMessage {
   text           String   @db.VarChar(500)
   status         Int      @default(0) // 0 visible, 1 deleted
   createdAt      DateTime @default(now())
+
   @@index([conversationId, id]) // history: newest-first, id-cursor paginated
   @@index([conversationId, senderId, id]) // unread count: other party's messages past a cursor (L4)
 }
@@ -393,11 +408,12 @@ model RoomMessage {
   text      String   @db.VarChar(500)
   status    Int      @default(0) // 0 visible, 1 hidden/deleted (moderation)
   createdAt DateTime @default(now())
+
   @@index([roomId, id]) // history: newest-first, id-cursor paginated
 }
 
 model GiftTransaction {
-  id          BigInt  @id @default(autoincrement())
+  id          BigInt   @id @default(autoincrement())
   senderId    BigInt
   roomId      BigInt?
   giftId      BigInt
@@ -408,61 +424,63 @@ model GiftTransaction {
   comboId     String?
   luckyPayout BigInt?
   // T1.16 Phase-1 fidelity columns (in-APK, nullable, not read yet — storage only).
-  drawPath    String?  // painted-gift draw path (drawXY/drawRatio serialized)
-  sourceScene Int?     // origin scene (room/private/song/…)
-  charmGained BigInt?  // charm credited by this send (denormalized for audit)
-  comboCount  Int?     // combo streak length at send time
-  batchId     String?  // groups a multi-recipient/batch send
+  drawPath    String? // painted-gift draw path (drawXY/drawRatio serialized)
+  sourceScene Int? // origin scene (room/private/song/…)
+  charmGained BigInt? // charm credited by this send (denormalized for audit)
+  comboCount  Int? // combo streak length at send time
+  batchId     String? // groups a multi-recipient/batch send
   createdAt   DateTime @default(now())
-  sender      User    @relation("sender", fields: [senderId], references: [id])
-  gift        Gift    @relation(fields: [giftId], references: [id])
+  sender      User     @relation("sender", fields: [senderId], references: [id])
+  gift        Gift     @relation(fields: [giftId], references: [id])
+
   @@index([senderId, createdAt])
   @@index([roomId, createdAt])
   @@index([giftId])
 }
 
 model Product {
-  id         BigInt @id @default(autoincrement())
-  sku        String @unique @db.VarChar(64)
-  title      String @db.VarChar(64)
+  id         BigInt  @id @default(autoincrement())
+  sku        String  @unique @db.VarChar(64)
+  title      String  @db.VarChar(64)
   priceCents Int
-  currency   String @db.VarChar(8)
+  currency   String  @db.VarChar(8)
   coins      BigInt
-  bonusCoins BigInt @default(0)
-  kind       Int    @default(0)
+  bonusCoins BigInt  @default(0)
+  kind       Int     @default(0)
   enabled    Boolean @default(true)
-  sort       Int    @default(0)
+  sort       Int     @default(0)
   orders     Order[]
 }
 
 model Order {
-  id                   BigInt  @id @default(autoincrement())
-  publicId             String  @unique @default(uuid())
-  userId               BigInt
-  productId            BigInt
+  id                    BigInt            @id @default(autoincrement())
+  publicId              String            @unique @default(uuid())
+  userId                BigInt
+  productId             BigInt
   // Provider KEY, not a vendor enum — "mock" | "google" | "apple" | … . Business logic never
   // branches on this; the provider registry resolves it to an adapter.
-  provider             String  @db.VarChar(32)
+  provider              String            @db.VarChar(32)
   providerPurchaseToken String
   // Price snapshot taken at order creation — the reward can never be influenced by the client.
-  amountCents          Int
-  currency             String  @db.VarChar(8)
-  coinsGranted         BigInt  @default(0)
+  amountCents           Int
+  currency              String            @db.VarChar(8)
+  coinsGranted          BigInt            @default(0)
   // Lifecycle: 0 created · 1 pending · 2 verified · 3 fulfilled · 4 failed · 5 refunded
-  status               Int     @default(0)
+  status                Int               @default(0)
   // Idempotency anchors: `idempotencyKey` dedupes order CREATION, `fulfillmentKey` is the
   // exactly-once fulfilment marker (also the wallet ledger reference).
-  idempotencyKey       String? @unique @db.VarChar(128)
-  fulfillmentKey       String? @unique @db.VarChar(128)
-  failureReason        String? @db.VarChar(255)
-  createdAt            DateTime @default(now())
-  verifiedAt           DateTime?
-  fulfilledAt          DateTime?
-  failedAt             DateTime?
-  refundedAt           DateTime?
-  user                 User    @relation(fields: [userId], references: [id])
-  product              Product @relation(fields: [productId], references: [id])
-  transitions          OrderTransition[]
+  idempotencyKey        String?           @unique @db.VarChar(128)
+  fulfillmentKey        String?           @unique @db.VarChar(128)
+  failureReason         String?           @db.VarChar(255)
+  createdAt             DateTime          @default(now())
+  verifiedAt            DateTime?
+  fulfilledAt           DateTime?
+  failedAt              DateTime?
+  refundedAt            DateTime?
+  user                  User              @relation(fields: [userId], references: [id])
+  product               Product           @relation(fields: [productId], references: [id])
+  transitions           OrderTransition[]
+
   @@unique([provider, providerPurchaseToken])
   @@index([userId, createdAt])
   @@index([status])
@@ -478,36 +496,38 @@ model OrderTransition {
   actor      String?  @db.VarChar(64) // "user:123" | "provider:mock" | "admin:7" | "system"
   createdAt  DateTime @default(now())
   order      Order    @relation(fields: [orderId], references: [id])
+
   @@index([orderId, createdAt])
 }
 
 /// Raw provider webhook deliveries. `@@unique([provider, eventId])` makes redelivery a no-op:
 /// the same event is recorded once and processed once (replay-safe).
 model PaymentWebhookEvent {
-  id          BigInt   @id @default(autoincrement())
-  provider    String   @db.VarChar(32)
-  eventId     String   @db.VarChar(128)
+  id          BigInt    @id @default(autoincrement())
+  provider    String    @db.VarChar(32)
+  eventId     String    @db.VarChar(128)
   orderId     BigInt?
   payload     Json
-  processed   Boolean  @default(false)
+  processed   Boolean   @default(false)
   processedAt DateTime?
-  receivedAt  DateTime @default(now())
+  receivedAt  DateTime  @default(now())
+
   @@unique([provider, eventId])
   @@index([processed, receivedAt])
 }
 
 // ---------- Progression ----------
 model VipLevel {
-  level        Int     @id
-  name         String  @db.VarChar(32)
-  priceCoins   BigInt
-  durationDays Int
-  badgeUrl     String?
-  frameUrl     String?
+  level          Int          @id
+  name           String       @db.VarChar(32)
+  priceCoins     BigInt
+  durationDays   Int
+  badgeUrl       String?
+  frameUrl       String?
   entryEffectUrl String?
-  benefits     Json?
-  sort         Int     @default(0)
-  history      VipHistory[]
+  benefits       Json?
+  sort           Int          @default(0)
+  history        VipHistory[]
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -522,65 +542,68 @@ model VipLevel {
 // benefits) are nullable and stay NULL — the original's values for them are UNKNOWN and are not
 // invented here.
 model NobleLevel {
-  level      Int      @id
+  level          Int            @id
   /// Display name. UNKNOWN — the captured level_list carries only level + price.
-  name       String?  @db.VarChar(32)
+  name           String?        @db.VarChar(32)
   /// Recovered verbatim from Action/Noble.getUserNoble.level_list[].price.
-  priceCoins BigInt
+  priceCoins     BigInt
   /// UNKNOWN: the capture exposes an absolute `expire_time` per tier, not a duration.
-  durationDays Int?
-  badgeUrl   String?
-  frameUrl   String?
+  durationDays   Int?
+  badgeUrl       String?
+  frameUrl       String?
   entryEffectUrl String?
-  benefits   Json?
-  sort       Int      @default(0)
-  history    NobleHistory[]
+  benefits       Json?
+  sort           Int            @default(0)
+  history        NobleHistory[]
+
   @@index([sort])
 }
 
 /// A user's noble purchases/grants. Mirrors VipHistory so both systems are auditable the same way.
 model NobleHistory {
-  id        BigInt   @id @default(autoincrement())
-  userId    BigInt
-  level     Int
+  id           BigInt     @id @default(autoincrement())
+  userId       BigInt
+  level        Int
   /// Absolute expiry, matching the original's `expire_time` semantics.
-  expiresAt DateTime
+  expiresAt    DateTime
   /// The original distinguishes a trial ("experience") noble via `is_experience_noble`.
-  isExperience Boolean @default(false)
-  source    Int      @default(0) // 0 purchase, 1 grant, 2 renewal
-  createdAt DateTime @default(now())
-  user      User       @relation(fields: [userId], references: [id])
-  tier      NobleLevel @relation(fields: [level], references: [level])
+  isExperience Boolean    @default(false)
+  source       Int        @default(0) // 0 purchase, 1 grant, 2 renewal
+  createdAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id])
+  tier         NobleLevel @relation(fields: [level], references: [level])
+
   @@index([userId, expiresAt])
   @@index([level])
 }
 
 model VipHistory {
-  id        BigInt  @id @default(autoincrement())
+  id        BigInt   @id @default(autoincrement())
   userId    BigInt
   level     Int
   startedAt DateTime @default(now())
   expiresAt DateTime
-  source    Int     @default(0) // purchase, gift, admin
+  source    Int      @default(0) // purchase, gift, admin
   orderId   BigInt?
-  user      User    @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   vip       VipLevel @relation(fields: [level], references: [level])
+
   @@index([userId, expiresAt])
 }
 
 // ---------- Social / agency ----------
 model Agency {
-  id         BigInt  @id @default(autoincrement())
-  publicId   String  @unique @default(uuid())
-  name       String  @db.VarChar(64)
-  ownerId    BigInt
-  level      Int     @default(1)
-  tag        String? @db.VarChar(32)
-  tagUrl     String?
-  badgeUrl   String?
-  memberLimit Int    @default(100)
-  createdAt  DateTime @default(now())
-  members    AgencyMember[]
+  id          BigInt         @id @default(autoincrement())
+  publicId    String         @unique @default(uuid())
+  name        String         @db.VarChar(64)
+  ownerId     BigInt
+  level       Int            @default(1)
+  tag         String?        @db.VarChar(32)
+  tagUrl      String?
+  badgeUrl    String?
+  memberLimit Int            @default(100)
+  createdAt   DateTime       @default(now())
+  members     AgencyMember[]
 }
 
 model AgencyMember {
@@ -589,32 +612,34 @@ model AgencyMember {
   role     Int      @default(0) // member, bd, president
   joinedAt DateTime @default(now())
   agency   Agency   @relation(fields: [agencyId], references: [id])
+
   @@id([agencyId, userId])
   @@index([userId])
 }
 
 // ---------- Ranking / config / ops ----------
 model Ranking {
-  id        BigInt  @id @default(autoincrement())
-  board     Int     // charm, coinflow, gift, supporter, room_hot, singer, cp
-  period    Int     // day, week, month, total
-  periodKey String  @db.VarChar(16)
+  id        BigInt   @id @default(autoincrement())
+  board     Int // charm, coinflow, gift, supporter, room_hot, singer, cp
+  period    Int // day, week, month, total
+  periodKey String   @db.VarChar(16)
   subjectId BigInt
   score     BigInt
   rank      Int
   updatedAt DateTime @updatedAt
+
   @@unique([board, period, periodKey, subjectId])
   @@index([board, period, periodKey, rank])
 }
 
 model Notification {
-  id        BigInt  @id @default(autoincrement())
+  id        BigInt   @id @default(autoincrement())
   userId    BigInt
-  kind      String  @db.VarChar(32)
+  kind      String   @db.VarChar(32)
   title     String
   body      String
   payload   Json?
-  read      Boolean @default(false)
+  read      Boolean  @default(false)
   createdAt DateTime @default(now())
 
   // --- delivery tracking (P3 Notifications) ---
@@ -634,9 +659,9 @@ model Notification {
 }
 
 model Setting {
-  key       String  @id
+  key       String   @id
   value     Json
-  scope     String  @default("global")
+  scope     String   @default("global")
   updatedBy String?
   updatedAt DateTime @updatedAt
 }
@@ -645,99 +670,134 @@ model Setting {
 // cosmetic slot and its Profile.*Url cache column (0 avatar_frame → avatarFrameUrl,
 // 1 entry_effect → entryEffectUrl, 2 chat_bubble → bubbleUrl).
 model DecorationItem {
-  id           BigInt   @id @default(autoincrement())
-  kind         Int      // 0 avatar_frame · 1 entry_effect · 2 chat_bubble
-  name         String   @db.VarChar(64)
+  id           BigInt           @id @default(autoincrement())
+  kind         Int // 0 avatar_frame · 1 entry_effect · 2 chat_bubble
+  name         String           @db.VarChar(64)
   url          String
-  priceCoins   BigInt   @default(0)
-  durationDays Int?     // null = permanent; otherwise the UserDecoration expires after N days
-  enabled      Boolean  @default(true)
-  sort         Int      @default(0)
-  createdAt    DateTime @default(now())
+  priceCoins   BigInt           @default(0)
+  durationDays Int? // null = permanent; otherwise the UserDecoration expires after N days
+  enabled      Boolean          @default(true)
+  sort         Int              @default(0)
+  createdAt    DateTime         @default(now())
   owners       UserDecoration[]
+
   @@index([kind, enabled, sort])
 }
 
 // Per-user decoration ownership + equip state (T1.13). At most one equipped per kind (enforced
 // in the equip transaction). `equipped` mirrors the Profile.*Url cache written in the same tx.
 model UserDecoration {
-  id         BigInt   @id @default(autoincrement())
+  id         BigInt         @id @default(autoincrement())
   userId     BigInt
   itemId     BigInt
-  equipped   Boolean  @default(false)
+  equipped   Boolean        @default(false)
   expiresAt  DateTime?
-  acquiredAt DateTime @default(now())
+  acquiredAt DateTime       @default(now())
   user       User           @relation(fields: [userId], references: [id])
   item       DecorationItem @relation(fields: [itemId], references: [id])
+
   @@unique([userId, itemId])
   @@index([userId, equipped])
 }
 
 model AdminUser {
-  id           BigInt @id @default(autoincrement())
-  username     String @unique @db.VarChar(64)
+  id           BigInt   @id @default(autoincrement())
+  username     String   @unique @db.VarChar(64)
   passwordHash String
-  role         Int    @default(0)
-  enabled      Boolean @default(true)
+  role         Int      @default(0)
+  enabled      Boolean  @default(true)
   createdAt    DateTime @default(now())
 }
 
 model AuditLog {
-  id           BigInt  @id @default(autoincrement())
+  id           BigInt   @id @default(autoincrement())
   actorAdminId BigInt?
-  action       String  @db.VarChar(64)
-  targetType   String? @db.VarChar(32)
+  action       String   @db.VarChar(64)
+  targetType   String?  @db.VarChar(32)
   targetId     BigInt?
   before       Json?
   after        Json?
-  ip           String? @db.VarChar(45)
+  ip           String?  @db.VarChar(45)
   createdAt    DateTime @default(now())
+
   @@index([actorAdminId, createdAt])
   @@index([targetType, targetId])
 }
 
 // ---------- Wallet: withdrawals ----------
 model WithdrawalRequest {
-  id          BigInt   @id @default(autoincrement())
-  userId      BigInt
-  amount      BigInt   // beans requested to withdraw
-  method      String   @db.VarChar(32) // bank | paypal | ...
-  account     String   @db.VarChar(255) // payout account (encrypt in prod)
-  status      Int      @default(0) // 0 pending,1 approved,2 rejected,3 paid
-  reason      String?  @db.VarChar(255)
-  createdAt   DateTime @default(now())
-  processedAt DateTime?
+  id             BigInt                 @id @default(autoincrement())
+  userId         BigInt
+  amount         BigInt // beans requested to withdraw
+  method         String                 @db.VarChar(32) // bank | paypal | ...
+  account        String                 @db.VarChar(255) // payout account (encrypt in prod)
+  // Lifecycle: 0 pending · 1 approved · 2 rejected · 3 paid · 4 cancelled · 5 failed · 6 expired.
+  // 0-3 are the original values, preserved verbatim. Every terminal state EXCEPT `paid` returns the
+  // beans — see WITHDRAWAL_TRANSITIONS / REFUNDING_STATES in wallet/withdrawal.machine.ts.
+  status         Int                    @default(0)
+  reason         String?                @db.VarChar(255)
+  createdAt      DateTime               @default(now())
+  processedAt    DateTime?
+  reviewedAt     DateTime?
+  paidAt         DateTime?
+  refundedAt     DateTime?
+  // Exactly-once refund marker; also the wallet-ledger anchor for the returning credit. Unique, so a
+  // second refund of the same request cannot be written even if two callers race.
+  refundKey      String?                @unique @db.VarChar(128)
+  // Dedupes request CREATION across a client retry, mirroring Order.idempotencyKey.
+  idempotencyKey String?                @unique @db.VarChar(128)
+  transitions    WithdrawalTransition[]
+
   @@index([userId, createdAt])
   @@index([status])
+  @@index([status, createdAt]) // the expiry sweep: pending requests older than the cutoff
+}
+
+/// Durable audit of every withdrawal state transition (who moved it, from what, to what, why).
+/// Mirrors OrderTransition — cash-out is the one flow where "who approved this and when" must be
+/// answerable months later, from the database alone.
+model WithdrawalTransition {
+  id           BigInt            @id @default(autoincrement())
+  withdrawalId BigInt
+  fromStatus   Int
+  toStatus     Int
+  reason       String?           @db.VarChar(255)
+  actor        String?           @db.VarChar(64) // "user:123" | "admin:7" | "system"
+  createdAt    DateTime          @default(now())
+  withdrawal   WithdrawalRequest @relation(fields: [withdrawalId], references: [id])
+
+  @@index([withdrawalId, createdAt])
 }
 
 // ---------- Moderation ----------
 model Report {
-  id         BigInt   @id @default(autoincrement())
+  id         BigInt    @id @default(autoincrement())
   reporterId BigInt
-  targetType String   @db.VarChar(16) // user | room | moment
+  targetType String    @db.VarChar(16) // user | room | moment
   targetId   BigInt
-  reason     String   @db.VarChar(64)
+  reason     String    @db.VarChar(64)
   detail     String?
-  status     Int      @default(0) // 0 open,1 reviewing,2 resolved,3 dismissed
+  status     Int       @default(0) // 0 open,1 reviewing,2 resolved,3 dismissed
   handledBy  BigInt?
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
   handledAt  DateTime?
+
   @@index([status, createdAt])
   @@index([targetType, targetId])
 }
 
 model Ban {
-  id        BigInt   @id @default(autoincrement())
+  id        BigInt    @id @default(autoincrement())
   userId    BigInt
-  scope     Int      // 0 account-suspend, 1 room-ban, 2 room-mute
+  scope     Int // 0 account-suspend, 1 room-ban, 2 room-mute
   roomId    BigInt?
-  reason    String?  @db.VarChar(255)
+  reason    String?   @db.VarChar(255)
   byAdminId BigInt?
   byUserId  BigInt?
-  active    Boolean  @default(true)
+  active    Boolean   @default(true)
   expiresAt DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+
   @@index([userId, scope, active])
   @@index([roomId, scope, active])
 }
@@ -751,18 +811,19 @@ model AgencyInvite {
   role      Int      @default(0)
   status    Int      @default(0) // 0 pending,1 accepted,2 declined
   createdAt DateTime @default(now())
-  @@index([inviteeId, status])
+
   @@unique([agencyId, inviteeId])
+  @@index([inviteeId, status])
 }
 
 model CommissionRecord {
   id         BigInt   @id @default(autoincrement())
   agencyId   BigInt
   hostId     BigInt
-  sourceType Int      // 0 gift, 1 recharge
+  sourceType Int // 0 gift, 1 recharge
   baseAmount BigInt
-  rateBps    Int      // basis points (e.g. 1000 = 10%)
-  amount     BigInt   // computed commission
+  rateBps    Int // basis points (e.g. 1000 = 10%)
+  amount     BigInt // computed commission
   periodKey  String   @db.VarChar(16)
   createdAt  DateTime @default(now())
 
@@ -771,9 +832,9 @@ model CommissionRecord {
   // payout flips it via a status-guarded update (where paidAt IS NULL) inside the same transaction as
   // the WalletService credit, so a retry/concurrent payout can never pay twice. `payoutKey` is the
   // durable idempotency key (also the wallet ledger's refType/refId anchor).
-  paidAt     DateTime?
-  payoutKey  String?   @unique @db.VarChar(128)
-  paidToId   BigInt?   // recipient of the payout (the agency owner)
+  paidAt    DateTime?
+  payoutKey String?   @unique @db.VarChar(128)
+  paidToId  BigInt? // recipient of the payout (the agency owner)
 
   @@index([agencyId, periodKey])
   @@index([hostId, periodKey])
@@ -782,16 +843,17 @@ model CommissionRecord {
 
 // ---------- Admin content ----------
 model Banner {
-  id       BigInt   @id @default(autoincrement())
-  title    String   @db.VarChar(128)
-  imageUrl String
-  linkUrl  String?
-  position String   @default("home") @db.VarChar(32)
-  sort     Int      @default(0)
-  enabled  Boolean  @default(true)
-  startsAt DateTime?
-  endsAt   DateTime?
-  createdAt DateTime @default(now())
+  id        BigInt    @id @default(autoincrement())
+  title     String    @db.VarChar(128)
+  imageUrl  String
+  linkUrl   String?
+  position  String    @default("home") @db.VarChar(32)
+  sort      Int       @default(0)
+  enabled   Boolean   @default(true)
+  startsAt  DateTime?
+  endsAt    DateTime?
+  createdAt DateTime  @default(now())
+
   @@index([position, enabled, sort])
 }
 
@@ -802,6 +864,7 @@ model Announcement {
   audience  String   @default("all") @db.VarChar(16)
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
+
   @@index([active, createdAt])
 }
 
@@ -810,17 +873,18 @@ model Announcement {
 // ordered (aUserId < bUserId) unique pair so at most one active couple can exist per unordered
 // pair, and a partial-unique guard (one ACTIVE couple per user) is enforced in the service layer.
 model Couple {
-  id         BigInt   @id @default(autoincrement())
-  aUserId    BigInt   // always the smaller user id
-  bUserId    BigInt   // always the larger user id
-  status     Int      @default(0) // 0 pending, 1 active, 2 broken
-  proposerId BigInt   // who proposed (for pending-response auth)
-  sweetValue BigInt   @default(0) // intimacy; grows when partners gift each other
-  ringUrl    String?
-  cpLevel    Int      @default(0) // derived from sweetValue thresholds
+  id            BigInt    @id @default(autoincrement())
+  aUserId       BigInt // always the smaller user id
+  bUserId       BigInt // always the larger user id
+  status        Int       @default(0) // 0 pending, 1 active, 2 broken
+  proposerId    BigInt // who proposed (for pending-response auth)
+  sweetValue    BigInt    @default(0) // intimacy; grows when partners gift each other
+  ringUrl       String?
+  cpLevel       Int       @default(0) // derived from sweetValue thresholds
   establishedAt DateTime?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
   @@unique([aUserId, bUserId])
   @@index([aUserId, status])
   @@index([bUserId, status])
@@ -831,20 +895,21 @@ model Couple {
 // A user post: text, images (mediaUrls JSON array), and/or a short voice clip. Media is
 // referenced by URL (owner-provisioned object storage); the API accepts already-uploaded URLs.
 model Moment {
-  id           BigInt   @id @default(autoincrement())
+  id           BigInt          @id @default(autoincrement())
   authorId     BigInt
-  type         Int      @default(0) // 0 text, 1 image, 2 voice
-  text         String?  @db.VarChar(1000)
-  mediaUrls    Json?    // string[] image urls
+  type         Int             @default(0) // 0 text, 1 image, 2 voice
+  text         String?         @db.VarChar(1000)
+  mediaUrls    Json? // string[] image urls
   voiceUrl     String?
-  voiceSeconds Int      @default(0)
-  likeCount    Int      @default(0)
-  commentCount Int      @default(0)
-  viewCount    Int      @default(0)
-  status       Int      @default(0) // 0 visible, 1 hidden, 2 deleted
-  createdAt    DateTime @default(now())
+  voiceSeconds Int             @default(0)
+  likeCount    Int             @default(0)
+  commentCount Int             @default(0)
+  viewCount    Int             @default(0)
+  status       Int             @default(0) // 0 visible, 1 hidden, 2 deleted
+  createdAt    DateTime        @default(now())
   likes        MomentLike[]
   comments     MomentComment[]
+
   @@index([status, createdAt])
   @@index([authorId, status, createdAt])
 }
@@ -854,6 +919,7 @@ model MomentLike {
   userId    BigInt
   createdAt DateTime @default(now())
   moment    Moment   @relation(fields: [momentId], references: [id])
+
   @@id([momentId, userId])
   @@index([userId])
 }
@@ -865,6 +931,7 @@ model MomentComment {
   text      String   @db.VarChar(500)
   createdAt DateTime @default(now())
   moment    Moment   @relation(fields: [momentId], references: [id])
+
   @@index([momentId, createdAt])
 }
 
@@ -872,16 +939,17 @@ model MomentComment {
 // A short anonymous-ish audio "message in a bottle" thrown to the pool and picked up by
 // random discovery. Reactions are one-per-user.
 model VoiceBottle {
-  id            BigInt   @id @default(autoincrement())
+  id            BigInt           @id @default(autoincrement())
   authorId      BigInt
   voiceUrl      String
-  voiceSeconds  Int      @default(0)
-  caption       String?  @db.VarChar(140)
-  status        Int      @default(0) // 0 active, 1 closed, 2 removed
-  pickedCount   Int      @default(0)
-  reactionCount Int      @default(0)
-  createdAt     DateTime @default(now())
+  voiceSeconds  Int              @default(0)
+  caption       String?          @db.VarChar(140)
+  status        Int              @default(0) // 0 active, 1 closed, 2 removed
+  pickedCount   Int              @default(0)
+  reactionCount Int              @default(0)
+  createdAt     DateTime         @default(now())
   reactions     BottleReaction[]
+
   @@index([status, createdAt])
   @@index([authorId, createdAt])
 }
@@ -889,9 +957,10 @@ model VoiceBottle {
 model BottleReaction {
   bottleId  BigInt
   userId    BigInt
-  type      Int      @default(0) // 0 like, 1 heart, 2 laugh, 3 wow
-  createdAt DateTime @default(now())
+  type      Int         @default(0) // 0 like, 1 heart, 2 laugh, 3 wow
+  createdAt DateTime    @default(now())
   bottle    VoiceBottle @relation(fields: [bottleId], references: [id])
+
   @@id([bottleId, userId])
   @@index([userId])
 }
@@ -899,15 +968,15 @@ model BottleReaction {
 // ---------- Achievements: Medals & Badges ----------
 // Catalogue of awardable medals/badges. category groups them for profile display.
 model Medal {
-  id          BigInt   @id @default(autoincrement())
-  code        String   @unique @db.VarChar(48) // stable machine key (e.g. "first_gift")
-  name        String   @db.VarChar(64)
-  category    Int      @default(0) // 0 achievement, 1 vip, 2 host, 3 ranking, 4 event
-  tier        Int      @default(1)
+  id          BigInt      @id @default(autoincrement())
+  code        String      @unique @db.VarChar(48) // stable machine key (e.g. "first_gift")
+  name        String      @db.VarChar(64)
+  category    Int         @default(0) // 0 achievement, 1 vip, 2 host, 3 ranking, 4 event
+  tier        Int         @default(1)
   iconUrl     String?
-  description String?  @db.VarChar(255)
-  sort        Int      @default(0)
-  enabled     Boolean  @default(true)
+  description String?     @db.VarChar(255)
+  sort        Int         @default(0)
+  enabled     Boolean     @default(true)
   userMedals  UserMedal[]
 }
 
@@ -919,6 +988,7 @@ model UserMedal {
   awardedAt DateTime  @default(now())
   expiresAt DateTime? // null = permanent
   medal     Medal     @relation(fields: [medalId], references: [id])
+
   @@unique([userId, medalId])
   @@index([userId, adorned])
 }
@@ -931,14 +1001,14 @@ model UserMedal {
 model TaskConfig {
   id             BigInt   @id @default(autoincrement())
   code           String   @unique @db.VarChar(32) // stable business id, e.g. "D_SIGNIN"
-  kind           Int      @default(0)             // 0 daily (resets each period), 1 new-user (once)
+  kind           Int      @default(0) // 0 daily (resets each period), 1 new-user (once)
   title          String   @db.VarChar(128)
   description    String?  @db.VarChar(255)
   // Reward is multi-currency by design: `rewardCurrency` is a lib/ledger Currency value, so a task
   // can pay coins, beans, vip-coins… without any schema or code change.
   rewardCurrency Int      @default(0)
   rewardAmount   BigInt
-  target         Int      @default(1)             // progress required before the reward is claimable
+  target         Int      @default(1) // progress required before the reward is claimable
   iconUrl        String?
   androidJump    String?
   iosJump        String?
@@ -975,22 +1045,24 @@ model UserTaskProgress {
 
 model SeatApply {
   id           BigInt   @id @default(autoincrement())
-  roomId       BigInt   // scalar ref, no FK (matches RoomPk precedent; avoids touching Room)
-  userId       BigInt   // the applicant (scalar ref, no FK)
-  position     Int?     // requested seat position; null = any available seat
+  roomId       BigInt // scalar ref, no FK (matches RoomPk precedent; avoids touching Room)
+  userId       BigInt // the applicant (scalar ref, no FK)
+  position     Int? // requested seat position; null = any available seat
   status       Int      @default(0) // 0 pending · 1 granted · 2 rejected · 3 cancelled
-  resolvedById BigInt?  // host who granted/rejected (audit; null while pending)
+  resolvedById BigInt? // host who granted/rejected (audit; null while pending)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  @@unique([roomId, userId])           // ONE live request per user per room (upsert-reused across re-applies)
+
+  @@unique([roomId, userId]) // ONE live request per user per room (upsert-reused across re-applies)
   @@index([roomId, status, createdAt]) // host's pending-applications list + pending count
 }
 
 model RoomFavorite {
-  userId    BigInt   // scalar ref, no FK (matches RoomPk/SeatApply precedent; avoids touching Room/User)
-  roomId    BigInt   // scalar ref, no FK
+  userId    BigInt // scalar ref, no FK (matches RoomPk/SeatApply precedent; avoids touching Room/User)
+  roomId    BigInt // scalar ref, no FK
   createdAt DateTime @default(now())
-  @@id([userId, roomId])           // composite PK = identity + uniqueness (one favorite per user+room)
-  @@index([roomId])                // reverse lookup: favorite count / who favorited room X
-  @@index([userId, createdAt])     // "my favorites, newest-first" listing
+
+  @@id([userId, roomId]) // composite PK = identity + uniqueness (one favorite per user+room)
+  @@index([roomId]) // reverse lookup: favorite count / who favorited room X
+  @@index([userId, createdAt]) // "my favorites, newest-first" listing
 }

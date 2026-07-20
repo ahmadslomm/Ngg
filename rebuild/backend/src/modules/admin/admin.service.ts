@@ -41,6 +41,61 @@ export class AdminService {
   // ----- wallet: coin adjustment (platform-admin only; audited + ledgered via WalletService) -----
   // The admin never writes the wallet directly: WalletService.applyDelta performs the serializable
   // balance change + append-only ledger row and rejects an overdraft.
+  // ----- withdrawals (cash-out review) -----
+  // Every action is gated on requirePlatformAdmin and written to the admin audit log. Cash-out is
+  // the one flow where "who approved this, when, and why" must be answerable months later, so the
+  // audit row is written for the ATTEMPT as well as the success — a rejected-then-errored approval
+  // still leaves a trace.
+  async listWithdrawals(adminId: bigint, status: number, take = 100) {
+    await requirePlatformAdmin(adminId);
+    return walletService.listWithdrawalsByStatus(status, take);
+  }
+
+  async withdrawalHistory(adminId: bigint, id: bigint) {
+    await requirePlatformAdmin(adminId);
+    return walletService.withdrawalHistory(id);
+  }
+
+  private async reviewWithdrawal(
+    adminId: bigint,
+    id: bigint,
+    action: 'approve' | 'reject' | 'pay' | 'fail',
+    reason?: string,
+  ) {
+    await requirePlatformAdmin(adminId);
+    const before = await walletService.withdrawalHistory(id).catch(() => null);
+    const run = {
+      approve: () => walletService.approveWithdrawal(adminId, id, reason),
+      reject: () => walletService.rejectWithdrawal(adminId, id, reason),
+      pay: () => walletService.markWithdrawalPaid(adminId, id, reason),
+      fail: () => walletService.markWithdrawalFailed(adminId, id, reason),
+    }[action];
+
+    try {
+      const res = await run();
+      await audit(adminId, `withdrawal.${action}`, 'withdrawal', id,
+        { transitions: before?.length ?? null }, { status: res.status, refunded: res.refunded, reason });
+      return { ...res, amount: String(res.amount) };
+    } catch (e) {
+      await audit(adminId, `withdrawal.${action}.failed`, 'withdrawal', id, null,
+        { error: e instanceof Error ? e.message : String(e), reason });
+      throw e;
+    }
+  }
+
+  approveWithdrawal(adminId: bigint, id: bigint, reason?: string) {
+    return this.reviewWithdrawal(adminId, id, 'approve', reason);
+  }
+  rejectWithdrawal(adminId: bigint, id: bigint, reason?: string) {
+    return this.reviewWithdrawal(adminId, id, 'reject', reason);
+  }
+  markWithdrawalPaid(adminId: bigint, id: bigint, reason?: string) {
+    return this.reviewWithdrawal(adminId, id, 'pay', reason);
+  }
+  markWithdrawalFailed(adminId: bigint, id: bigint, reason?: string) {
+    return this.reviewWithdrawal(adminId, id, 'fail', reason);
+  }
+
   async adjustCoins(adminId: bigint, userId: bigint, delta: bigint, reason: string) {
     await requirePlatformAdmin(adminId);
     if (delta === 0n) throw new AppError('invalid_amount', 400);

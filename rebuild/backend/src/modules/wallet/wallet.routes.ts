@@ -53,6 +53,15 @@ export async function walletRoutes(app: FastifyInstance) {
     return ok(serialize(await walletService.listWithdrawals(uid(req))));
   });
 
+  // A user withdrawing their own pending request. Ownership is enforced in the service, not here.
+  app.post('/withdrawals/:id/cancel', { preHandler: [app.authenticate], config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (req, reply) => {
+    try {
+      const b = z.object({ reason: z.string().max(255).optional() }).parse(req.body ?? {});
+      const r = await walletService.cancelWithdrawal(uid(req), BigInt((req.params as any).id), b.reason);
+      return ok(serialize({ withdrawal_id: r.id, status: r.status, refunded: r.refunded, amount: r.amount }));
+    } catch (e) { return replyError(reply, e); }
+  });
+
   // Ledger self-reconciliation
   app.get('/wallet/reconcile', { preHandler: [app.authenticate] }, async (req) => {
     return ok(serialize(await walletService.reconcile(uid(req))));

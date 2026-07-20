@@ -19,7 +19,7 @@ export async function vipRoutes(app: FastifyInstance) {
 
   app.get('/vip/history', { preHandler: [app.authenticate] }, async (req) => ok(serialize(await vipService.getHistory(uid(req)))));
 
-  app.post('/vip/purchase', { preHandler: [app.authenticate] }, async (req, reply) => {
+  app.post('/vip/purchase', { preHandler: [app.authenticate], config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (req, reply) => {
     try {
       const b = z.object({ level: z.number().int().min(1) }).parse(req.body);
       // T2.1 idempotent purchase: an Idempotency-Key retry charges once; a replay returns 200.
@@ -31,7 +31,7 @@ export async function vipRoutes(app: FastifyInstance) {
     }
   });
 
-  app.post('/vip/renew', { preHandler: [app.authenticate] }, async (req, reply) => {
+  app.post('/vip/renew', { preHandler: [app.authenticate], config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (req, reply) => {
     try {
       return ok(serialize(await vipService.renew(uid(req))));
     } catch (e) { return replyError(reply, e); }

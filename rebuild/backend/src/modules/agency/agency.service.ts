@@ -179,11 +179,20 @@ export class AgencyService {
     const rows = await agencyRepo.listUnpaidCommissions(agencyId, opts.periodKey, opts.limit ?? 100);
     let paidCount = 0;
     let paidAmount = 0n;
+    const skipped: Array<{ id: string; reason: string }> = [];
     for (const r of rows) {
-      const res = await this.payoutCommission(actorId, r.id);
-      if (res.paid) { paidCount += 1; paidAmount += res.amount; }
+      // One bad record must not abort the batch. `payoutCommission` throws `nothing_to_pay` for a
+      // zero amount — and integer basis-point maths rounds small bases DOWN to zero (a 5% rate on a
+      // base under 20 yields 0), so a single such record used to block the payout of every
+      // commission after it in the list. Failures are collected and reported instead.
+      try {
+        const res = await this.payoutCommission(actorId, r.id);
+        if (res.paid) { paidCount += 1; paidAmount += res.amount; }
+      } catch (e) {
+        skipped.push({ id: String(r.id), reason: e instanceof Error ? e.message : String(e) });
+      }
     }
-    return { records: rows.length, paid: paidCount, amount: paidAmount };
+    return { records: rows.length, paid: paidCount, amount: paidAmount, skipped };
   }
 
   // ---------- statistics / reporting (hierarchy-ready read models) ----------

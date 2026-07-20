@@ -1,15 +1,29 @@
 {
-  "generatedAt": "2026-07-20T04:23:59.914Z",
+  "generatedAt": "2026-07-20T05:53:08.954Z",
   "method": "Static analysis of src/modules/**/*.routes.ts. No server boot, no DB, no network.",
   "totals": {
-    "routes": 191,
-    "admin": 50,
-    "authenticated": 133,
+    "routes": 199,
+    "admin": 56,
+    "authenticated": 134,
     "public-by-design": 8,
-    "validated": 88,
-    "rateLimited": 13
+    "UNGUARDED-REVIEW": 1,
+    "validated": 91,
+    "rateLimited": 19
   },
-  "needsReview": [],
+  "needsReview": [
+    {
+      "module": "payments",
+      "method": "GET",
+      "path": "/store/products",
+      "file": "src/modules/payments/payment.routes.ts",
+      "auth": false,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "UNGUARDED-REVIEW"
+    }
+  ],
   "routes": [
     {
       "module": "admin",
@@ -54,8 +68,80 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
+      "rateLimit": "20/1 minute",
+      "validated": true,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "GET",
+      "path": "/admin/withdrawals",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
       "rateLimit": null,
       "validated": true,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "GET",
+      "path": "/admin/withdrawals/:id/history",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "POST",
+      "path": "/admin/withdrawals/:id/approve",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": "30/1 minute",
+      "validated": false,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "POST",
+      "path": "/admin/withdrawals/:id/reject",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": "30/1 minute",
+      "validated": false,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "POST",
+      "path": "/admin/withdrawals/:id/pay",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": "30/1 minute",
+      "validated": false,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "POST",
+      "path": "/admin/withdrawals/:id/fail",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": "30/1 minute",
+      "validated": false,
       "roles": [],
       "exposure": "admin"
     },
@@ -1456,12 +1542,12 @@
       "method": "GET",
       "path": "/store/products",
       "file": "src/modules/payments/payment.routes.ts",
-      "auth": true,
+      "auth": false,
       "admin": false,
       "rateLimit": null,
       "validated": false,
       "roles": [],
-      "exposure": "authenticated"
+      "exposure": "UNGUARDED-REVIEW"
     },
     {
       "module": "payments",
@@ -1863,6 +1949,18 @@
       "module": "rooms",
       "method": "POST",
       "path": "/rooms/:id/seats/:pos/invite",
+      "file": "src/modules/rooms/room.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "rooms",
+      "method": "POST",
+      "path": "/rooms/:id/emoji",
       "file": "src/modules/rooms/room.routes.ts",
       "auth": true,
       "admin": false,
@@ -2288,6 +2386,18 @@
       "admin": false,
       "rateLimit": null,
       "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "wallet",
+      "method": "POST",
+      "path": "/withdrawals/:id/cancel",
+      "file": "src/modules/wallet/wallet.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": "10/1 minute",
+      "validated": true,
       "roles": [],
       "exposure": "authenticated"
     },
