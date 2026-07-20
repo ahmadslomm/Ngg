@@ -12,12 +12,18 @@ import 'room_controller.dart';
 import 'room_display_builder.dart';
 import 'room_repository.dart';
 
+/// The single room API client. Previously constructed ad-hoc at three call sites, which made
+/// every dependent rebuild allocate a fresh instance and left no seam for a fake in tests.
+final roomRepositoryProvider = Provider<RoomRepository>(
+  (ref) => RoomRepository(ref.watch(apiClientProvider)),
+);
+
 /// One controller per open room; auto-disposed (leaves channel) when the screen closes.
 final roomControllerProvider =
     StateNotifierProvider.autoDispose.family<RoomController, RoomUiState, String>((ref, roomId) {
   final s = ref.watch(sessionProvider);
   final controller = RoomController(
-    repo: RoomRepository(ref.watch(apiClientProvider)),
+    repo: ref.watch(roomRepositoryProvider),
     realtime: ref.watch(realtimeProvider),
     voice: AgoraVoiceEngine(),
     roomId: roomId,
@@ -29,7 +35,7 @@ final roomControllerProvider =
 });
 
 final giftCatalogProvider = FutureProvider<List<Gift>>((ref) async {
-  return RoomRepository(ref.watch(apiClientProvider)).gifts();
+  return ref.watch(roomRepositoryProvider).gifts();
 });
 
 /// A stable key over the *set* of seated users, so profile hydration only refetches
@@ -64,7 +70,7 @@ final seatProfilesProvider =
 /// room skin. Best-effort — an error yields [RoomMeta.empty] (neutral throne default).
 final roomMetaProvider = FutureProvider.autoDispose.family<RoomMeta, String>((ref, roomId) async {
   try {
-    return await RoomRepository(ref.watch(apiClientProvider)).roomMeta(roomId);
+    return await ref.watch(roomRepositoryProvider).roomMeta(roomId);
   } catch (_) {
     return RoomMeta.empty;
   }

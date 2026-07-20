@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-20T05:15:50.959Z",
+  "generatedAt": "2026-07-20T05:39:40.714Z",
   "method": "Static analysis: each `ev:` paired with its sibling `data:` literal; client `case` labels.",
   "totals": {
-    "serverEvents": 28,
-    "consumed": 23,
+    "serverEvents": 32,
+    "consumed": 27,
     "unconsumed": 5,
-    "withKnownPayload": 28,
+    "withKnownPayload": 32,
     "clientHandlersWithoutEmitter": 4
   },
   "events": [
@@ -207,7 +207,7 @@
     {
       "event": "mic.applied",
       "emitSites": [
-        "src/modules/rooms/room.service.ts:268"
+        "src/modules/rooms/room.service.ts:295"
       ],
       "payloadKeys": [
         "<spread/variable>"
@@ -311,10 +311,39 @@
       "status": "consumed"
     },
     {
+      "event": "room.banned",
+      "emitSites": [
+        "src/modules/moderation/moderation.routes.ts:54"
+      ],
+      "payloadKeys": [
+        "by",
+        "roomId",
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "room.emoji",
+      "emitSites": [
+        "src/modules/rooms/room.service.ts:270"
+      ],
+      "payloadKeys": [
+        "position",
+        "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
       "event": "room.joined",
       "emitSites": [
         "src/modules/rooms/room.service.ts:83",
-        "src/realtime/gateway.ts:67"
+        "src/realtime/gateway.ts:72"
       ],
       "payloadKeys": [
         "data",
@@ -330,7 +359,7 @@
       "event": "room.left",
       "emitSites": [
         "src/modules/rooms/room.service.ts:98",
-        "src/realtime/gateway.ts:93"
+        "src/realtime/gateway.ts:98"
       ],
       "payloadKeys": [
         "<spread/variable>",
@@ -342,10 +371,26 @@
       "status": "consumed"
     },
     {
+      "event": "room.rank",
+      "emitSites": [
+        "src/modules/gifts/gift.routes.ts:105"
+      ],
+      "payloadKeys": [
+        "period",
+        "roomId",
+        "top",
+        "ts"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
       "event": "room.updated",
       "emitSites": [
-        "src/modules/rooms/room.service.ts:260",
-        "src/modules/rooms/room.service.ts:351"
+        "src/modules/rooms/room.service.ts:287",
+        "src/modules/rooms/room.service.ts:378"
       ],
       "payloadKeys": [
         "cover_url",
@@ -386,6 +431,19 @@
         "position",
         "state",
         "userId"
+      ],
+      "clientHandlers": [
+        "lib/features/room/room_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "system.message",
+      "emitSites": [
+        "src/modules/admin/admin.routes.ts:49"
+      ],
+      "payloadKeys": [
+        "<indirect>"
       ],
       "clientHandlers": [
         "lib/features/room/room_controller.dart"
@@ -453,7 +511,6 @@
     }
   ],
   "declaredNeverEmitted": [
-    "room.system_message",
     "room.level"
   ]
 }

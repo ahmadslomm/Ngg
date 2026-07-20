@@ -85,6 +85,7 @@ class Gift {
     this.category = 0,
     this.animType = 0,
     this.comboEnabled = false,
+    this.bagQty = 0,
   });
   final String id;
   final String name;
@@ -99,6 +100,13 @@ class Gift {
   final int animType;
   final bool comboEnabled;
 
+  /// How many of this gift the caller holds in their backpack (`bag_qty`, T1.14). The server
+  /// returns it per gift for an authenticated caller and 0 for anonymous ones. Sending with
+  /// `use_bag` spends these instead of coins.
+  final int bagQty;
+
+  bool get isInBag => bagQty > 0;
+
   factory Gift.fromJson(Map<String, dynamic> j) => Gift(
         id: j['id'].toString(),
         name: j['name'] as String,
@@ -108,16 +116,29 @@ class Gift {
         category: (j['category'] as num?)?.toInt() ?? 0,
         animType: (j['anim_type'] as num?)?.toInt() ?? 0,
         comboEnabled: j['combo_enabled'] as bool? ?? false,
+        bagQty: (j['bag_qty'] as num?)?.toInt() ?? 0,
       );
 }
 
 /// A public room chat message. Parses both the REST history shape (`sender_id`,
 /// `created_at`) and the realtime `chat.message` event shape (`senderId`).
 class ChatMessage {
-  const ChatMessage({required this.id, required this.senderId, required this.text});
+  const ChatMessage({
+    required this.id,
+    required this.senderId,
+    required this.text,
+    this.systemKind,
+  });
   final String id;
   final String senderId;
   final String text;
+
+  /// Set for an admin `system.message` notice ('notice' | 'warning' | 'announcement'); null for a
+  /// normal user message. Lets the feed style a system notice distinctly instead of rendering it as
+  /// though a user with no name had said it.
+  final String? systemKind;
+
+  bool get isSystem => systemKind != null;
 
   factory ChatMessage.fromJson(Map<String, dynamic> j) => ChatMessage(
         id: j['id'].toString(),

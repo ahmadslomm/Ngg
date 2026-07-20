@@ -70,13 +70,16 @@ function topKeys(objSrc) {
 // Events are ALSO declared in a central name table and emitted via typed builders, so scanning
 // only for inline `ev: '...'` literals undercounts. Resolve the table first, then treat any use of
 // `RoomEventName.X` as an emit of that name. An audit that undercounts is worse than none.
+// Read the entries from INSIDE the name-table declaration block. This used to be a "within 600
+// characters of the declaration" proximity test, which silently stopped seeing entries as the enum
+// grew past that window — `system.message` and `room.emoji` had both fallen out of range.
 const nameTable = new Map();
 for (const file of walk(join(BE, 'src'), '.ts')) {
   const src = readFileSync(file, 'utf8');
-  for (const m of src.matchAll(/(\w+):\s*'([a-z]+\.[a-z_]+)',/g)) {
-    if (/RoomEventName|EventName\s*=/.test(src.slice(Math.max(0, m.index - 600), m.index))) {
-      nameTable.set(m[1], m[2]);
-    }
+  for (const decl of src.matchAll(/export const (?:RoomEventName|EventName)\s*=\s*\{/g)) {
+    const body = objectAt(src, decl.index + decl[0].length - 1);
+    if (!body) continue;
+    for (const m of body.matchAll(/(\w+):\s*'([a-z]+\.[a-z_]+)'/g)) nameTable.set(m[1], m[2]);
   }
 }
 
@@ -112,13 +115,21 @@ for (const file of walk(join(BE, 'src'), '.ts')) {
   // (`export const seatUpdate = (data) => build(RoomEventName.SeatUpdate, data)`) whose CALL SITES
   // are where the payload actually lives — the FSM returns the event object and the service emits
   // it later, so `ev:` never appears at an emit site at all.
-  for (const m of src.matchAll(/\b(seatUpdate|seatInvited|micUpdate|roleChanged|userKicked|roomUpdated|charmUpdated|roomLevelEvent|micApplied|roomRankEvent|roomBanned|systemMessage)\(\s*\{/g)) {
+  // The factory names are DERIVED from builderTable, not listed here: a hardcoded list silently
+  // stops detecting the next event anyone adds, which is exactly how `room.emoji` first showed up
+  // as "no server emitter" despite being emitted.
+  const factoryNames = [...builderTable.keys()];
+  // Matches `factory({...})` AND `factory(someVariable)`. Requiring an inline literal made
+  // `systemMessage(payload)` invisible, so a LIVE event was reported as "never emitted" — the kind
+  // of false negative that gets working code deleted.
+  const factoryRe = new RegExp(`\\b(${factoryNames.join('|')})\\(\\s*(\\{)?`, 'g');
+  for (const m of src.matchAll(factoryRe)) {
     const name = builderTable.get(m[1]);
     if (!name) continue;
-    const raw = objectAt(src, m.index);
+    const raw = m[2] ? objectAt(src, m.index) : '';
     emits.push({
       event: name, file: rel, line: src.slice(0, m.index).split('\n').length,
-      payloadKeys: raw ? topKeys(raw) : ['<builder>'], hasLiteralPayload: !!raw,
+      payloadKeys: raw ? topKeys(raw) : ['<indirect>'], hasLiteralPayload: !!raw,
     });
   }
 

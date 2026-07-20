@@ -17,6 +17,7 @@ class RoomUiState {
     this.chatMessages = const [],
     this.charmByUser = const {},
     this.rolesByUser = const {},
+    this.topContributors = const [],
     this.themeId,
     this.coverUrl,
     this.presentUsers = const {},
@@ -42,6 +43,10 @@ class RoomUiState {
   /// Room roles as reported by `role.changed` — userId -> role int.
   final Map<String, int> rolesByUser;
 
+  /// The room's top contributors, pushed by `room.rank` after each in-room gift. Entries are the
+  /// server's raw rows — the leaderboard widget decides how to render them.
+  final List<Map<String, dynamic>> topContributors;
+
   /// Latest room metadata from `room.updated` ({room_id, theme_id, cover_url}).
   final int? themeId;
   final String? coverUrl;
@@ -65,6 +70,7 @@ class RoomUiState {
     List<ChatMessage>? chatMessages,
     Map<String, int>? charmByUser,
     Map<String, int>? rolesByUser,
+    List<Map<String, dynamic>>? topContributors,
     int? themeId,
     String? coverUrl,
     Set<String>? presentUsers,
@@ -82,6 +88,7 @@ class RoomUiState {
         chatMessages: chatMessages ?? this.chatMessages,
         charmByUser: charmByUser ?? this.charmByUser,
         rolesByUser: rolesByUser ?? this.rolesByUser,
+        topContributors: topContributors ?? this.topContributors,
         themeId: themeId ?? this.themeId,
         coverUrl: coverUrl ?? this.coverUrl,
         presentUsers: presentUsers ?? this.presentUsers,
@@ -91,6 +98,16 @@ class RoomUiState {
 }
 
 /// A seat invitation addressed to this user (`seat.invited` → {userId, by, position?}).
+/// One emoji play, as broadcast by `room.emoji`.
+class RoomEmojiPlay {
+  const RoomEmojiPlay({required this.userId, required this.faceId, this.position});
+  final String userId;
+  final int faceId;
+
+  /// The sender's seat, or null if they were not seated when they played it.
+  final int? position;
+}
+
 class SeatInvite {
   const SeatInvite({required this.userId, required this.byUserId, this.position});
   final String userId;
@@ -130,10 +147,15 @@ class RoomController extends StateNotifier<RoomUiState> {
   /// notifications for whoever is currently showing the host panel, not room state to hold.
   final StreamController<Map<String, dynamic>> _micApplies =
       StreamController<Map<String, dynamic>>.broadcast();
+
+  /// Emoji plays, streamed rather than held in state: an emoji is a one-shot animation, and putting
+  /// it in [RoomUiState] would rebuild the whole room on every play and leave the last one stuck.
+  final StreamController<RoomEmojiPlay> _emojiPlays = StreamController<RoomEmojiPlay>.broadcast();
   int _entrySeq = 0;
 
   /// Stream of entry effects to play (one per real join that carries an `entry_effect_url`).
   Stream<EntryEffect> get entryEffects => _entryEffects.stream;
+  Stream<RoomEmojiPlay> get emojiPlays => _emojiPlays.stream;
 
   /// Apply-to-mic queue activity, for the host panel.
   Stream<Map<String, dynamic>> get micApplies => _micApplies.stream;
@@ -188,6 +210,38 @@ class RoomController extends StateNotifier<RoomUiState> {
         _pushChat(ChatMessage.fromJson(e.data));
       case 'user.kicked':
         if ('${e.data['userId']}' == myUid) leaveRoom(kicked: true);
+
+      case 'room.banned':
+        // Payload: { roomId, userId, by }. A ban is a kick that also bars re-entry, so the banned
+        // user must leave immediately — otherwise they sit in a room the server no longer counts
+        // them in, seeing a frozen seat board.
+        if ('${e.data['userId']}' == myUid) leaveRoom(kicked: true);
+
+      case 'system.message':
+        // Payload: { roomId, text, kind, ts }. A room-scoped admin notice. Transient server-side
+        // (audited, never stored), so it arrives ONLY over the socket — if it is not rendered on
+        // receipt it is lost, and chat history will never replay it.
+        final text = '${e.data['text'] ?? ''}';
+        if (text.isEmpty) return;
+        _pushChat(ChatMessage(
+          id: 'sys-${e.data['ts'] ?? DateTime.now().millisecondsSinceEpoch}',
+          senderId: '',
+          text: text,
+          systemKind: '${e.data['kind'] ?? 'notice'}',
+        ));
+
+      case 'room.rank':
+        // Payload: { roomId, period, top, ts }. Pushed after an in-room gift so the contributor
+        // board updates live instead of only on reopen.
+        final top = e.data['top'];
+        if (top is List) {
+          state = state.copyWith(
+            topContributors: [
+              for (final row in top)
+                if (row is Map) Map<String, dynamic>.from(row),
+            ],
+          );
+        }
       case 'room.joined':
         // Real entry effect for the entrant (server-provided `entry_effect_url`); ignored when
         // there is none. The overlay queues/plays it — the controller only forwards the domain event.
@@ -237,6 +291,17 @@ class RoomController extends StateNotifier<RoomUiState> {
           themeId: (e.data['theme_id'] as num?)?.toInt(),
           coverUrl: e.data['cover_url'] as String?,
         );
+
+      case 'room.emoji':
+        // Payload: { roomId, userId, faceId, position? }. `position` is null for a listener who
+        // holds no seat — the overlay decides where an unseated play is drawn.
+        final faceId = (e.data['faceId'] as num?)?.toInt();
+        if (faceId == null || _emojiPlays.isClosed) return;
+        _emojiPlays.add(RoomEmojiPlay(
+          userId: '${e.data['userId'] ?? ''}',
+          faceId: faceId,
+          position: (e.data['position'] as num?)?.toInt(),
+        ));
 
       case 'seat.invited':
         // Payload: { userId, by, position? }. Only surface an invitation addressed to ME —
@@ -393,8 +458,20 @@ class RoomController extends StateNotifier<RoomUiState> {
     await voice.muteLocalAudio(next);
   }
 
-  Future<void> sendGift(String giftId, List<String> recipientIds, {int qty = 1}) =>
-      repo.sendGift(roomId: roomId, giftId: giftId, qty: qty, recipientIds: recipientIds);
+  /// `useBag` spends from the backpack (`UserGiftBag`) instead of the coin balance.
+  Future<void> sendGift(
+    String giftId,
+    List<String> recipientIds, {
+    int qty = 1,
+    bool useBag = false,
+  }) =>
+      repo.sendGift(
+        roomId: roomId,
+        giftId: giftId,
+        qty: qty,
+        recipientIds: recipientIds,
+        useBag: useBag,
+      );
 
   /// Send a public chat message. The message echoes back via `chat.message` (the server
   /// broadcasts to the whole room, sender included), where [_pushChat] appends it — so
@@ -432,6 +509,7 @@ class RoomController extends StateNotifier<RoomUiState> {
     _rtSub?.cancel();
     _voiceSub?.cancel();
     _entryEffects.close();
+    _emojiPlays.close();
     _micApplies.close();
     voice.dispose();
     super.dispose();

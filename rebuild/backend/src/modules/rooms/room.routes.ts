@@ -248,6 +248,13 @@ export function roomRoutes(
       return { code: 0, message: 'ok', data: r.data };
     });
 
+    app.post('/rooms/:id/emoji', { preHandler: [app.authenticate] }, async (req, reply) => {
+      const body = z.object({ face_id: z.coerce.number().int() }).parse(req.body);
+      const r = await service.playEmoji((req.params as any).id, uid(req), body.face_id);
+      if (!r.ok) return fail(reply, r.error!);
+      return { code: 0, message: 'ok', data: r.data };
+    });
+
     app.post('/rooms/:id/roles', { preHandler: [app.authenticate] }, async (req, reply) => {
       const body = z.object({ user_id: z.string(), role: z.nativeEnum(Role) }).parse(req.body);
       const r = await service.setRole((req.params as any).id, uid(req), body.user_id, body.role);

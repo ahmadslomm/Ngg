@@ -9,7 +9,7 @@ import {
   computeRtcRole, findUserSeat,
 } from './seat-state.js';
 import { requireRoomAdmin, RoomPermission } from '../../lib/authz.js';
-import { roomUpdated, micApplied, type MicApplyAction } from './room.events.js';
+import { roomUpdated, micApplied, roomEmoji, type MicApplyAction } from './room.events.js';
 import { ApplyStatus, type ApplyRow } from './room.repo.js';
 import { AppError } from '../../lib/errors.js';
 
@@ -245,6 +245,33 @@ export class RoomService {
   // it); null clears the theme back to the client default. On success the new theme is persisted and
   // broadcast via `room.updated` so every client re-skins, and it is reflected in subsequent room
   // payloads (roomMeta.theme_id). Returns the resolved theme (null when cleared) for the HTTP reply.
+  /// The face ids shipped in the original `assets/roomEmoji/waitio_faceConfig.txt`. A play is
+  /// only broadcast for an id that actually has an animation in the bundle — otherwise a client
+  /// could make every other client try to render an asset that does not exist.
+  private static readonly EMOJI_FACE_IDS: ReadonlySet<number> = new Set([11, 58, 59]);
+
+  /**
+   * Broadcast a room emoji play. Any member may play one; the emoji renders over the sender's seat
+   * if they hold one, and over nothing if they do not, which is the client's decision.
+   *
+   * See the provenance note in room.events.ts — the ANIMATIONS are recovered, the wire is ours.
+   */
+  async playEmoji(roomId: string, actorId: string, faceId: number): Promise<ServiceResult<{ face_id: number }>> {
+    const room = await this.repo.getRoom(roomId);
+    if (!room) return { ok: false, error: 'room_unavailable' };
+    if (!RoomService.EMOJI_FACE_IDS.has(faceId)) return { ok: false, error: 'invalid_emoji' };
+
+    // A banned or absent user must not be able to animate a room they cannot see.
+    const state = await this.repo.getRoomState(roomId);
+    const seat = state?.seats.find((s) => s.userId === actorId);
+
+    await this.emit(
+      this.channel(roomId),
+      roomEmoji({ roomId, userId: actorId, faceId, position: seat?.position ?? null }),
+    );
+    return { ok: true, data: { face_id: faceId } };
+  }
+
   async setTheme(roomId: string, actorId: string, themeId: number | null): Promise<ServiceResult<{ theme_id: number | null; theme: RoomTheme | null }>> {
     const room = await this.repo.getRoom(roomId);
     if (!room) return { ok: false, error: 'room_unavailable' };

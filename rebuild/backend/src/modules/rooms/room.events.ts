@@ -20,9 +20,24 @@ export const RoomEventName = {
   MicApplied: 'mic.applied', // additive (F5): apply-to-mic queue change (request/grant/reject/cancel)
   RoomRank: 'room.rank', // additive (F7): the room's top contributors changed (after an in-room gift)
   RoomBanned: 'room.banned', // additive (F8): a user was BANNED from the room (distinct from user.kicked)
+  RoomEmoji: 'room.emoji', // additive (R1): a member played a room emoji — see the provenance note below
   SystemMessage: 'system.message', // additive (F8): a room-scoped system/admin notice
 } as const;
 export type RoomEventName = (typeof RoomEventName)[keyof typeof RoomEventName];
+
+// PROVENANCE — `room.emoji` is REBUILD-OWNED, not recovered.
+//
+// The emoji feature itself IS evidenced: `assets/roomEmoji/waitio_faceConfig.txt` gives the exact
+// grid (3x5, 53x53px), the face ids (11/58/59), their names and their SVGA animations, all of which
+// ship in the original APK. What is NOT evidenced is how a play was transmitted: the original
+// exposes no face/emoji action anywhere in the recovered 397-endpoint surface, and the send almost
+// certainly rode the binary IM socket whose 147 opcodes remain unmapped.
+//
+// So the payload below is ours. That is the same footing as every other event here — the original
+// protocol is not Socket.IO and none of these names are recovered — but it is recorded explicitly
+// because, unlike `seat.update`, there is no captured original action to compare it against.
+// `faceId` is validated server-side against the ids in the recovered config; nothing else is
+// invented.
 
 // F3 (P1): charm.updated payload schema. Fired per gift recipient after an in-room /gifts/send,
 // carrying the charm the recipient just gained (⇐ the existing Profile.charmExp mutation; with
@@ -92,6 +107,7 @@ export interface SystemMessagePayload {
 
 const build = (name: string, data: Record<string, unknown>): WsEvent => ({ ev: name, data });
 
+export const roomEmoji = (data: Record<string, unknown>): WsEvent => build(RoomEventName.RoomEmoji, data);
 export const seatUpdate = (data: Record<string, unknown>): WsEvent => build(RoomEventName.SeatUpdate, data);
 export const seatInvited = (data: Record<string, unknown>): WsEvent => build(RoomEventName.SeatInvited, data);
 export const micUpdate = (data: Record<string, unknown>): WsEvent => build(RoomEventName.MicUpdate, data);

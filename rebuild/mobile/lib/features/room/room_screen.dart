@@ -17,11 +17,15 @@ import 'models/room_model_config.dart';
 import 'models/room_models.dart';
 import 'models/room_theme_config.dart';
 import 'room_decoration_mapper.dart';
+import 'room_controller.dart';
 import 'room_providers.dart';
 import 'room_repository.dart';
 import 'seat_layout.dart';
 import 'widgets/room_backdrop.dart';
 import 'widgets/room_background.dart';
+import 'widgets/emoji_overlay.dart';
+import 'widgets/emoji_picker.dart';
+import 'widgets/host_panel.dart';
 import 'widgets/room_controls.dart';
 import 'widgets/room_entry_effect.dart';
 import 'widgets/room_header.dart';
@@ -135,8 +139,10 @@ class RoomScreen extends ConsumerWidget {
                       width: double.infinity,
                       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.m, vertical: AppSpacing.xs),
                       padding: const EdgeInsets.all(AppSpacing.sm),
-                      decoration: BoxDecoration(color: AppColors.warnRed.withValues(alpha: 0.2), borderRadius: AppRadius.rSm),
-                      child: Text(state.error!, style: AppTypography.caption.copyWith(color: AppColors.warnRed)),
+                      decoration: BoxDecoration(
+                          color: AppColors.warnRed.withValues(alpha: 0.2), borderRadius: AppRadius.rSm),
+                      child:
+                          Text(state.error!, style: AppTypography.caption.copyWith(color: AppColors.warnRed)),
                     ),
                   // Party-mode theme cards (recovered art) — only in the party skin.
                   if (skin == RoomSkin.party) ...[
@@ -147,39 +153,54 @@ class RoomScreen extends ConsumerWidget {
                   PkResultOverlay(pk: pk),
                   const SizedBox(height: AppSpacing.sm),
                   // Host seat (distinct), centered.
-                  if (host != null)
-                    SeatTile(
-                      seat: host,
-                      isHost: true,
-                      label: host.isOccupied ? 'Host' : 'Host seat',
-                      onTap: () => _onSeatTap(context, controller, host),
-                      decoration: seatDecorations[host.position] ?? SeatDecoration.none,
-                    ),
-                  const SizedBox(height: AppSpacing.m),
-                  // Audience seats — dynamic count + config-driven span (mirrors the
-                  // original KroomSeatsAdapter; span from seatGridColumns, never hardcoded).
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
-                    child: GridView.count(
-                      crossAxisCount: layout.columns,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      mainAxisSpacing: AppSpacing.m,
-                      crossAxisSpacing: AppSpacing.sm,
-                      childAspectRatio: 0.78,
+                  // One playback for the whole board: it subscribes to the emoji stream once and
+                  // loads the face config once, then hands every tile its own asset. Wrapping each
+                  // tile separately would multiply both by the seat count.
+                  RoomEmojiPlayback(
+                    plays: controller.emojiPlays,
+                    builder: (_, activeEmoji) => Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        for (final seat in audience)
+                        if (host != null)
                           SeatTile(
-                            seat: seat,
-                            isHost: false,
-                            onTap: () => _onSeatTap(context, controller, seat),
-                            decoration: seatDecorations[seat.position] ?? SeatDecoration.none,
+                            seat: host,
+                            isHost: true,
+                            label: host.isOccupied ? 'Host' : 'Host seat',
+                            onTap: () => _onSeatTap(context, controller, host),
+                            decoration: seatDecorations[host.position] ?? SeatDecoration.none,
+                            emojiAsset: activeEmoji[host.position],
                           ),
+                        const SizedBox(height: AppSpacing.m),
+                        // Audience seats — dynamic count + config-driven span (mirrors the
+                        // original KroomSeatsAdapter; span from seatGridColumns, never hardcoded).
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.m),
+                          child: GridView.count(
+                            crossAxisCount: layout.columns,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            mainAxisSpacing: AppSpacing.m,
+                            crossAxisSpacing: AppSpacing.sm,
+                            childAspectRatio: 0.78,
+                            children: [
+                              for (final seat in audience)
+                                SeatTile(
+                                  seat: seat,
+                                  isHost: false,
+                                  onTap: () => _onSeatTap(context, controller, seat),
+                                  decoration: seatDecorations[seat.position] ?? SeatDecoration.none,
+                                  emojiAsset: activeEmoji[seat.position],
+                                ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
-                  Expanded(child: _RoomMessages(messages: state.chatMessages, onLoadOlder: controller.loadOlderChat)),
+                  Expanded(
+                      child:
+                          _RoomMessages(messages: state.chatMessages, onLoadOlder: controller.loadOlderChat)),
                 ],
               ),
               // Decorative layers — never intercept taps (seats stay live).
@@ -197,10 +218,10 @@ class RoomScreen extends ConsumerWidget {
         amBroadcaster: state.amBroadcaster,
         micMuted: micMuted,
         onChat: () => _openChatComposer(context, controller),
-        onEmoji: () {},
-        onMic: controller.toggleSelfMute,
+        onEmoji: () => _openEmojiPicker(context, controller),
+        onMic: state.amBroadcaster ? controller.toggleSelfMute : () => _requestMic(context, ref, roomId),
         onGift: () => _openGiftPanel(context, controller, state),
-        onMore: () => _openMembers(context, controller, state.seats),
+        onMore: () => _openMore(context, ref, controller, state, roomId),
       ),
     );
   }
@@ -222,7 +243,7 @@ class RoomScreen extends ConsumerWidget {
         roomId: roomId,
         position: seat.position,
         onSendGift: (uid) => _openGiftPanelFor(context, controller, uid),
-        onViewProfile: (uid) => context.push('/profile/'),
+        onViewProfile: (uid) => context.push('/profile/\$uid'),
         onMessage: (uid) => context.push('/dm/$uid'),
       );
       return;
@@ -231,8 +252,84 @@ class RoomScreen extends ConsumerWidget {
   }
 
   /// Members list (host-menu entry): every occupant → their user card.
+  void _openEmojiPicker(BuildContext context, dynamic controller) =>
+      EmojiPicker.show(context, roomId: roomId);
+
+  /// A listener asking for a seat (`POST /rooms/:id/seats/apply`). The request lands in the host
+  /// panel's queue; the grant comes back over `mic.applied`.
+  Future<void> _requestMic(BuildContext context, WidgetRef ref, String roomId) async {
+    try {
+      await ref.read(roomRepositoryProvider).applyForMic(roomId);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Mic requested — waiting for the host')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not request a mic: $e')));
+      }
+    }
+  }
+
+  /// The caller's role. `rolesByUser` only carries what `role.changed` has announced, so ownership
+  /// comes from the room meta — otherwise an owner who never had their role changed reads as a
+  /// listener and loses every management control.
+  int _myRole(WidgetRef ref, RoomUiState state, String myUid) {
+    final meta = ref.read(roomMetaProvider(roomId)).valueOrNull;
+    if (meta?.ownerId != null && meta!.ownerId == myUid) return 2;
+    return state.rolesByUser[myUid] ?? 0;
+  }
+
+  void _openMore(
+    BuildContext context,
+    WidgetRef ref,
+    dynamic controller,
+    RoomUiState state,
+    String roomId,
+  ) {
+    final myUid = ref.read(sessionProvider)?.uid ?? '';
+    final role = _myRole(ref, state, myUid);
+
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.bgDeep,
+      builder: (sheet) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.people_outline, color: AppColors.onDark),
+              title: const Text('Members'),
+              onTap: () {
+                Navigator.pop(sheet);
+                _openMembers(context, controller, state.seats);
+              },
+            ),
+            if (role >= 1)
+              ListTile(
+                leading: const Icon(Icons.shield_outlined, color: AppColors.primary),
+                title: const Text('Room management'),
+                subtitle: Text(
+                  role >= 2 ? 'Owner — seats, roles, bans' : 'Admin — seats and moderation',
+                  style: AppTypography.micro.copyWith(color: AppColors.onDark50),
+                ),
+                onTap: () {
+                  Navigator.pop(sheet);
+                  HostPanel.show(context, roomId: roomId, myRole: role, seats: state.seats);
+                },
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _openMembers(BuildContext context, dynamic controller, List<Seat> seats) {
-    final occupants = [for (final s in seats) if (s.isOccupied) s];
+    final occupants = [
+      for (final s in seats)
+        if (s.isOccupied) s
+    ];
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.bgDeep,
@@ -251,7 +348,8 @@ class RoomScreen extends ConsumerWidget {
                 dense: true,
                 leading: const Icon(Icons.person, color: AppColors.onDark50),
                 title: Text(s.userId ?? '', style: AppTypography.caption),
-                subtitle: Text('Seat ${s.position + 1}', style: AppTypography.micro.copyWith(color: AppColors.onDark50)),
+                subtitle: Text('Seat ${s.position + 1}',
+                    style: AppTypography.micro.copyWith(color: AppColors.onDark50)),
                 trailing: const Icon(Icons.chevron_right, color: AppColors.onDarkFaint),
                 onTap: () {
                   Navigator.of(context).maybePop();
@@ -260,8 +358,8 @@ class RoomScreen extends ConsumerWidget {
                     roomId: roomId,
                     position: s.position,
                     onSendGift: (uid) => _openGiftPanelFor(context, controller, uid),
-                    onViewProfile: (uid) => context.push('/profile/'),
-        onMessage: (uid) => context.push('/dm/$uid'),
+                    onViewProfile: (uid) => context.push('/profile/\$uid'),
+                    onMessage: (uid) => context.push('/dm/$uid'),
                   );
                 },
               ),
@@ -288,7 +386,8 @@ class RoomScreen extends ConsumerWidget {
       context: context,
       backgroundColor: AppColors.bgDeep,
       builder: (_) => GiftPanel(
-        onSend: (gift, qty) => controller.sendGift(gift.id, [uid], qty: qty),
+        onSend: (gift, qty, {required useBag}) =>
+            controller.sendGift(gift.id, [uid], qty: qty, useBag: useBag),
       ),
     );
   }
@@ -302,7 +401,8 @@ class RoomScreen extends ConsumerWidget {
       context: context,
       backgroundColor: AppColors.bgDeep,
       builder: (_) => GiftPanel(
-        onSend: (gift, qty) => controller.sendGift(gift.id, recipients, qty: qty),
+        onSend: (gift, qty, {required useBag}) =>
+            controller.sendGift(gift.id, recipients, qty: qty, useBag: useBag),
       ),
     );
   }
@@ -364,19 +464,35 @@ class _RoomMessagesState extends State<_RoomMessages> {
               itemCount: messages.length,
               itemBuilder: (_, i) {
                 final m = messages[messages.length - 1 - i]; // newest at the bottom
+                // An admin `system.message` is not something a user said — it carries no sender and
+                // is tinted by kind so a warning cannot be mistaken for chat.
+                final sysColor = switch (m.systemKind) {
+                  'warning' => AppColors.warnRed,
+                  'announcement' => AppColors.gold,
+                  _ => AppColors.primary,
+                };
                 return Container(
                   margin: const EdgeInsets.only(bottom: AppSpacing.xs),
                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 5),
                   decoration: BoxDecoration(
-                    color: AppColors.black.withValues(alpha: 0.28),
+                    color: m.isSystem
+                        ? sysColor.withValues(alpha: 0.18)
+                        : AppColors.black.withValues(alpha: 0.28),
                     borderRadius: AppRadius.rMd,
+                    border: m.isSystem
+                        ? Border.all(color: sysColor.withValues(alpha: 0.55))
+                        : null,
                   ),
-                  child: Text.rich(
-                    TextSpan(children: [
-                      TextSpan(text: '${m.senderId}: ', style: AppTypography.caption.copyWith(color: AppColors.gold)),
-                      TextSpan(text: m.text, style: AppTypography.caption),
-                    ]),
-                  ),
+                  child: m.isSystem
+                      ? Text(m.text, style: AppTypography.caption.copyWith(color: sysColor))
+                      : Text.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                                text: '${m.senderId}: ',
+                                style: AppTypography.caption.copyWith(color: AppColors.gold)),
+                            TextSpan(text: m.text, style: AppTypography.caption),
+                          ]),
+                        ),
                 );
               },
             ),

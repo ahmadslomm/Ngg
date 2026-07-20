@@ -67,13 +67,15 @@ class RoomControls extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             _RoundControl(onTap: onEmoji, child: const ControlGlyphIcon(ControlGlyph.emoji, size: 22, color: AppColors.onDark)),
             const SizedBox(width: AppSpacing.s),
+            // A speaker taps this to self-mute. A listener taps it to REQUEST a seat — it used to be
+            // inert for them, which left `POST /seats/apply` with no way to be reached from the UI.
             _RoundControl(
-              onTap: amBroadcaster ? onMic : null,
+              onTap: onMic,
               filled: amBroadcaster && !micMuted,
               child: SeatGlyphIcon(
                 (!amBroadcaster || micMuted) ? SeatGlyph.micOff : SeatGlyph.mic,
                 size: 22,
-                color: amBroadcaster ? AppColors.onDark : AppColors.onDark30,
+                color: amBroadcaster ? AppColors.onDark : AppColors.onDark50,
               ),
             ),
             const SizedBox(width: AppSpacing.s),

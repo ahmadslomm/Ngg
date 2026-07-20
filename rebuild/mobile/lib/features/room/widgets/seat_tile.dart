@@ -36,6 +36,7 @@ class SeatTile extends StatelessWidget {
     this.onTap,
     this.decoration = SeatDecoration.none,
     this.skin = SeatSkin.cosmic,
+    this.emojiAsset,
   });
 
   final Seat seat;
@@ -50,6 +51,11 @@ class SeatTile extends StatelessWidget {
 
   /// Which cloned empty-seat art to show (per room theme). Default [SeatSkin.cosmic].
   final SeatSkin skin;
+
+  /// A room emoji currently playing on this seat (bundled `.svga`), or null. Drawn above the
+  /// avatar and its decorations, matching where the original played them. Fed by
+  /// [RoomEmojiPlayback]; the tile itself holds no playback state.
+  final String? emojiAsset;
 
   double get _avatar => isHost ? 60 : 52;
 
@@ -94,6 +100,16 @@ class SeatTile extends StatelessWidget {
                   IgnorePointer(
                     child: Image.asset(decoration.cpFrame!.asset,
                         width: _avatar + 26, height: _avatar + 26, fit: BoxFit.contain),
+                  ),
+                // Room emoji — above the avatar and its frames, so it reads as played BY this
+                // seat rather than as another decoration on it.
+                if (emojiAsset != null)
+                  IgnorePointer(
+                    child: SvgaView(
+                      key: ValueKey('emoji-${seat.position}-$emojiAsset'),
+                      asset: emojiAsset!,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 // Mic-status badge, bottom-right.
                 if (seat.isOccupied)

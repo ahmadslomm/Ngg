@@ -60,6 +60,18 @@ describe('realtime event parity', () => {
     expect(opaque, `payload could not be extracted: ${opaque.join(', ')}`).toEqual([]);
   });
 
+  it('no event name is declared without a producer', () => {
+    if (!audit) return;
+    // A name in the table that nothing emits is dead vocabulary: it ships a payload type, a builder
+    // and often a test, and reads as a working feature to anyone scanning the registry.
+    const known: Record<string, string> = {
+      'room.level': 'room level/exp is computed and stored but never broadcast; the award site has '
+        + 'no emit and no client consumes it — a producer decision, not an oversight to auto-fix',
+    };
+    const unexplained = (audit.declaredNeverEmitted ?? []).filter((e: string) => !(e in known));
+    expect(unexplained, `declared but never emitted: ${unexplained.join(', ')}`).toEqual([]);
+  });
+
   it('no client handler listens for an event the server never emits', () => {
     if (!audit) return;
     // A handler with no emitter is dead code that looks alive — the worst kind, because it reads
