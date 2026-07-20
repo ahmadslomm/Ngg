@@ -140,6 +140,28 @@ release; it is the single largest untested surface in the project.
 
 ---
 
+## 5b. Final hardening pass
+
+| Area | Finding | Resolution |
+|---|---|---|
+| **Monitoring** | `/metrics` sat behind the request-signature gate. **A Prometheus scraper cannot sign requests**, so every scrape returned 400 — the endpoint was useless to the system it exists for. Found only by booting the production build and curling it. | Exempted from the signature gate, still admin-authenticated. Now 401 without auth, scrapeable with it |
+| **Admin rate limits** | **32 admin WRITE routes had none**, including `POST /admin/orders/:id/refund` (claws back coins) and every catalogue DELETE | A default limit is now part of the shared admin guard, so it applies structurally rather than per route. Two routes registered in other modules were fixed individually. **32 → 0**; rate-limited routes 24 → 81 |
+| **Commission refund** | Matched on `(agencyId, hostId, amount, sourceType)` — a host with two identical gifts has two identical records, so the refund reversed **whichever sorted last**, not the one being refunded | Commissions are bound to their source gift (`sourceKey`, UNIQUE). Pinned by a test that refunds one of two identical gifts |
+| **Job routing** | A queue serving several job kinds needs a dispatcher branch per job; a missing branch drops that job silently — the same shape as the missing schedules, one layer down | `dispatcher-coverage.test.ts` reads the sources and fails if a scheduled job is never routed |
+| **Unindexed FKs** | `configId` on both economy tables | Indexed — cheap insurance against the Postgres parent-DELETE footgun |
+| **Deployment** | Docker unavailable here, so the Dockerfile's assumptions were verified directly: every COPY target exists, `npm run build` produces `dist/server.js` (1.2 MB) | Production build **boots**: `/health` 200, `/health/ready` 200 (DB + Redis reachable), and it **fails closed** with no secrets |
+
+### Final stress — all money paths
+
+```
+wallet    120 writers / 1 row   1204ms  ok=120/120  reconcile=PASS continuity=PASS
+revenue   60 gifts / 1 host     1031ms  ok=60/60    identity=PASS  beans==split=PASS
+vip       20 concurrent buys     295ms  liveGrants=1 PASS          reconcile=PASS
+withdraw  8 concurrent rejects           refundedExactlyOnce=PASS  balanceRestored=PASS
+```
+
+---
+
 ## 6. Pre-deploy checklist
 
 1. Provision a **custom R2 domain**, rebuild the manifest, run the rewrite pass.

@@ -280,6 +280,48 @@ describe('refund', () => {
     await svc.setConfig({ ...DEFAULT_SPLIT, note: 'restore' });
   });
 
+  it('refunds the RIGHT commission when a host has two identical gifts', async () => {
+    // The bug this pins: the refund used to match on (agencyId, hostId, amount, sourceType). Two
+    // identical gifts to one host produce two identical records, so it reversed whichever sorted
+    // last — not the one being refunded. Commissions are now bound to their source gift.
+    const host = await makeUser();
+    const g = await prisma.gift.findFirst() ?? await prisma.gift.create({
+      data: { name: `dup-${Date.now()}`, priceCoins: 10, iconUrl: 'i', enabled: true },
+    });
+    const cfg = await svc.activeConfig();
+    const mk = async () => {
+      const t = await prisma.giftTransaction.create({
+        data: { senderId: await makeUser(), giftId: g.id, qty: 1, unitPrice: 10, totalCoins: 1000n, recipients: [] },
+      });
+      await serializableTx((tx) => svc.distribute(tx, { giftTransactionId: t.id, recipientId: host, gross: 1000n, cfg }));
+      return t.id;
+    };
+    const first = await mk();
+    const second = await mk();
+    expect(await prisma.commissionRecord.count({ where: { hostId: host, sourceType: 0 } })).toBe(2);
+
+    await serializableTx((tx) => svc.reverse(tx, first));
+
+    // Exactly the FIRST gift's commission is gone; the second is untouched and still owed.
+    expect(await prisma.commissionRecord.findUnique({ where: { sourceKey: `gift-rev:${first}:${host}` } })).toBeNull();
+    expect(await prisma.commissionRecord.findUnique({ where: { sourceKey: `gift-rev:${second}:${host}` } })).not.toBeNull();
+  });
+
+  it('a replayed distribution cannot book a second commission for one gift', async () => {
+    const host = await makeUser();
+    const g = await prisma.gift.findFirst() ?? await prisma.gift.create({
+      data: { name: `rp-${Date.now()}`, priceCoins: 10, iconUrl: 'i', enabled: true },
+    });
+    const t = await prisma.giftTransaction.create({
+      data: { senderId: await makeUser(), giftId: g.id, qty: 1, unitPrice: 10, totalCoins: 1000n, recipients: [] },
+    });
+    const cfg = await svc.activeConfig();
+    const run = () => serializableTx((tx) => svc.distribute(tx, { giftTransactionId: t.id, recipientId: host, gross: 1000n, cfg }));
+    await run();
+    await run().catch(() => {});
+    expect(await prisma.commissionRecord.count({ where: { sourceRefId: t.id } })).toBe(1);
+  });
+
   it('is idempotent — a second refund moves nothing', async () => {
     const { host, txnId } = await distributed(1000n);
     await serializableTx((tx) => svc.reverse(tx, txnId));

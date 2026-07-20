@@ -89,7 +89,12 @@ export async function paymentRoutes(app: FastifyInstance) {
 
 /** Platform-admin refund endpoint — registered alongside the other `/admin/*` routes in server.ts. */
 export async function paymentAdminRoutes(app: FastifyInstance) {
-  app.post('/admin/orders/:id/refund', { preHandler: [app.authenticateAdmin] }, async (req, reply) => {
+  // Rate-limited like every other admin write. This one CLAWS BACK COINS, so an unbounded loop
+  // here is a mass balance mutation.
+  app.post('/admin/orders/:id/refund', {
+    preHandler: [app.authenticateAdmin],
+    config: { rateLimit: { max: 30, timeWindow: '1 minute' } },
+  }, async (req, reply) => {
     try {
       const { id } = orderIdParamSchema.parse(req.params);
       const b = refundSchema.parse(req.body ?? {});

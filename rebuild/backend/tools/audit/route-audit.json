@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-07-20T11:35:36.854Z",
+  "generatedAt": "2026-07-20T12:59:56.532Z",
   "method": "Static analysis of src/modules/**/*.routes.ts. No server boot, no DB, no network.",
   "totals": {
-    "routes": 223,
+    "routes": 227,
     "admin": 62,
-    "authenticated": 152,
+    "authenticated": 156,
     "public-by-design": 8,
     "UNGUARDED-REVIEW": 1,
-    "validated": 104,
-    "rateLimited": 24
+    "validated": 106,
+    "rateLimited": 81
   },
   "needsReview": [
     {
@@ -32,7 +32,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -44,7 +44,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -56,7 +56,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -80,7 +80,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -104,7 +104,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -116,7 +116,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -128,7 +128,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -140,7 +140,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -152,7 +152,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -164,7 +164,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -224,7 +224,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -236,7 +236,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -248,7 +248,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -260,7 +260,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -272,7 +272,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -284,7 +284,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -296,7 +296,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -308,7 +308,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -320,7 +320,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -332,7 +332,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -344,7 +344,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -356,7 +356,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -368,7 +368,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -380,7 +380,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -392,7 +392,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -404,7 +404,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -416,7 +416,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -428,7 +428,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -440,7 +440,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -452,7 +452,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -464,7 +464,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -476,7 +476,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -488,7 +488,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -500,7 +500,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -512,7 +512,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -524,7 +524,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -536,7 +536,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -548,7 +548,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -560,7 +560,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -572,7 +572,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -584,7 +584,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -596,7 +596,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -608,7 +608,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -620,7 +620,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -632,7 +632,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -644,7 +644,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -656,7 +656,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -668,7 +668,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -680,7 +680,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -692,7 +692,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -704,7 +704,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -716,7 +716,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -728,7 +728,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -740,7 +740,7 @@
       "file": "src/modules/admin/admin.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "120/1 minute",
       "validated": false,
       "roles": [],
       "exposure": "admin"
@@ -1424,7 +1424,7 @@
       "file": "src/modules/medals/medal.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "60/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -1808,7 +1808,7 @@
       "file": "src/modules/payments/payment.routes.ts",
       "auth": false,
       "admin": true,
-      "rateLimit": null,
+      "rateLimit": "30/1 minute",
       "validated": true,
       "roles": [],
       "exposure": "admin"
@@ -2578,6 +2578,54 @@
       "admin": false,
       "rateLimit": null,
       "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "vip",
+      "method": "GET",
+      "path": "/vip/plans/:level",
+      "file": "src/modules/vip/vip.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "vip",
+      "method": "GET",
+      "path": "/vip/privileges/:level",
+      "file": "src/modules/vip/vip.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "vip",
+      "method": "POST",
+      "path": "/vip/subscribe",
+      "file": "src/modules/vip/vip.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": "10/1 minute",
+      "validated": true,
+      "roles": [],
+      "exposure": "authenticated"
+    },
+    {
+      "module": "vip",
+      "method": "POST",
+      "path": "/vip/auto-renew",
+      "file": "src/modules/vip/vip.routes.ts",
+      "auth": true,
+      "admin": false,
+      "rateLimit": null,
+      "validated": true,
       "roles": [],
       "exposure": "authenticated"
     },

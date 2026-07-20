@@ -10,7 +10,19 @@ import { systemMessage } from '../rooms/room.events.js';
 // All routes require admin auth (app.authenticateAdmin sets req.admin).
 export async function adminRoutes(app: FastifyInstance) {
   const aid = (req: any) => req.admin.id as bigint;
-  const guard = { preHandler: [app.authenticateAdmin] };
+  /**
+   * The default admin guard.
+   *
+   * A rate limit is part of it, not an afterthought per route. 32 admin WRITE routes had none —
+   * including `POST /admin/orders/:id/refund`, which claws back coins, and the catalogue DELETEs.
+   * Admin auth is the control; the limit bounds the blast radius of a stolen admin token and of a
+   * script looping over a destructive endpoint. Individual routes may still tighten it (the
+   * withdrawal review and coin adjustment do), because a route-level `config` overrides this.
+   */
+  const guard = {
+    preHandler: [app.authenticateAdmin],
+    config: { rateLimit: { max: 120, timeWindow: '1 minute' } },
+  };
 
   // users
   app.get('/admin/users', guard, async (req) => {

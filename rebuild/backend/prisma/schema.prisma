@@ -1067,9 +1067,19 @@ model CommissionRecord {
   payoutKey String?   @unique @db.VarChar(128)
   paidToId  BigInt? // recipient of the payout (the agency owner)
 
+  /// What EARNED this commission — the GiftTransaction id for `sourceType = 0`.
+  ///
+  /// Added because a refund matching on (agencyId, hostId, amount, sourceType) is ambiguous: a host
+  /// who receives two identical gifts has two identical records, and the refund would reverse
+  /// whichever happened to sort last — not the one actually being refunded. UNIQUE per source so a
+  /// single gift can never book two commissions.
+  sourceRefId BigInt?
+  sourceKey   String? @unique @db.VarChar(128)
+
   @@index([agencyId, periodKey])
   @@index([hostId, periodKey])
   @@index([agencyId, paidAt])
+  @@index([sourceType, sourceRefId])
 }
 
 // ---------- Admin content ----------

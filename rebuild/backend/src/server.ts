@@ -50,7 +50,16 @@ declare module '@fastify/jwt' {
 }
 
 // A request path is exempt from auth/signature when it is a health probe.
-const isHealthPath = (url: string) => url.startsWith('/health') || url.startsWith('/docs');
+/**
+ * Paths exempt from the request-signature gate.
+ *
+ * `/metrics` is here because a Prometheus scraper cannot sign requests — behind the gate it
+ * returned 400 to every scrape, which makes the endpoint useless to the monitoring system it
+ * exists for. It stays ADMIN-AUTHENTICATED; only the app-signature requirement is lifted.
+ * (`/health/invariants` is already covered by the `/health` prefix.)
+ */
+const isHealthPath = (url: string) =>
+  url.startsWith('/health') || url.startsWith('/docs') || url.startsWith('/metrics');
 
 async function build() {
   const app = Fastify({

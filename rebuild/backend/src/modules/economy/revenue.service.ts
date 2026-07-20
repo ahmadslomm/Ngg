@@ -111,6 +111,10 @@ export class RevenueService {
           rateBps: cfg.agencyBps,
           amount: split.agency,
           periodKey: new Date().toISOString().slice(0, 7), // YYYY-MM
+          // Bound to the exact gift + recipient, so a refund reverses THIS commission and a replay
+          // cannot book a second one for the same gift.
+          sourceRefId: input.giftTransactionId,
+          sourceKey: revenueKey(input.giftTransactionId, input.recipientId),
         },
       });
     }
@@ -175,9 +179,10 @@ export class RevenueService {
       // nothing to claw back. A PAID one is clawed back from the owner's wallet, because the money
       // has actually left.
       if (s.agencyId != null && s.agencyAmount > 0n) {
-        const rec = await tx.commissionRecord.findFirst({
-          where: { agencyId: s.agencyId, hostId: s.recipientId, amount: s.agencyAmount, sourceType: 0 },
-          orderBy: { id: 'desc' },
+        // Looked up by its SOURCE, not by matching amounts: two identical gifts to the same host
+        // produce two identical records, and matching on amount reversed whichever sorted last.
+        const rec = await tx.commissionRecord.findUnique({
+          where: { sourceKey: revenueKey(giftTransactionId, s.recipientId) },
         });
         if (rec && rec.paidAt == null) {
           const { count } = await tx.commissionRecord.deleteMany({ where: { id: rec.id, paidAt: null } });
