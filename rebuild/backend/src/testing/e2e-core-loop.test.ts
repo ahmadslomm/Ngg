@@ -107,15 +107,26 @@ describe('T1.17 core-loop e2e smoke', () => {
 
     // === Assert 1: balance delta ===
     expect(coinsBefore - (await coinsOf(host.uid))).toBe(total);        // host debited exactly total
-    expect((await beansOf(guest.uid)) - beansBefore).toBe(200n);        // guest beans += unitPrice×qty
+    // 70% host share — the agency/platform legs land separately (economy/revenue.split.ts).
+    expect((await beansOf(guest.uid)) - beansBefore).toBe(140n);
 
     // === Assert 2: ledger pair + gift transaction ===
     const sendRow = await prisma.walletLedger.findFirst({ where: { userId: BigInt(host.uid), reason: 1, refType: 'gift', refId: gift.id }, orderBy: { id: 'desc' } });
-    const recvRow = await prisma.walletLedger.findFirst({ where: { userId: BigInt(guest.uid), reason: 2, refType: 'gift', refId: gift.id }, orderBy: { id: 'desc' } });
+    // The receive leg now flows through the revenue distributor, so it carries refType
+    // 'gift-revenue' and references the gift TRANSACTION (not the gift) — the split rows and the
+    // platform ledger hang off that same id.
+    const recvRow = await prisma.walletLedger.findFirst({ where: { userId: BigInt(guest.uid), reason: 2, refType: 'gift-revenue' }, orderBy: { id: 'desc' } });
     expect(sendRow?.delta).toBe(-total);   // gift_send, coins
     expect(sendRow?.currency).toBe(0);
-    expect(recvRow?.delta).toBe(200n);     // gift_recv, beans
+    expect(recvRow?.delta).toBe(140n);     // gift_recv, beans (70% of the 200 gross)
     expect(recvRow?.currency).toBe(1);
+    // The whole point of the split: the sender's debit is fully accounted for across three legs.
+    const splits = await prisma.giftRevenueSplit.findMany({ where: { giftTransactionId: BigInt(txId) } });
+    expect(splits.length).toBeGreaterThan(0);
+    for (const sp of splits) {
+      expect(sp.hostAmount + sp.agencyAmount + sp.platformAmount).toBe(sp.grossAmount);
+    }
+
     const gt = await prisma.giftTransaction.findUnique({ where: { id: BigInt(txId) } });
     expect(gt?.totalCoins).toBe(total);
     expect(gt?.senderId).toBe(BigInt(host.uid));

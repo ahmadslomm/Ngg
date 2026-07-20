@@ -835,6 +835,87 @@ model WithdrawalTransition {
   @@index([withdrawalId, createdAt])
 }
 
+// ---------------------------------------------------------------------------------------------
+// ECONOMY — revenue sharing.
+//
+// PROVENANCE. Two rates are RECOVERED from the live capture `wallet.getExchangeCoinConfig`:
+//   * coin purchase — every guild tier is exactly 50,000 coins per USD ($20→1,000,000 … $200→10,000,000)
+//   * beans→coins exchange — every user tier is exactly 2:1, i.e. 50% (600,000 jewel → 300,000 coin)
+//
+// The gift REVENUE SPLIT (70 host / 15 agency / 15 platform) is **PROJECT-DEFINED**. No captured
+// traffic exposes it, so it is this project's official design, not a recovery. It lives in the
+// database precisely so it can be changed without a code deploy.
+// ---------------------------------------------------------------------------------------------
+
+/// A versioned revenue split. Rows are APPEND-ONLY: changing the split inserts a new row rather
+/// than editing the old one, because a refund months later must reverse using the rate that applied
+/// AT THE TIME of the original gift — not whatever is current.
+model RevenueShareConfig {
+  id            Int      @id @default(autoincrement())
+  /// Basis points. hostBps + agencyBps + platformBps must equal 10000 (enforced in the service).
+  hostBps       Int
+  agencyBps     Int
+  platformBps   Int
+  effectiveFrom DateTime @default(now())
+  createdBy     String?  @db.VarChar(64)
+  note          String?  @db.VarChar(255)
+
+  splits  GiftRevenueSplit[]
+  revenue PlatformRevenue[]
+
+  @@index([effectiveFrom])
+}
+
+/// The platform's own earnings ledger — append-only, mirroring WalletLedger's discipline.
+///
+/// The platform has no Wallet row (it is not a user), so its revenue needs its own immutable
+/// record. A refund appends a NEGATIVE row rather than deleting the original: the history of what
+/// was earned and later reversed must survive, or the books cannot be audited.
+model PlatformRevenue {
+  id             BigInt             @id @default(autoincrement())
+  /// 'gift' | 'gift_refund' | 'agency_unassigned'
+  source         String             @db.VarChar(32)
+  refType        String             @db.VarChar(32)
+  refId          BigInt?
+  /// Signed. Negative = a reversal.
+  amount         BigInt
+  configId       Int
+  /// Exactly-once anchor — a replayed distribution cannot double-book revenue.
+  idempotencyKey String?            @unique @db.VarChar(128)
+  createdAt      DateTime           @default(now())
+  config         RevenueShareConfig @relation(fields: [configId], references: [id])
+
+  @@index([createdAt])
+  @@index([refType, refId])
+  @@index([source, createdAt])
+}
+
+/// The per-recipient breakdown of one gift. One row per RECIPIENT (a gift may target several).
+///
+/// Recording the resolved amounts — not just the rate — means a report never has to recompute a
+/// historical split, and a refund reverses exactly what was credited.
+model GiftRevenueSplit {
+  id                BigInt             @id @default(autoincrement())
+  giftTransactionId BigInt
+  recipientId       BigInt
+  /// Null when the host had no agency at distribution time.
+  agencyId          BigInt?
+  agencyOwnerId     BigInt?
+  grossAmount       BigInt
+  hostAmount        BigInt
+  agencyAmount      BigInt
+  platformAmount    BigInt
+  configId          Int
+  reversedAt        DateTime?
+  createdAt         DateTime           @default(now())
+  config            RevenueShareConfig @relation(fields: [configId], references: [id])
+
+  @@index([giftTransactionId])
+  @@index([recipientId, createdAt])
+  @@index([agencyId, createdAt])
+  @@index([createdAt])
+}
+
 // ---------- Moderation ----------
 model Report {
   id         BigInt    @id @default(autoincrement())

@@ -16,7 +16,17 @@ import {
 } from './withdrawal.machine.js';
 
 // Configurable economy constants (defaults; overridable via `settings` later).
-export const EXCHANGE_RATE_BPS = 10000;      // 100% -> 1 bean = 1 coin
+/**
+ * Beans → coins exchange rate.
+ *
+ * RECOVERED from the live capture `wallet.getExchangeCoinConfig`: every `user` tier is exactly 2:1
+ * (600,000 jewel → 300,000 coin, 3,000,000 → 1,500,000, …). A host converting earnings to spendable
+ * coins receives HALF.
+ *
+ * This was 10000 (1:1), which credited DOUBLE what the original did — a real economic defect, not a
+ * cosmetic default.
+ */
+export const EXCHANGE_RATE_BPS = 5000;       // 50% -> 2 beans = 1 coin (recovered)
 export const MIN_WITHDRAWAL_BEANS = 1000n;
 export const MAX_WITHDRAWALS_PER_DAY = 3;
 /** A pending request older than this is swept back to the user rather than left hanging. */

@@ -5,6 +5,7 @@
 // The whole thing is ONE serializable transaction that also writes append-only ledger rows.
 import { serializableTx } from '../../lib/tx.js';
 import { prisma } from '../../lib/prisma.js';
+import { revenueService } from '../economy/revenue.service.js';
 import { walletService } from '../wallet/wallet.service.js';
 import { giftRepo } from './gift.repo.js';
 import { toGiftWallRow } from './gift.dto.js';
@@ -215,6 +216,16 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
       };
     }
 
+    // The transaction row is created BEFORE distribution so the revenue splits can reference it —
+    // the split rows are the audit trail and must not be orphaned.
+    const txn = await tx.giftTransaction.create({
+      data: {
+        senderId, roomId: roomId ?? null, giftId, qty, unitPrice, totalCoins,
+        recipients: recipientIds.map(String),
+      },
+    });
+    const txnId = txn.id;
+
     // Debit sender (optimistic lock via version; CHECK(coins>=0) is the DB backstop).
     const sender = await tx.wallet.findUnique({ where: { userId: senderId } });
     if (!sender) throw new AppError('wallet_missing');
@@ -234,13 +245,17 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
     });
 
     // Credit each receiver: beans + charm.
+    //
+    // The gift value is now SPLIT rather than credited whole to the host — 70% host / 15% agency /
+    // 15% platform by default (PROJECT-DEFINED; see economy/revenue.split.ts). CHARM still tracks
+    // the FULL gift value: charm measures how much was given to a performer, not what they banked,
+    // so a host must not lose progression because of a revenue policy.
     const perRecipientCoins = BigInt(unitPrice) * BigInt(qty);
+    const shareCfg = await revenueService.activeConfig(tx);
     for (const rid of recipientIds) {
-      // Credit the receiver's withdrawable beans through the sole balance mutator.
-      await walletService.applyDelta(
-        { userId: rid, currency: CURRENCY.BEANS, delta: perRecipientCoins, reason: LEDGER.GIFT_RECV, refType: 'gift', refId: giftId },
-        { tx },
-      );
+      await revenueService.distribute(tx, {
+        giftTransactionId: txnId, recipientId: rid, gross: perRecipientCoins, cfg: shareCfg,
+      });
       // updateMany (not update) so a recipient without a Profile row no-ops instead of aborting
       // the whole gift transaction (L6). Wallet is already upserted above; charm is best-effort.
       await tx.profile.updateMany({
@@ -269,12 +284,7 @@ export async function sendGift(input: SendGiftInput): Promise<SendGiftResult> {
       }
     }
 
-    const txn = await tx.giftTransaction.create({
-      data: {
-        senderId, roomId: roomId ?? null, giftId, qty, unitPrice, totalCoins,
-        recipients: recipientIds.map(String),
-      },
-    });
+
 
     const event: GiftReceivedEvent = {
       ev: 'gift.received',

@@ -32,6 +32,82 @@ export async function adminRoutes(app: FastifyInstance) {
       return ok(serialize(await adminService.adjustCoins(aid(req), b.user_id, b.delta, b.reason)));
     } catch (e) { return replyError(reply, e); }
   });
+  // ---- economy: revenue split + financial reports ----
+  // The split lives in the database so an operator can change it WITHOUT a code deploy. Publishing
+  // appends a new row; the old one is never edited, because a refund must reverse at the rate that
+  // applied when the gift was sent.
+  app.get('/admin/economy/revenue-config', guard, async (req, reply) => {
+    try {
+      const { revenueService } = await import('../economy/revenue.service.js');
+      return ok(serialize(await revenueService.activeConfig()));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.post('/admin/economy/revenue-config', {
+    preHandler: [app.authenticateAdmin],
+    config: { rateLimit: { max: 10, timeWindow: '1 minute' } },
+  }, async (req, reply) => {
+    try {
+      const b = z.object({
+        host_bps: z.coerce.number().int().min(0).max(10000),
+        agency_bps: z.coerce.number().int().min(0).max(10000),
+        platform_bps: z.coerce.number().int().min(0).max(10000),
+        effective_from: z.coerce.date().optional(),
+        note: z.string().max(255).optional(),
+      }).parse(req.body);
+      const { revenueService } = await import('../economy/revenue.service.js');
+      const row = await revenueService.setConfig({
+        hostBps: b.host_bps, agencyBps: b.agency_bps, platformBps: b.platform_bps,
+        effectiveFrom: b.effective_from, createdBy: `admin:${aid(req)}`, note: b.note,
+      });
+      return ok(serialize(row));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.get('/admin/economy/reports/daily', guard, async (req, reply) => {
+    try {
+      const q = z.object({
+        from: z.coerce.date().optional(), to: z.coerce.date().optional(),
+        agency_id: z.coerce.bigint().optional(), limit: z.coerce.number().int().min(1).max(366).optional(),
+      }).parse(req.query ?? {});
+      const { reportsService } = await import('../economy/reports.service.js');
+      return ok(serialize(await reportsService.daily({ from: q.from, to: q.to, agencyId: q.agency_id, limit: q.limit })));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.get('/admin/economy/reports/monthly', guard, async (req, reply) => {
+    try {
+      const q = z.object({
+        from: z.coerce.date().optional(), to: z.coerce.date().optional(),
+        agency_id: z.coerce.bigint().optional(), limit: z.coerce.number().int().min(1).max(366).optional(),
+      }).parse(req.query ?? {});
+      const { reportsService } = await import('../economy/reports.service.js');
+      return ok(serialize(await reportsService.monthly({ from: q.from, to: q.to, agencyId: q.agency_id, limit: q.limit })));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.get('/admin/economy/reports/platform-ledger', guard, async (req, reply) => {
+    try {
+      const q = z.object({
+        granularity: z.enum(['day', 'month']).default('day'),
+        from: z.coerce.date().optional(), to: z.coerce.date().optional(),
+      }).parse(req.query ?? {});
+      const { reportsService } = await import('../economy/reports.service.js');
+      return ok(serialize(await reportsService.platformLedger(q.granularity, { from: q.from, to: q.to })));
+    } catch (e) { return replyError(reply, e); }
+  });
+
+  app.get('/admin/economy/reports/top-hosts', guard, async (req, reply) => {
+    try {
+      const q = z.object({
+        from: z.coerce.date().optional(), to: z.coerce.date().optional(),
+        limit: z.coerce.number().int().min(1).max(200).optional(),
+      }).parse(req.query ?? {});
+      const { reportsService } = await import('../economy/reports.service.js');
+      return ok(serialize(await reportsService.topHosts({ from: q.from, to: q.to, limit: q.limit })));
+    } catch (e) { return replyError(reply, e); }
+  });
+
   // withdrawals — cash-out review queue
   app.get('/admin/withdrawals', guard, async (req, reply) => {
     try {

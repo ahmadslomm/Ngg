@@ -8,10 +8,13 @@ import { coinsFromBeans, EXCHANGE_RATE_BPS, assertWithdrawal, MIN_WITHDRAWAL_BEA
 import { commissionAmount } from '../agency/agency.service.js';
 
 describe('exchange precision', () => {
-  it('is exact at the default 1:1 rate', () => {
-    expect(coinsFromBeans(1n)).toBe(1n);
-    expect(coinsFromBeans(999_999n)).toBe(999_999n);
-    expect(EXCHANGE_RATE_BPS).toBe(10000);
+  it('uses the RECOVERED 50% rate, not 1:1', () => {
+    // wallet.getExchangeCoinConfig: every captured tier is 2:1 (600,000 jewel -> 300,000 coin).
+    // This asserted 1:1, which credited double what the original did.
+    expect(EXCHANGE_RATE_BPS).toBe(5000);
+    expect(coinsFromBeans(2n)).toBe(1n);
+    expect(coinsFromBeans(600_000n)).toBe(300_000n);
+    expect(coinsFromBeans(1_000_000n)).toBe(500_000n);
   });
 
   it('truncates DOWN, never up — the platform is never short', () => {
@@ -34,8 +37,8 @@ describe('exchange precision', () => {
 
   it('handles amounts far beyond 64-bit float precision without drift', () => {
     // The reason balances are BigInt: a Number would have silently lost the last digits here.
-    const huge = 9_007_199_254_740_993n; // 2^53 + 1
-    expect(coinsFromBeans(huge)).toBe(huge);
+    const huge = 9_007_199_254_740_992n; // 2^53, even so the 50% rate is exact
+    expect(coinsFromBeans(huge)).toBe(huge / 2n);
   });
 });
 

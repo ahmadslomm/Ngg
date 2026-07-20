@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-07-20T10:57:10.156Z",
+  "generatedAt": "2026-07-20T11:35:36.854Z",
   "method": "Static analysis of src/modules/**/*.routes.ts. No server boot, no DB, no network.",
   "totals": {
-    "routes": 217,
-    "admin": 56,
+    "routes": 223,
+    "admin": 62,
     "authenticated": 152,
     "public-by-design": 8,
     "UNGUARDED-REVIEW": 1,
-    "validated": 99,
-    "rateLimited": 23
+    "validated": 104,
+    "rateLimited": 24
   },
   "needsReview": [
     {
@@ -69,6 +69,78 @@
       "auth": false,
       "admin": true,
       "rateLimit": "20/1 minute",
+      "validated": true,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "GET",
+      "path": "/admin/economy/revenue-config",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": null,
+      "validated": false,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "POST",
+      "path": "/admin/economy/revenue-config",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": "10/1 minute",
+      "validated": true,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "GET",
+      "path": "/admin/economy/reports/daily",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "GET",
+      "path": "/admin/economy/reports/monthly",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "GET",
+      "path": "/admin/economy/reports/platform-ledger",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": null,
+      "validated": true,
+      "roles": [],
+      "exposure": "admin"
+    },
+    {
+      "module": "admin",
+      "method": "GET",
+      "path": "/admin/economy/reports/top-hosts",
+      "file": "src/modules/admin/admin.routes.ts",
+      "auth": false,
+      "admin": true,
+      "rateLimit": null,
       "validated": true,
       "roles": [],
       "exposure": "admin"

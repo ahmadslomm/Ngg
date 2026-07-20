@@ -57,12 +57,13 @@ describe('wallet API', () => {
     // A real ledgered mutation (existing exchange) — asserts balances stay in lockstep with the
     // ledger's latest balanceAfter, the observable invariant of consistent money-writing.
     const u = await makeUser({ beans: 1000n });
-    await inject(app, u, 'POST', '/exchange', { beans: '400' }); // 1:1 → coins +400, beans -400
+    // RECOVERED rate is 50% (2 beans = 1 coin), not 1:1: 400 beans -> 200 coins.
+    await inject(app, u, 'POST', '/exchange', { beans: '400' });
     const w = (await inject(app, u, 'GET', '/wallet')).body.data;
     const items = (await inject(app, u, 'GET', '/wallet/ledger')).body.data.items; // newest-first
     const latestCoins = items.find((r: any) => r.currency === 0);
     const latestBeans = items.find((r: any) => r.currency === 1);
-    expect(w.coins).toBe('400');
+    expect(w.coins).toBe('200');
     expect(w.beans).toBe('600');
     expect(latestCoins.balanceAfter).toBe(w.coins); // balance == last balanceAfter (coins)
     expect(latestBeans.balanceAfter).toBe(w.beans); // balance == last balanceAfter (beans)
@@ -73,7 +74,7 @@ describe('wallet API', () => {
     const r = await inject(app, u, 'POST', '/exchange', { beans: '200' });
     expect(r.status).toBe(200);
     expect(r.body.data.beansAfter).toBe('300');
-    expect(r.body.data.coinsAfter).toBe('200');
+    expect(r.body.data.coinsAfter).toBe('100');
     const rec = await inject(app, u, 'GET', '/wallet/reconcile');
     expect(rec.body.data.ok).toBe(true);
   });
