@@ -409,7 +409,9 @@ class _AgencyDetailView extends ConsumerWidget {
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<int>(
-                value: role,
+                // `value` was deprecated in favour of `initialValue` after Flutter 3.33. (This had
+                // been the other way round under the 3.29 SDK the project was pinned to.)
+                initialValue: role,
                 decoration: const InputDecoration(labelText: 'Role'),
                 items: [for (var r = 0; r <= 2; r++) DropdownMenuItem(value: r, child: Text(_roleName(r)))],
                 onChanged: (v) => setInner(() => role = v ?? 0),

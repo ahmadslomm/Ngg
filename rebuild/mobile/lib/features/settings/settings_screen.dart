@@ -146,13 +146,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            for (var i = 0; i <= 2; i++)
-              RadioListTile<int>(
-                value: i,
-                groupValue: current,
-                onChanged: (v) => Navigator.pop(ctx, v),
-                title: Text(_whoCanGiftLabel(i)),
+            // `groupValue`/`onChanged` on RadioListTile were deprecated after Flutter 3.32 in
+            // favour of a RadioGroup ancestor holding the selection.
+            RadioGroup<int>(
+              groupValue: current,
+              onChanged: (v) => Navigator.pop(ctx, v),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (var i = 0; i <= 2; i++)
+                    RadioListTile<int>(value: i, title: Text(_whoCanGiftLabel(i))),
+                ],
               ),
+            ),
           ],
         ),
       ),
