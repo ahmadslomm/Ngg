@@ -1,0 +1,85 @@
+{
+  "startedAt": "2026-07-20T04:39:36.046Z",
+  "entries": [
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3022",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1773993731.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/50/50e36b26b884bcd6c7a760fee686fd8778916d8a7bff0f01a7d197cb2fa32300.png"
+    },
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3031",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1774337464.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/9f/9f028aaa0f18588edc4cd3a8044ba1cb767277483c58129a821d3bd0099edb37.png"
+    },
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3015",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1773885723.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/9e/9e5562816e69cbe6edbda050e506b3e2f9247e93c37caa138ac32abb699d3f3b.png"
+    },
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3191",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1784012418.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/4b/4b8425d1efd33bfe59154fd70ce6f23b084222412f4ce428a96e389b6d62684b.png"
+    },
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3202",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1784200706.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/1a/1a2575a5ceaeb47597632fedcc6102b4835392628b83ed376c6ec19583ec777b.png"
+    },
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3089",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1780382398.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/dc/dcfaf1c15d90b3a3f39c6b994a1ba1ffb892b213217f87f6c330ac81fe13eacf.png"
+    },
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3163",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1783050646.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/93/93012db033a5ca389ae653ec2f6f1caf17fbb0fb077465891c5fd9066ad1d915.png"
+    },
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3182",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1783913641.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/32/320ea19b2565cce9dd02bdadef4a200198f12d6f23bbd9e3934c64d0a1578817.png"
+    },
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3072",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1780886016.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/b8/b8ebdbfad5c638442a7ef46194d01e7fc54aeed5163e21416bf9002f9a471180.png"
+    },
+    {
+      "table": "Gift",
+      "idColumn": "id",
+      "id": "3011",
+      "column": "iconUrl",
+      "fromUrl": "https://ufile.zaffalive.com/uc/img/image_1773884236.png",
+      "toUrl": "https://pub-b289f9beb5d24f809efe33e0708519f3.r2.dev/catalog/mirror/a7/a78e09e9785c7714139f0412e94da5c6ce219b30d7c553c671a7a9939d3b87a1.png"
+    }
+  ]
+}

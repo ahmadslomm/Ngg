@@ -12,7 +12,12 @@
 // reject unsigned `x-amz-meta-*`, so attaching real object metadata would mean changing `src/`.
 
 /** Formats the original system served. Stored verbatim; never transcoded. */
-export type AssetType = 'png' | 'jpeg' | 'webp' | 'gif' | 'mp4' | 'svga' | 'pag' | 'zip' | 'json' | 'unknown';
+export type AssetType =
+  | 'png' | 'jpeg' | 'webp' | 'gif' | 'mp4' | 'svga' | 'pag' | 'zip' | 'json'
+  // Fonts and audio: the recovered H5 pages ship both (giftWall bundles an icon font, luckyDraw an
+  // MP3). They were missing from this table, so the uploader rejected them as unidentifiable.
+  | 'ttf' | 'woff' | 'woff2' | 'mp3' | 'wav'
+  | 'unknown';
 
 /** Canonical extension + Content-Type per format. The CDN must serve the right type. */
 export const TYPE_META: Record<AssetType, { ext: string; contentType: string }> = {
@@ -25,6 +30,11 @@ export const TYPE_META: Record<AssetType, { ext: string; contentType: string }> 
   pag: { ext: 'pag', contentType: 'application/x-pag' },
   zip: { ext: 'zip', contentType: 'application/zip' },
   json: { ext: 'json', contentType: 'application/json' },
+  ttf: { ext: 'ttf', contentType: 'font/ttf' },
+  woff: { ext: 'woff', contentType: 'font/woff' },
+  woff2: { ext: 'woff2', contentType: 'font/woff2' },
+  mp3: { ext: 'mp3', contentType: 'audio/mpeg' },
+  wav: { ext: 'wav', contentType: 'audio/wav' },
   unknown: { ext: 'bin', contentType: 'application/octet-stream' },
 };
 

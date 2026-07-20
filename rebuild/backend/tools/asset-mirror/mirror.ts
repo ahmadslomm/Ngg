@@ -45,6 +45,7 @@ interface Args {
   deep: boolean;
   rebuild?: 'r2' | 'archive';
   scanDb: boolean;
+  liveOnly: boolean;
   limit?: number;
 }
 
@@ -55,7 +56,7 @@ function parseArgs(argv: string[]): Args {
     archive: resolve(HERE, '../../../../assets-archive'),
     journal: join(HERE, 'rewrite-journal.json'),
     mockR2: false, fetch: false, upload: false, rewrite: false, rollback: false,
-    verify: false, deep: false, scanDb: true,
+    verify: false, deep: false, scanDb: true, liveOnly: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -78,6 +79,7 @@ function parseArgs(argv: string[]): Args {
       case '--verify': a.verify = true; break;
       case '--deep': a.deep = true; break;
       case '--no-db': a.scanDb = false; break;
+      case '--live-only': a.liveOnly = true; break;
       case '--limit': a.limit = Number(argv[++i]); break;
       case '-h': case '--help': usage(); process.exit(0);
     }
@@ -95,6 +97,7 @@ asset-mirror — fetch every legacy asset once, store it on our origin, rewrite 
   --journal <file>            rewrite journal      (default tools/asset-mirror/rewrite-journal.json)
   --mock-r2                   placeholder origin; no credentials, no network
   --no-db / --limit <n>       skip the read-only DB scan / cap the work list
+  --live-only                 only URLs a LIVE database row depends on (the staged first run)
 
   --fetch                     DOWNLOAD from the original host              [network]
   --upload                    store fetched bytes on R2                    [network]
@@ -246,6 +249,10 @@ async function main() {
     }
   }
   let urls = merge(capMap, dbMap);
+  // Staged first run: mirror only what a live row actually depends on. That is the smallest set
+  // that turns the legacy-URL guard green, and it proves the whole pipeline end to end before the
+  // bulk of the corpus is touched.
+  if (args.liveOnly) urls = urls.filter((u) => u.sightings.some((s) => s.live));
   if (args.limit) urls = urls.slice(0, args.limit);
 
   const plans = planResume(urls.map((u) => u.url), manifest, inArchive(args.archive));
