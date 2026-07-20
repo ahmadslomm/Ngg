@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 import { buildTestApp, makeUser, inject } from '../../testing/harness.js';
 import { vipRoutes } from './vip.routes.js';
+import { runVipExpireSweep } from '../../workers/jobs/vip-expire.js';
 import { vipService } from './vip.service.js';
 import { prisma } from '../../lib/prisma.js';
 
@@ -76,8 +77,9 @@ describe('VIP API', () => {
     await inject(app, u, 'POST', '/vip/purchase', { level: L1 });
     // Force the membership to have already expired.
     await prisma.vipHistory.updateMany({ where: { userId: u }, data: { expiresAt: new Date(Date.now() - 1000) } });
-    const reset = await vipService.expireSweep();
-    expect(reset).toBeGreaterThanOrEqual(1);
+    // Uses the REAL sweep (the worker's), not a second copy that would drift from it.
+    const res = await runVipExpireSweep();
+    expect(res.downgraded).toBeGreaterThanOrEqual(1);
     const me = await inject(app, u, 'GET', '/vip/me');
     expect(me.body.data.level).toBe(0);
     const prof = await prisma.profile.findUnique({ where: { userId: u } });

@@ -16,9 +16,26 @@ export const KIND_PROFILE_COL: Record<number, 'avatarFrameUrl' | 'entryEffectUrl
 };
 
 export class DecorationRepo {
-  // Public catalog — enabled items only, stable ordering.
-  listCatalogue() {
-    return prisma.decorationItem.findMany({ where: { enabled: true }, orderBy: [{ kind: 'asc' }, { sort: 'asc' }, { id: 'asc' }] });
+  /**
+   * Public catalog — enabled items only, stable ordering.
+   *
+   * PAGINATED. This returned the WHOLE catalogue unbounded: 2,576 enabled items, ~242 kB of row
+   * data before JSON overhead, serialized on every call for every user. `kind` narrows it to one
+   * slot (frame / entry effect / bubble), which is how a store UI actually browses it.
+   */
+  listCatalogue(opts: { kind?: number; skip?: number; take?: number } = {}) {
+    return prisma.decorationItem.findMany({
+      where: { enabled: true, ...(opts.kind != null ? { kind: opts.kind } : {}) },
+      orderBy: [{ kind: 'asc' }, { sort: 'asc' }, { id: 'asc' }],
+      skip: opts.skip ?? 0,
+      take: Math.min(200, Math.max(1, opts.take ?? 100)),
+    });
+  }
+
+  countCatalogue(kind?: number) {
+    return prisma.decorationItem.count({
+      where: { enabled: true, ...(kind != null ? { kind } : {}) },
+    });
   }
 
   // A user's owned decorations (self-only; the route passes the authenticated id) with their item.

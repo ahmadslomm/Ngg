@@ -2,6 +2,7 @@
 // money-endpoint rate limit and honors an Idempotency-Key header (T1.2), mirroring the wallet
 // money routes. Inventory is self-only (keyed off req.user.id; no user-id path parameter).
 import type { FastifyInstance } from 'fastify';
+import { z } from 'zod';
 import { ok, serialize, replyError } from '../../lib/errors.js';
 import { decorationService } from './decoration.service.js';
 
@@ -9,7 +10,16 @@ const uid = (req: any) => req.user.id as bigint;
 
 export async function decorationRoutes(app: FastifyInstance) {
   // Public catalog.
-  app.get('/decorations', { preHandler: [app.authenticate] }, async () => ok(serialize(await decorationService.listCatalogue())));
+  app.get('/decorations', { preHandler: [app.authenticate] }, async (req) => {
+    const q = z.object({
+      kind: z.coerce.number().int().min(0).max(9).optional(),
+      page: z.coerce.number().int().min(1).optional(),
+      page_size: z.coerce.number().int().min(1).max(200).optional(),
+    }).parse(req.query ?? {});
+    return ok(serialize(await decorationService.listCatalogue({
+      kind: q.kind, page: q.page, pageSize: q.page_size,
+    })));
+  });
 
   // Own inventory (self-only).
   app.get('/decorations/me', { preHandler: [app.authenticate] }, async (req) =>

@@ -103,25 +103,29 @@ export class MedalService {
     };
   }
 
-  /** How many users out-score `score`, plus one. */
+  /**
+   * How many users out-score `score`, plus one.
+   *
+   * Aggregated in SQL, deliberately. The first version of this loaded EVERY `UserMedal` row in the
+   * system into Node and grouped them in a Map — on every request. That is fine with a hundred
+   * users and fatal with a million: the whole table crosses the wire to rank one person.
+   *
+   * This returns a single integer; no rows reach the application. Parameterised via Prisma's tagged
+   * template, so the interpolations are bound values, not string concatenation.
+   */
   private async rankByScore(score: number): Promise<number> {
-    const rows = await prisma.userMedal.findMany({
-      where: {
-        medal: { enabled: true, category: MedalCategory.Achievement },
-        OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
-      },
-      select: { userId: true, medal: { select: { tier: true } } },
-    });
-    const scores = new Map<string, number>();
-    for (const r of rows) {
-      const t = r.medal.tier;
-      if (t < 1 || t > 4) continue;
-      const k = String(r.userId);
-      scores.set(k, (scores.get(k) ?? 0) + t);
-    }
-    let higher = 0;
-    for (const s of scores.values()) if (s > score) higher++;
-    return higher + 1;
+    const rows = await prisma.$queryRaw<Array<{ higher: bigint }>>`
+      SELECT COUNT(*)::bigint AS higher FROM (
+        SELECT um."userId", SUM(m."tier") AS s
+          FROM "UserMedal" um
+          JOIN "Medal" m ON m."id" = um."medalId"
+         WHERE m."enabled" = true
+           AND m."category" = ${MedalCategory.Achievement}
+           AND m."tier" BETWEEN 1 AND 4
+           AND (um."expiresAt" IS NULL OR um."expiresAt" > NOW())
+         GROUP BY um."userId"
+      ) t WHERE t.s > ${score}`;
+    return Number(rows[0]?.higher ?? 0n) + 1;
   }
 
   // Idempotent award by medal code. Unknown/disabled codes are ignored (no throw) so
