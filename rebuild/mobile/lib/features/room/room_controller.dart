@@ -418,8 +418,17 @@ class RoomController extends StateNotifier<RoomUiState> {
   Future<void> _onVoice(VoiceEvent e) async {
     switch (e) {
       case TokenWillExpire():
-        final t = await repo.rtcToken(roomId);
-        await voice.renewToken(t.token);
+        // A refusal here is meaningful, not just a network blip: the server re-checks the room ban
+        // and the seat on every mint, so a refused renewal means the privilege was revoked. An
+        // unhandled throw would leave the user sitting in the voice channel until the old token
+        // expired — audible for up to the full TTL — with nothing shown on screen.
+        try {
+          final t = await repo.rtcToken(roomId);
+          await voice.renewToken(t.token);
+        } catch (e) {
+          state = state.copyWith(error: 'Voice session ended');
+          await leaveRoom(kicked: true);
+        }
       case ConnectionLost():
         state = state.copyWith(voiceConnected: false);
       case ConnectionRestored():

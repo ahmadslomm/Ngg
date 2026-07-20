@@ -166,10 +166,38 @@ export class AuthService {
   // ----- RTC token -----
   // Publish role follows SEAT occupancy: a seated non-admin-muted speaker gets a broadcaster token;
   // everyone else gets audience.
+  /**
+   * Mint an Agora token for a room.
+   *
+   * An Agora token is a CAPABILITY: once issued, the holder can join that channel for the whole TTL
+   * and — with `broadcaster` — publish audio. The server cannot revoke it; Agora honours it until it
+   * expires. Every rule the room enforces therefore has to be checked HERE, at mint time.
+   *
+   * This path previously checked only the seat. `POST /rooms/:id/join` checked the room ban and this
+   * one did not, so a banned user could skip join entirely, ask for a token directly, and be heard
+   * in a room that had thrown them out.
+   */
   async rtcToken(roomId: string, uid: bigint) {
-    const seat = roomId ? await authRepo.findActiveSeat(BigInt(roomId), uid) : null;
+    if (!roomId) throw new AppError('room_required', 400);
+
+    let rid: bigint;
+    try { rid = BigInt(roomId); } catch { throw new AppError('invalid_room', 400); }
+
+    // The room must exist: minting for an unknown id hands out a credential for a channel nobody
+    // owns, which anyone else can then also be issued.
+    const room = await authRepo.findRoomForRtc(rid);
+    if (!room) throw new AppError('room_unavailable', 404);
+
+    // The ban check that was missing.
+    if (await moderationService.isRoomBanned(uid, rid)) throw new AppError('room_banned', 403);
+
+    const seat = await authRepo.findActiveSeat(rid, uid);
     const role = seat && !seat.micMutedByAdmin ? 'broadcaster' : 'audience';
-    return issueRtcToken({ channel: `room:${roomId}`, uid: Number(uid), role });
+
+    // Use the room's STORED channel rather than rebuilding `room:{id}`. They agree today, but a
+    // refresh that re-derives the string would silently target a different channel the moment they
+    // ever diverge — and the user would drop at TTL expiry with no error anywhere.
+    return issueRtcToken({ channel: room.agoraChannel ?? `room:${roomId}`, uid: Number(uid), role });
   }
 }
 

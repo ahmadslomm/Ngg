@@ -49,6 +49,11 @@ export class AuthRepository {
 
   // RTC publish role follows SEAT occupancy. Cross-domain read (Seat is owned by Rooms) kept here
   // temporarily so auth stays Prisma-free; replace with RoomService.activeSeatOf() in Phase 2.
+  /** The room's stored RTC channel — the token must bind to it, not to a re-derived string. */
+  findRoomForRtc(roomId: bigint, client: DbClient = db.read) {
+    return client.room.findUnique({ where: { id: roomId }, select: { id: true, agoraChannel: true } });
+  }
+
   findActiveSeat(roomId: bigint, userId: bigint, client: DbClient = db.read) {
     return client.seat.findFirst({ where: { roomId, userId, state: 1 } });
   }
