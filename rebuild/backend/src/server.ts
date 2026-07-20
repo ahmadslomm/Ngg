@@ -16,6 +16,7 @@ import { roomRoutes } from './modules/rooms/room.routes.js';
 import { discoveryRoutes } from './modules/rooms/discovery.routes.js';
 import { favoriteRoutes } from './modules/rooms/favorite.routes.js';
 import { pkRoutes } from './modules/pk/pk.routes.js';
+import { pkBattleRoutes } from './modules/pk/pk-battle.routes.js';
 import { notificationRoutes } from './modules/notifications/notification.routes.js';
 import { taskRoutes } from './modules/tasks/task.routes.js';
 import { RoomService } from './modules/rooms/room.service.js';
@@ -179,6 +180,12 @@ async function build() {
     await discoveryRoutes(v1);
     await favoriteRoutes(v1);
     await pkRoutes(v1);
+    // Room-vs-room PK (the evidenced shape). Ownership is injected rather than imported, keeping
+    // the PK context free of any dependency on the Rooms module.
+    await pkBattleRoutes(async (roomId) => {
+      const room = await prisma.room.findUnique({ where: { id: roomId }, select: { ownerId: true } });
+      return room?.ownerId ?? null;
+    })(v1);
     await notificationRoutes(v1);
     await taskRoutes(v1);
     await dmRoutes(v1);

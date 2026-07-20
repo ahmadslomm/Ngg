@@ -76,7 +76,9 @@ function topKeys(objSrc) {
 const nameTable = new Map();
 for (const file of walk(join(BE, 'src'), '.ts')) {
   const src = readFileSync(file, 'utf8');
-  for (const decl of src.matchAll(/export const (?:RoomEventName|EventName)\s*=\s*\{/g)) {
+  // Any `*EventName` table — hardcoding RoomEventName/EventName meant a new vertical's events
+  // (PkEventName) were invisible, and its emitters were reported as "no server emitter".
+  for (const decl of src.matchAll(/export const \w*EventName\s*=\s*\{/g)) {
     const body = objectAt(src, decl.index + decl[0].length - 1);
     if (!body) continue;
     for (const m of body.matchAll(/(\w+):\s*'([a-z]+\.[a-z_]+)'/g)) nameTable.set(m[1], m[2]);
@@ -86,7 +88,7 @@ for (const file of walk(join(BE, 'src'), '.ts')) {
 // factory function name -> event name, read from `build(RoomEventName.X, ...)` declarations.
 const builderTable = new Map();
 for (const file of walk(join(BE, 'src'), '.ts')) {
-  for (const m of readFileSync(file, 'utf8').matchAll(/export const (\w+)\s*=[^;]*?build\((?:RoomEventName|EventName)\.(\w+)/g)) {
+  for (const m of readFileSync(file, 'utf8').matchAll(/export const (\w+)\s*=[^;]*?build\(\w*EventName\.(\w+)/g)) {
     const n = nameTable.get(m[2]);
     if (n) builderTable.set(m[1], n);
   }

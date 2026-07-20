@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-07-20T05:39:40.714Z",
+  "generatedAt": "2026-07-20T06:21:03.750Z",
   "method": "Static analysis: each `ev:` paired with its sibling `data:` literal; client `case` labels.",
   "totals": {
-    "serverEvents": 32,
-    "consumed": 27,
-    "unconsumed": 5,
-    "withKnownPayload": 32,
+    "serverEvents": 37,
+    "consumed": 33,
+    "unconsumed": 4,
+    "withKnownPayload": 37,
     "clientHandlersWithoutEmitter": 4
   },
   "events": [
     {
       "event": "bomb.explode",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:124"
+        "src/modules/gifts/gift.routes.ts:127"
       ],
       "payloadKeys": [
         "pool",
@@ -26,7 +26,7 @@
     {
       "event": "bomb.tick",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:125"
+        "src/modules/gifts/gift.routes.ts:128"
       ],
       "payloadKeys": [
         "pool"
@@ -51,7 +51,7 @@
     {
       "event": "charm.updated",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:114"
+        "src/modules/gifts/gift.routes.ts:117"
       ],
       "payloadKeys": [
         "charm",
@@ -153,7 +153,7 @@
     {
       "event": "gift.combo",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:117"
+        "src/modules/gifts/gift.routes.ts:120"
       ],
       "payloadKeys": [
         "combo",
@@ -169,7 +169,7 @@
     {
       "event": "gift.lucky",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:93"
+        "src/modules/gifts/gift.routes.ts:96"
       ],
       "payloadKeys": [
         "coinsWon",
@@ -250,18 +250,99 @@
       "status": "consumed"
     },
     {
+      "event": "pk.created",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:96"
+      ],
+      "payloadKeys": [
+        "<indirect>"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.finished",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:156",
+        "src/modules/pk/pk-battle.service.ts:163",
+        "src/modules/pk/pk-battle.service.ts:238",
+        "src/modules/pk/pk-battle.service.ts:247"
+      ],
+      "payloadKeys": [
+        "aborted",
+        "cancelled",
+        "draw",
+        "reason",
+        "refused",
+        "win_uid"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.rewarded",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:271"
+      ],
+      "payloadKeys": [
+        "coins",
+        "pk_id",
+        "win_uid"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.started",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:146"
+      ],
+      "payloadKeys": [
+        "<indirect>"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
+      "event": "pk.timer",
+      "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:294"
+      ],
+      "payloadKeys": [
+        "ends_at",
+        "pk_id",
+        "remaining_sec"
+      ],
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
+    },
+    {
       "event": "pk.updated",
       "emitSites": [
+        "src/modules/pk/pk-battle.service.ts:183",
         "src/modules/pk/pk.service.ts:51",
         "src/modules/pk/pk.service.ts:83",
         "src/modules/pk/pk.service.ts:104"
       ],
       "payloadKeys": [
+        "<spread/variable>",
         "phase",
         "winner_id"
       ],
-      "clientHandlers": [],
-      "status": "UNCONSUMED"
+      "clientHandlers": [
+        "lib/features/room/pk/pk_controller.dart"
+      ],
+      "status": "consumed"
     },
     {
       "event": "pool.payout",
@@ -289,7 +370,7 @@
     {
       "event": "rank.update",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:100"
+        "src/modules/gifts/gift.routes.ts:103"
       ],
       "payloadKeys": [
         "boards"
@@ -373,7 +454,7 @@
     {
       "event": "room.rank",
       "emitSites": [
-        "src/modules/gifts/gift.routes.ts:105"
+        "src/modules/gifts/gift.routes.ts:108"
       ],
       "payloadKeys": [
         "period",
@@ -440,7 +521,7 @@
     {
       "event": "system.message",
       "emitSites": [
-        "src/modules/admin/admin.routes.ts:49"
+        "src/modules/admin/admin.routes.ts:99"
       ],
       "payloadKeys": [
         "<indirect>"

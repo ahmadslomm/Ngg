@@ -197,6 +197,11 @@ model RoomTheme {
 // by `version` so it happens EXACTLY once even if a manual settle overlaps the delayed job. All refs
 // (roomId/aUserId/bUserId/winnerId) are plain scalars — NO FK (the T1.16 pattern). No money/ledger:
 // settle records the outcome only.
+/// DEPRECATED (PK phase): user-vs-user battle inside ONE room. This shape is REBUILD-OWNED and
+/// corresponds to nothing in the original — the captured H5 evidence
+/// (`Action/RadioRoomPk.pkRecordList`) shows PK is **room vs room**: each record carries
+/// `creator{rid,rname,pic_url}` and `acceptor{...}` where `rid` is a ROOM id. See PkBattle below,
+/// which is the evidenced model. Kept (not dropped) so existing data and tests stay valid.
 model RoomPk {
   id        BigInt    @id @default(autoincrement())
   roomId    BigInt // scalar ref, no FK
@@ -213,6 +218,63 @@ model RoomPk {
 
   @@index([roomId, status])
   @@index([status, endsAt])
+}
+
+/// Room-vs-room PK battle — the EVIDENCED shape.
+///
+/// Field names mirror the captured `pkRecordList` payload verbatim (`creator_amount`,
+/// `accept_amount`, `win_uid`, `create_time`) so the wire contract needs no translation layer.
+/// `winnerRoomId` is null for a draw; the wire emits `win_uid: 0` for a draw, which is what the
+/// original's own `isWin(win_uid, rid) => win_uid == rid ? 1 : win_uid == 0 ? 2 : lose` expects.
+model PkBattle {
+  id             BigInt    @id @default(autoincrement())
+  /// Challenger room ("creator" in the captured payload).
+  creatorRoomId  BigInt
+  /// Opponent room ("acceptor"). Null while still matching / awaiting acceptance.
+  acceptorRoomId BigInt?
+  /// Lifecycle — see pk.machine.ts. 0 matching · 1 invited · 2 running · 3 finished · 4 cancelled ·
+  /// 5 refused · 6 aborted. Only `running → finished` settles scores.
+  status         Int       @default(0)
+  creatorAmount  BigInt    @default(0)
+  acceptorAmount BigInt    @default(0)
+  /// Null = draw or not yet settled; `status` disambiguates.
+  winnerRoomId   BigInt?
+  /// Optimistic guard — settlement computes the outcome exactly once.
+  version        Int       @default(0)
+  /// Exactly-once reward marker; also the ledger anchor if rewards ever move currency.
+  rewardKey      String?   @unique @db.VarChar(128)
+  rewardedAt     DateTime?
+  durationSec    Int
+  createdAt      DateTime  @default(now())
+  startedAt      DateTime?
+  endsAt         DateTime?
+  finishedAt     DateTime?
+
+  @@index([creatorRoomId, status])
+  @@index([acceptorRoomId, status])
+  @@index([status, endsAt]) // the settle sweep
+}
+
+/// Per-room PK career statistics — field names taken verbatim from the captured
+/// `Action/RadioRoomPk.pkInfo` response: `{id, rid, pk_time, win_amount, lose_amount, draw_amount,
+/// kill_amount, coin_amount, create_time}`.
+///
+/// `all_amount` and `winRate` are NOT stored: the original computes both client-side
+/// (`all = win + lose + draw`, `rate = win/all*100`), and duplicating them here would let them drift.
+model RoomPkStats {
+  roomId     BigInt   @id
+  /// UNKNOWN semantics — present in the capture, always 0 in the sample. Stored, never interpreted.
+  pkTime     Int      @default(0)
+  winAmount  Int      @default(0)
+  loseAmount Int      @default(0)
+  drawAmount Int      @default(0)
+  /// UNKNOWN semantics (a "kill"/knockout counter in the original). Stored, never interpreted.
+  killAmount Int      @default(0)
+  /// Coins earned across PK battles.
+  coinAmount BigInt   @default(0)
+  updatedAt  DateTime @updatedAt
+
+  @@index([winAmount])
 }
 
 model Seat {

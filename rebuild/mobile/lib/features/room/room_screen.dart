@@ -12,6 +12,7 @@ import '../gift/widgets/gift_effect_layer.dart';
 import '../gift/widgets/restored_effects.dart';
 import 'entry/entry_effect_overlay.dart';
 import 'models/room_decorations.dart';
+import 'pk/pk_live_panel.dart';
 import 'models/room_display.dart';
 import 'models/room_model_config.dart';
 import 'models/room_models.dart';
@@ -149,7 +150,11 @@ class RoomScreen extends ConsumerWidget {
                     const SizedBox(height: AppSpacing.sm),
                     PartyTypeBar(selected: display.partyTheme),
                   ],
-                  // PK overlay (recovered rings/panel) — inert when pk == none.
+                  // Live room-vs-room PK, driven by the real pk.* events. Renders nothing when the
+                  // room is not in a battle, so it costs one provider read otherwise.
+                  PkLivePanel(roomId: roomId),
+                  // Legacy decorative overlay — inert when pk == none. Kept for the recovered
+                  // ring art on the display channel; the live panel above is the real data path.
                   PkResultOverlay(pk: pk),
                   const SizedBox(height: AppSpacing.sm),
                   // Host seat (distinct), centered.

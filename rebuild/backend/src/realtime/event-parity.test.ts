@@ -20,7 +20,6 @@ const AUDIT = join(process.cwd(), 'tools/audit/event-audit.json');
 const ACCEPTED_UNCONSUMED: Record<string, string> = {
   // Feature has no client surface yet — the event is correct, the screen does not exist.
   'bottle.reaction': 'bottle reactions have no UI surface yet',
-  'pk.updated': 'no PK screen exists; the overlay is a room-engine task',
   'pool.updated': 'prize-pool UI not built',
   'pool.payout': 'prize-pool UI not built',
   'rank.update': 'ranking screen refetches on open; live push is an enhancement, not parity',
