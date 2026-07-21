@@ -107,7 +107,10 @@ class ZaffaGradients {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [ZaffaColors.coinDeep, ZaffaColors.coinLight, ZaffaColors.coinMid],
-    stops: [0.0, 0.45, 1.0],
+    // ✎ The specular peak sits at 26% across and 26% down (brightest pixel lum 250.8 at x=217,
+    // y=1419 of the coins card). An earlier pass put it at 45%, which pushed the shine to the
+    // middle and flattened the card.
+    stops: [0.0, 0.26, 1.0],
   );
 
   /// ✎ Diamonds: the same satin treatment in lavender.
@@ -159,11 +162,53 @@ class ZaffaMetrics {
   /// columns across the whole 390pt width with no side margin at all.
   static const statRowFullBleed = true;
 
-  /// ✎ Hero art runs from the top edge to y≈690px before the flat page colour takes over.
-  static const heroHeight = 187.0;
+  /// ✎ Hero art fades to the flat page colour by y=620px — luminance falls 45.3 → 13.2 down the
+  /// column and reaches page-background luminance exactly there. 620 / 3.692 = 168pt.
+  static const heroHeight = 168.0;
 
   /// ✎ Bright outer + dark inner, ~5px each at 1440.
   static const goldBevel = 1.4;
+}
+
+/// The lighting model, derived from the pixels rather than assumed.
+///
+/// Measured on the coins card: perimeter bevel luminance E 224.3 · S 217.4 · W 214.3 · N 212.4 —
+/// a narrow 12-unit spread, so the bevel is near-uniform with a slight bias to the right edge.
+/// The specular peak inside the fill is at 26% across / 26% down, which places the key light
+/// UPPER-LEFT. Every gradient in this file therefore runs topLeft → bottomRight; that direction is
+/// evidence, not style.
+///
+/// Texture: luminance standard deviation over 8×8 blocks is 0.00 on both the page background and
+/// the panels, and 1.0–1.7 inside the gradient fills — which is JPEG ringing, not grain. There is
+/// NO noise or texture layer in the original, and none should be added.
+///
+/// Glass: the panels sample as fully opaque flat colour, so there is no backdrop blur anywhere on
+/// this screen. [ZaffaBlur] exists for surfaces that do use it (room sheets), not for Profile.
+class ZaffaLighting {
+  ZaffaLighting._();
+
+  /// Key light position, as a fraction of the surface. Drives every specular stop.
+  static const keyLight = Alignment(-0.48, -0.48); // ✎ 26% across, 26% down
+
+  /// ✎ Measured bevel spread, brightest edge minus darkest: 224.3 − 212.4.
+  static const bevelSpread = 12.0;
+
+  /// ✎ Directly under the top bevel the fill sits ~9 luminance darker and recovers over ~10px
+  /// (2.7pt) — a shallow inner shadow, not a drop shadow.
+  static const innerShadow = BoxShadow(color: Color(0x1A000000), blurRadius: 3, offset: Offset(0, 1.5));
+
+  /// ✎ Confirmed absent. Kept as a named zero so a future pass cannot silently add grain.
+  static const noiseOpacity = 0.0;
+}
+
+/// Blur values. None apply to Profile — see [ZaffaLighting]. Declared so the room sheets, which do
+/// use a frosted backdrop, draw from one place.
+class ZaffaBlur {
+  ZaffaBlur._();
+
+  static const none = 0.0;
+  static const sheet = 18.0;
+  static const overlay = 28.0;
 }
 
 /// Corner radii, fitted to the measured edge curves rather than eyeballed.

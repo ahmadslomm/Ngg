@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../theme/zaffa_tokens.dart';
 import 'gold_frame.dart';
+import 'zaffa_surfaces.dart';
 
 /// The counter strip under the profile header.
 ///
@@ -361,26 +362,12 @@ class QuickActionGrid extends StatelessWidget {
         children: [
           for (final a in actions)
             Expanded(
-              child: ZaffaTappable(
+              child: ShortcutTile(
+                label: a.label,
+                asset: a.asset,
+                icon: a.icon,
+                gradient: a.gradient,
                 onTap: a.onTap,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: ZaffaMetrics.shortcutIcon,
-                      height: ZaffaMetrics.shortcutIcon,
-                      child: a.asset != null
-                          ? Image.asset(a.asset!, fit: BoxFit.contain, filterQuality: FilterQuality.high)
-                          : DecoratedBox(
-                              decoration:
-                                  BoxDecoration(gradient: a.gradient, borderRadius: ZaffaRadius.rTile),
-                              child: Icon(a.icon, size: 27, color: Colors.white),
-                            ),
-                    ),
-                    const SizedBox(height: ZaffaMetrics.shortcutPadV),
-                    Text(a.label, style: ZaffaText.shortcutLabel, maxLines: 1),
-                  ],
-                ),
               ),
             ),
         ],
