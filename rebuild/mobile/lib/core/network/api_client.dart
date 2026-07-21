@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import '../config/app_config.dart';
@@ -30,6 +31,12 @@ class ApiClient {
   }
 
   final Dio _dio;
+
+  /// Nonce entropy — see [_nonce]. `Random.secure()` because a guessable nonce weakens the
+  /// replay window it is meant to protect.
+  static final Random _rng = Random.secure();
+  static int _nonceSeq = 0;
+
   String? _accessToken;
   String? _refreshToken;
 
@@ -54,9 +61,21 @@ class ApiClient {
     options.headers.addAll({'X-Ts': ts, 'X-Nonce': nonce, 'X-Sign': sign});
   }
 
+  /// A single-use replay nonce.
+  ///
+  /// This was derived from `microsecondsSinceEpoch` ALONE. On Android that clock's real
+  /// resolution is about a millisecond, so requests issued in the same tick produced the SAME
+  /// nonce — and the server, correctly, rejected the second as a replay
+  /// (`sign_nonce_replay` -> HTTP 400). The home screen fires three requests concurrently on
+  /// build, so the room list lost that race almost every launch and rendered empty.
+  ///
+  /// A nonce exists to be unpredictable and unique; time alone is neither. Randomness is now
+  /// the primary source, with a counter and the clock mixed in so that two calls cannot collide
+  /// even if the RNG were to repeat.
   String _nonce() {
-    final r = DateTime.now().microsecondsSinceEpoch;
-    return sha1.convert(utf8.encode('$r')).toString().substring(0, 16);
+    final rnd = _rng.nextInt(0x7FFFFFFF);
+    final seed = '${DateTime.now().microsecondsSinceEpoch}:${_nonceSeq++}:$rnd';
+    return sha1.convert(utf8.encode(seed)).toString().substring(0, 16);
   }
 
   Future<bool> _refresh() async {

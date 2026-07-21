@@ -74,6 +74,10 @@ final appRouter = GoRouter(
           ),
         ),
         GoRoute(path: 'gift-wall', builder: (_, s) => GiftWallScreen(uid: s.pathParameters['uid']!)),
+        // One user's posts (`GET /users/:id/moments`). The profile used to embed this feed inline,
+        // which forced the whole page to stop scrolling at the feed's edge; it is its own screen
+        // now so the feed keeps its own viewport and its pagination keeps working.
+        GoRoute(path: 'moments', builder: (_, s) => UserMomentsScreen(uid: s.pathParameters['uid']!)),
       ],
     ),
     GoRoute(

@@ -18,7 +18,7 @@ class AppConfig {
   /// fine; override per build with `--dart-define=VOXA_GOOGLE_SERVER_CLIENT_ID=...`.
   static const String googleServerClientId = String.fromEnvironment(
     'VOXA_GOOGLE_SERVER_CLIENT_ID',
-    defaultValue: '449857729413-u9rmi422cv2igs67gkhi9b14kcpq26mt.apps.googleusercontent.com',
+    defaultValue: '716789434919-t5m42dqrt0kend83fvfe0vs2lt3cq2ia.apps.googleusercontent.com',
   );
 
   /// Whether media uploads go through the backend's presigned-R2 path (real uploader).

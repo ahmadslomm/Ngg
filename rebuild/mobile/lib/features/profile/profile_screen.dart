@@ -8,10 +8,9 @@ import '../../core/providers.dart';
 import '../../core/session.dart';
 import '../feature_providers.dart';
 import '../medals/models/medal_models.dart';
-import '../moments/moments_screen.dart';
-import 'widgets/gift_wall_section.dart';
-import 'widgets/level_progress_section.dart';
 import 'widgets/profile_header.dart';
+import '../../core/widgets/zaffa/zaffa_scaffold.dart';
+import 'widgets/zaffa_profile_body.dart';
 
 /// Adorned medals ride along on the profile payload (`users.service.ts` embeds them),
 /// so no second request is needed to draw the medal strip.
@@ -51,21 +50,16 @@ class ProfileScreen extends ConsumerWidget {
     final me = ref.watch(myProfileProvider);
     final couple = ref.watch(coupleMeProvider);
 
-    return Scaffold(
+    return ZaffaScaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => _changeAvatar(context, ref),
         tooltip: 'Change photo',
         child: const Icon(Icons.add_a_photo_outlined),
       ),
-      appBar: AppBar(
-        title: const Text('Profile'),
+      appBar: ZaffaTransparentBar(
+        title: 'Profile',
         leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.go('/home')),
         actions: [
-          IconButton(
-            tooltip: 'Medals',
-            icon: const Icon(Icons.emoji_events_outlined),
-            onPressed: () => context.push('/medals'),
-          ),
           IconButton(
             tooltip: 'Settings',
             icon: const Icon(Icons.settings_outlined),
@@ -76,36 +70,20 @@ class ProfileScreen extends ConsumerWidget {
       body: me.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => _Error(message: apiErrorMessage(e), onRetry: () => ref.invalidate(myProfileProvider)),
-        data: (profile) {
-          final uid = '${profile['uid']}';
-          return Column(
-            children: [
-              ProfileHeader(
-                profile: profile,
-                medals: _medalsOf(profile),
-                onOpenMedals: () => context.push('/medals'),
-                onOpenRelations: (tab) => context.push('/profile/$uid/relations?tab=$tab'),
-                coupleCard: couple.maybeWhen(
-                  data: (c) => CoupleCard(couple: c, onTap: () => context.push('/couple')),
-                  orElse: () => null,
-                ),
-              ),
-              const _EntryRow(
-                entries: [
-                  (Icons.groups_outlined, 'Agency', '/agency'),
-                  (Icons.favorite_outline, 'CP', '/couple'),
-                  (Icons.settings_outlined, 'Settings', '/settings'),
-                ],
-              ),
-              const _SectionLabel('Level'),
-              LevelProgressSection(uid: uid),
-              const _SectionLabel('Gift wall'),
-              GiftWallStrip(uid: uid, onSeeAll: () => context.push('/profile/$uid/gift-wall')),
-              const _SectionLabel('Moments'),
-              Expanded(child: MomentsFeedView(scopeUid: uid, padding: const EdgeInsets.only(bottom: 16))),
-            ],
-          );
-        },
+        data: (profile) => RefreshIndicator(
+          onRefresh: () async {
+            ref.invalidate(myProfileProvider);
+            ref.invalidate(walletProvider);
+          },
+          child: ZaffaProfileBody(
+            profile: profile,
+            medals: _medalsOf(profile),
+            coupleCard: couple.maybeWhen(
+              data: (c) => CoupleCard(couple: c, onTap: () => context.push('/couple')),
+              orElse: () => null,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -124,33 +102,23 @@ class UserProfileScreen extends ConsumerWidget {
 
     final profile = ref.watch(userProfileProvider(uid));
     final couple = ref.watch(userCoupleProvider(uid));
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+    return ZaffaScaffold(
+      appBar: const ZaffaTransparentBar(title: 'Profile'),
       body: profile.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => _Error(message: apiErrorMessage(e), onRetry: () => ref.invalidate(userProfileProvider(uid))),
-        data: (p) => Column(
-          children: [
-            ProfileHeader(
-              profile: p,
-              medals: _medalsOf(p),
-              onOpenMedals: () {},
-              onOpenRelations: (tab) => context.push('/profile/$uid/relations?tab=$tab'),
-              trailing: _FollowButton(uid: uid, following: p['is_following'] == true),
-              // Only render the badge when this user actually has an active CP — an unpaired
-              // stranger should not show a "No CP yet" invitation card.
-              coupleCard: couple.maybeWhen(
-                data: (c) => c['paired'] == true ? CoupleCard(couple: c) : null,
-                orElse: () => null,
-              ),
-            ),
-            const _SectionLabel('Level'),
-            LevelProgressSection(uid: uid),
-            const _SectionLabel('Gift wall'),
-            GiftWallStrip(uid: uid, onSeeAll: () => context.push('/profile/$uid/gift-wall')),
-            const _SectionLabel('Moments'),
-            Expanded(child: MomentsFeedView(scopeUid: uid, padding: const EdgeInsets.only(bottom: 16))),
-          ],
+        data: (p) => ZaffaProfileBody(
+          profile: p,
+          medals: _medalsOf(p),
+          // Balances are private — never drawn on someone else's profile.
+          showWallet: false,
+          trailing: _FollowButton(uid: uid, following: p['is_following'] == true),
+          // Only render the badge when this user actually has an active CP — an unpaired
+          // stranger should not show a "No CP yet" invitation card.
+          coupleCard: couple.maybeWhen(
+            data: (c) => c['paired'] == true ? CoupleCard(couple: c) : null,
+            orElse: () => null,
+          ),
         ),
       ),
     );
@@ -206,56 +174,6 @@ class _FollowButtonState extends ConsumerState<_FollowButton> {
         ? OutlinedButton(onPressed: _toggle, child: const Text('Following'))
         : FilledButton(onPressed: _toggle, child: const Text('Follow'));
   }
-}
-
-/// The "mine" tab's quick-entry grid from the original app, reduced to the destinations that
-/// have a real backend behind them today.
-class _EntryRow extends StatelessWidget {
-  const _EntryRow({required this.entries});
-  final List<(IconData, String, String)> entries;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-        child: Row(
-          children: [
-            for (final (icon, label, route) in entries)
-              Expanded(
-                child: InkWell(
-                  onTap: () => context.push(route),
-                  borderRadius: BorderRadius.circular(12),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        Icon(icon, size: 22),
-                        const SizedBox(height: 4),
-                        Text(label, style: Theme.of(context).textTheme.bodySmall),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      );
-}
-
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel(this.text);
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-        child: Row(
-          children: [
-            Text(text, style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(width: 12),
-            const Expanded(child: Divider()),
-          ],
-        ),
-      );
 }
 
 class _Error extends StatelessWidget {

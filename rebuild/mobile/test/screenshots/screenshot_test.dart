@@ -25,6 +25,9 @@ import 'package:voxa/features/room/widgets/room_controls.dart';
 import 'package:voxa/features/room/widgets/room_header.dart';
 import 'package:voxa/features/room/widgets/seat_tile.dart';
 import 'package:voxa/core/theme/app_spacing.dart';
+import 'package:voxa/core/widgets/zaffa/zaffa_scaffold.dart';
+import 'package:voxa/features/feature_providers.dart';
+import 'package:voxa/features/profile/widgets/zaffa_profile_body.dart';
 
 // Renders the reconstructed flagship screens to PNGs (run with
 // `flutter test --update-goldens test/screenshots`). These are the
@@ -48,6 +51,8 @@ Future<void> _settleImages(WidgetTester t) async {
 }
 
 void main() {
+  _profileScreenshot();
+
   testWidgets('splash', (t) async {
     // Splash schedules a 1400ms auto-nav to /login; host it under a router so
     // the timer drains cleanly after we capture the splash frame.
@@ -288,4 +293,46 @@ class _GoldenDm extends DmRepository {
   Future<int> unreadTotal() async => 0;
   @override
   Future<List<Conversation>> conversations({int page = 1, int pageSize = 20}) async => const [];
+}
+
+/// The rebuilt "mine" tab. Balances, gift total and VIP tier are stubbed at realistic values so
+/// the capture shows the populated layout rather than a page of placeholders — the stubs stand in
+/// for the API, they are not a fallback the app itself ever uses.
+void _profileScreenshot() {
+  testWidgets('profile', (t) async {
+    t.view.physicalSize = const Size(1080, 2340);
+    t.view.devicePixelRatio = 3.0;
+    addTearDown(t.view.reset);
+
+    await t.pumpWidget(ProviderScope(
+      overrides: [
+        userGiftWallProvider.overrideWith((ref, uid) async => {'items': const [], 'total': 4820}),
+        walletProvider.overrideWith((ref) async => {'coins': 128400, 'beans': 61200}),
+        userLevelsProvider.overrideWith((ref, uid) async => <String, dynamic>{}),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.dark,
+        home: ZaffaScaffold(
+          appBar: const ZaffaTransparentBar(title: 'Profile'),
+          body: ZaffaProfileBody(
+            profile: const {
+              'uid': '10024',
+              'nick': 'Ada',
+              'signature': 'Here for the good rooms.',
+              'vip_level': 7,
+              'charm_level': 24,
+              'wealth_level': 31,
+              'fans_count': 18400,
+              'following_count': 212,
+            },
+            medals: const [],
+          ),
+        ),
+      ),
+    ));
+    await t.pump();
+    await _settleImages(t);
+    await expectLater(find.byType(MaterialApp), matchesGoldenFile('images/profile.png'));
+  });
 }

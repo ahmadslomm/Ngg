@@ -8,6 +8,7 @@ import 'models/moment_models.dart';
 import 'moments_controller.dart';
 import 'moments_providers.dart';
 import 'widgets/moment_card.dart';
+import '../../core/widgets/zaffa/zaffa_scaffold.dart';
 import 'widgets/moment_comments_sheet.dart';
 
 /// The moments feed. `scopeUid == null` shows everyone's posts (`GET /moments/feed`);
@@ -129,6 +130,22 @@ class _Empty extends StatelessWidget {
           Center(child: Text(message, textAlign: TextAlign.center)),
         ],
       ),
+    );
+  }
+}
+
+/// One user's moments, opened from their profile. Uses the same feed view scoped by uid
+/// (`GET /users/:id/moments`), so it gets that feed's own pagination and pull-to-refresh.
+class UserMomentsScreen extends StatelessWidget {
+  const UserMomentsScreen({super.key, required this.uid});
+
+  final String uid;
+
+  @override
+  Widget build(BuildContext context) {
+    return ZaffaScaffold(
+      appBar: const ZaffaTransparentBar(title: 'Moments'),
+      body: MomentsFeedView(scopeUid: uid, padding: const EdgeInsets.only(bottom: 24)),
     );
   }
 }

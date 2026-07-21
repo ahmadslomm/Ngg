@@ -24,11 +24,11 @@ if (hasReleaseKeystore) {
 // Production application id. Defaults to the product package; override for your own store
 // listing via `-Pvoxa.applicationId=com.yourco.app` or gradle.properties — never a
 // `com.example.*` placeholder (a release build is refused below if it is).
-val prodApplicationId = (project.findProperty("voxa.applicationId") as String?) ?: "com.zaffalive.voxa"
+val prodApplicationId = (project.findProperty("voxa.applicationId") as String?) ?: "com.zaffalive.app"
 
 android {
     // Internal code package (R/BuildConfig, MainActivity). Fixed to the product package.
-    namespace = "com.zaffalive.voxa"
+    namespace = "com.zaffalive.app"
     compileSdk = flutter.compileSdkVersion
     // Pinned to the highest NDK required by any plugin (sqflite_android); NDKs are
     // backward-compatible, so this satisfies every dependency and keeps release builds stable.

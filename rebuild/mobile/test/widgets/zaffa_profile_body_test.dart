@@ -1,0 +1,124 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:voxa/core/session.dart';
+import 'package:voxa/core/widgets/zaffa/profile_blocks.dart';
+import 'package:voxa/features/feature_providers.dart';
+import 'package:voxa/features/profile/widgets/zaffa_profile_body.dart';
+
+/// The rebuilt "mine" surface. These tests exist to hold the line the visual pass was given:
+/// the screen may only show numbers the backend actually returns, and it must never present an
+/// unknown value as a real one.
+
+Widget host(List<Override> overrides, Widget child) => ProviderScope(
+      overrides: [
+        sessionProvider.overrideWith((ref) => const Session(
+              uid: '1',
+              accessToken: 't',
+              refreshToken: 'r',
+              agoraAppId: 'a',
+            )),
+        ...overrides,
+      ],
+      child: MaterialApp(home: Scaffold(body: child)),
+    );
+
+Map<String, dynamic> profile({int vip = 0, int fans = 1234, int following = 7}) => {
+      'uid': '1',
+      'nick': 'Ada',
+      'vip_level': vip,
+      'charm_level': 4,
+      'wealth_level': 9,
+      'fans_count': fans,
+      'following_count': following,
+    };
+
+/// Provider stubs. `userGiftWallProvider` / `walletProvider` are FutureProviders, so a plain
+/// override with a completed future is enough to drive the data branch.
+List<Override> stubs({
+  Map<String, dynamic>? giftWall,
+  Map<String, dynamic>? wallet,
+  bool giftWallFails = false,
+}) =>
+    [
+      userGiftWallProvider.overrideWith((ref, uid) async {
+        if (giftWallFails) throw Exception('gift wall down');
+        return giftWall ?? {'items': const [], 'total': 0};
+      }),
+      walletProvider.overrideWith((ref) async => wallet ?? {'coins': 0, 'beans': 0}),
+      userLevelsProvider.overrideWith((ref, uid) async => <String, dynamic>{}),
+    ];
+
+void main() {
+  testWidgets('shows only the counters the API returns — no invented "Visitors"', (tester) async {
+    await tester.pumpWidget(host(stubs(), ZaffaProfileBody(profile: profile(), medals: const [])));
+    await tester.pump();
+
+    expect(find.text('Followers'), findsOneWidget);
+    expect(find.text('Following'), findsOneWidget);
+    expect(find.text('Gifts'), findsOneWidget);
+    // The reference has a fourth column we have no endpoint for. It must not be faked.
+    expect(find.text('Visitors'), findsNothing);
+  });
+
+  testWidgets('the gift counter is the API total, not the length of page one', (tester) async {
+    await tester.pumpWidget(host(
+      stubs(giftWall: {
+        // A page of 20 rows behind a total of 4820 — the point being that the strip shows the
+        // total, not the page size.
+        'items': List.generate(20, (i) => <String, dynamic>{'gift_id': '$i', 'count': 1}),
+        'total': 4820,
+      }),
+      ZaffaProfileBody(profile: profile(), medals: const []),
+    ));
+    await tester.pumpAndSettle();
+
+    // 4820 compacts to "4.8K" — and crucially is not "20".
+    expect(find.text('4.8K'), findsOneWidget);
+    expect(find.text('20'), findsNothing);
+  });
+
+  testWidgets('a failed gift wall degrades to a placeholder, never to zero', (tester) async {
+    await tester.pumpWidget(host(
+      stubs(giftWallFails: true),
+      ZaffaProfileBody(profile: profile(), medals: const []),
+    ));
+    await tester.pumpAndSettle();
+
+    // An unknown count and a real zero must not look the same.
+    expect(find.text('—'), findsOneWidget);
+  });
+
+  testWidgets('balances are private — absent on another user\'s profile', (tester) async {
+    await tester.pumpWidget(host(
+      stubs(wallet: {'coins': 50000, 'beans': 12000}),
+      ZaffaProfileBody(profile: profile(), medals: const [], showWallet: false),
+    ));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CurrencyCard), findsNothing);
+    expect(find.text('Coins'), findsNothing);
+    expect(find.text('Diamonds'), findsNothing);
+  });
+
+  testWidgets('own profile draws coins and diamonds as separate currencies', (tester) async {
+    await tester.pumpWidget(host(
+      stubs(wallet: {'coins': 50000, 'beans': 12000}),
+      ZaffaProfileBody(profile: profile(), medals: const []),
+    ));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CurrencyCard), findsNWidgets(2));
+    expect(find.text('50K'), findsOneWidget); // coins
+    expect(find.text('12K'), findsOneWidget); // beans == diamonds
+  });
+
+  testWidgets('a non-VIP sees a join banner rather than a fabricated tier', (tester) async {
+    await tester.pumpWidget(host(stubs(), ZaffaProfileBody(profile: profile(vip: 0), medals: const [])));
+    await tester.pump();
+
+    expect(find.text('VIP'), findsOneWidget);
+    expect(find.text('Join'), findsOneWidget);
+    expect(find.text('VIP 0'), findsNothing);
+  });
+}
