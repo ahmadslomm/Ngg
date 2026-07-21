@@ -129,3 +129,76 @@ to the bundled originals, rather than any new animation being authored.
 E4 matters: 128 unwired effects is a fact about **our rebuild**, not proof the original used all of
 them. Before treating each as a gap to close, its call site should be confirmed in the decompiled
 app — the same evidentiary standard this report was written to restore.
+
+---
+
+## 7. Runtime lifecycle — what the decompiled original proves, and where the wall is
+
+The original app **is** decompiled in this repo (`apk_out`, 22,769 files), so lifecycle questions
+can be answered from its bytecode rather than guessed. 82 smali classes touch SVGA/PAG.
+
+### Verified by structural search (java.util types are NOT obfuscated, so these are reliable)
+
+Grep validated with a positive control first — `invoke-virtual` 64 classes, `ArrayList` 16,
+`SVGAImageView` 43 — so the negatives below are real absences, not a broken query.
+
+| Structure | Classes | Conclusion |
+|---|---|---|
+| `Ljava/util/LinkedList` | **0** | |
+| `Ljava/util/ArrayDeque` | **0** | |
+| `Ljava/util/Queue` | **0** | |
+| `PriorityQueue` | **0** | |
+| `Ljava/util/concurrent` | 9 | executors, not effect queues |
+| `isAnimating` / `isPlaying` | 3 | a simple already-playing guard, in three places only |
+| `setLoops` / `setRepeatCount` | 6 | loop control |
+
+**Evidence-backed answers to the lifecycle questions:**
+
+| Question | Answer | Basis |
+|---|---|---|
+| Does an effect Queue exist? | **No** | zero queue types across all 82 effect classes |
+| Is there a Priority Resolver? | **No** | zero `PriorityQueue`; no ordering structure |
+| Do effects block each other? | **No** | nothing to serialise them through |
+| Do they run in parallel? | **Yes, by default** | fired directly at their view |
+| Are they interruptible? | **Only 3 sites guard** with an is-playing check |
+| Is there central recycling? | **No** | no shared manager class |
+
+This overturns the architecture implied by the brief's chain
+(`Dispatcher → Queue → Priority Resolver → Animation Manager`). **The original has no such
+pipeline.** Effects are fired directly at their view and play concurrently. Building a queue and
+priority system would make our behaviour *diverge* from the original, not converge on it.
+
+### The wall — stated plainly
+
+The SVGA and libpag **libraries themselves were obfuscated** during the original's build.
+`SVGAImageView.startAnimation()` is now `SVGAImageView->O`, `PAGImageView` methods are `a`, `d`,
+`b`, `B`. The call sites are all present and countable, but their *semantics* are not readable:
+
+```
+22  svgaplayer/SVGAImageView;->O      111  libpag/PAGImageView;->a
+16  svgaplayer/SVGAImageView;->J       51  libpag/PAGImageView;->d
+11  svgaplayer/SVGAImageView;->u       38  libpag/PAGView;->b
+```
+
+**Therefore a per-effect table of "who creates / who stops / duration / z-index" for all 158 files
+cannot be produced honestly today.** I can count call sites; I cannot yet say which call is `play`
+and which is `stop`.
+
+### How that wall comes down — concrete, not hand-waved
+
+1. **Map the obfuscated method table.** SVGAPlayer-Android and libpag are open source. Matching
+   method descriptors and call arity against the published signatures recovers the mapping
+   (`O` → `startAnimation`, etc.). This is mechanical and verifiable.
+2. **Then** walk each of the 82 classes to extract per-effect create → play → stop → dispose.
+3. **Cross-reference** each effect's asset name against its call site to fill the 158-row table.
+4. **Extract durations** from the SVGA protobuf header (frames + fps), which is already decodable —
+   this needs no deobfuscation and can be done immediately.
+
+Step 4 is available now. Steps 1–3 are a real piece of work and should be scoped as its own phase
+rather than smuggled into the Room build.
+
+### Revised recommendation
+
+Wire the 128 unplayed effects **directly, without a queue or priority layer**, because that is what
+the evidence says the original does. Add durations from the SVGA headers (step 4). Do not invent
+the pipeline the brief sketched until step 1 either confirms it exists or proves it does not.
