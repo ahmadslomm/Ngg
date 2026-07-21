@@ -31,11 +31,19 @@ class ZaffaColors {
   static const surfaceRaised = Color(0xFF2E1A42);
 
   /// Room background — deeper and cooler than the app shell.
+  /// ✎ Measured across the 9 plain-room captures: surface #241B2C, deep #0B0917, raised #2E1F36.
+  /// The room is its own environment — markedly darker than the app shell's #18072B.
+  static const roomSurface = Color(0xFF241B2C);
+  static const roomDeep = Color(0xFF0B0917);
+  static const roomRaised = Color(0xFF2E1F36);
   static const roomBgTop = Color(0xFF3A1B6B);
   static const roomBgBottom = Color(0xFF1A0B2E);
 
   // ── Brand ──────────────────────────────────────────────────────────────────────────────────
-  static const purple = Color(0xFF8B3FD8);
+  /// ✎ #9C52FF — the app-wide purple accent. Extracted as the most common saturated colour across
+  /// Moments, Room and the room sheets, and independently confirmed by the earlier APK-era
+  /// inventory. An earlier pass used #8B3FD8, which was never measured.
+  static const purple = Color(0xFF9C52FF);
   static const purpleBright = Color(0xFF9D5CFF);
   static const purpleDeep = Color(0xFF5B2A8F);
 
@@ -48,7 +56,9 @@ class ZaffaColors {
   /// what reads as struck metal; a single-colour stroke reads as a plain border.
   static const goldBevelLight = Color(0xFFFFE2A5); // ✎ x=46..50 of the coins card
   static const goldBevelDark = Color(0xFF81490E); // ✎ x=51..55
-  static const gold = Color(0xFFF5C842);
+  /// ✎ #FFCC00 — the app-wide gold accent. Most common saturated colour on Profile, Home, Live
+  /// and Message. Distinct from the bevel golds above, which are the frame's own two tones.
+  static const gold = Color(0xFFFFCC00);
   static const goldText = Color(0xFFFFD966);
 
   // ── Currency (each is its own currency, so each has its own palette) ────────────────────────
@@ -76,6 +86,29 @@ class ZaffaColors {
   static const textOnGold = Color(0xFF4A3000);
   static const systemNotice = Color(0xFFFFD54F);
   static const charmPink = Color(0xFFFF6FA5);
+
+  // ── Per-system surfaces, measured across all 38 captures ──────────────────────────────────
+  // The app is NOT one theme. Each of these was the dominant surface of its own screen group.
+  /// ✎ CP space is pink: surface #FEA2E3 on white, accent #B363FA.
+  static const cpSurface = Color(0xFFFEA2E3);
+  static const cpAccent = Color(0xFFB363FA);
+
+  /// ✎ Wallet sheets are LIGHT (#F5F5F5 / #FFFFFF) with an orange price accent.
+  static const walletSheet = Color(0xFFF5F5F5);
+  static const walletAccent = Color(0xFFFFA432);
+
+  /// ✎ The Wealth ladder is bronze, and each My-level tab is themed separately.
+  static const wealthSurface = Color(0xFF2C1106);
+  static const wealthRaised = Color(0xFF351D13);
+
+  /// ✎ Store / Decorations sits on its own purple.
+  static const storeSurface = Color(0xFF1D0831);
+
+  /// Semantic states. Not yet measured — no reference capture shows an error or success surface,
+  /// so these are DERIVED from the palette rather than sampled, and are marked as such.
+  static const error = Color(0xFFFF6669); // derived
+  static const success = Color(0xFF3ECF8E); // derived
+  static const warning = Color(0xFFFFA432); // = walletAccent, measured
 }
 
 /// Gradients. Directions are measured, not assumed — the VIP banner in particular is a VERTICAL
