@@ -45,6 +45,7 @@ flutter:
   assets:
     - assets/brand/
     - assets/images/nav/
+    - assets/images/profile/
     - assets/images/room/seats/
     - assets/room/
     # Flutter's directory declaration is NOT recursive, so each emoji folder needs its own line —

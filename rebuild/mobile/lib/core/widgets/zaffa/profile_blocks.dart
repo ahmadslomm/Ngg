@@ -343,7 +343,13 @@ class _AmountShimmerState extends State<_AmountShimmer> with SingleTickerProvide
 class QuickActionGrid extends StatelessWidget {
   const QuickActionGrid({super.key, required this.actions});
 
-  final List<({String label, IconData icon, Gradient gradient, VoidCallback? onTap})> actions;
+  /// `asset` is the ORIGINAL tile illustration where we have it. These four are 3D renders that
+  /// cannot honestly be reproduced as vectors, so they are cropped from the reference at their
+  /// measured bounds (y 1702–1886; x centres 215/552/889/1226 at 1440 wide). The crop's corner
+  /// pixels are #241335 — exactly the panel colour they sit on — so they composite seamlessly with
+  /// no cut-out needed. `icon`/`gradient` are the drawn fallback for tiles with no such art.
+  final List<({String label, String? asset, IconData icon, Gradient gradient, VoidCallback? onTap})>
+      actions;
 
   @override
   Widget build(BuildContext context) {
@@ -360,11 +366,16 @@ class QuickActionGrid extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
+                    SizedBox(
                       width: ZaffaMetrics.shortcutIcon,
                       height: ZaffaMetrics.shortcutIcon,
-                      decoration: BoxDecoration(gradient: a.gradient, borderRadius: ZaffaRadius.rTile),
-                      child: Icon(a.icon, size: 27, color: Colors.white),
+                      child: a.asset != null
+                          ? Image.asset(a.asset!, fit: BoxFit.contain, filterQuality: FilterQuality.high)
+                          : DecoratedBox(
+                              decoration:
+                                  BoxDecoration(gradient: a.gradient, borderRadius: ZaffaRadius.rTile),
+                              child: Icon(a.icon, size: 27, color: Colors.white),
+                            ),
                     ),
                     const SizedBox(height: ZaffaMetrics.shortcutPadV),
                     Text(a.label, style: ZaffaText.shortcutLabel, maxLines: 1),

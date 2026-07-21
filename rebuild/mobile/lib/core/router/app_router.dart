@@ -12,11 +12,14 @@ import '../../features/home/home_screen.dart';
 import '../../features/medals/medal_wall_screen.dart';
 import '../../features/moments/create_moment_screen.dart';
 import '../../features/moments/moments_screen.dart';
+import '../../features/profile/checkin_screen.dart';
 import '../../features/profile/level_screen.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/profile/relations_screen.dart';
 import '../../features/profile/widgets/gift_wall_section.dart';
 import '../../features/ranking/ranking_screen.dart';
+import '../../features/store/store_screen.dart';
+import '../../features/tasks/task_screen.dart';
 import '../../features/room/room_screen.dart';
 import '../../features/settings/settings_screen.dart';
 import '../../features/splash/splash_screen.dart';
@@ -40,6 +43,12 @@ final appRouter = GoRouter(
     GoRoute(path: '/rankings', builder: (_, __) => const RankingScreen()),
     GoRoute(path: '/medals', builder: (_, __) => const MedalWallScreen()),
     GoRoute(path: '/settings', builder: (_, __) => const SettingsScreen()),
+    // Decoration mall + owned inventory. Both endpoints already existed with no client.
+    GoRoute(path: '/store', builder: (_, __) => const StoreScreen()),
+    GoRoute(path: '/backpack', builder: (_, __) => const StoreScreen(ownedOnly: true)),
+    GoRoute(path: '/tasks', builder: (_, __) => const TaskScreen()),
+    // No backend yet — the screen states that plainly rather than inventing a streak.
+    GoRoute(path: '/checkin', builder: (_, __) => const CheckInScreen()),
     GoRoute(path: '/couple', builder: (_, __) => const CoupleScreen()),
     // No id → pending invitations + create; with an id → that agency's detail page.
     GoRoute(path: '/agency', builder: (_, __) => const AgencyScreen()),

@@ -10,6 +10,7 @@ import '../../../core/widgets/avatar_frame.dart';
 import '../../../core/widgets/pag_view.dart';
 import '../../../core/widgets/zaffa/profile_blocks.dart';
 import '../../feature_providers.dart';
+import '../pending_repositories.dart';
 import '../../medals/models/medal_models.dart';
 import '../../medals/widgets/medal_strip.dart';
 
@@ -86,28 +87,32 @@ class ZaffaProfileBody extends ConsumerWidget {
         gap,
         inset(QuickActionGrid(actions: [
           (
-            label: 'Wallet',
-            icon: Icons.account_balance_wallet_rounded,
+            label: 'Store',
+            asset: 'assets/images/profile/shortcut_store.png',
+            icon: Icons.storefront_rounded,
             gradient: ZaffaGradients.price,
-            onTap: () => context.push('/wallet')
+            onTap: () => context.push('/store')
           ),
           (
-            label: 'Noble',
-            icon: Icons.shield_moon_rounded,
+            label: 'Task',
+            asset: 'assets/images/profile/shortcut_task.png',
+            icon: Icons.checklist_rounded,
             gradient: ZaffaGradients.vipBanner,
-            onTap: () => context.push('/noble')
+            onTap: () => context.push('/tasks')
           ),
           (
-            label: 'Medals',
-            icon: Icons.military_tech_rounded,
+            label: 'Check in',
+            asset: 'assets/images/profile/shortcut_checkin.png',
+            icon: Icons.event_available_rounded,
             gradient: ZaffaGradients.coin,
-            onTap: () => context.push('/medals')
+            onTap: () => context.push('/checkin')
           ),
           (
-            label: 'Ranking',
-            icon: Icons.leaderboard_rounded,
+            label: 'Backpack',
+            asset: 'assets/images/profile/shortcut_backpack.png',
+            icon: Icons.backpack_rounded,
             gradient: ZaffaGradients.diamond,
-            onTap: () => context.push('/rankings')
+            onTap: () => context.push('/backpack')
           ),
         ])),
 
@@ -287,6 +292,10 @@ class _StatRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gifts = ref.watch(userGiftWallProvider(uid));
+    // Visitors is in the reference but has no endpoint. It keeps its column so the four-column
+    // grid matches the original, and shows the same placeholder any failed load would — never a
+    // zero, which would read as a fact. See [PendingProfileStatsRepository].
+    final visitors = ref.watch(visitorsProvider(uid));
     return StatStrip(items: [
       (
         label: 'Followers',
@@ -305,6 +314,11 @@ class _StatRow extends ConsumerWidget {
           orElse: () => '—',
         ),
         onTap: () => context.push('/profile/$uid/gift-wall'),
+      ),
+      (
+        label: 'Visitors',
+        value: visitors.maybeWhen(data: formatCompact, orElse: () => '—'),
+        onTap: null,
       ),
     ]);
   }

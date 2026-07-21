@@ -4,7 +4,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:voxa/core/session.dart';
 import 'package:voxa/core/widgets/zaffa/profile_blocks.dart';
 import 'package:voxa/features/feature_providers.dart';
+import 'package:voxa/features/profile/pending_repositories.dart';
 import 'package:voxa/features/profile/widgets/zaffa_profile_body.dart';
+
+/// Stands in for a future backend, to prove the placeholder is a real seam.
+class _FakeStats implements ProfileStatsRepository {
+  const _FakeStats(this.count);
+  final int count;
+  @override
+  Future<int> visitors(String uid) async => count;
+}
 
 /// The rebuilt "mine" surface. These tests exist to hold the line the visual pass was given:
 /// the screen may only show numbers the backend actually returns, and it must never present an
@@ -49,16 +58,39 @@ List<Override> stubs({
       userLevelsProvider.overrideWith((ref, uid) async => <String, dynamic>{}),
     ];
 
+/// Reads the value rendered directly above a stat's label, so an assertion about one column
+/// cannot be satisfied — or broken — by another column's text.
+String _valueUnder(WidgetTester tester, String label) {
+  final column = find.ancestor(of: find.text(label), matching: find.byType(Column)).first;
+  final texts = tester.widgetList<Text>(find.descendant(of: column, matching: find.byType(Text)));
+  return texts.first.data ?? '';
+}
+
 void main() {
-  testWidgets('shows only the counters the API returns — no invented "Visitors"', (tester) async {
+  testWidgets('keeps the reference\'s four columns, but never invents a Visitors number', (tester) async {
     await tester.pumpWidget(host(stubs(), ZaffaProfileBody(profile: profile(), medals: const [])));
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(find.text('Followers'), findsOneWidget);
     expect(find.text('Following'), findsOneWidget);
     expect(find.text('Gifts'), findsOneWidget);
-    // The reference has a fourth column we have no endpoint for. It must not be faked.
-    expect(find.text('Visitors'), findsNothing);
+    // Visitors has no endpoint. The column stays so the grid matches the original, but it may
+    // only ever show the unknown placeholder — a zero there would read as a fact, and a real zero
+    // (0 gifts, 0 coins) is a different thing entirely, so the check is scoped to this column.
+    expect(find.text('Visitors'), findsOneWidget);
+    expect(_valueUnder(tester, 'Visitors'), '—');
+  });
+
+  testWidgets('the Visitors placeholder resolves to a real value the moment a backend exists',
+      (tester) async {
+    // Proves the swap is a one-line provider override and needs no widget change.
+    await tester.pumpWidget(host(
+      [...stubs(), profileStatsRepoProvider.overrideWithValue(_FakeStats(1840))],
+      ZaffaProfileBody(profile: profile(), medals: const []),
+    ));
+    await tester.pumpAndSettle();
+
+    expect(find.text('1.8K'), findsOneWidget);
   });
 
   testWidgets('the gift counter is the API total, not the length of page one', (tester) async {
@@ -85,8 +117,10 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    // An unknown count and a real zero must not look the same.
-    expect(find.text('—'), findsOneWidget);
+    // An unknown count and a real zero must not look the same. Two columns are unknown here:
+    // the failed gift wall, and Visitors, which has no backend at all.
+    expect(_valueUnder(tester, 'Gifts'), '—');
+    expect(_valueUnder(tester, 'Visitors'), '—');
   });
 
   testWidgets('balances are private — absent on another user\'s profile', (tester) async {
