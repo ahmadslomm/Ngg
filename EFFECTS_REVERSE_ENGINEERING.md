@@ -270,3 +270,91 @@ cannot be governed by three guards unless most of them simply run in parallel.
 5. Fill the 158-row table only once 1–4 are complete.
 
 **Nothing will be built on top of an unmapped method.** The binding layer waits for this phase.
+
+---
+
+## 9. ⚠ The finding that changes the plan: effects are SERVER-ADDRESSED, not hardcoded
+
+Before rewiring anything, the gating question was "prove why each unwired effect is not called."
+The answer turns out to apply to nearly all of them at once, and it invalidates the rewiring
+approach I proposed in §5.
+
+### Evidence
+
+Every one of the 149 bundled animation asset names was searched for as a string literal across the
+original's entire smali:
+
+| Result | Count |
+|---|---|
+| Appears in the original's smali | **6** |
+| Does **not** appear | **143** |
+
+And the six "hits" are false positives on the `waitio_` prefix. The actual `waitio_*` string
+literals in the original are **preference and database keys**, not asset paths:
+
+```
+"waitio_bgm_local"   "waitio_user_info"   "waitio_session"
+"waitio_notice"      "waitio_recent_kroom"  "waitio_user_album"
+```
+
+Further:
+
+| Search | Classes |
+|---|---|
+| literal containing `".pag` | **0** |
+| literal containing `"yinbo` | **0** |
+| literal containing `"userspace` | **0** |
+
+**The original app does not name a single one of these animation assets anywhere in its code.**
+
+### What that means
+
+The APK ships 153 SVGA/PAG files under `assets/pag` and `assets/svga`, yet the code never names
+them. They cannot be loaded by hardcoded path. Combined with our own backend already serving
+**`effect_url` (18 sites)** and **`anim_url` (10 sites)**, the architecture is clear:
+
+> **The bundled animation files are a pre-seeded local CACHE for server-addressed effects.**
+> The server names the effect; the client resolves that name, using the bundled copy when present
+> and downloading otherwise.
+
+### Why this overturns §5
+
+§5 recommended "wire the 128 unplayed effects directly." That would have been **architecturally
+wrong**: it would hardcode into the view layer a mapping the original deliberately keeps on the
+server, and the app would then play a fixed set of effects while the real product plays whatever
+the catalogue currently specifies. New gifts would silently render nothing.
+
+**The correct binding is by URL from the API, with the bundle as a cache — not by asset name.**
+
+This also answers the "why is it not called" question for essentially the whole set at once. It is
+not a feature flag, not a VIP gate, not dead code, and not a removed product feature:
+
+| Hypothesis | Verdict |
+|---|---|
+| Feature flag | **No** — no name-based reference exists to gate |
+| VIP / Noble / Gift / Room condition | **No** — same |
+| Dead code | **No** — the assets are cache entries, not call targets |
+| Old version leftover | **No** |
+| Removed from product | **No** |
+| **Server-addressed by design** | **Yes** — 0 path literals in code, 28 URL fields in the API |
+
+### Revised plan for the binding layer
+
+1. Resolve effects **by URL** from the existing API fields (`effect_url`, `anim_url`,
+   `vip_entry_effect_url`, …). No contract change — these fields already exist.
+2. Add a **cache resolver**: given a URL, if its basename matches a bundled asset, play the local
+   copy; otherwise download and cache. This is what makes the bundle useful and is almost certainly
+   what the original does.
+3. Durations from §8.2 drive playback where the server does not specify one.
+4. Only effects with **no** URL field anywhere (e.g. the nav-tab PAGs, already wired) stay
+   referenced by name.
+
+### Corrected status of "128 unwired effects"
+
+That number measured the wrong thing. The real questions are now:
+
+- How many API effect URLs does the client currently resolve? *(to be measured)*
+- How many resolve to a bundled asset vs. a download? *(to be measured)*
+- Is there a cache resolver at all today? *(to be checked)*
+
+Those replace the 158-row hardcoded table, which — on this evidence — should never be built.
