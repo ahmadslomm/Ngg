@@ -9,6 +9,7 @@ import '../../core/session.dart';
 import '../feature_providers.dart';
 import '../medals/models/medal_models.dart';
 import 'widgets/profile_header.dart';
+import '../../core/widgets/zaffa/zaffa_controls.dart';
 import '../../core/widgets/zaffa/zaffa_scaffold.dart';
 import 'widgets/zaffa_profile_body.dart';
 
@@ -27,20 +28,21 @@ class ProfileScreen extends ConsumerWidget {
   /// Pick a gallery image, upload it to R2 (kind=avatar), persist via PATCH /users/me, and
   /// refresh the profile so the new photo shows immediately. Cancel is silent; failures toast.
   Future<void> _changeAvatar(BuildContext context, WidgetRef ref) async {
-    final messenger = ScaffoldMessenger.of(context);
+    // Captured before the await — see [ZaffaToast.of].
+    final toast = ZaffaToast.of(context);
     final result = await ref.read(imageUploadServiceProvider).pickAndUpload(kind: 'avatar');
     switch (result) {
       case ImageUploadCancelled():
         return;
       case ImageUploadFailure(:final message):
-        messenger.showSnackBar(SnackBar(content: Text(message)));
+        toast.display(message);
       case ImageUploadSuccess(:final url):
         try {
           await ref.read(socialRepoProvider).updateMe({'avatar_url': url});
           ref.invalidate(myProfileProvider); // immediate UI refresh
-          messenger.showSnackBar(const SnackBar(content: Text('Profile photo updated')));
+          toast.display('Profile photo updated');
         } catch (e) {
-          messenger.showSnackBar(SnackBar(content: Text(apiErrorMessage(e))));
+          toast.display(apiErrorMessage(e));
         }
     }
   }
@@ -51,31 +53,23 @@ class ProfileScreen extends ConsumerWidget {
     final couple = ref.watch(coupleMeProvider);
 
     return ZaffaScaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _changeAvatar(context, ref),
-        tooltip: 'Change photo',
-        child: const Icon(Icons.add_a_photo_outlined),
-      ),
       appBar: ZaffaTransparentBar(
         title: 'Profile',
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.go('/home')),
+        leading: ZaffaIconButton(icon: Icons.arrow_back, onTap: () => context.go('/home')),
         actions: [
-          IconButton(
-            tooltip: 'Settings',
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () => context.push('/settings'),
-          ),
+          ZaffaIconButton(icon: Icons.settings_outlined, onTap: () => context.push('/settings')),
         ],
       ),
       body: me.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const ZaffaLoading(),
         error: (e, _) => _Error(message: apiErrorMessage(e), onRetry: () => ref.invalidate(myProfileProvider)),
-        data: (profile) => RefreshIndicator(
+        data: (profile) => ZaffaRefresh(
           onRefresh: () async {
             ref.invalidate(myProfileProvider);
             ref.invalidate(walletProvider);
           },
           child: ZaffaProfileBody(
+            onEditAvatar: () => _changeAvatar(context, ref),
             profile: profile,
             medals: _medalsOf(profile),
             coupleCard: couple.maybeWhen(
@@ -105,7 +99,7 @@ class UserProfileScreen extends ConsumerWidget {
     return ZaffaScaffold(
       appBar: const ZaffaTransparentBar(title: 'Profile'),
       body: profile.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const ZaffaLoading(),
         error: (e, _) => _Error(message: apiErrorMessage(e), onRetry: () => ref.invalidate(userProfileProvider(uid))),
         data: (p) => ZaffaProfileBody(
           profile: p,
@@ -140,7 +134,6 @@ class _FollowButtonState extends ConsumerState<_FollowButton> {
 
   Future<void> _toggle() async {
     setState(() => _busy = true);
-    final messenger = ScaffoldMessenger.of(context);
     final want = !_following;
     try {
       final repo = ref.read(socialRepoProvider);
@@ -158,7 +151,7 @@ class _FollowButtonState extends ConsumerState<_FollowButton> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _busy = false);
-      messenger.showSnackBar(SnackBar(content: Text(apiErrorMessage(e))));
+      ZaffaToast.show(context, apiErrorMessage(e));
     }
   }
 
@@ -167,12 +160,15 @@ class _FollowButtonState extends ConsumerState<_FollowButton> {
     if (_busy) {
       return const Padding(
         padding: EdgeInsets.all(12),
-        child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+        child: ZaffaSpinner(size: 20, stroke: 2),
       );
     }
-    return _following
-        ? OutlinedButton(onPressed: _toggle, child: const Text('Following'))
-        : FilledButton(onPressed: _toggle, child: const Text('Follow'));
+    return ZaffaButton(
+      label: _following ? 'Following' : 'Follow',
+      filled: !_following,
+      dense: true,
+      onTap: _toggle,
+    );
   }
 }
 
@@ -188,7 +184,7 @@ class _Error extends StatelessWidget {
           children: [
             Text(message),
             const SizedBox(height: 12),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            ZaffaButton(label: 'Retry', onTap: onRetry),
           ],
         ),
       );

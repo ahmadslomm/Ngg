@@ -85,7 +85,7 @@ void main() {
       (tester) async {
     // Proves the swap is a one-line provider override and needs no widget change.
     await tester.pumpWidget(host(
-      [...stubs(), profileStatsRepoProvider.overrideWithValue(_FakeStats(1840))],
+      [...stubs(), profileStatsRepoProvider.overrideWithValue(const _FakeStats(1840))],
       ZaffaProfileBody(profile: profile(), medals: const []),
     ));
     await tester.pumpAndSettle();
@@ -154,5 +154,64 @@ void main() {
     expect(find.text('VIP'), findsOneWidget);
     expect(find.text('Join'), findsOneWidget);
     expect(find.text('VIP 0'), findsNothing);
+  });
+
+  testWidgets('the Profile surface carries no default Flutter chrome', (tester) async {
+    // Guard, not decoration. Material's controls have signatures the reference never shows — an
+    // ink splash spreading from the touch point, a FAB with its own shadow, a spinner with
+    // Material's stroke cap and easing. Any one of them makes the screen read as "a Flutter app"
+    // rather than as ZaffaLive, which is exactly what this rebuild exists to avoid. Catching a
+    // reintroduction here is far cheaper than spotting it in a screenshot months later.
+    await tester.pumpWidget(host(
+      stubs(wallet: {'coins': 50000, 'beans': 12000}),
+      ZaffaProfileBody(profile: profile(vip: 5), medals: const [], onEditAvatar: () {}),
+    ));
+    await tester.pumpAndSettle();
+
+    for (final banned in <Type>[
+      Card,
+      ListTile,
+      ElevatedButton,
+      FilledButton,
+      OutlinedButton,
+      TextButton,
+      IconButton,
+      Divider,
+      InkWell,
+      InkResponse,
+      FloatingActionButton,
+      CircularProgressIndicator,
+      LinearProgressIndicator,
+    ]) {
+      expect(find.byType(banned), findsNothing, reason: '$banned is default Flutter chrome');
+    }
+  });
+
+  testWidgets('press feedback is a scale dip, not an ink ripple', (tester) async {
+    await tester.pumpWidget(host(stubs(), ZaffaProfileBody(profile: profile(), medals: const [])));
+    await tester.pumpAndSettle();
+
+    final target = find.text('Followers');
+    final gesture = await tester.startGesture(tester.getCenter(target));
+    await tester.pump(const Duration(milliseconds: 120));
+
+    // Mid-press the tapped column must actually be smaller — proving the interaction ran.
+    final scale = tester.widget<AnimatedScale>(
+      find.ancestor(of: target, matching: find.byType(AnimatedScale)).first,
+    );
+    expect(scale.scale, lessThan(1.0));
+
+    // Cancel rather than release: releasing would fire the column's navigation, and this test is
+    // about the press feedback, not the destination.
+    await gesture.cancel();
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<AnimatedScale>(
+            find.ancestor(of: target, matching: find.byType(AnimatedScale)).first,
+          )
+          .scale,
+      1.0,
+    );
   });
 }

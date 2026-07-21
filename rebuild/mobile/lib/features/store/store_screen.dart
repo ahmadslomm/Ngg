@@ -6,6 +6,7 @@ import '../../core/network/api_error.dart';
 import '../../core/providers.dart';
 import '../../core/theme/zaffa_tokens.dart';
 import '../../core/widgets/zaffa/gold_frame.dart';
+import '../../core/widgets/zaffa/zaffa_controls.dart';
 import '../../core/widgets/zaffa/zaffa_scaffold.dart';
 import 'store_repository.dart';
 
@@ -192,7 +193,7 @@ class _ItemCard extends ConsumerWidget {
           const SizedBox(height: 6),
           if (owned)
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              _MiniButton(label: item.equipped ? 'Unequip' : 'Use', filled: !item.equipped, onTap: () async {
+              ZaffaButton(label: item.equipped ? 'Unequip' : 'Use', filled: !item.equipped, dense: true, onTap: () async {
                 final repo = ref.read(storeRepoProvider);
                 item.equipped ? await repo.unequip(item.id) : await repo.equip(item.id);
                 ref.invalidate(backpackProvider);
@@ -205,27 +206,6 @@ class _ItemCard extends ConsumerWidget {
       ),
     );
   }
-}
-
-class _MiniButton extends StatelessWidget {
-  const _MiniButton({required this.label, required this.filled, this.onTap});
-  final String label;
-  final bool filled;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) => ZaffaTappable(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(ZaffaRadius.pill),
-            gradient: filled ? ZaffaGradients.vipBanner : null,
-            border: filled ? null : Border.all(color: ZaffaColors.purpleBright, width: 1.2),
-          ),
-          child: Text(label, style: ZaffaText.caption.copyWith(color: Colors.white, fontSize: 11)),
-        ),
-      );
 }
 
 /// Skeleton rather than a spinner: the grid's shape is known before the data lands, so showing it

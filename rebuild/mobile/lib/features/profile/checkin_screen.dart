@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/zaffa_tokens.dart';
+import '../../core/widgets/zaffa/zaffa_controls.dart';
 import '../../core/widgets/zaffa/zaffa_scaffold.dart';
 import 'pending_repositories.dart';
 
@@ -20,7 +21,7 @@ class CheckInScreen extends ConsumerWidget {
     return ZaffaScaffold(
       appBar: const ZaffaTransparentBar(title: 'Check in'),
       body: status.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const ZaffaLoading(),
         error: (e, _) => const _NotAvailable(),
         data: (s) => Center(child: Text('Day ${s.streakDays}', style: ZaffaText.title)),
       ),

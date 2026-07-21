@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/theme/zaffa_tokens.dart';
+import '../../core/widgets/zaffa/gold_frame.dart';
+import '../../core/widgets/zaffa/zaffa_controls.dart';
+
 import '../../core/network/api_error.dart';
 import '../../core/session.dart';
 import '../feature_providers.dart';
@@ -48,29 +52,78 @@ class _UserList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final users = ref.watch(provider);
     return users.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text(apiErrorMessage(e))),
+      loading: () => const ZaffaLoading(),
+      error: (e, _) => Center(child: Text(apiErrorMessage(e), style: ZaffaText.caption)),
       data: (list) => list.isEmpty
-          ? const Center(child: Text('Nobody here yet'))
+          ? const Center(child: Text('Nobody here yet', style: ZaffaText.caption))
           : ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 6),
               itemCount: list.length,
               itemBuilder: (context, i) {
                 final u = (list[i] as Map).cast<String, dynamic>();
-                final avatar = u['avatar_url'] as String?;
-                return ListTile(
-                  onTap: () => context.push('/profile/${u['uid']}'),
-                  leading: CircleAvatar(
-                    backgroundImage: avatar != null ? CachedNetworkImageProvider(avatar) : null,
-                    child: avatar == null ? const Icon(Icons.person) : null,
-                  ),
-                  title: Text('${u['nick'] ?? 'User ${u['uid']}'}'),
-                  subtitle: Text('Charm ${u['charm_level'] ?? 0} · Wealth ${u['wealth_level'] ?? 0}'),
-                  trailing: u['is_following'] == true
-                      ? const Chip(label: Text('Following'), visualDensity: VisualDensity.compact)
-                      : null,
-                );
+                return _RelationRow(user: u);
               },
             ),
+    );
+  }
+}
+
+/// A follower/following row, drawn rather than a ListTile.
+///
+/// ListTile brings Material's own vertical rhythm, its ink splash and a 16dp leading gap that the
+/// reference does not use; the row is built directly so its metrics come from [ZaffaMetrics] like
+/// every other list in the app.
+class _RelationRow extends StatelessWidget {
+  const _RelationRow({required this.user});
+  final Map<String, dynamic> user;
+
+  @override
+  Widget build(BuildContext context) {
+    final avatar = user['avatar_url'] as String?;
+    return ZaffaTappable(
+      onTap: () => context.push('/profile/${user['uid']}'),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: ZaffaMetrics.screenH, vertical: 8),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 21,
+              backgroundColor: ZaffaColors.surfaceRaised,
+              backgroundImage: avatar != null ? CachedNetworkImageProvider(avatar) : null,
+              child: avatar == null
+                  ? const Icon(Icons.person, size: 20, color: ZaffaColors.textSecondary)
+                  : null,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('${user['nick'] ?? 'User ${user['uid']}'}',
+                      style: ZaffaText.body, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Charm ${user['charm_level'] ?? 0} · Wealth ${user['wealth_level'] ?? 0}',
+                    style: ZaffaText.caption.copyWith(fontSize: 11.5),
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+            if (user['is_following'] == true)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(ZaffaRadius.pill),
+                  border: Border.all(color: ZaffaColors.purpleBright, width: 1.2),
+                ),
+                child: Text('Following',
+                    style: ZaffaText.caption.copyWith(fontSize: 11, color: ZaffaColors.purpleBright)),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

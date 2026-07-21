@@ -5,7 +5,7 @@ import '../../core/format.dart';
 import '../../core/network/api_error.dart';
 import '../../core/providers.dart';
 import '../../core/theme/zaffa_tokens.dart';
-import '../../core/widgets/zaffa/gold_frame.dart';
+import '../../core/widgets/zaffa/zaffa_controls.dart';
 import '../../core/widgets/zaffa/zaffa_scaffold.dart';
 import '../feature_providers.dart';
 import 'task_repository.dart';
@@ -27,7 +27,7 @@ class TaskScreen extends ConsumerWidget {
         error: (e, _) => _Empty(text: apiErrorMessage(e), onRetry: () => ref.invalidate(tasksProvider)),
         data: (items) => items.isEmpty
             ? const _Empty(text: 'No tasks right now')
-            : RefreshIndicator(
+            : ZaffaRefresh(
                 onRefresh: () async => ref.invalidate(tasksProvider),
                 child: ListView.separated(
                   padding: const EdgeInsets.all(ZaffaMetrics.screenH),
@@ -53,7 +53,7 @@ class _TaskRowState extends ConsumerState<_TaskRow> {
 
   Future<void> _claim() async {
     setState(() => _busy = true);
-    final messenger = ScaffoldMessenger.of(context);
+    final toast = ZaffaToast.of(context); // captured before the await
     try {
       await ref.read(taskRepoProvider).claim(widget.task.code);
       // The reward lands in the wallet, so the balance the profile shows is now stale.
@@ -63,7 +63,7 @@ class _TaskRowState extends ConsumerState<_TaskRow> {
       // Claiming moves money and the server enforces exactly-once. On an ambiguous failure we
       // refetch rather than retry, and let the server's state be the answer.
       ref.invalidate(tasksProvider);
-      if (mounted) messenger.showSnackBar(SnackBar(content: Text(apiErrorMessage(e))));
+      toast.display(apiErrorMessage(e));
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -96,15 +96,7 @@ class _TaskRowState extends ConsumerState<_TaskRow> {
                   Text(t.description!, style: ZaffaText.caption, maxLines: 1, overflow: TextOverflow.ellipsis),
                 ],
                 const SizedBox(height: 6),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(3),
-                  child: LinearProgressIndicator(
-                    value: t.fraction,
-                    minHeight: 5,
-                    backgroundColor: Colors.white10,
-                    valueColor: const AlwaysStoppedAnimation(ZaffaColors.gold),
-                  ),
-                ),
+                ZaffaProgressBar(value: t.fraction),
                 const SizedBox(height: 4),
                 Text('${t.progress}/${t.target}  ·  +${formatCompact(t.rewardAmount.toDouble())}',
                     style: ZaffaText.caption.copyWith(fontSize: 11)),
@@ -129,26 +121,13 @@ class _ClaimButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (busy) {
-      return const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2));
+      return const ZaffaSpinner(size: 20, stroke: 2);
     }
     if (task.claimed) {
       return Text('Claimed', style: ZaffaText.caption.copyWith(fontSize: 11));
     }
     final on = task.claimable;
-    return ZaffaTappable(
-      onTap: on ? onClaim : null,
-      child: Opacity(
-        opacity: on ? 1 : 0.4,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(ZaffaRadius.pill),
-            gradient: ZaffaGradients.vipBanner,
-          ),
-          child: Text('Claim', style: ZaffaText.caption.copyWith(color: Colors.white, fontSize: 12)),
-        ),
-      ),
-    );
+    return ZaffaButton(label: 'Claim', dense: true, onTap: on ? onClaim : null);
   }
 }
 
@@ -179,7 +158,7 @@ class _Empty extends StatelessWidget {
           Text(text, style: ZaffaText.caption, textAlign: TextAlign.center),
           if (onRetry != null) ...[
             const SizedBox(height: 10),
-            TextButton(onPressed: onRetry, child: const Text('Retry')),
+            ZaffaButton(label: 'Retry', onTap: onRetry, dense: true),
           ],
         ]),
       );

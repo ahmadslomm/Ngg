@@ -8,6 +8,7 @@ import '../../../core/format.dart';
 import '../../../core/theme/zaffa_tokens.dart';
 import '../../../core/widgets/avatar_frame.dart';
 import '../../../core/widgets/pag_view.dart';
+import '../../../core/widgets/zaffa/zaffa_controls.dart';
 import '../../../core/widgets/zaffa/profile_blocks.dart';
 import '../../feature_providers.dart';
 import '../pending_repositories.dart';
@@ -31,6 +32,7 @@ class ZaffaProfileBody extends ConsumerWidget {
     this.trailing,
     this.coupleCard,
     this.showWallet = true,
+    this.onEditAvatar,
   });
 
   final Map<String, dynamic> profile;
@@ -42,6 +44,10 @@ class ZaffaProfileBody extends ConsumerWidget {
 
   /// Balances are private — only ever drawn on your own profile.
   final bool showWallet;
+
+  /// Edits the avatar. The reference puts this on a small pencil immediately after the display
+  /// name — NOT on a floating action button, which the original has no counterpart for anywhere.
+  final VoidCallback? onEditAvatar;
 
   int _int(String k) => (profile[k] as num?)?.toInt() ?? 0;
 
@@ -62,7 +68,7 @@ class ZaffaProfileBody extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.only(bottom: 28),
       children: [
-        _Header(profile: profile, vip: vip, medals: medals, trailing: trailing),
+        _Header(profile: profile, vip: vip, medals: medals, trailing: trailing, onEdit: onEditAvatar),
 
         // ── Counters (full-bleed) ─────────────────────────────────────────────────────────────
         const SizedBox(height: 8),
@@ -154,12 +160,19 @@ class ZaffaProfileBody extends ConsumerWidget {
 /// platform without libpag, which is correct rather than a stand-in: the identity content stays
 /// legible either way.
 class _Header extends StatelessWidget {
-  const _Header({required this.profile, required this.vip, required this.medals, this.trailing});
+  const _Header({
+    required this.profile,
+    required this.vip,
+    required this.medals,
+    this.trailing,
+    this.onEdit,
+  });
 
   final Map<String, dynamic> profile;
   final int vip;
   final List<UserMedal> medals;
   final Widget? trailing;
+  final VoidCallback? onEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -228,10 +241,18 @@ class _Header extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            nick,
-                            style: ZaffaText.title.copyWith(fontSize: 20),
-                            overflow: TextOverflow.ellipsis,
+                          // Name then pencil, exactly as the reference lays it out.
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  nick,
+                                  style: ZaffaText.title.copyWith(fontSize: 20),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (onEdit != null) ZaffaEditPencil(onTap: onEdit),
+                            ],
                           ),
                           const SizedBox(height: 4),
                           _IdRow(uid: uid),
