@@ -202,3 +202,71 @@ rather than smuggled into the Room build.
 Wire the 128 unplayed effects **directly, without a queue or priority layer**, because that is what
 the evidence says the original does. Add durations from the SVGA headers (step 4). Do not invent
 the pipeline the brief sketched until step 1 either confirms it exists or proves it does not.
+
+---
+
+## 8. Animation Runtime Behaviour Reconstruction — first results
+
+### 8.1 Method mapping (obfuscation partially broken)
+
+`com/opensource/svgaplayer/SVGAImageView.smali` **is present in the decompile**, so its method
+table is readable. Names are obfuscated but **descriptors are not**, and SVGAPlayer-Android is open
+source — matching arity and parameter types against the published API recovers the mapping:
+
+| Obfuscated | Descriptor | OSS method | Confidence |
+|---|---|---|---|
+| `J()V` | no-arg void | **`startAnimation()`** | **high** — its body references `Lyg4;` (SVGARange), exactly matching the OSS `startAnimation() → startAnimation(null, false)` delegation |
+| `K(Lyg4;Z)V` | (SVGARange, boolean) | **`startAnimation(range, reverse)`** | **high** — unique signature |
+| `O(DZ)V` | (double, boolean) | **`stepToPercentage(percentage, andPlay)`** | **high** — only double-first method |
+| `N(IZ)V` | (int, boolean) | **`stepToFrame(frame, andPlay)`** | **high** |
+| `E(I)V` | (int) | **`setLoops(int)`** | **high** |
+| `G(Lsvgaplayer/e;)V` | (SVGAVideoEntity) | **`setVideoItem(entity)`** | **high** |
+| `H(e, a)V` | (entity, dynamic) | **`setVideoItem(entity, dynamicEntity)`** | **high** |
+| `C(Lkg4;)V` | (SVGACallback) | **`setCallback(callback)`** | **high** |
+| `D(Z)V` | (boolean) | **`stopAnimation(clear)`** | medium |
+| `A()V` / `P()V` | no-arg void | **`pauseAnimation()` / `stopAnimation()`** | **not yet disambiguated** — both delegate; needs their call targets resolved |
+
+`libpag` methods (`PAGImageView->a/d/b/B`) are **not yet mapped** — libpag's smali was not located
+in this pass.
+
+### 8.2 Durations — extracted, all 82 SVGA files
+
+Parsed directly from each file's `MovieParams` protobuf (`fps` field 3, `frames` field 4). **No
+deobfuscation required**, and no assumption involved:
+
+| File | fps | frames | seconds |
+|---|---|---|---|
+| `bomb/waitio_bomb_banner_avatar_frame` | 15 | 150 | **10.00** |
+| `dj/waitio_dj_lv0..lv3` | 30 | 180 | 6.00 |
+| `cp/waitio_cp_heart` | 30 | 150 | 5.00 |
+| `kroom/waitio_lucky_gift_winning` | 20 | 100 | 5.00 |
+| … | | | |
+| `yinbo/waitio_self_voice` | 15 | 15 | 1.00 |
+| `medal/waitio_xunzhangguang` | 12 | 10 | 0.83 |
+
+**Median 3.00s · range 0.83–10.00s.** These are real playback durations for every bundled SVGA and
+can drive the binding layer immediately.
+
+### 8.3 What the concurrency questions can and cannot yet be answered
+
+| Scenario | Status |
+|---|---|
+| Two gifts at once · Combo · Rocket during gift · VIP entry during SVGA · PK during another effect · Marquee during a large gift · Mount during room animation | **All seven require the per-call-site trace**, which needs `A`/`P` disambiguated and libpag mapped. |
+
+What **is** already proven (§7): there is no central queue, no priority resolver, and no shared
+manager in any of the 82 effect classes — so whatever the answers turn out to be, they are produced
+by **local view-level state**, not by a coordinator. The three `isAnimating`/`isPlaying` sites are
+the only guards in the entire app, which bounds how much mutual exclusion can possibly exist.
+
+That is a real constraint on the answer space, not a guess: seven concurrent-scenario behaviours
+cannot be governed by three guards unless most of them simply run in parallel.
+
+### 8.4 Remaining work in this phase
+
+1. Disambiguate `A()` vs `P()` by resolving their delegation targets.
+2. Locate and map libpag's smali (`PAGImageView`, `PAGView`).
+3. Walk all 82 classes for per-effect create → play → stop → dispose.
+4. Extract PAG durations from the binary header.
+5. Fill the 158-row table only once 1–4 are complete.
+
+**Nothing will be built on top of an unmapped method.** The binding layer waits for this phase.
