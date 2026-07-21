@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import '../../theme/zaffa_tokens.dart';
 import 'gold_frame.dart';
 
-/// The four-column stat strip: Followers · Following · Gifts · Visitors.
+/// The counter strip under the profile header.
 ///
-/// Equal-width columns, value over label, and it mirrors automatically in RTL because the
-/// reference shows the same screen in both directions with the order reversed — using a Row of
-/// Expanded rather than absolute positions gets that for free.
+/// Measured: the columns are FULL-BLEED. The four in the reference centre at 48.5 / 146.2 / 244.6
+/// / 342.9pt — equal columns across the whole 390pt width with no side margin, unlike every other
+/// block on the screen, which insets by 12.5pt. Using equal Expanded columns reproduces that at
+/// any column count and mirrors correctly in RTL for free.
 class StatStrip extends StatelessWidget {
   const StatStrip({super.key, required this.items});
 
@@ -19,15 +20,14 @@ class StatStrip extends StatelessWidget {
       children: [
         for (final it in items)
           Expanded(
-            child: InkWell(
+            child: ZaffaTappable(
               onTap: it.onTap,
-              borderRadius: ZaffaRadius.rChip,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Column(
                   children: [
                     Text(it.value, style: ZaffaText.statValue, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     Text(it.label, style: ZaffaText.statLabel, maxLines: 1),
                   ],
                 ),
@@ -39,15 +39,15 @@ class StatStrip extends StatelessWidget {
   }
 }
 
-/// The VIP banner: gold-framed purple bar with the tier, a welcome line and a benefits pill.
+/// The VIP banner — 83.5pt tall, 18.5pt radius, a vertical #853EC6 → #9520DC sweep inside the
+/// two-tone gold bevel.
 ///
-/// `tierArt` is the recovered per-tier shield (`waitio_vip{n}.pag` and friends). It is optional so
-/// the banner still renders correctly for a tier whose art was never recovered, rather than
-/// showing a broken box.
+/// `tierArt` should be the ORIGINAL `userspace/waitio_vip{n}.pag` emblem. It is optional, and when
+/// it is absent nothing is drawn in its place — a tier whose art was never recovered shows the
+/// banner without an emblem rather than a stand-in that would misrepresent the tier.
 class VipBanner extends StatelessWidget {
   const VipBanner({
     super.key,
-    required this.tier,
     required this.title,
     required this.subtitle,
     required this.actionLabel,
@@ -55,7 +55,6 @@ class VipBanner extends StatelessWidget {
     this.tierArt,
   });
 
-  final int tier;
   final String title;
   final String subtitle;
   final String actionLabel;
@@ -64,74 +63,61 @@ class VipBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GoldFrame(
-      borderRadius: ZaffaRadius.rBanner,
-      borderWidth: 2.5,
-      gradient: ZaffaGradients.vipBanner,
-      glow: true,
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-      child: Row(
-        children: [
-          SizedBox(width: 58, height: 58, child: tierArt ?? const _VipShieldFallback()),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(title, style: ZaffaText.goldDisplay, maxLines: 1),
-                const SizedBox(height: 2),
-                Text(subtitle, style: ZaffaText.goldBody, maxLines: 1, overflow: TextOverflow.ellipsis),
-              ],
+    return SizedBox(
+      height: ZaffaMetrics.bannerHeight,
+      child: GoldFrame(
+        borderRadius: ZaffaRadius.rBanner,
+        gradient: ZaffaGradients.vipBanner,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          children: [
+            if (tierArt != null) ...[
+              SizedBox(width: 62, height: 62, child: tierArt),
+              const SizedBox(width: 10),
+            ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(title, style: ZaffaText.goldDisplay, maxLines: 1),
+                  const SizedBox(height: 3),
+                  Text(subtitle, style: ZaffaText.goldBody, maxLines: 1, overflow: TextOverflow.ellipsis),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          _GoldPillButton(label: actionLabel, onTap: onAction),
-        ],
+            const SizedBox(width: 8),
+            _GoldPillButton(label: actionLabel, onTap: onAction),
+          ],
+        ),
       ),
     );
   }
 }
 
-/// Drawn stand-in for a tier shield whose art is not in the bundle — same silhouette, no fake art.
-class _VipShieldFallback extends StatelessWidget {
-  const _VipShieldFallback();
-
-  @override
-  Widget build(BuildContext context) => const DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: ZaffaGradients.goldEdge,
-        ),
-        child: Center(
-          child: Icon(Icons.workspace_premium, color: Color(0xFF5B2A8F), size: 30),
-        ),
-      );
-}
-
+/// The banner's action — a gold outline pill, transparent fill.
 class _GoldPillButton extends StatelessWidget {
   const _GoldPillButton({required this.label, this.onTap});
   final String label;
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) => InkWell(
+  Widget build(BuildContext context) => ZaffaTappable(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(ZaffaRadius.pill),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 9),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(ZaffaRadius.pill),
-            border: Border.all(color: ZaffaColors.gold, width: 1.5),
+            border: Border.all(color: ZaffaColors.goldText, width: 1.5),
           ),
           child: Text(label, style: ZaffaText.goldBody, maxLines: 1),
         ),
       );
 }
 
-/// A currency card. The reference gives coins and diamonds different palettes on purpose — they
-/// are different currencies with different rules, and the colour is how a user tells them apart at
-/// a glance.
+/// Coins and diamonds are separate currencies with separate rules, and the reference gives each
+/// its own palette so a user can tell them apart without reading. That distinction is load-bearing,
+/// not decorative.
 enum CurrencyKind { coin, diamond }
 
 class CurrencyCard extends StatelessWidget {
@@ -147,8 +133,8 @@ class CurrencyCard extends StatelessWidget {
   final CurrencyKind kind;
   final String label;
 
-  /// Null renders the placeholder rather than a zero — an unknown balance and a zero balance are
-  /// different things and must not look the same.
+  /// Null renders the unknown state. An unknown balance and a zero balance must never look the
+  /// same — one is a failure to load, the other is a fact about the account.
   final String? amount;
   final VoidCallback? onTap;
   final bool loading;
@@ -157,78 +143,170 @@ class CurrencyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return ZaffaTappable(
       onTap: onTap,
-      borderRadius: ZaffaRadius.rCard,
-      child: GoldFrame(
-        borderWidth: 2,
-        gradient: _isCoin ? ZaffaGradients.coin : ZaffaGradients.diamond,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        child: Row(
-          children: [
-            _CurrencyGlyph(kind: kind),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(label,
-                      style: _isCoin ? ZaffaText.currencyLabel : ZaffaText.currencyLabelAlt,
-                      maxLines: 1),
-                  const SizedBox(height: 2),
-                  if (loading)
-                    const _AmountShimmer()
-                  else
-                    Text(
-                      amount ?? '—',
-                      style: _isCoin ? ZaffaText.currencyValue : ZaffaText.currencyValueAlt,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                ],
+      child: SizedBox(
+        height: ZaffaMetrics.currencyCardHeight,
+        child: GoldFrame(
+          gradient: _isCoin ? ZaffaGradients.coin : ZaffaGradients.diamond,
+          padding: const EdgeInsets.symmetric(horizontal: 9),
+          child: Row(
+            children: [
+              SizedBox(width: 48, height: 48, child: CustomPaint(painter: _CurrencyGlyph(kind))),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(label,
+                        style: _isCoin ? ZaffaText.coinLabel : ZaffaText.diamondLabel, maxLines: 1),
+                    const SizedBox(height: 2),
+                    if (loading)
+                      _AmountShimmer(dark: _isCoin)
+                    else
+                      Text(
+                        amount ?? '—',
+                        style: _isCoin ? ZaffaText.coinValue : ZaffaText.diamondValue,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-/// Coin and diamond marks, drawn. The original's are raster art; these are the same silhouettes so
-/// the cards read correctly until the real marks are wired from the asset archive.
-class _CurrencyGlyph extends StatelessWidget {
-  const _CurrencyGlyph({required this.kind});
+/// The coin and diamond marks, redrawn as vectors.
+///
+/// The originals are raster art that is not in the bundle — it exists only inside the reference
+/// screenshots — so per the reconstruction rules their SHAPE is reproduced in Flutter rather than a
+/// crop of the screenshot being pasted in. The coin is a bevelled disc with a struck `Z`; the
+/// diamond is a brilliant cut, both matching the reference silhouettes.
+class _CurrencyGlyph extends CustomPainter {
+  const _CurrencyGlyph(this.kind);
   final CurrencyKind kind;
 
   @override
-  Widget build(BuildContext context) {
+  void paint(Canvas canvas, Size size) {
+    final c = Offset(size.width / 2, size.height / 2);
+    final r = size.shortestSide / 2;
     if (kind == CurrencyKind.coin) {
-      return Container(
-        width: 34,
-        height: 34,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: const LinearGradient(colors: [Color(0xFFFFE082), Color(0xFFD99A00)]),
-          border: Border.all(color: const Color(0xFFB07800), width: 1.5),
-        ),
-        child: const Center(
-          child: Text('Z',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Color(0xFF7A5200))),
-        ),
-      );
+      _coin(canvas, c, r);
+    } else {
+      _diamond(canvas, c, r);
     }
-    return const SizedBox(
-      width: 34,
-      height: 34,
-      child: Icon(Icons.diamond, size: 30, color: Color(0xFF8E4EC6)),
+  }
+
+  void _coin(Canvas canvas, Offset c, double r) {
+    // Rim, then a slightly inset face, so the disc reads as struck metal rather than a flat circle.
+    canvas.drawCircle(
+      c,
+      r,
+      Paint()
+        ..shader = const LinearGradient(colors: [Color(0xFFFFE9A0), Color(0xFFC98A12)])
+            .createShader(Rect.fromCircle(center: c, radius: r)),
+    );
+    canvas.drawCircle(
+      c,
+      r * 0.99,
+      Paint()
+        ..color = const Color(0xFF9C6608)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = r * 0.06,
+    );
+    canvas.drawCircle(
+      c,
+      r * 0.78,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFFFF3C4), Color(0xFFE0A521)],
+        ).createShader(Rect.fromCircle(center: c, radius: r * 0.78)),
+    );
+
+    final tp = TextPainter(
+      text: TextSpan(
+        text: 'Z',
+        style: TextStyle(
+          fontSize: r * 1.15,
+          fontWeight: FontWeight.w900,
+          color: const Color(0xFF8A5A00),
+          height: 1,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    tp.paint(canvas, c - Offset(tp.width / 2, tp.height / 2));
+  }
+
+  void _diamond(Canvas canvas, Offset c, double r) {
+    // A brilliant cut: a table across the top, crown facets, then a pavilion tapering to a point.
+    final w = r * 1.7, h = r * 1.75;
+    final top = c.dy - h * 0.46, bottom = c.dy + h * 0.54;
+    final girdle = top + h * 0.34;
+    final l = c.dx - w / 2, rt = c.dx + w / 2;
+    final tl = c.dx - w * 0.26, tr = c.dx + w * 0.26;
+
+    final body = Path()
+      ..moveTo(tl, top)
+      ..lineTo(tr, top)
+      ..lineTo(rt, girdle)
+      ..lineTo(c.dx, bottom)
+      ..lineTo(l, girdle)
+      ..close();
+    canvas.drawPath(
+      body,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFE9B6FF), Color(0xFF8E3BD6)],
+        ).createShader(Rect.fromLTRB(l, top, rt, bottom)),
+    );
+
+    // Facet lines — the crown edges and the two pavilion seams.
+    canvas.drawPath(
+      Path()
+        ..moveTo(l, girdle)
+        ..lineTo(rt, girdle)
+        ..moveTo(tl, top)
+        ..lineTo(l, girdle)
+        ..moveTo(tr, top)
+        ..lineTo(rt, girdle)
+        ..moveTo(tl, top)
+        ..lineTo(c.dx, bottom)
+        ..moveTo(tr, top)
+        ..lineTo(c.dx, bottom),
+      Paint()
+        ..color = const Color(0x66FFFFFF)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = r * 0.055,
+    );
+    canvas.drawPath(
+      body,
+      Paint()
+        ..color = const Color(0x55FFFFFF)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = r * 0.06,
     );
   }
+
+  @override
+  bool shouldRepaint(_CurrencyGlyph old) => old.kind != kind;
 }
 
+/// The loading state for a balance: a pulsing bar sized like the number it will become, so the
+/// card does not resize when the value lands.
 class _AmountShimmer extends StatefulWidget {
-  const _AmountShimmer();
+  const _AmountShimmer({required this.dark});
+  final bool dark;
   @override
   State<_AmountShimmer> createState() => _AmountShimmerState();
 }
@@ -238,23 +316,30 @@ class _AmountShimmerState extends State<_AmountShimmer> with SingleTickerProvide
       AnimationController(vsync: this, duration: const Duration(milliseconds: 1100))..repeat(reverse: true);
 
   @override
-  void dispose() { _c.dispose(); super.dispose(); }
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => FadeTransition(
-        opacity: Tween(begin: 0.35, end: 0.75).animate(_c),
+        opacity: Tween(begin: 0.28, end: 0.6).animate(_c),
         child: Container(
-          width: 64,
-          height: 18,
+          width: 62,
+          height: 19,
           decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.18),
-            borderRadius: BorderRadius.circular(5),
+            color: (widget.dark ? ZaffaColors.onCoinStrong : ZaffaColors.onDiamondStrong)
+                .withValues(alpha: 0.35),
+            borderRadius: BorderRadius.circular(4),
           ),
         ),
       );
 }
 
-/// The four-up shortcut grid (Store · Task · Check in · Backpack), inside one dark panel.
+/// The four-up shortcut grid inside one dark panel.
+///
+/// Measured: panel 95.5pt tall = 10pt pad + 50pt tile + 10pt gap + label + 14pt pad; tiles centred
+/// on a 91.3pt pitch, i.e. four equal columns inside the 12.5pt content margin.
 class QuickActionGrid extends StatelessWidget {
   const QuickActionGrid({super.key, required this.actions});
 
@@ -263,33 +348,26 @@ class QuickActionGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-      decoration: BoxDecoration(
-        color: ZaffaColors.surface.withValues(alpha: 0.55),
-        borderRadius: ZaffaRadius.rCard,
-      ),
+      height: ZaffaMetrics.shortcutPanelHeight,
+      padding: const EdgeInsets.only(top: ZaffaMetrics.shortcutPadV),
+      decoration: const BoxDecoration(color: ZaffaColors.panel, borderRadius: ZaffaRadius.rPanel),
       child: Row(
         children: [
           for (final a in actions)
             Expanded(
-              child: InkWell(
+              child: ZaffaTappable(
                 onTap: a.onTap,
-                borderRadius: ZaffaRadius.rTile,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    GoldFrame(
-                      borderRadius: ZaffaRadius.rTile,
-                      borderWidth: 1.5,
-                      gradient: a.gradient,
-                      child: SizedBox(
-                        width: 46,
-                        height: 46,
-                        child: Icon(a.icon, size: 26, color: Colors.white),
-                      ),
+                    Container(
+                      width: ZaffaMetrics.shortcutIcon,
+                      height: ZaffaMetrics.shortcutIcon,
+                      decoration: BoxDecoration(gradient: a.gradient, borderRadius: ZaffaRadius.rTile),
+                      child: Icon(a.icon, size: 27, color: Colors.white),
                     ),
-                    const SizedBox(height: 7),
-                    Text(a.label, style: ZaffaText.caption.copyWith(color: Colors.white), maxLines: 1),
+                    const SizedBox(height: ZaffaMetrics.shortcutPadV),
+                    Text(a.label, style: ZaffaText.shortcutLabel, maxLines: 1),
                   ],
                 ),
               ),
@@ -300,8 +378,11 @@ class QuickActionGrid extends StatelessWidget {
   }
 }
 
-/// A settings-style row: leading outline icon, label, trailing chevron. The chevron follows text
-/// direction, so it points the right way in Arabic without a second widget.
+/// A menu row: violet outline icon, white label, chevron.
+///
+/// Measured: 50pt tall, icon inset 16.5pt from the panel edge, icon ≈21pt, and — sampled directly
+/// between rows — NO divider. The panel colour is uninterrupted from one row to the next, so an
+/// earlier pass's hairlines were an invention.
 class ZaffaMenuRow extends StatelessWidget {
   const ZaffaMenuRow({super.key, required this.icon, required this.label, this.onTap, this.trailing});
 
@@ -312,20 +393,35 @@ class ZaffaMenuRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return ZaffaTappable(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 15),
-        child: Row(
-          children: [
-            Icon(icon, size: 22, color: Colors.white),
-            const SizedBox(width: 12),
-            Expanded(child: Text(label, style: ZaffaText.body)),
-            if (trailing != null) ...[trailing!, const SizedBox(width: 6)],
-            const Icon(Icons.chevron_right, size: 20, color: ZaffaColors.textSecondary),
-          ],
+      child: SizedBox(
+        height: ZaffaMetrics.menuRowHeight,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: ZaffaMetrics.menuIconInset),
+          child: Row(
+            children: [
+              Icon(icon, size: ZaffaMetrics.menuIconSize, color: ZaffaColors.menuIcon),
+              const SizedBox(width: 12),
+              Expanded(child: Text(label, style: ZaffaText.body)),
+              if (trailing != null) ...[trailing!, const SizedBox(width: 6)],
+              const Icon(Icons.chevron_right, size: 20, color: ZaffaColors.textSecondary),
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+/// The panel the menu rows sit in — one uninterrupted surface, no separators.
+class ZaffaMenuPanel extends StatelessWidget {
+  const ZaffaMenuPanel({super.key, required this.rows});
+  final List<Widget> rows;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: const BoxDecoration(color: ZaffaColors.panel, borderRadius: ZaffaRadius.rPanel),
+        child: Column(mainAxisSize: MainAxisSize.min, children: rows),
+      );
 }

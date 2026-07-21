@@ -3,22 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/assets/renderers.dart';
+import '../../../core/assets/app_assets.dart';
 import '../../../core/format.dart';
 import '../../../core/theme/zaffa_tokens.dart';
 import '../../../core/widgets/avatar_frame.dart';
+import '../../../core/widgets/pag_view.dart';
 import '../../../core/widgets/zaffa/profile_blocks.dart';
 import '../../feature_providers.dart';
 import '../../medals/models/medal_models.dart';
 import '../../medals/widgets/medal_strip.dart';
-import 'gift_wall_section.dart';
-import 'level_progress_section.dart';
 
-/// The "mine" tab, rebuilt against the reference capture.
+/// The "mine" tab, rebuilt against the reference capture with measured geometry.
 ///
-/// Every number on this screen comes from an endpoint that already exists. Where the reference
-/// shows a counter we have no endpoint for — "Visitors" — the column is absent rather than shown
-/// as a zero or a dash forever. A stat the backend cannot answer is not a stat.
+/// Layout constants live in [ZaffaMetrics] and were read off the reference pixels, not chosen: a
+/// 12.5pt content margin, a uniform 12pt gap between blocks, an 83.5pt banner, 73.5pt currency
+/// cards, a 95.5pt shortcut panel and 50pt menu rows.
+///
+/// Every number displayed comes from an endpoint that already exists. Where the reference shows a
+/// counter we have no endpoint for — "Visitors" — the column is ABSENT and the remaining columns
+/// redistribute, rather than a fourth column sitting at a permanent zero.
 class ZaffaProfileBody extends ConsumerWidget {
   const ZaffaProfileBody({
     super.key,
@@ -44,176 +47,237 @@ class ZaffaProfileBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uid = '${profile['uid']}';
-    final nick = '${profile['nick'] ?? 'User $uid'}';
-    final signature = '${profile['signature'] ?? ''}';
     final vip = _int('vip_level');
+    final vipEmblem = AppAssets.vipFramePag(vip);
+    const gap = SizedBox(height: ZaffaMetrics.blockGap);
+
+    // Only the stat strip is full-bleed; everything else honours the 12.5pt margin. Padding is
+    // therefore applied per-block rather than to the list.
+    Widget inset(Widget child) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: ZaffaMetrics.screenH),
+          child: child,
+        );
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(14, 4, 14, 28),
+      padding: const EdgeInsets.only(bottom: 28),
       children: [
-        // ── Identity ──────────────────────────────────────────────────────────────────────────
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 84,
-              height: 84,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 32,
-                    backgroundColor: ZaffaColors.surfaceRaised,
-                    backgroundImage: profile['avatar_url'] != null
-                        ? CachedNetworkImageProvider('${profile['avatar_url']}')
-                        : null,
-                    child: profile['avatar_url'] == null
-                        ? const Icon(Icons.person, size: 32, color: ZaffaColors.textSecondary)
-                        : null,
-                  ),
-                  // Worn decoration wins over the tier frame — both are real catalog art.
-                  AvatarFrame(
-                    size: 64,
-                    frameUrl: (profile['avatar_frame_url'] as String?) ??
-                        (profile['vip_frame_url'] as String?),
-                    vipLevel: vip,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 6),
-                  Text(nick, style: ZaffaText.title.copyWith(fontSize: 19), overflow: TextOverflow.ellipsis),
-                  const SizedBox(height: 4),
-                  _IdChip(uid: uid),
-                  const SizedBox(height: 8),
-                  Wrap(spacing: 6, runSpacing: 6, children: [
-                    if (vip > 0)
-                      VipBadgeRenderer(
-                        badgeUrl: profile['vip_badge_url'] as String?,
-                        level: vip,
-                        size: 18,
-                      ),
-                    _MiniBadge(
-                      icon: Icons.favorite,
-                      label: 'Charm ${_int('charm_level')}',
-                      color: ZaffaColors.charmPink,
-                    ),
-                    _MiniBadge(
-                      icon: Icons.diamond,
-                      label: 'Wealth ${_int('wealth_level')}',
-                      color: ZaffaColors.diamondBottom,
-                    ),
-                  ]),
-                ],
-              ),
-            ),
-            if (trailing != null) Padding(padding: const EdgeInsets.only(top: 8), child: trailing),
-          ],
-        ),
+        _Header(profile: profile, vip: vip, medals: medals, trailing: trailing),
 
-        if (signature.isNotEmpty) ...[
-          const SizedBox(height: 12),
-          Text(signature, style: ZaffaText.caption.copyWith(color: Colors.white70)),
-        ],
-
-        if (medals.isNotEmpty) MedalStrip(medals: medals, onTap: () => context.push('/medals')),
-
-        // ── Counters ──────────────────────────────────────────────────────────────────────────
-        const SizedBox(height: 14),
+        // ── Counters (full-bleed) ─────────────────────────────────────────────────────────────
+        const SizedBox(height: 8),
         _StatRow(uid: uid, fans: _int('fans_count'), following: _int('following_count')),
+        gap,
 
         // ── VIP ───────────────────────────────────────────────────────────────────────────────
-        const SizedBox(height: 16),
-        VipBanner(
-          tier: vip,
+        inset(VipBanner(
           title: vip > 0 ? 'VIP $vip' : 'VIP',
-          subtitle: vip > 0 ? 'Your privileges are active' : 'Unlock frames, effects and more',
-          actionLabel: vip > 0 ? 'Renew' : 'Join',
+          subtitle: vip > 0 ? 'Welcome Back VIP' : 'Unlock frames, effects and more',
+          actionLabel: vip > 0 ? 'My Benefits' : 'Join',
           onAction: () => context.push('/vip'),
-          tierArt: (profile['vip_badge_url'] as String?)?.trim().isNotEmpty == true
-              ? VipBadgeRenderer(badgeUrl: profile['vip_badge_url'] as String?, level: vip, size: 58)
-              : null,
-        ),
+          // The ORIGINAL per-tier emblem (userspace/waitio_vip{n}.pag). Nothing is drawn when the
+          // tier has no bundled art.
+          tierArt: vipEmblem == null ? null : PagView.asset(vipEmblem, width: 62, height: 62),
+        )),
 
         // ── Balances ──────────────────────────────────────────────────────────────────────────
-        if (showWallet) ...[
-          const SizedBox(height: 14),
-          const _WalletCards(),
-        ],
+        if (showWallet) ...[gap, inset(const _WalletCards())],
 
         // ── Destinations ──────────────────────────────────────────────────────────────────────
-        const SizedBox(height: 16),
-        QuickActionGrid(actions: [
+        gap,
+        inset(QuickActionGrid(actions: [
           (
             label: 'Wallet',
-            icon: Icons.account_balance_wallet,
+            icon: Icons.account_balance_wallet_rounded,
             gradient: ZaffaGradients.price,
             onTap: () => context.push('/wallet')
           ),
           (
             label: 'Noble',
-            icon: Icons.shield_moon,
+            icon: Icons.shield_moon_rounded,
             gradient: ZaffaGradients.vipBanner,
             onTap: () => context.push('/noble')
           ),
           (
             label: 'Medals',
-            icon: Icons.military_tech,
+            icon: Icons.military_tech_rounded,
             gradient: ZaffaGradients.coin,
             onTap: () => context.push('/medals')
           ),
           (
             label: 'Ranking',
-            icon: Icons.leaderboard,
+            icon: Icons.leaderboard_rounded,
             gradient: ZaffaGradients.diamond,
             onTap: () => context.push('/rankings')
           ),
-        ]),
+        ])),
 
-        if (coupleCard != null) ...[const SizedBox(height: 14), coupleCard!],
-
-        // ── Progress + gift wall ──────────────────────────────────────────────────────────────
-        const _SectionHeading('Level'),
-        LevelProgressSection(uid: uid),
-        const _SectionHeading('Gift wall'),
-        GiftWallStrip(uid: uid, onSeeAll: () => context.push('/profile/$uid/gift-wall')),
+        if (coupleCard != null) ...[gap, inset(coupleCard!)],
 
         // ── Menu ──────────────────────────────────────────────────────────────────────────────
-        const SizedBox(height: 16),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: ZaffaColors.surface.withValues(alpha: 0.55),
-            borderRadius: ZaffaRadius.rCard,
+        // The reference puts the menu directly under the shortcut grid. Level and the gift wall
+        // follow it rather than preceding it, so the order above the fold matches the original
+        // exactly while the extra real data we do have stays reachable by scrolling.
+        gap,
+        // Six rows, matching the reference's count and labels wherever a real backend exists.
+        // The reference's "Feedback" row has no endpoint behind it, so Agency — which does — takes
+        // that slot rather than a row that would lead nowhere.
+        inset(ZaffaMenuPanel(rows: [
+          ZaffaMenuRow(icon: Icons.favorite_outline, label: 'Cp space', onTap: () => context.push('/couple')),
+          ZaffaMenuRow(
+            icon: Icons.star_outline_rounded,
+            label: 'My level',
+            onTap: () => context.push('/profile/$uid/level'),
           ),
-          child: Column(children: [
-            ZaffaMenuRow(icon: Icons.groups_outlined, label: 'Agency', onTap: () => context.push('/agency')),
-            const _Hairline(),
-            ZaffaMenuRow(icon: Icons.favorite_outline, label: 'CP', onTap: () => context.push('/couple')),
-            const _Hairline(),
-            ZaffaMenuRow(
-              icon: Icons.photo_library_outlined,
-              label: 'My moments',
-              onTap: () => context.push('/profile/$uid/moments'),
-            ),
-            const _Hairline(),
-            ZaffaMenuRow(icon: Icons.settings_outlined, label: 'Settings', onTap: () => context.push('/settings')),
-          ]),
-        ),
+          ZaffaMenuRow(
+            icon: Icons.trending_up_rounded,
+            label: 'My income',
+            onTap: () => context.push('/wallet'),
+          ),
+          ZaffaMenuRow(icon: Icons.shield_outlined, label: 'Badge', onTap: () => context.push('/medals')),
+          ZaffaMenuRow(icon: Icons.groups_outlined, label: 'Agency', onTap: () => context.push('/agency')),
+          ZaffaMenuRow(icon: Icons.settings_outlined, label: 'Settings', onTap: () => context.push('/settings')),
+        ])),
       ],
     );
   }
 }
 
+/// Identity block over the hero art.
+///
+/// The hero is the ORIGINAL `main/waitio_main_top_bg.pag` — the palace/fireworks plate the
+/// reference uses behind the top of the main screens. It falls back to the flat page colour on any
+/// platform without libpag, which is correct rather than a stand-in: the identity content stays
+/// legible either way.
+class _Header extends StatelessWidget {
+  const _Header({required this.profile, required this.vip, required this.medals, this.trailing});
+
+  final Map<String, dynamic> profile;
+  final int vip;
+  final List<UserMedal> medals;
+  final Widget? trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    final uid = '${profile['uid']}';
+    final nick = '${profile['nick'] ?? 'User $uid'}';
+    final signature = '${profile['signature'] ?? ''}';
+    final avatar = profile['avatar_url'] as String?;
+
+    return SizedBox(
+      height: ZaffaMetrics.heroHeight,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Hero art, faded into the page colour at its lower edge so there is no visible seam.
+          const PagView.asset(
+            AppAssets.mainTopBgPag,
+            loop: true,
+            fallback: DecoratedBox(decoration: BoxDecoration(gradient: ZaffaGradients.appShell)),
+          ),
+          const DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.center,
+                end: Alignment.bottomCenter,
+                colors: [Colors.transparent, ZaffaColors.pageBg],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(ZaffaMetrics.screenH, 0, ZaffaMetrics.screenH, 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: 84,
+                      height: 84,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 31,
+                            backgroundColor: ZaffaColors.surfaceRaised,
+                            backgroundImage:
+                                avatar != null ? CachedNetworkImageProvider(avatar) : null,
+                            child: avatar == null
+                                ? const Icon(Icons.person, size: 30, color: ZaffaColors.textSecondary)
+                                : null,
+                          ),
+                          // Worn decoration wins over the tier frame — both are real catalog art.
+                          AvatarFrame(
+                            size: 62,
+                            frameUrl: (profile['avatar_frame_url'] as String?) ??
+                                (profile['vip_frame_url'] as String?),
+                            vipLevel: vip,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            nick,
+                            style: ZaffaText.title.copyWith(fontSize: 20),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          _IdRow(uid: uid),
+                        ],
+                      ),
+                    ),
+                    if (trailing != null) trailing!,
+                  ],
+                ),
+                if (signature.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    signature,
+                    style: ZaffaText.caption.copyWith(color: Colors.white70),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+                // Adorned medals — real catalog art, and simply absent when the user has none.
+                if (medals.isNotEmpty)
+                  MedalStrip(medals: medals, onTap: () => context.push('/medals')),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// `ID:1278472` with a copy affordance, exactly as the reference presents it.
+class _IdRow extends StatelessWidget {
+  const _IdRow({required this.uid});
+  final String uid;
+
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('ID:$uid', style: ZaffaText.caption.copyWith(fontSize: 13)),
+          const SizedBox(width: 5),
+          Icon(Icons.copy_rounded, size: 13, color: ZaffaColors.textSecondary.withValues(alpha: 0.8)),
+        ],
+      );
+}
+
 /// Followers · Following · Gifts.
 ///
 /// The gift total is the `total` the gift-wall endpoint already returns beside its page of rows —
-/// a real count, not a length of whatever happened to be on page one. It loads independently of
-/// the profile, so it shows its own placeholder instead of holding up the whole strip.
+/// a real count, not the length of whatever happened to be on page one. It loads independently of
+/// the profile, so it shows its own state instead of holding up the strip.
 class _StatRow extends ConsumerWidget {
   const _StatRow({required this.uid, required this.fans, required this.following});
   final String uid;
@@ -246,9 +310,8 @@ class _StatRow extends ConsumerWidget {
   }
 }
 
-/// Coins and diamonds side by side. `beans` is the diamond balance — the withdrawable earnings
-/// currency the exchange converts at 2:1 (`wallet.service.ts`). Distinct from coins, so it gets a
-/// distinct card, exactly as the reference does.
+/// Coins and diamonds side by side with the measured 7pt gutter. `beans` is the diamond balance —
+/// the withdrawable earnings currency the exchange converts at 2:1 (`wallet.service.ts`).
 class _WalletCards extends ConsumerWidget {
   const _WalletCards();
 
@@ -271,7 +334,7 @@ class _WalletCards extends ConsumerWidget {
           onTap: () => context.push('/wallet'),
         ),
       ),
-      const SizedBox(width: 10),
+      const SizedBox(width: ZaffaMetrics.currencyCardGap),
       Expanded(
         child: CurrencyCard(
           kind: CurrencyKind.diamond,
@@ -283,67 +346,4 @@ class _WalletCards extends ConsumerWidget {
       ),
     ]);
   }
-}
-
-class _IdChip extends StatelessWidget {
-  const _IdChip({required this.uid});
-  final String uid;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.28),
-          borderRadius: ZaffaRadius.rChip,
-        ),
-        child: Text('ID: $uid', style: ZaffaText.caption.copyWith(fontSize: 11.5)),
-      );
-}
-
-class _MiniBadge extends StatelessWidget {
-  const _MiniBadge({required this.icon, required this.label, required this.color});
-  final IconData icon;
-  final String label;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        decoration: BoxDecoration(
-          borderRadius: ZaffaRadius.rChip,
-          color: color.withValues(alpha: 0.22),
-          border: Border.all(color: color.withValues(alpha: 0.5)),
-        ),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(icon, size: 11, color: color),
-          const SizedBox(width: 4),
-          Text(label,
-              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.white.withValues(alpha: 0.92))),
-        ]),
-      );
-}
-
-class _SectionHeading extends StatelessWidget {
-  const _SectionHeading(this.text);
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.fromLTRB(2, 18, 2, 6),
-        child: Row(children: [
-          const DecoratedBox(
-            decoration: BoxDecoration(gradient: ZaffaGradients.goldEdge),
-            child: SizedBox(width: 3, height: 14),
-          ),
-          const SizedBox(width: 8),
-          Text(text, style: ZaffaText.title.copyWith(fontSize: 15)),
-        ]),
-      );
-}
-
-class _Hairline extends StatelessWidget {
-  const _Hairline();
-  @override
-  Widget build(BuildContext context) =>
-      Divider(height: 1, thickness: 1, indent: 46, color: Colors.white.withValues(alpha: 0.06));
 }

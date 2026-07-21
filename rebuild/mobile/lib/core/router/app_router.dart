@@ -12,6 +12,7 @@ import '../../features/home/home_screen.dart';
 import '../../features/medals/medal_wall_screen.dart';
 import '../../features/moments/create_moment_screen.dart';
 import '../../features/moments/moments_screen.dart';
+import '../../features/profile/level_screen.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/profile/relations_screen.dart';
 import '../../features/profile/widgets/gift_wall_section.dart';
@@ -78,6 +79,7 @@ final appRouter = GoRouter(
         // which forced the whole page to stop scrolling at the feed's edge; it is its own screen
         // now so the feed keeps its own viewport and its pagination keeps working.
         GoRoute(path: 'moments', builder: (_, s) => UserMomentsScreen(uid: s.pathParameters['uid']!)),
+        GoRoute(path: 'level', builder: (_, s) => UserLevelScreen(uid: s.pathParameters['uid']!)),
       ],
     ),
     GoRoute(

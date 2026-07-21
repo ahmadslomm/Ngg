@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import '../../format.dart';
 import '../../theme/zaffa_tokens.dart';
 
-/// The gold-bordered surface that carries almost every panel in the reference — the VIP banner,
-/// both currency cards, the quick-action tiles, the bottom-nav icons.
+/// The ornate gold frame that carries the VIP banner and both currency cards.
 ///
-/// Drawn, not an image: the border is a gradient stroke so it catches light along its length the
-/// way the original's does, and it scales to any size without the resampling blur a 9-patch would
-/// give. That also means one widget covers every use instead of an asset per size.
+/// Measured from the reference: the border is not one stroke but TWO — a ~1.4pt bright gold outer
+/// line immediately followed by a ~1.4pt dark brown inner line (sampled at x=46..50 and x=51..55
+/// of the coins card). That pairing is what makes it read as struck metal; a single-colour stroke,
+/// which an earlier pass used, reads as a plain border no matter what colour it is.
+///
+/// Drawn rather than sliced from the screenshot, so it scales to any size without resampling blur
+/// and one widget covers every use.
 class GoldFrame extends StatelessWidget {
   const GoldFrame({
     super.key,
     required this.child,
     this.borderRadius = ZaffaRadius.rCard,
-    this.borderWidth = 2.0,
     this.gradient,
     this.color,
     this.glow = false,
@@ -23,44 +25,50 @@ class GoldFrame extends StatelessWidget {
 
   final Widget child;
   final BorderRadius borderRadius;
-  final double borderWidth;
-
-  /// Interior fill. One of these, or neither for a transparent interior.
   final Gradient? gradient;
   final Color? color;
-
-  /// Emit a halo. The reference uses this on hero elements only — a glow on everything reads as
-  /// noise rather than luxury.
   final bool glow;
   final EdgeInsetsGeometry? padding;
 
+  static const _b = ZaffaMetrics.goldBevel;
+
+  BorderRadius _inset(BorderRadius r, double by) => BorderRadius.all(
+        Radius.circular((r.topLeft.x - by).clamp(0, double.infinity)),
+      );
+
   @override
   Widget build(BuildContext context) {
+    final innerRadius = _inset(borderRadius, _b);
     return DecoratedBox(
+      // Outer: bright gold.
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        gradient: ZaffaGradients.goldEdge,
+        color: ZaffaColors.goldBevelLight,
         boxShadow: glow ? ZaffaShadows.goldGlow() : null,
       ),
       child: Padding(
-        // The gradient box IS the border: insetting the interior by the stroke width reveals it.
-        padding: EdgeInsets.all(borderWidth),
+        padding: const EdgeInsets.all(_b),
         child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular((borderRadius.topLeft.x - borderWidth).clamp(0, double.infinity)),
+          // Inner: dark brown, which reads as the shadowed underside of the bevel.
+          decoration: BoxDecoration(borderRadius: innerRadius, color: ZaffaColors.goldBevelDark),
+          child: Padding(
+            padding: const EdgeInsets.all(_b),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: _inset(innerRadius, _b),
+                gradient: gradient,
+                color: color,
+              ),
+              child: padding == null ? child : Padding(padding: padding!, child: child),
             ),
-            gradient: gradient,
-            color: color,
           ),
-          child: padding == null ? child : Padding(padding: padding!, child: child),
         ),
       ),
     );
   }
 }
 
-/// A circular gold ring — the bottom-nav icons and avatar frames.
+/// A circular gold ring — avatar frames and nav icons.
 class GoldRing extends StatelessWidget {
   const GoldRing({
     super.key,
@@ -89,17 +97,53 @@ class GoldRing extends StatelessWidget {
       ),
       padding: EdgeInsets.all(ringWidth),
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: fill ?? ZaffaColors.bgBottom,
-        ),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: fill ?? ZaffaColors.pageBg),
         child: Center(child: child),
       ),
     );
   }
 }
 
-/// The charm counter under every occupied seat — a translucent pill with a pink heart.
+/// Press feedback. The reference's tiles and rows dip under the finger rather than showing a
+/// Material ink ripple, which would be the wrong idiom on these ornate gold surfaces.
+class ZaffaTappable extends StatefulWidget {
+  const ZaffaTappable({super.key, required this.child, this.onTap, this.scale});
+
+  final Widget child;
+  final VoidCallback? onTap;
+  final double? scale;
+
+  @override
+  State<ZaffaTappable> createState() => _ZaffaTappableState();
+}
+
+class _ZaffaTappableState extends State<ZaffaTappable> {
+  bool _down = false;
+
+  void _set(bool v) {
+    if (widget.onTap == null || _down == v) return;
+    setState(() => _down = v);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.onTap,
+      onTapDown: (_) => _set(true),
+      onTapUp: (_) => _set(false),
+      onTapCancel: () => _set(false),
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedScale(
+        scale: _down ? (widget.scale ?? ZaffaMotion.pressScale) : 1.0,
+        duration: ZaffaMotion.press,
+        curve: Curves.easeOut,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+/// The charm counter under an occupied seat.
 class CharmPill extends StatelessWidget {
   const CharmPill({super.key, required this.value, this.compact = false});
 

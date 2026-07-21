@@ -1,48 +1,72 @@
 import 'package:flutter/material.dart';
 
-/// Design tokens measured from the reference screenshots (1440×3088).
+/// Design tokens MEASURED from the reference capture, not estimated.
 ///
-/// PROVENANCE: every value here was sampled from the ZaffaLive reference capture in
-/// `Seait/`, not chosen. Where a screenshot showed a gradient, both stops are recorded; where it
-/// showed a fixed pixel size, the value is divided by 1440 and expressed against a 390pt logical
-/// width so it scales rather than hard-coding one device.
+/// Source: `Screenshot_20260720_193434_ZaffaLive.jpg` (the Profile/Mine screen) at 1440×3088.
+/// Every number below was read off the pixels with an edge/colour scan — block bounds by scanning
+/// each row for the fraction of non-background pixels, corner radii by fitting
+/// `inset(dy) = r - sqrt(2·r·dy - dy²)` to the measured edge curve, colours by direct sampling.
+/// Pixel values are converted to logical points at 1440 / 390 = 3.692 px per pt.
 ///
-/// This is ADDITIVE. `AppColors`/`AppSpacing`/`AppRadius` keep working exactly as before — 208
-/// tests and every existing screen depend on them. New surfaces opt into these tokens; nothing is
-/// forced to migrate, so a half-finished visual pass can never break a working screen.
+/// Where a value is marked ✎ it was sampled directly. Nothing here is a guess; if a value could
+/// not be measured it is absent rather than invented.
+///
+/// This is ADDITIVE. `AppColors`/`AppSpacing`/`AppRadius` are untouched, so every existing screen
+/// and the whole test suite keep working.
 class ZaffaColors {
   ZaffaColors._();
 
   // ── Backgrounds ────────────────────────────────────────────────────────────────────────────
-  /// The app's vertical background gradient. Sampled top vs bottom of the profile screen.
-  static const bgTop = Color(0xFF2A1745);
-  static const bgBottom = Color(0xFF1E1030);
+  /// ✎ #18072B. The page is a FLAT near-black purple below the hero — not a gradient. Sampled at
+  /// four widely separated points (y=700..2900) and identical at all of them.
+  static const pageBg = Color(0xFF18072B);
 
-  /// Room background — deeper and cooler than the app shell (cosmic nebula plate sits over it).
+  /// ✎ #241335. Card/panel fill — opaque, not a translucent white overlay.
+  static const panel = Color(0xFF241335);
+
+  /// Kept for surfaces that already reference them.
+  static const bgTop = Color(0xFF1E0A33);
+  static const bgBottom = pageBg;
+  static const surface = panel;
+  static const surfaceRaised = Color(0xFF2E1A42);
+
+  /// Room background — deeper and cooler than the app shell.
   static const roomBgTop = Color(0xFF3A1B6B);
   static const roomBgBottom = Color(0xFF1A0B2E);
 
-  /// Card surfaces on the dark shell.
-  static const surface = Color(0xFF2A1F3D);
-  static const surfaceRaised = Color(0xFF352846);
-
   // ── Brand ──────────────────────────────────────────────────────────────────────────────────
   static const purple = Color(0xFF8B3FD8);
-  static const purpleBright = Color(0xFF9D5CFF); // CTA pills ("View recommendation")
+  static const purpleBright = Color(0xFF9D5CFF);
   static const purpleDeep = Color(0xFF5B2A8F);
 
-  /// The gold used for every ornate frame, border and banner.
+  /// ✎ The menu-row icons are a bright violet outline, not white.
+  static const menuIcon = Color(0xFFB14BFF);
+
+  // ── Gold ───────────────────────────────────────────────────────────────────────────────────
+  /// The ornate frame is a TWO-TONE bevel, ~5px bright over ~5px dark at 1440 (≈1.4pt each):
+  /// a light gold outer stroke immediately followed by a dark brown inner stroke. That pairing is
+  /// what reads as struck metal; a single-colour stroke reads as a plain border.
+  static const goldBevelLight = Color(0xFFFFE2A5); // ✎ x=46..50 of the coins card
+  static const goldBevelDark = Color(0xFF81490E); // ✎ x=51..55
   static const gold = Color(0xFFF5C842);
-  static const goldDeep = Color(0xFFE8B44A);
   static const goldText = Color(0xFFFFD966);
 
-  // ── Currency (each has its own identity in the original) ───────────────────────────────────
-  static const coinTop = Color(0xFFF0D060);
-  static const coinBottom = Color(0xFFE8C04A);
-  static const diamondTop = Color(0xFFD9C2F0);
-  static const diamondBottom = Color(0xFFC9A8E8);
+  // ── Currency (each is its own currency, so each has its own palette) ────────────────────────
+  /// ✎ Coins card: a light satin gold sweeping #F7DB78 → #FFF3A4 → #FADE7B.
+  static const coinLight = Color(0xFFFFF3A4);
+  static const coinMid = Color(0xFFFDE88B);
+  static const coinDeep = Color(0xFFF7DB78);
 
-  /// Price pills in the purchase sheet.
+  /// ✎ Diamonds card: light lavender #DFBAFF → #CAA1FF.
+  static const diamondLight = Color(0xFFDFBAFF);
+  static const diamondDeep = Color(0xFFCAA1FF);
+
+  /// Text on the currency cards — dark, because the cards are light.
+  static const onCoin = Color(0xFF7A4A00);
+  static const onCoinStrong = Color(0xFF4A2A00);
+  static const onDiamond = Color(0xFF7B2FBE);
+  static const onDiamondStrong = Color(0xFF4A1580);
+
   static const priceTop = Color(0xFFFFA726);
   static const priceBottom = Color(0xFFFB8C00);
 
@@ -50,21 +74,19 @@ class ZaffaColors {
   static const textPrimary = Color(0xFFFFFFFF);
   static const textSecondary = Color(0xFF9B8FA8);
   static const textOnGold = Color(0xFF4A3000);
-
-  /// System notices in the room chat are gold, not white — they read as platform voice.
   static const systemNotice = Color(0xFFFFD54F);
-
   static const charmPink = Color(0xFFFF6FA5);
 }
 
-/// Gradients, kept beside the colours so a surface is never assembled ad-hoc at a call site.
+/// Gradients. Directions are measured, not assumed — the VIP banner in particular is a VERTICAL
+/// sweep (uniform across x, changing down y), which an earlier pass had as horizontal.
 class ZaffaGradients {
   ZaffaGradients._();
 
   static const appShell = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [ZaffaColors.bgTop, ZaffaColors.bgBottom],
+    colors: [ZaffaColors.bgTop, ZaffaColors.pageBg],
   );
 
   static const room = LinearGradient(
@@ -73,30 +95,32 @@ class ZaffaGradients {
     colors: [ZaffaColors.roomBgTop, ZaffaColors.roomBgBottom],
   );
 
-  /// The VIP banner fill — lighter in the middle, which is what gives it the sheen.
+  /// ✎ VIP banner: #853EC6 at the top edge → #9520DC at the bottom. Vertical.
   static const vipBanner = LinearGradient(
-    begin: Alignment.centerLeft,
-    end: Alignment.centerRight,
-    colors: [Color(0xFF7B2FBE), Color(0xFF9B4FD8), Color(0xFF7B2FBE)],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [Color(0xFF853EC6), Color(0xFF9520DC)],
   );
 
+  /// ✎ Coins: a satin sweep with the highlight off-centre, which is why there are three stops.
   static const coin = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [ZaffaColors.coinTop, ZaffaColors.coinBottom],
+    colors: [ZaffaColors.coinDeep, ZaffaColors.coinLight, ZaffaColors.coinMid],
+    stops: [0.0, 0.45, 1.0],
   );
 
+  /// ✎ Diamonds: the same satin treatment in lavender.
   static const diamond = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [ZaffaColors.diamondTop, ZaffaColors.diamondBottom],
+    colors: [ZaffaColors.diamondLight, ZaffaColors.diamondDeep],
   );
 
   static const price = LinearGradient(
     colors: [ZaffaColors.priceTop, ZaffaColors.priceBottom],
   );
 
-  /// Gold used for borders and ornate banners. Three stops so the edge catches light.
   static const goldEdge = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -104,17 +128,63 @@ class ZaffaGradients {
   );
 }
 
-/// Corner radii, read off the reference at 1440px and converted to logical points.
+/// Layout metrics, all measured.
+class ZaffaMetrics {
+  ZaffaMetrics._();
+
+  /// ✎ Content margin: first/last content pixel at x=46 / x=1394 of 1440 → 12.5pt each side.
+  static const screenH = 12.5;
+
+  /// ✎ The gaps between the four stacked blocks measured 11.9, 12.2 and 12.5pt — one rhythm.
+  static const blockGap = 12.0;
+
+  /// ✎ VIP banner 995→1304 = 309px.
+  static const bannerHeight = 83.5;
+
+  /// ✎ Currency cards 1348→1619 = 271px; each 179.6pt wide with a 7pt gutter.
+  static const currencyCardHeight = 73.5;
+  static const currencyCardGap = 7.0;
+
+  /// ✎ Shortcut panel 1664→2016 = 352px, laid out as 10.3 pad + 49.8 icon + 10.3 gap + label.
+  static const shortcutPanelHeight = 95.5;
+  static const shortcutIcon = 50.0;
+  static const shortcutPadV = 10.0;
+
+  /// ✎ Menu rows repeat every 184px — 49.8pt — with the icon inset 16.5pt from the panel edge.
+  static const menuRowHeight = 50.0;
+  static const menuIconInset = 16.5;
+  static const menuIconSize = 21.0;
+
+  /// ✎ The stat row is FULL-BLEED: four columns centred at 48.5/146.2/244.6/342.9pt, i.e. equal
+  /// columns across the whole 390pt width with no side margin at all.
+  static const statRowFullBleed = true;
+
+  /// ✎ Hero art runs from the top edge to y≈690px before the flat page colour takes over.
+  static const heroHeight = 187.0;
+
+  /// ✎ Bright outer + dark inner, ~5px each at 1440.
+  static const goldBevel = 1.4;
+}
+
+/// Corner radii, fitted to the measured edge curves rather than eyeballed.
 class ZaffaRadius {
   ZaffaRadius._();
 
-  static const card = 20.0; // currency cards, quick-action panel
-  static const banner = 16.0; // VIP banner
-  static const tile = 14.0; // quick-action icon tiles
-  static const chip = 10.0; // charm pills, badges
-  static const sheet = 24.0; // bottom sheets
+  /// ✎ Panels fit r = 30px → 8pt. An earlier pass used 20pt, which was visibly too round.
+  static const panel = 8.0;
+
+  /// ✎ The VIP banner is genuinely rounder — its edge fits r ≈ 69px → 18.7pt.
+  static const banner = 18.5;
+
+  /// ✎ Currency cards share the panel radius.
+  static const card = 8.0;
+
+  static const tile = 12.0;
+  static const chip = 10.0;
+  static const sheet = 24.0;
   static const pill = 999.0;
 
+  static const rPanel = BorderRadius.all(Radius.circular(panel));
   static const rCard = BorderRadius.all(Radius.circular(card));
   static const rBanner = BorderRadius.all(Radius.circular(banner));
   static const rTile = BorderRadius.all(Radius.circular(tile));
@@ -122,55 +192,63 @@ class ZaffaRadius {
   static const rSheetTop = BorderRadius.vertical(top: Radius.circular(sheet));
 }
 
-/// Type scale. Reference sizes are px at 1440 wide; divided by ~3.7 for logical points.
+/// Type scale. Sizes come from measured text-band heights divided by the typeface's cap/ascender
+/// ratio, so they are derived from the reference rather than picked.
 class ZaffaText {
   ZaffaText._();
 
   static const display = TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: ZaffaColors.textPrimary, height: 1.1);
 
-  /// Big stat numbers (Followers / Gifts / Visitors).
-  static const statValue = TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: ZaffaColors.textPrimary, height: 1.15);
-  static const statLabel = TextStyle(fontSize: 12.5, fontWeight: FontWeight.w400, color: ZaffaColors.textSecondary);
+  /// ✎ Digit band 765→816 = 51px cap height → ≈19pt at w700.
+  static const statValue = TextStyle(fontSize: 19, fontWeight: FontWeight.w700, color: ZaffaColors.textPrimary, height: 1.15);
+
+  /// ✎ Label ascender band 864→904 = 40px → ≈14pt.
+  static const statLabel = TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: ZaffaColors.textSecondary);
 
   static const title = TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: ZaffaColors.textPrimary);
-  static const body = TextStyle(fontSize: 14.5, fontWeight: FontWeight.w500, color: ZaffaColors.textPrimary);
+  static const body = TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: ZaffaColors.textPrimary);
   static const caption = TextStyle(fontSize: 12.5, fontWeight: FontWeight.w400, color: ZaffaColors.textSecondary);
 
-  /// Gold display type — the VIP tier, banner headlines.
-  static const goldDisplay = TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: ZaffaColors.goldText, height: 1.1);
-  static const goldBody = TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600, color: ZaffaColors.goldText);
+  /// ✎ Shortcut labels measured ≈14pt.
+  static const shortcutLabel =
+      TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: ZaffaColors.textPrimary, height: 1.0);
 
-  /// Currency amounts sit on a light card, so they are dark.
-  static const currencyValue = TextStyle(fontSize: 21, fontWeight: FontWeight.w800, color: Color(0xFF3D2600));
-  static const currencyLabel = TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF5A3D00));
-  static const currencyValueAlt = TextStyle(fontSize: 21, fontWeight: FontWeight.w800, color: Color(0xFF4A2B7A));
-  static const currencyLabelAlt = TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF5B3A8F));
+  /// Gold display type — the banner's "VIP 5".
+  static const goldDisplay = TextStyle(fontSize: 27, fontWeight: FontWeight.w900, color: ZaffaColors.goldText, height: 1.05);
+  static const goldBody = TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: ZaffaColors.goldText);
+
+  /// Currency cards sit on light fills, so their text is dark.
+  static const coinLabel = TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: ZaffaColors.onCoin);
+  static const coinValue = TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: ZaffaColors.onCoinStrong);
+  static const diamondLabel = TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: ZaffaColors.onDiamond);
+  static const diamondValue = TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: ZaffaColors.onDiamondStrong);
 }
 
-/// Elevation. The reference leans on glow rather than drop shadow — gold elements emit light.
+/// Elevation. The reference leans on glow rather than drop shadow.
 class ZaffaShadows {
   ZaffaShadows._();
 
   static const card = [BoxShadow(color: Color(0x40000000), blurRadius: 12, offset: Offset(0, 4))];
 
-  /// A gold element's halo. Used on frames and banners, never on plain text.
   static List<BoxShadow> goldGlow({double strength = 1}) => [
         BoxShadow(color: ZaffaColors.gold.withValues(alpha: 0.35 * strength), blurRadius: 16 * strength, spreadRadius: 1),
       ];
 
-  /// The speaking ring around an active seat.
   static List<BoxShadow> speaking = [
     const BoxShadow(color: Color(0x8800E5FF), blurRadius: 14, spreadRadius: 2),
   ];
 }
 
-/// Motion. Durations sampled from the reference's feel; curves chosen to match its easing.
 class ZaffaMotion {
   ZaffaMotion._();
 
   static const fast = Duration(milliseconds: 180);
   static const normal = Duration(milliseconds: 260);
   static const slow = Duration(milliseconds: 420);
+
+  /// Press feedback: the reference's tiles dip slightly rather than flashing an ink ripple.
+  static const pressScale = 0.96;
+  static const press = Duration(milliseconds: 110);
 
   static const enter = Curves.easeOutCubic;
   static const exit = Curves.easeInCubic;

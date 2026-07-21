@@ -300,8 +300,11 @@ class _GoldenDm extends DmRepository {
 /// for the API, they are not a fallback the app itself ever uses.
 void _profileScreenshot() {
   testWidgets('profile', (t) async {
-    t.view.physicalSize = const Size(1080, 2340);
-    t.view.devicePixelRatio = 3.0;
+    // Rendered at the REFERENCE capture's exact geometry (1440x3088 at 3.692x = 390x836 logical)
+    // so this golden can be diffed against the original screenshot band-for-band. The design
+    // tokens are calibrated at 390pt width; matching it here is what makes the diff meaningful.
+    t.view.physicalSize = const Size(1440, 3088);
+    t.view.devicePixelRatio = 1440 / 390;
     addTearDown(t.view.reset);
 
     await t.pumpWidget(ProviderScope(
@@ -313,10 +316,10 @@ void _profileScreenshot() {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.dark,
-        home: ZaffaScaffold(
-          appBar: const ZaffaTransparentBar(title: 'Profile'),
+        home: const ZaffaScaffold(
+          appBar: ZaffaTransparentBar(title: 'Profile'),
           body: ZaffaProfileBody(
-            profile: const {
+            profile: {
               'uid': '10024',
               'nick': 'Ada',
               'signature': 'Here for the good rooms.',
@@ -326,7 +329,7 @@ void _profileScreenshot() {
               'fans_count': 18400,
               'following_count': 212,
             },
-            medals: const [],
+            medals: [],
           ),
         ),
       ),

@@ -37,7 +37,7 @@ class ZaffaScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        decoration: const BoxDecoration(gradient: ZaffaGradients.appShell),
+        decoration: const BoxDecoration(color: ZaffaColors.pageBg),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           extendBodyBehindAppBar: false,
